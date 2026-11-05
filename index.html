@@ -12,6 +12,12 @@
   <title>Syed Usama Irshad & Dr. Bissal Khan — Wedding Invitation</title>
   
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" as="image" href="assets/mehndi-scene.jpg">
+  <link rel="preload" as="image" href="assets/mehndi-scene-2.jpg">
+  <link rel="preload" as="image" href="assets/baraat-scene.jpg">
+  <link rel="preload" as="image" href="assets/baraat-scene-2.jpg">
+  <link rel="preload" as="image" href="assets/walima-scene.jpg">
+  <link rel="preload" as="image" href="assets/walima-scene-2.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -676,11 +682,33 @@
     }
 
     /* Base Artwork Image with Subtle Living Motion */
+    .scene-flipbook {
+      position: relative;
+      width: 100%;
+      transform-origin: center center;
+    }
+
     .scene-artwork-img {
       width: 100%;
       height: auto;
       display: block;
       transform-origin: center center;
+    }
+
+    .scene-artwork-img.frame-2 {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 2;
+      animation: flipbookClap 0.9s steps(1, end) infinite;
+      will-change: opacity;
+    }
+
+    @keyframes flipbookClap {
+      0%, 49.9% { opacity: 0; }
+      50%, 100% { opacity: 1; }
     }
 
     .motion-mehndi {
@@ -1246,7 +1274,10 @@
     function buildMehndiStage() {
       return `
         <div class="illustration-stage seq-step seq-3">
-          <img class="scene-artwork-img motion-mehndi" src="assets/mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
+          <div class="scene-flipbook motion-mehndi">
+            <img class="scene-artwork-img frame-1" src="assets/mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
+            <img class="scene-artwork-img frame-2" src="assets/mehndi-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+          </div>
           <!-- Live Twinkling Fairy Lights & Soft Floating Marigold Petals Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -1295,7 +1326,10 @@
     function buildBaraatStage() {
       return `
         <div class="illustration-stage seq-step seq-4">
-          <img class="scene-artwork-img motion-baraat" src="assets/baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
+          <div class="scene-flipbook motion-baraat">
+            <img class="scene-artwork-img frame-1" src="assets/baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
+            <img class="scene-artwork-img frame-2" src="assets/baraat-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+          </div>
           <!-- Live Twinkling Mughal Arch Lights & Falling Red Rose Petals Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -1338,7 +1372,10 @@
     function buildWalimaStage() {
       return `
         <div class="illustration-stage seq-step seq-3">
-          <img class="scene-artwork-img motion-walima" src="assets/walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
+          <div class="scene-flipbook motion-walima">
+            <img class="scene-artwork-img frame-1" src="assets/walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
+            <img class="scene-artwork-img frame-2" src="assets/walima-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+          </div>
           <!-- Live Chandelier Sparkles & Gown Sequin Shimmer Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
