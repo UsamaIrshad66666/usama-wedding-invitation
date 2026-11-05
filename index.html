@@ -26,7 +26,7 @@
       --gold-light: #f7e7be;
       --gold-dark: #8c6a23;
       --gold-gradient: linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%);
-      --gold-line: rgba(212, 173, 93, 0.35);
+      --gold-line: rgba(212, 173, 93, 0.38);
       --cream-ivory: #faf4e6;
       --cream-muted: #d0c8b6;
       --serif: "Cormorant Garamond", Garamond, Georgia, serif;
@@ -67,6 +67,9 @@
 
     .page-frame {
       min-height: 100vh;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
       position: relative;
       padding: 1.5rem 1rem 3rem;
       display: flex;
@@ -153,6 +156,7 @@
       position: relative;
       z-index: 10;
       width: 100%;
+      min-width: 0;
       max-width: 780px;
       margin: 0 auto;
       display: flex;
@@ -519,6 +523,9 @@
       transform: translate(3px, -3px);
     }
 
+    /* ==============================================================
+       EVENT DETAIL VIEW & SEQUENTIAL ENTRANCE CHOREOGRAPHY
+       ============================================================== */
     .detail-container {
       width: 100%;
       max-width: 780px;
@@ -556,7 +563,7 @@
     .detail-panel {
       border: 1px solid var(--gold-line);
       background: linear-gradient(145deg, #133328 0%, #0c2018 100%);
-      padding: clamp(16px, 3.5vw, 32px);
+      padding: clamp(18px, 3.5vw, 34px);
       border-radius: 4px;
       position: relative;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55);
@@ -580,177 +587,193 @@
 
     .detail-urdu-title {
       font-family: var(--urdu);
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       color: var(--gold-light);
       direction: rtl;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .detail-desc {
       font-family: var(--serif);
-      font-size: 1.08rem;
+      font-size: 1.1rem;
       color: var(--cream-muted);
       max-width: 540px;
-      margin: 0.8rem auto 1.4rem;
+      margin: 1rem auto 1.4rem;
       line-height: 1.6;
+    }
+
+    /* Sequential One-by-One Staggered Reveal Classes */
+    .seq-step {
+      opacity: 0;
+      animation: seqReveal 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .seq-1 { animation-delay: 0.08s; }
+    .seq-2 { animation-delay: 0.24s; }
+    .seq-3 { animation-delay: 0.42s; }
+    .seq-4 { animation-delay: 0.60s; }
+    .seq-5 { animation-delay: 0.80s; }
+    .seq-6 { animation-delay: 1.00s; }
+    .seq-7 { animation-delay: 1.20s; }
+
+    @keyframes seqReveal {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     /* Baraat Tagline Badge */
     .baraat-tagline-badge {
       display: inline-block;
-      margin: 0.5rem auto 1.2rem;
-      padding: 8px 24px;
-      background: linear-gradient(135deg, rgba(168, 32, 50, 0.35) 0%, rgba(212, 173, 93, 0.2) 100%);
-      border: 1px solid rgba(212, 173, 93, 0.55);
-      border-radius: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      animation: pulseBadge 3s infinite ease-in-out;
+      margin: 0.4rem auto 1.2rem;
+      padding: 10px 26px;
+      background: linear-gradient(135deg, rgba(168, 32, 50, 0.4) 0%, rgba(212, 173, 93, 0.22) 100%);
+      border: 1.5px solid rgba(212, 173, 93, 0.65);
+      border-radius: 35px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(212, 173, 93, 0.15);
+      animation: pulseBadge 3.2s infinite ease-in-out;
     }
     .baraat-tagline-urdu {
       font-family: var(--urdu);
-      font-size: 1.55rem;
+      font-size: 1.6rem;
       color: var(--gold-light);
       direction: rtl;
       display: block;
-      line-height: 1.4;
+      line-height: 1.45;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
     .baraat-tagline-roman {
       font-family: var(--serif);
       font-style: italic;
       font-size: 1.05rem;
-      letter-spacing: 0.05em;
-      color: #ffcad4;
+      letter-spacing: 0.06em;
+      color: #ffdce2;
+      display: block;
+      margin-top: 2px;
     }
     @keyframes pulseBadge {
-      0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-      50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(212, 173, 93, 0.35); }
+      0%, 100% { transform: scale(1); box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+      50% { transform: scale(1.025); box-shadow: 0 8px 25px rgba(212, 173, 93, 0.4); }
     }
 
     /* ==============================================================
-       ILLUSTRATION STAGE CONTAINER & ANIMATIONS
+       ANIMATED ILLUSTRATION STAGE & LIVE OVERLAYS
        ============================================================== */
     .illustration-stage {
       position: relative;
       width: 100%;
-      max-width: 600px;
-      margin: 1.2rem auto 1.6rem;
-      border-radius: 6px;
+      max-width: 620px;
+      margin: 1rem auto 1.6rem;
+      border-radius: 8px;
       overflow: hidden;
-      border: 1px solid var(--gold-line);
-      background: radial-gradient(circle at 50% 30%, #15382c 0%, #071510 100%);
-      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75), 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1.5px solid var(--gold-primary);
+      background: #081812;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65), 0 0 20px rgba(212, 173, 93, 0.18);
     }
 
-    .illustration-svg {
+    /* Base Artwork Image with Subtle Living Motion */
+    .scene-artwork-img {
       width: 100%;
       height: auto;
       display: block;
+      transform-origin: center center;
     }
 
-    /* Fairy Lights Twinkle */
-    .twinkle-light {
-      animation: lightPulse 2.2s infinite ease-in-out;
+    .motion-mehndi {
+      animation: mehndiAlive 5s infinite ease-in-out alternate;
+    }
+    @keyframes mehndiAlive {
+      0% { transform: scale(1); filter: brightness(1); }
+      100% { transform: scale(1.018); filter: brightness(1.05); }
+    }
+
+    .motion-baraat {
+      animation: baraatLiftAlive 3.6s infinite ease-in-out;
+    }
+    @keyframes baraatLiftAlive {
+      0%, 100% { transform: scale(1.01) translateY(0); }
+      50% { transform: scale(1.025) translateY(-4px); }
+    }
+
+    .motion-walima {
+      animation: walimaWalkAlive 4.5s infinite ease-in-out alternate;
+    }
+    @keyframes walimaWalkAlive {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.028) translateY(-2px); }
+    }
+
+    /* SVG Live Particle & Twinkle Overlay */
+    .stage-overlay-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* Twinkling Fairy Bulbs */
+    .twinkle-bulb {
+      animation: bulbTwinkle 2.1s infinite ease-in-out;
+    }
+    .tb-1 { animation-delay: 0.1s; animation-duration: 1.8s; }
+    .tb-2 { animation-delay: 0.5s; animation-duration: 2.3s; }
+    .tb-3 { animation-delay: 0.9s; animation-duration: 1.9s; }
+    .tb-4 { animation-delay: 1.3s; animation-duration: 2.5s; }
+    .tb-5 { animation-delay: 1.7s; animation-duration: 2.0s; }
+
+    @keyframes bulbTwinkle {
+      0%, 100% { opacity: 0.25; r: 2.5px; }
+      50% { opacity: 1; r: 5.5px; }
+    }
+
+    /* Diamond / Sequin Glints */
+    .sparkle-star {
+      transform-box: fill-box;
       transform-origin: center;
+      animation: starGlint 2.4s infinite ease-in-out;
     }
-    .t-delay-1 { animation-delay: 0.2s; }
-    .t-delay-2 { animation-delay: 0.7s; }
-    .t-delay-3 { animation-delay: 1.2s; }
-    .t-delay-4 { animation-delay: 1.7s; }
-
-    @keyframes lightPulse {
-      0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 1px #ffd700); }
-      50% { opacity: 1; filter: drop-shadow(0 0 6px #ffe270); }
+    @keyframes starGlint {
+      0%, 100% { opacity: 0.15; transform: scale(0.5) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.25) rotate(45deg); }
     }
 
-    /* Gentle Lantern Sway */
-    .lantern-sway {
-      transform-origin: top center;
-      animation: gentleSway 3.6s infinite ease-in-out alternate;
+    /* Soft Organic Floating Flower Petals (Marigold & Rose Petals) */
+    .petal-float {
+      animation: organicPetalFall 6.5s infinite ease-in-out;
+      opacity: 0;
     }
-    .sway-alt {
-      animation-duration: 4.4s;
-      animation-delay: -1.5s;
-    }
-    @keyframes gentleSway {
-      0% { transform: rotate(-3deg); }
-      100% { transform: rotate(3deg); }
-    }
+    .pf-1 { animation-delay: 0.2s; animation-duration: 6.2s; }
+    .pf-2 { animation-delay: 1.4s; animation-duration: 7.0s; }
+    .pf-3 { animation-delay: 2.6s; animation-duration: 5.8s; }
+    .pf-4 { animation-delay: 3.8s; animation-duration: 6.6s; }
+    .pf-5 { animation-delay: 4.9s; animation-duration: 6.0s; }
+    .pf-6 { animation-delay: 5.7s; animation-duration: 7.2s; }
 
-    /* Clapping / Singing Animations */
-    .hands-clap {
-      transform-origin: center;
-      animation: clapMotion 0.8s infinite ease-in-out alternate;
-    }
-    @keyframes clapMotion {
-      0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.08) translateY(-2px); }
-    }
-
-    .girl-body-sway {
-      transform-origin: bottom center;
-      animation: girlSway 3s infinite ease-in-out alternate;
-    }
-    .sway-reverse {
-      animation-direction: alternate-reverse;
-      animation-duration: 3.4s;
-    }
-    @keyframes girlSway {
-      0% { transform: rotate(-1.5deg); }
-      100% { transform: rotate(1.5deg); }
-    }
-
-    /* Falling Flower Petals */
-    .falling-petal {
-      animation: petalDrift 4.8s infinite linear;
-      opacity: 0.85;
-    }
-    .p-d1 { animation-delay: 0.5s; }
-    .p-d2 { animation-delay: 1.7s; }
-    .p-d3 { animation-delay: 2.9s; }
-    .p-d4 { animation-delay: 4.1s; }
-    @keyframes petalDrift {
-      0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
-      15% { opacity: 0.9; }
-      85% { opacity: 0.8; }
-      100% { transform: translateY(380px) rotate(260deg); opacity: 0; }
-    }
-
-    /* Cinematic Bridal Lift Animation */
-    .cinematic-lift-group {
-      transform-origin: bottom center;
-      animation: romanticLift 3.2s infinite ease-in-out;
-    }
-    @keyframes romanticLift {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(0.8deg); }
-    }
-
-    .bride-lehenga-float {
-      transform-origin: top center;
-      animation: lehengaFloat 3.2s infinite ease-in-out alternate;
-    }
-    @keyframes lehengaFloat {
-      0% { transform: rotate(-1deg); }
-      100% { transform: rotate(2deg); }
-    }
-
-    /* Walima Grand Entrance Walk */
-    .grand-walk-group {
-      transform-origin: bottom center;
-      animation: entranceWalk 3s infinite ease-in-out;
-    }
-    @keyframes entranceWalk {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .crowd-cheer {
-      transform-origin: bottom center;
-      animation: cheerSway 2.5s infinite ease-in-out alternate;
-    }
-    @keyframes cheerSway {
-      0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.02) translateY(-2px); }
+    @keyframes organicPetalFall {
+      0% {
+        transform: translate(0, -20px) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.9;
+      }
+      50% {
+        transform: translate(18px, 190px) rotate(120deg);
+        opacity: 0.85;
+      }
+      85% {
+        opacity: 0.75;
+      }
+      100% {
+        transform: translate(-12px, 390px) rotate(240deg);
+        opacity: 0;
+      }
     }
 
     /* Countdown Display */
@@ -830,11 +853,6 @@
       font-size: 1.15rem;
       color: var(--cream-ivory);
       line-height: 1.35;
-    }
-    .info-cell-sub {
-      font-size: 0.8rem;
-      color: var(--cream-muted);
-      margin-top: 3px;
     }
 
     /* Actions Bar */
@@ -933,6 +951,7 @@
       }
       .envelope.open .env-flap { transform: none !important; }
       .envelope.open .letter-slide { transform: translateY(-90px) !important; }
+      .seq-step { opacity: 1 !important; transform: none !important; }
     }
 
     @media (max-width: 600px) {
@@ -1221,557 +1240,143 @@
     }
 
     /* ==============================================================
-       REFINED FACELESS VECTOR ILLUSTRATIONS
-       (Matches User's Reference Art Style)
+       ANIMATED STAGE BUILDERS (High-Res Faceless Art + Live Twinkle/Petals)
        ============================================================== */
 
-    // 1. MEHNDI: Dense Golden Top Fringe, Fairy Lights, Drapes, Matkas, and a Faceless Crowd of Girls Seated on the Floor around the Dholki
-    function generateMehndiSvg() {
+    function buildMehndiStage() {
       return `
-      <svg class="illustration-svg" viewBox="0 0 540 400" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="mStageBg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#071b14"/>
-            <stop offset="65%" stop-color="#0a251b"/>
-            <stop offset="100%" stop-color="#2a1c0d"/>
-          </linearGradient>
-          <linearGradient id="goldDrapeGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#ffd56b"/>
-            <stop offset="45%" stop-color="#e5a92a"/>
-            <stop offset="100%" stop-color="#80560a"/>
-          </linearGradient>
-          <linearGradient id="potGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#e63980"/>
-            <stop offset="60%" stop-color="#b81d5b"/>
-            <stop offset="100%" stop-color="#5c0628"/>
-          </linearGradient>
-          <linearGradient id="dholGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#4a2208"/>
-            <stop offset="50%" stop-color="#8a4716"/>
-            <stop offset="100%" stop-color="#361704"/>
-          </linearGradient>
-          <filter id="mLightGlow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="3.5" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
+        <div class="illustration-stage seq-step seq-3">
+          <img class="scene-artwork-img motion-mehndi" src="assets/mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
+          <!-- Live Twinkling Fairy Lights & Soft Floating Marigold Petals Overlay -->
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glowBulb" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <!-- Top Hanging Fairy Light Twinkles -->
+            <circle cx="45" cy="40" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
+            <circle cx="95" cy="28" r="3.5" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
+            <circle cx="150" cy="52" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
+            <circle cx="215" cy="35" r="3.5" fill="#ffe680" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
+            <circle cx="280" cy="48" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
+            <circle cx="345" cy="32" r="4" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#glowBulb)"/>
+            <circle cx="410" cy="50" r="3.5" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
+            <circle cx="475" cy="30" r="4" fill="#ffe680" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
+            <circle cx="545" cy="42" r="4" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
 
-        <!-- Stage Backdrop -->
-        <rect width="540" height="400" fill="url(#mStageBg)"/>
+            <!-- Side Curtain Fairy Light Twinkles -->
+            <circle cx="38" cy="125" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
+            <circle cx="62" cy="185" r="3.5" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#glowBulb)"/>
+            <circle cx="28" cy="245" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
+            <circle cx="562" cy="125" r="4" fill="#fffbe0" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
+            <circle cx="538" cy="185" r="3.5" fill="#ffe680" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
+            <circle cx="572" cy="245" r="4" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
 
-        <!-- Wooden Floor Platform -->
-        <path d="M 0 315 L 540 315 L 540 400 L 0 400 Z" fill="#29180c"/>
-        <line x1="0" y1="345" x2="540" y2="345" stroke="#3b2311" stroke-width="2.5"/>
-        <line x1="0" y1="375" x2="540" y2="375" stroke="#3b2311" stroke-width="2.5"/>
-
-        <!-- DENSE GOLDEN CEILING FRINGE (Matching Reference Card) -->
-        <g id="topCeilingFringe">
-          <!-- Shimmering top border -->
-          <rect x="0" y="0" width="540" height="18" fill="url(#goldDrapeGrad)"/>
-          
-          <!-- Dense Vertical Light Strings -->
-          ${Array.from({length: 42}).map((_, i) => {
-            const x = 12 + i * 12.5;
-            const h = 25 + (i % 5) * 14;
-            return `
-              <line x1="${x}" y1="18" x2="${x}" y2="${h}" stroke="#ffd700" stroke-width="1.2" opacity="0.75"/>
-              <circle cx="${x}" cy="${h}" r="2" fill="#fffbe6" class="twinkle-light t-delay-${(i % 4) + 1}"/>
-            `;
-          }).join('')}
-
-          <!-- Colorful Hanging Square Picture Frames / Lanterns from Reference -->
-          <g class="lantern-sway" transform="translate(60, 20)">
-            <line x1="0" y1="0" x2="0" y2="40" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="40" width="20" height="24" rx="2" fill="none" stroke="#e63980" stroke-width="3"/>
-            <rect x="-7" y="43" width="14" height="18" fill="#ffd166"/>
-          </g>
-          <g class="lantern-sway sway-alt" transform="translate(130, 20)">
-            <line x1="0" y1="0" x2="0" y2="55" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="55" width="20" height="24" rx="2" fill="none" stroke="#06d6a0" stroke-width="3"/>
-            <rect x="-7" y="58" width="14" height="18" fill="#f72585"/>
-          </g>
-          <g class="lantern-sway" transform="translate(200, 20)">
-            <line x1="0" y1="0" x2="0" y2="38" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="38" width="20" height="24" rx="2" fill="none" stroke="#ffbe0b" stroke-width="3"/>
-            <rect x="-7" y="41" width="14" height="18" fill="#4cc9f0"/>
-          </g>
-          <g class="lantern-sway sway-alt" transform="translate(340, 20)">
-            <line x1="0" y1="0" x2="0" y2="38" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="38" width="20" height="24" rx="2" fill="none" stroke="#06d6a0" stroke-width="3"/>
-            <rect x="-7" y="41" width="14" height="18" fill="#f72585"/>
-          </g>
-          <g class="lantern-sway" transform="translate(410, 20)">
-            <line x1="0" y1="0" x2="0" y2="55" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="55" width="20" height="24" rx="2" fill="none" stroke="#e63980" stroke-width="3"/>
-            <rect x="-7" y="58" width="14" height="18" fill="#ffd166"/>
-          </g>
-          <g class="lantern-sway sway-alt" transform="translate(480, 20)">
-            <line x1="0" y1="0" x2="0" y2="40" stroke="#ffd700" stroke-width="1"/>
-            <rect x="-10" y="40" width="20" height="24" rx="2" fill="none" stroke="#ffbe0b" stroke-width="3"/>
-            <rect x="-7" y="43" width="14" height="18" fill="#4cc9f0"/>
-          </g>
-        </g>
-
-        <!-- Golden Side Curtains with Fairy Lights Wrapped Along Pleats -->
-        <g id="sideCurtains">
-          <!-- Left Drape -->
-          <path d="M 0 0 C 45 10 95 60 78 180 C 65 260 25 330 0 350 L 0 0 Z" fill="url(#goldDrapeGrad)"/>
-          <path d="M 0 0 C 35 30 70 90 55 190 C 40 260 10 320 0 340 Z" fill="rgba(0,0,0,0.18)"/>
-          <ellipse cx="64" cy="205" rx="8" ry="20" fill="#e5a92a" stroke="#ffd700" stroke-width="2"/>
-          <!-- Lights wrapped on left drape -->
-          <circle cx="28" cy="80" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-1" filter="url(#mLightGlow)"/>
-          <circle cx="52" cy="140" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-3" filter="url(#mLightGlow)"/>
-          <circle cx="48" cy="235" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-2" filter="url(#mLightGlow)"/>
-
-          <!-- Right Drape -->
-          <path d="M 540 0 C 495 10 445 60 462 180 C 475 260 515 330 540 350 L 540 0 Z" fill="url(#goldDrapeGrad)"/>
-          <path d="M 540 0 C 505 30 470 90 485 190 C 500 260 530 320 540 340 Z" fill="rgba(0,0,0,0.18)"/>
-          <ellipse cx="476" cy="205" rx="8" ry="20" fill="#e5a92a" stroke="#ffd700" stroke-width="2"/>
-          <!-- Lights wrapped on right drape -->
-          <circle cx="512" cy="80" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-2" filter="url(#mLightGlow)"/>
-          <circle cx="488" cy="140" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-4" filter="url(#mLightGlow)"/>
-          <circle cx="492" cy="235" r="3.5" fill="#fffbe6" class="twinkle-light t-delay-1" filter="url(#mLightGlow)"/>
-        </g>
-
-        <!-- Side Matkas & Cascading Marigold Garlands -->
-        <g id="sideMatkas">
-          <!-- Left Matka -->
-          <g transform="translate(18, 205) rotate(-15)">
-            <ellipse cx="25" cy="25" rx="22" ry="24" fill="url(#potGrad)"/>
-            <ellipse cx="25" cy="8" rx="14" ry="5" fill="#ff70a6" stroke="#fff" stroke-width="1.2"/>
-            <path d="M 10 18 Q 25 24 40 18" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-          </g>
-          <path d="M 40 238 Q 48 280 40 320 Q 38 355 60 375 Q 80 390 115 390" fill="none" stroke="#ffb703" stroke-width="14" stroke-linecap="round" stroke-dasharray="3 8"/>
-          <path d="M 40 238 Q 48 280 40 320 Q 38 355 60 375 Q 80 390 115 390" fill="none" stroke="#fb8500" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 9"/>
-          <ellipse cx="95" cy="385" rx="28" ry="12" fill="#ffb703"/>
-
-          <!-- Right Matka -->
-          <g transform="translate(480, 205) rotate(15)">
-            <ellipse cx="25" cy="25" rx="22" ry="24" fill="url(#potGrad)"/>
-            <ellipse cx="25" cy="8" rx="14" ry="5" fill="#ff70a6" stroke="#fff" stroke-width="1.2"/>
-            <path d="M 10 18 Q 25 24 40 18" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-          </g>
-          <path d="M 500 238 Q 492 280 500 320 Q 502 355 480 375 Q 460 390 425 390" fill="none" stroke="#ffb703" stroke-width="14" stroke-linecap="round" stroke-dasharray="3 8"/>
-          <path d="M 500 238 Q 492 280 500 320 Q 502 355 480 375 Q 460 390 425 390" fill="none" stroke="#fb8500" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 9"/>
-          <ellipse cx="445" cy="385" rx="28" ry="12" fill="#ffb703"/>
-        </g>
-
-        <!-- Traditional Dholak in Center -->
-        <g id="centerDholak" transform="translate(0, 5)">
-          <ellipse cx="270" cy="340" rx="70" ry="18" fill="#990f26" stroke="#ffd700" stroke-width="1.5"/>
-          <ellipse cx="270" cy="318" rx="58" ry="24" fill="url(#dholGrad)"/>
-          <ellipse cx="212" cy="318" rx="9" ry="22" fill="#d2a679" stroke="#4a2208" stroke-width="2"/>
-          <ellipse cx="328" cy="318" rx="9" ry="22" fill="#d2a679" stroke="#4a2208" stroke-width="2"/>
-          <path d="M 212 300 L 270 342 L 328 300 L 270 294 Z" fill="none" stroke="#faf0dd" stroke-width="1.5" opacity="0.85"/>
-          <path d="M 212 336 L 270 294 L 328 336 L 270 342 Z" fill="none" stroke="#faf0dd" stroke-width="1.5" opacity="0.85"/>
-          <!-- Haldi / Ubtan Thalis & Flowers in front -->
-          <ellipse cx="225" cy="358" rx="20" ry="8" fill="#ffb703" stroke="#e5a92a" stroke-width="1.5"/>
-          <ellipse cx="315" cy="358" rx="20" ry="8" fill="#e63980" stroke="#b81d5b" stroke-width="1.5"/>
-        </g>
-
-        <!-- CROWD OF FACELESS MEHNDI GIRLS SEATED ON THE FLOOR (Shaadi Doodles Style) -->
-        <g id="facelessMehndiGirlsGroup">
-          <!-- Girl 1 (Far Left, Seated on Floor, Clapping) -->
-          <g class="girl-body-sway" transform="translate(130, 250)">
-            <!-- Hair Bun with Gold Jhumka -->
-            <circle cx="28" cy="18" r="14" fill="#1c140e"/>
-            <circle cx="22" cy="12" r="4.5" fill="#ffb703"/>
-            <!-- Faceless Head & Defined Jawline -->
-            <path d="M 24 18 Q 38 18 38 32 Q 38 46 26 48 Q 18 42 18 28 Z" fill="#e8be99"/>
-            <circle cx="24" cy="36" r="2.2" fill="#ffd700"/>
-            <!-- Kurti (Parrot Green) -->
-            <path d="M 18 46 Q 30 42 44 48 L 52 95 Q 26 100 8 95 Z" fill="#2a9d8f"/>
-            <!-- Rani Pink Dupatta draped across lap -->
-            <path d="M 12 52 Q 0 75 6 98 Q 28 92 34 62 Z" fill="#e63980" opacity="0.95"/>
-            <!-- Seated crossed legs on floor -->
-            <path d="M 8 92 Q 30 102 56 94 Q 40 108 12 104 Z" fill="#e76f51"/>
-            <!-- Clapping Hands Motion -->
-            <g class="hands-clap">
-              <path d="M 40 58 Q 55 68 52 76" fill="none" stroke="#e8be99" stroke-width="5" stroke-linecap="round"/>
-              <ellipse cx="54" cy="76" rx="4" ry="4" fill="#e8be99"/>
+            <!-- Soft Organic Marigold Petals Drifting Down -->
+            <g class="petal-float pf-1" transform="translate(120, 0)">
+              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/>
             </g>
-          </g>
-
-          <!-- Girl 2 (Inner Left, Seated at Dholak playing bass) -->
-          <g class="girl-body-sway sway-reverse" transform="translate(182, 240)">
-            <!-- Hair Braid with Paranda -->
-            <circle cx="26" cy="18" r="13" fill="#1c140e"/>
-            <path d="M 22 28 Q 12 50 14 75" fill="none" stroke="#1c140e" stroke-width="4.5" stroke-linecap="round"/>
-            <circle cx="14" cy="77" r="3.5" fill="#ffd700"/>
-            <!-- Faceless Head -->
-            <path d="M 24 18 Q 36 18 36 32 Q 36 46 26 48 Q 18 42 18 28 Z" fill="#f0cbb0"/>
-            <!-- Mustard Yellow Festive Kurti with Gota Trim -->
-            <path d="M 18 46 Q 30 42 42 46 L 48 95 Q 24 100 8 95 Z" fill="#ffb703"/>
-            <path d="M 18 46 L 42 46" stroke="#ffd700" stroke-width="2.5"/>
-            <!-- Turquoise Dupatta over shoulder -->
-            <path d="M 28 48 Q 42 65 38 95 Q 24 90 20 60 Z" fill="#00b4d8" opacity="0.95"/>
-            <!-- Hand reaching out to beat Dholak Face -->
-            <path d="M 38 56 Q 48 70 42 84" fill="none" stroke="#f0cbb0" stroke-width="5" stroke-linecap="round"/>
-            <ellipse cx="40" cy="85" rx="4.5" ry="4" fill="#f0cbb0"/>
-          </g>
-
-          <!-- Girl 3 (Inner Right, Seated at Dholak tapping with spoon) -->
-          <g class="girl-body-sway" transform="translate(298, 240)">
-            <!-- Hair Bun with Jasmine Gajra -->
-            <circle cx="28" cy="18" r="13" fill="#1c140e"/>
-            <circle cx="34" cy="14" r="5" fill="#faf4e6"/>
-            <!-- Faceless Head -->
-            <path d="M 20 18 Q 32 18 32 32 Q 32 46 22 48 Q 14 42 14 28 Z" fill="#e8be99"/>
-            <circle cx="22" cy="36" r="2.2" fill="#ffd700"/>
-            <!-- Royal Crimson / Maroon Kurti -->
-            <path d="M 14 46 Q 26 42 38 46 L 44 95 Q 22 100 8 95 Z" fill="#990f26"/>
-            <!-- Golden Yellow Dupatta -->
-            <path d="M 12 50 Q 0 70 8 96 Q 24 92 26 60 Z" fill="#ffd166" opacity="0.95"/>
-            <!-- Hand tapping Dholak with Spoon -->
-            <path d="M 20 56 Q 8 72 2 82" fill="none" stroke="#e8be99" stroke-width="5" stroke-linecap="round"/>
-            <line x1="2" y1="82" x2="-8" y2="86" stroke="#d4ad5d" stroke-width="2.5" stroke-linecap="round"/>
-          </g>
-
-          <!-- Girl 4 (Far Right, Seated on Floor, Clapping & Singing) -->
-          <g class="girl-body-sway sway-reverse" transform="translate(352, 250)">
-            <!-- Hair with Gold Maang Tikka -->
-            <circle cx="26" cy="18" r="14" fill="#1c140e"/>
-            <line x1="26" y1="12" x2="26" y2="22" stroke="#ffd700" stroke-width="1.5"/>
-            <circle cx="26" cy="22" r="2" fill="#ffd700"/>
-            <!-- Faceless Head -->
-            <path d="M 16 18 Q 28 18 28 32 Q 28 46 18 48 Q 10 42 10 28 Z" fill="#f0cbb0"/>
-            <!-- Emerald Green Kurti -->
-            <path d="M 12 46 Q 24 42 36 48 L 44 95 Q 20 100 4 95 Z" fill="#2a9d8f"/>
-            <!-- Mustard Dupatta over lap -->
-            <path d="M 22 50 Q 36 70 30 96 Q 16 92 14 62 Z" fill="#ffb703" opacity="0.95"/>
-            <!-- Seated legs on floor -->
-            <path d="M 6 92 Q 24 102 48 94 Q 34 108 10 104 Z" fill="#e76f51"/>
-            <!-- Clapping Hands -->
-            <g class="hands-clap">
-              <path d="M 18 58 Q 6 68 8 76" fill="none" stroke="#f0cbb0" stroke-width="5" stroke-linecap="round"/>
-              <ellipse cx="6" cy="76" rx="4" ry="4" fill="#f0cbb0"/>
+            <g class="petal-float pf-2" transform="translate(230, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/>
             </g>
-          </g>
-        </g>
-
-        <!-- Soft Falling Marigold Flower Petals (Not Streaks) -->
-        <g id="softPetals">
-          <ellipse cx="140" cy="0" rx="4" ry="2.5" fill="#ffb703" class="falling-petal p-d1"/>
-          <ellipse cx="240" cy="0" rx="4.5" ry="2" fill="#fb8500" class="falling-petal p-d2"/>
-          <ellipse cx="340" cy="0" rx="4" ry="2.5" fill="#ffb703" class="falling-petal p-d3"/>
-          <ellipse cx="430" cy="0" rx="4.5" ry="2" fill="#fb8500" class="falling-petal p-d4"/>
-        </g>
-      </svg>
+            <g class="petal-float pf-3" transform="translate(350, 0)">
+              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/>
+            </g>
+            <g class="petal-float pf-4" transform="translate(460, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/>
+            </g>
+          </svg>
+        </div>
       `;
     }
 
-    // 2. BARAAT: Cinematic "Sweep Off Her Feet" Bridal Carry (Faceless Shaadi Doodles Style)
-    function generateBaraatSvg() {
+    function buildBaraatStage() {
       return `
-      <svg class="illustration-svg" viewBox="0 0 540 420" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="bStageBg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1f070e"/>
-            <stop offset="55%" stop-color="#2c0a13"/>
-            <stop offset="100%" stop-color="#0d1f18"/>
-          </linearGradient>
-          <linearGradient id="sherwaniGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#faf5ec"/>
-            <stop offset="50%" stop-color="#ede3d0"/>
-            <stop offset="100%" stop-color="#d1c1a1"/>
-          </linearGradient>
-          <linearGradient id="lehengaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#c91836"/>
-            <stop offset="60%" stop-color="#990f26"/>
-            <stop offset="100%" stop-color="#540512"/>
-          </linearGradient>
-          <linearGradient id="kullaGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#a81930"/>
-            <stop offset="100%" stop-color="#590614"/>
-          </linearGradient>
-          <filter id="bChandelierGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
+        <div class="illustration-stage seq-step seq-4">
+          <img class="scene-artwork-img motion-baraat" src="assets/baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
+          <!-- Live Twinkling Mughal Arch Lights & Falling Red Rose Petals Overlay -->
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="baraatGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <!-- Mughal Arch Fairy Bulbs -->
+            <circle cx="298" cy="36" r="4.5" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#baraatGlow)"/>
+            <circle cx="268" cy="68" r="4" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#baraatGlow)"/>
+            <circle cx="205" cy="96" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#baraatGlow)"/>
+            <circle cx="165" cy="148" r="4" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#baraatGlow)"/>
+            <circle cx="145" cy="205" r="4" fill="#fffbe0" class="twinkle-bulb tb-4" filter="url(#baraatGlow)"/>
+            <circle cx="365" cy="68" r="4" fill="#ffe680" class="twinkle-bulb tb-2" filter="url(#baraatGlow)"/>
+            <circle cx="465" cy="310" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#baraatGlow)"/>
+            <circle cx="465" cy="370" r="4" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#baraatGlow)"/>
 
-        <!-- Stage Backdrop -->
-        <rect width="540" height="420" fill="url(#bStageBg)"/>
-
-        <!-- Grand Mughal Arch Silhouette -->
-        <path d="M 50 420 L 50 150 Q 50 40 270 25 Q 490 40 490 150 L 490 420" fill="none" stroke="rgba(212,173,93,0.35)" stroke-width="2"/>
-        <path d="M 68 420 L 68 155 Q 68 55 270 42 Q 472 55 472 155 L 472 420" fill="none" stroke="rgba(212,173,93,0.18)" stroke-width="1" stroke-dasharray="4 4"/>
-
-        <!-- Hanging Mughal Chandeliers / Lanterns -->
-        <g id="bChandeliers">
-          <line x1="120" y1="0" x2="120" y2="90" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
-          <polygon points="120,90 108,105 132,105" fill="#ffd700" opacity="0.8"/>
-          <circle cx="120" cy="112" r="4.5" fill="#fff" class="twinkle-light t-delay-1" filter="url(#bChandelierGlow)"/>
-
-          <line x1="420" y1="0" x2="420" y2="90" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
-          <polygon points="420,90 408,105 432,105" fill="#ffd700" opacity="0.8"/>
-          <circle cx="420" cy="112" r="4.5" fill="#fff" class="twinkle-light t-delay-3" filter="url(#bChandelierGlow)"/>
-
-          <!-- Warm fairy particles -->
-          <circle cx="180" cy="65" r="2" fill="#ffd700" class="twinkle-light t-delay-2"/>
-          <circle cx="360" cy="65" r="2" fill="#ffd700" class="twinkle-light t-delay-4"/>
-        </g>
-
-        <!-- CINEMATIC BRIDAL CARRY (Groom Sweeping Bride Off Her Feet in Arms) -->
-        <g class="cinematic-lift-group" transform="translate(10, 0)">
-          
-          <!-- GROOM (Faceless Portrait Style: Sherwani, Kulla, Beard Contour, Princess Carry Pose) -->
-          <g id="cinematicGroom">
-            <!-- Groom Legs (Churidar with natural athletic stance) -->
-            <path d="M 235 270 L 222 385 L 240 385 L 252 270 Z" fill="#d1c1a1"/>
-            <path d="M 264 270 L 278 385 L 296 385 L 280 270 Z" fill="#d1c1a1"/>
-            <!-- Groom Gold Royal Khussas -->
-            <ellipse cx="230" cy="388" rx="12" ry="4" fill="#8c6a23"/>
-            <ellipse cx="288" cy="388" rx="12" ry="4" fill="#8c6a23"/>
-
-            <!-- Groom Sherwani Body (Cream & Gold) leaning slightly to support weight -->
-            <path d="M 220 148 Q 256 142 290 148 L 298 275 Q 256 284 214 275 Z" fill="url(#sherwaniGrad)"/>
-            <!-- Gold Zari Buttons & Collar -->
-            <line x1="255" y1="148" x2="255" y2="275" stroke="#d4ad5d" stroke-width="2.5"/>
-            <circle cx="255" cy="165" r="2" fill="#8c6a23"/>
-            <circle cx="255" cy="188" r="2" fill="#8c6a23"/>
-            <circle cx="255" cy="212" r="2" fill="#8c6a23"/>
-            <circle cx="255" cy="238" r="2" fill="#8c6a23"/>
-
-            <!-- Groom Head & Faceless Beard Contour (Shaadi Doodles style) -->
-            <ellipse cx="255" cy="116" rx="13" ry="16" fill="#e8be99"/>
-            <!-- Clean Groomed Beard & Mustache Contour -->
-            <path d="M 243 118 Q 255 136 267 118 Q 268 128 255 133 Q 242 128 243 118 Z" fill="#1c140e"/>
-            <path d="M 248 119 Q 255 124 262 119" stroke="#1c140e" stroke-width="2.5" stroke-linecap="round"/>
-
-            <!-- Groom Turban / Kulla with Royal Kalgi Feather -->
-            <path d="M 240 105 Q 255 92 270 105 Q 272 112 255 114 Q 238 112 240 105 Z" fill="url(#kullaGrad)"/>
-            <circle cx="255" cy="100" r="3.5" fill="#ffd700"/>
-            <path d="M 255 98 Q 258 84 254 74" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/>
-
-            <!-- Groom Arm 1: Holding Bride Under Shoulders -->
-            <path d="M 225 160 Q 200 185 220 202 Q 248 212 280 205" fill="none" stroke="url(#sherwaniGrad)" stroke-width="14" stroke-linecap="round"/>
-            <ellipse cx="280" cy="204" rx="6" ry="6" fill="#e8be99"/>
-
-            <!-- Groom Arm 2: Holding Bride Under Knees (Cradle/Princess Carry) -->
-            <path d="M 285 162 Q 330 195 315 220 Q 295 235 260 220" fill="none" stroke="url(#sherwaniGrad)" stroke-width="14" stroke-linecap="round"/>
-            <ellipse cx="260" cy="220" rx="6" ry="6" fill="#e8be99"/>
-          </g>
-
-          <!-- BRIDE (Lifted Horizontally in His Arms, Laughing, Lehenga Flaring Down) -->
-          <g id="cinematicBride" transform="translate(18, -10)">
-            
-            <!-- Flared Fluffy Crimson Lehenga Draping Down Realistically -->
-            <g class="bride-lehenga-float">
-              <!-- Heavy flared skirt draping from groom's arms to floor -->
-              <path d="M 260 205 Q 315 210 345 235 Q 330 320 240 285 Q 235 240 260 205 Z" fill="url(#lehengaGrad)"/>
-              <!-- Intricate Gold Zari Border Bands on Lehenga -->
-              <path d="M 245 282 Q 288 310 335 245" fill="none" stroke="#ffd700" stroke-width="3.5" stroke-dasharray="4 4"/>
-              <path d="M 250 288 Q 292 316 340 250" fill="none" stroke="#e5a92a" stroke-width="2"/>
+            <!-- Soft Falling Crimson Rose Petals -->
+            <g class="petal-float pf-1" transform="translate(95, 0)">
+              <path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/>
             </g>
-
-            <!-- Bride Choli / Blouse -->
-            <path d="M 268 152 Q 288 146 308 152 L 310 198 Q 288 202 268 198 Z" fill="#990f26"/>
-
-            <!-- Bride Head in Faceless Portrait Style (Tilted laughing back with joy) -->
-            <g transform="rotate(-12, 290, 128)">
-              <ellipse cx="290" cy="128" rx="12" ry="14" fill="#f0cbb0"/>
-              <!-- Hair Bun with Red Roses -->
-              <circle cx="298" cy="120" r="11" fill="#1c140e"/>
-              <circle cx="304" cy="118" r="4" fill="#c91836"/>
-              <circle cx="302" cy="124" r="3.5" fill="#c91836"/>
-
-              <!-- Traditional Bridal Jewelry: Maang Tikka, Jhumka, Haar -->
-              <line x1="290" y1="116" x2="290" y2="124" stroke="#ffd700" stroke-width="1.2"/>
-              <circle cx="290" cy="124" r="2.5" fill="#ffd700"/>
-              <circle cx="277" cy="132" r="2.5" fill="#ffd700"/>
-              <path d="M 284 138 Q 290 144 296 138" fill="none" stroke="#ffd700" stroke-width="1.8"/>
+            <g class="petal-float pf-2" transform="translate(210, 0)">
+              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#990f26"/>
             </g>
-
-            <!-- Bride Arms: Wrapped Lovingly Around Groom's Neck -->
-            <path d="M 272 160 Q 248 160 242 168" fill="none" stroke="#f0cbb0" stroke-width="8" stroke-linecap="round"/>
-            <!-- Bridal Red Chooda & Gold Bangles -->
-            <line x1="256" y1="162" x2="248" y2="165" stroke="#c91836" stroke-width="6"/>
-            <line x1="254" y1="162" x2="250" y2="164" stroke="#ffd700" stroke-width="6"/>
-
-            <!-- Floating Translucent Net Dupatta Swaying in the Air -->
-            <path d="M 302 122 Q 365 140 380 195 Q 345 225 310 200 Z" fill="rgba(201,24,54,0.4)" stroke="#ffd700" stroke-width="1.5"/>
-          </g>
-        </g>
-
-        <!-- Soft Falling Red Rose Petals (Gulab ki Pattiyan) -->
-        <g id="rosePetals">
-          <path d="M 110 0 C 115 12 108 18 102 12 Z" fill="#c91836" class="falling-petal p-d1"/>
-          <path d="M 220 0 C 225 12 218 18 212 12 Z" fill="#990f26" class="falling-petal p-d2"/>
-          <path d="M 330 0 C 335 12 328 18 322 12 Z" fill="#c91836" class="falling-petal p-d3"/>
-          <path d="M 440 0 C 445 12 438 18 432 12 Z" fill="#e63946" class="falling-petal p-d4"/>
-        </g>
-      </svg>
+            <g class="petal-float pf-3" transform="translate(340, 0)">
+              <path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/>
+            </g>
+            <g class="petal-float pf-4" transform="translate(470, 0)">
+              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#e63946"/>
+            </g>
+            <g class="petal-float pf-5" transform="translate(155, 0)">
+              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#c91836"/>
+            </g>
+          </svg>
+        </div>
       `;
     }
 
-    // 3. WALIMA: Option C Locked-in (Grand Entrance Walk with Welcoming Crowd in Faceless Shaadi Doodles Style)
-    function generateWalimaSvg() {
+    function buildWalimaStage() {
       return `
-      <svg class="illustration-svg" viewBox="0 0 540 410" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="wStageBg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#071520"/>
-            <stop offset="60%" stop-color="#0c2330"/>
-            <stop offset="100%" stop-color="#14080c"/>
-          </linearGradient>
-          <linearGradient id="carpetGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#5c0d16"/>
-            <stop offset="100%" stop-color="#9e1828"/>
-          </linearGradient>
-          <linearGradient id="tuxGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#1f2c38"/>
-            <stop offset="50%" stop-color="#0f171e"/>
-            <stop offset="100%" stop-color="#06090d"/>
-          </linearGradient>
-          <linearGradient id="gownGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#fefcf8"/>
-            <stop offset="50%" stop-color="#ede6d8"/>
-            <stop offset="100%" stop-color="#cfc5b4"/>
-          </linearGradient>
-          <filter id="wGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
+        <div class="illustration-stage seq-step seq-3">
+          <img class="scene-artwork-img motion-walima" src="assets/walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
+          <!-- Live Chandelier Sparkles & Gown Sequin Shimmer Overlay -->
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="walimaGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <!-- Chandelier Twinkles -->
+            <circle cx="88" cy="58" r="4" fill="#fff" class="twinkle-bulb tb-1" filter="url(#walimaGlow)"/>
+            <circle cx="300" cy="55" r="4.5" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#walimaGlow)"/>
+            <circle cx="512" cy="58" r="4" fill="#fff" class="twinkle-bulb tb-2" filter="url(#walimaGlow)"/>
 
-        <!-- Stage Backdrop -->
-        <rect width="540" height="410" fill="url(#wStageBg)"/>
+            <!-- Bridal Gown Sequin Glints -->
+            <polygon points="340,260 343,266 349,269 343,272 340,278 337,272 331,269 337,266" fill="#fffbe0" class="sparkle-star tb-1"/>
+            <polygon points="370,315 373,321 379,324 373,327 370,333 367,327 361,324 367,321" fill="#fff" class="sparkle-star tb-3"/>
+            <polygon points="325,355 328,361 334,364 328,367 325,373 322,367 316,364 322,361" fill="#fffbe0" class="sparkle-star tb-4"/>
 
-        <!-- Perspective Red Carpet Aisle -->
-        <polygon points="230,170 310,170 430,410 110,410" fill="url(#carpetGrad)"/>
-        <line x1="230" y1="170" x2="110" y2="410" stroke="#d4ad5d" stroke-width="2.5"/>
-        <line x1="310" y1="170" x2="430" y2="410" stroke="#d4ad5d" stroke-width="2.5"/>
-
-        <!-- Golden Stanchions & Velvet Ropes -->
-        <line x1="130" y1="300" x2="130" y2="375" stroke="#d4ad5d" stroke-width="3.5"/>
-        <circle cx="130" cy="298" r="6" fill="#ffd700"/>
-        <line x1="410" y1="300" x2="410" y2="375" stroke="#d4ad5d" stroke-width="3.5"/>
-        <circle cx="410" cy="298" r="6" fill="#ffd700"/>
-
-        <!-- Fairy Lights & Atmospheric Sparkles -->
-        <circle cx="160" cy="80" r="2.5" fill="#ffd700" class="twinkle-light t-delay-1"/>
-        <circle cx="270" cy="45" r="3" fill="#fffbe6" class="twinkle-light t-delay-3" filter="url(#wGlow)"/>
-        <circle cx="380" cy="80" r="2.5" fill="#ffd700" class="twinkle-light t-delay-2"/>
-
-        <!-- WELCOMING CROWD ON LEFT (Faceless Relatives Clapping & Cheering) -->
-        <g id="leftCrowd" class="crowd-cheer">
-          <!-- Guest 1: Man in Black Suit -->
-          <g transform="translate(60, 240)">
-            <ellipse cx="20" cy="20" rx="10" ry="12" fill="#e8be99"/>
-            <path d="M 10 18 Q 20 8 30 18 Z" fill="#1c140e"/>
-            <path d="M 12 18 Q 20 30 28 18 Q 28 26 20 28 Z" fill="#1c140e"/>
-            <path d="M 6 34 Q 20 30 34 34 L 38 120 L 2 120 Z" fill="#111820"/>
-            <!-- Cheering Arms -->
-            <path d="M 28 44 Q 45 42 42 60" fill="none" stroke="#e8be99" stroke-width="5" stroke-linecap="round"/>
-          </g>
-
-          <!-- Guest 2: Woman in Festive Turquoise Saree/Maxi -->
-          <g transform="translate(95, 230)">
-            <ellipse cx="18" cy="20" rx="9" ry="11" fill="#f0cbb0"/>
-            <circle cx="14" cy="14" r="8" fill="#1c140e"/>
-            <circle cx="18" cy="28" r="2" fill="#ffd700"/>
-            <path d="M 6 32 Q 18 28 30 32 L 36 120 L 0 120 Z" fill="#0077b6"/>
-            <!-- Clapping Hands -->
-            <path d="M 22 42 Q 35 48 30 62" fill="none" stroke="#f0cbb0" stroke-width="4.5" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- WELCOMING CROWD ON RIGHT (Faceless Relatives Clapping & Cheering) -->
-        <g id="rightCrowd" class="crowd-cheer">
-          <!-- Guest 3: Woman in Rani Pink Lehenga/Maxi -->
-          <g transform="translate(405, 230)">
-            <ellipse cx="18" cy="20" rx="9" ry="11" fill="#f0cbb0"/>
-            <circle cx="22" cy="14" r="8" fill="#1c140e"/>
-            <circle cx="18" cy="28" r="2" fill="#ffd700"/>
-            <path d="M 6 32 Q 18 28 30 32 L 36 120 L 0 120 Z" fill="#e63980"/>
-            <!-- Clapping Hands -->
-            <path d="M 14 42 Q 0 48 6 62" fill="none" stroke="#f0cbb0" stroke-width="4.5" stroke-linecap="round"/>
-          </g>
-
-          <!-- Guest 4: Man in Charcoal Prince Coat -->
-          <g transform="translate(440, 240)">
-            <ellipse cx="20" cy="20" rx="10" ry="12" fill="#e8be99"/>
-            <path d="M 10 18 Q 20 8 30 18 Z" fill="#1c140e"/>
-            <path d="M 12 18 Q 20 30 28 18 Q 28 26 20 28 Z" fill="#1c140e"/>
-            <path d="M 6 34 Q 20 30 34 34 L 38 120 L 2 120 Z" fill="#2b2d42"/>
-            <path d="M 12 44 Q -5 42 -2 60" fill="none" stroke="#e8be99" stroke-width="5" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- THE COUPLE: Walking Down Aisle Arm-in-Arm (Faceless Shaadi Doodles Style from Reference #4) -->
-        <g id="walimaCoupleWalk" class="grand-walk-group" transform="translate(15, 10)">
-          
-          <!-- GROOM (Midnight Navy Tuxedo, Styled Hair, Clean Beard Contour) -->
-          <g id="walimaGroom">
-            <!-- Trousers -->
-            <path d="M 205 245 L 198 365 L 214 365 L 222 245 Z" fill="#0c141c"/>
-            <path d="M 228 245 L 235 365 L 251 365 L 245 245 Z" fill="#0c141c"/>
-            <ellipse cx="206" cy="368" rx="10" ry="3.5" fill="#05080c"/>
-            <ellipse cx="243" cy="368" rx="10" ry="3.5" fill="#05080c"/>
-
-            <!-- Tuxedo Jacket & Satin Lapels -->
-            <path d="M 195 145 Q 225 140 255 145 L 258 250 Q 225 256 190 250 Z" fill="url(#tuxGrad)"/>
-            <polygon points="225,145 214,188 236,188" fill="#fff"/>
-            <!-- Black Bowtie -->
-            <polygon points="220,150 230,150 225,155" fill="#000"/>
-
-            <!-- Groom Head with Styled Hair & Neat Groomed Beard -->
-            <ellipse cx="225" cy="116" rx="12" ry="15" fill="#e8be99"/>
-            <!-- Styled Modern Haircut from Reference #4 -->
-            <path d="M 213 112 Q 225 100 237 112 Q 237 104 225 104 Z" fill="#1c140e"/>
-            <!-- Groom Beard Contour -->
-            <path d="M 213 117 Q 225 133 237 117 Q 238 126 225 131 Q 212 126 213 117 Z" fill="#1c140e"/>
-
-            <!-- Groom Left Arm Bent for Bride -->
-            <path d="M 250 155 Q 266 188 260 205" fill="none" stroke="url(#tuxGrad)" stroke-width="12" stroke-linecap="round"/>
-          </g>
-
-          <!-- BRIDE (Champagne Flowing Gown, Floor Trail, Pearl Jewelry, Arm Linked to Groom) -->
-          <g id="walimaBride">
-            <!-- Floor Sweeping Champagne Gown & Trail from Reference #4 -->
-            <path d="M 280 185 Q 302 190 324 185 L 360 365 Q 295 375 250 365 Z" fill="url(#gownGrad)"/>
-            
-            <!-- Delicate Golden Embroidery Motifs on Gown -->
-            <circle cx="290" cy="250" r="2.5" fill="#ffd700" class="twinkle-light t-delay-1"/>
-            <circle cx="325" cy="290" r="2.5" fill="#ffd700" class="twinkle-light t-delay-3"/>
-            <circle cx="280" cy="325" r="2.5" fill="#ffd700" class="twinkle-light t-delay-2"/>
-            <circle cx="310" cy="345" r="2.5" fill="#ffd700" class="twinkle-light t-delay-4"/>
-
-            <!-- Bride Bodice -->
-            <path d="M 282 145 Q 302 142 322 145 L 324 190 Q 302 194 280 190 Z" fill="#fdfcf8"/>
-
-            <!-- Bride Head in Faceless Portrait Style with Jewelry -->
-            <ellipse cx="302" cy="116" rx="11" ry="14" fill="#f0cbb0"/>
-            <!-- Elegant Side-Parted Hair from Reference #4 -->
-            <circle cx="310" cy="110" r="10.5" fill="#1c140e"/>
-            <!-- Maang Tikka & Jhumkas -->
-            <line x1="302" y1="104" x2="302" y2="112" stroke="#ffd700" stroke-width="1.2"/>
-            <circle cx="302" cy="112" r="2.2" fill="#ffd700"/>
-            <circle cx="292" cy="120" r="2" fill="#ffd700"/>
-            <!-- Pearl Necklace -->
-            <path d="M 296 128 Q 302 133 308 128" fill="none" stroke="#ffd700" stroke-width="1.6"/>
-
-            <!-- Bride Right Arm Wrapped Into Groom's Arm -->
-            <path d="M 285 152 Q 266 175 262 196" fill="none" stroke="#f0cbb0" stroke-width="7.5" stroke-linecap="round"/>
-            <ellipse cx="262" cy="196" rx="4.5" ry="4" fill="#f0cbb0"/>
-
-            <!-- White Rose Floral Bouquet in Other Hand -->
-            <ellipse cx="318" cy="208" rx="9" ry="7" fill="#2d6a4f"/>
-            <circle cx="315" cy="205" r="4.5" fill="#fff"/>
-            <circle cx="322" cy="204" r="4.5" fill="#fffbe6"/>
-            <circle cx="318" cy="211" r="4.5" fill="#fff"/>
-
-            <!-- Translucent Net Veil Flowing Down Back -->
-            <path d="M 308 108 Q 345 138 355 260 Q 330 240 318 185 Z" fill="rgba(255,255,255,0.22)"/>
-          </g>
-        </g>
-      </svg>
+            <!-- Floating White & Crimson Rose Petals -->
+            <g class="petal-float pf-1" transform="translate(180, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/>
+            </g>
+            <g class="petal-float pf-2" transform="translate(275, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#c91836"/>
+            </g>
+            <g class="petal-float pf-3" transform="translate(390, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/>
+            </g>
+            <g class="petal-float pf-4" transform="translate(320, 0)">
+              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#c91836"/>
+            </g>
+          </svg>
+        </div>
       `;
     }
 
     /* ==============================================================
-       SCREEN ROUTING & CONTROLS
+       SCREEN RENDERERS
        ============================================================== */
 
     function renderEnvelopeScreen() {
@@ -1925,65 +1530,60 @@
       let customHeaderHtml = "";
 
       if (eventKey === "mehndi") {
-        illustrationHtml = `
-          <div class="illustration-stage">
-            ${generateMehndiSvg()}
-          </div>
-        `;
+        illustrationHtml = buildMehndiStage();
       } else if (eventKey === "baraat") {
         customHeaderHtml = `
-          <div class="baraat-tagline-badge">
-            <span class="baraat-tagline-urdu">${t.baraatTaglineUrdu}</span>
-            <span class="baraat-tagline-roman">${t.baraatTaglineRoman}</span>
+          <div class="seq-step seq-3">
+            <div class="baraat-tagline-badge">
+              <span class="baraat-tagline-urdu">${t.baraatTaglineUrdu}</span>
+              <span class="baraat-tagline-roman">${t.baraatTaglineRoman}</span>
+            </div>
           </div>
         `;
-        illustrationHtml = `
-          <div class="illustration-stage">
-            ${generateBaraatSvg()}
-          </div>
-        `;
+        illustrationHtml = buildBaraatStage();
       } else if (eventKey === "walima") {
-        illustrationHtml = `
-          <div class="illustration-stage">
-            ${generateWalimaSvg()}
-          </div>
-        `;
+        illustrationHtml = buildWalimaStage();
       }
 
       app.innerHTML = `
-        <div class="detail-container fade-in">
-          <div class="back-btn-row">
+        <div class="detail-container">
+          <div class="back-btn-row seq-step seq-1">
             <button class="back-nav-btn" id="backToEventsBtn" type="button">
               ${t.allEventsBtn}
             </button>
           </div>
 
           <div class="detail-panel">
-            <div class="eyebrow-text">${meta.number} · ${currentLang === 'ur' ? 'تقریب' : 'Celebration'}</div>
-            <div class="monogram-badge">
-              <span class="monogram-text">UI</span>
+            <div class="seq-step seq-1">
+              <div class="eyebrow-text">${meta.number} · ${currentLang === 'ur' ? 'تقریب' : 'Celebration'}</div>
+              <div class="monogram-badge">
+                <span class="monogram-text">UI</span>
+              </div>
             </div>
 
-            <h1 class="detail-title">${meta.en}</h1>
-            <div class="detail-urdu-title">${meta.ur}</div>
+            <div class="seq-step seq-2">
+              <h1 class="detail-title">${meta.en}</h1>
+              <div class="detail-urdu-title">${meta.ur}</div>
+            </div>
             
             ${customHeaderHtml}
 
-            <!-- Refined Artwork Stage -->
+            <!-- Custom Faceless Artwork & Live Animated Overlay -->
             ${illustrationHtml}
 
-            <p class="detail-desc">${currentLang === 'ur' ? meta.descUr : meta.descEn}</p>
-
-            <div class="m-divider"><span>❖</span></div>
+            <div class="seq-step seq-4">
+              <p class="detail-desc">${currentLang === 'ur' ? meta.descUr : meta.descEn}</p>
+              <div class="m-divider"><span>❖</span></div>
+            </div>
 
             <!-- Countdown Timer -->
-            <div class="countdown-wrapper">
+            <div class="countdown-wrapper seq-step seq-5">
               <div class="countdown-header">${t.countdownTitle}</div>
               <div id="countdownBox"></div>
             </div>
 
             <!-- Event Information Grid -->
-            <div class="info-grid">
+            <div class="info-grid seq-step seq-6">
               <div class="info-cell">
                 <div class="info-cell-label">📅 ${t.dateLabel}</div>
                 <div class="info-cell-value">${dateVal}</div>
@@ -2006,7 +1606,7 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="actions-bar">
+            <div class="actions-bar seq-step seq-7">
               ${eventConf.mapUrl ? `
                 <a class="outline-btn" href="${eventConf.mapUrl}" target="_blank" rel="noopener noreferrer">
                   ${t.mapBtn}
@@ -2025,7 +1625,7 @@
             </div>
           </div>
 
-          <footer class="site-footer">
+          <footer class="site-footer seq-step seq-7">
             <p>${t.footerRegards} · <strong>${host}</strong></p>
           </footer>
         </div>
