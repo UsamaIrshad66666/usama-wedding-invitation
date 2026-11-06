@@ -883,6 +883,103 @@
       line-height: 1.35;
     }
 
+    /* Awaiting to Welcome Section */
+    .welcome-hosts-wrapper {
+      margin: 2.2rem auto 1.5rem;
+      max-width: 580px;
+      width: 100%;
+      text-align: center;
+    }
+    .welcome-hosts-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .welcome-hosts-title::before,
+    .welcome-hosts-title::after {
+      content: "";
+      height: 1px;
+      width: 32px;
+      background: var(--gold-line);
+      display: inline-block;
+    }
+    .welcome-hosts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .host-card {
+      background: rgba(7, 21, 16, 0.55);
+      border: 1px solid var(--gold-line);
+      border-radius: 4px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .host-card:hover {
+      background: rgba(17, 45, 35, 0.7);
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+    }
+    .host-card-info {
+      text-align: left;
+    }
+    .host-card-name {
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    .host-card-phone {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--cream-muted);
+      direction: ltr;
+      display: block;
+      margin-top: 2px;
+      letter-spacing: 0.05em;
+    }
+    .host-call-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(212, 173, 93, 0.15);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .host-card:hover .host-call-badge {
+      background: var(--gold-primary);
+      color: var(--green-darkest);
+    }
+    html[dir="rtl"] .host-card-info {
+      text-align: right;
+    }
+    html[dir="rtl"] .host-card-name {
+      font-family: var(--urdu), var(--sans);
+      font-size: 1rem;
+    }
+    html[dir="rtl"] .welcome-hosts-title {
+      font-family: var(--urdu), var(--sans);
+      letter-spacing: normal;
+    }
+
     /* Actions Bar */
     .actions-bar {
       display: flex;
@@ -1026,55 +1123,61 @@
       groom: "Syed Usama Irshad",
       groomUrdu: "سید اسامہ ارشاد",
       bride: "Dr. Bissal Khan",
-      host: "Irshad Ali",
-      hostUrdu: "ارشاد علی",
+      host: "Mr. & Mrs. Irshad Ali",
+      hostUrdu: "جناب و محترمہ ارشاد علی",
+      welcomeHosts: [
+        { name: "Irshad Ali", nameUrdu: "ارشاد علی", phone: "+923238146200" },
+        { name: "Syed Hassan Nouman", nameUrdu: "سید حسن نعمان", phone: "+923216055564" },
+        { name: "Sarmad Mujtaba", nameUrdu: "سرمد مجتبیٰ", phone: "+923457774778" },
+        { name: "Abdullah Waseem", nameUrdu: "عبداللہ وسیم", phone: "+923127617986" }
+      ],
       events: {
         mehndi: {
-          dateTime: "", // e.g. "2027-01-15T19:00:00+05:00"
-          displayDate: "",
-          displayDateUrdu: "",
-          displayTime: "",
-          displayTimeUrdu: "",
-          venue: "",
-          venueUrdu: "",
-          address: "",
-          addressUrdu: "",
-          mapUrl: "",
-          rsvpPhone: ""
+          dateTime: "2026-12-03T18:00:00+05:00",
+          displayDate: "Thursday, 3rd December 2026",
+          displayDateUrdu: "بروز جمعرات، ۳ دسمبر ۲۰۲۶ء",
+          displayTime: "6:00 PM",
+          displayTimeUrdu: "شام ۶:۰۰ بجے",
+          venue: "House # 223, Block 6, A-2 Sector, Township, Lahore",
+          venueUrdu: "مکان نمبر ۲۲۳، بلاک ۶، سیکٹر اے-۲، ٹاؤن شپ، لاہور",
+          address: "House # 223, Block 6, A-2 Sector, Township, Lahore",
+          addressUrdu: "مکان نمبر ۲۲۳، بلاک ۶، سیکٹر اے-۲، ٹاؤن شپ، لاہور",
+          mapUrl: "https://maps.app.goo.gl/wMjnLxajg8tztUzp8",
+          rsvpPhone: "+923238146200"
         },
         baraat: {
-          dateTime: "", // e.g. "2027-01-16T20:00:00+05:00"
-          displayDate: "",
-          displayDateUrdu: "",
-          displayTime: "",
-          displayTimeUrdu: "",
-          venue: "",
-          venueUrdu: "",
-          address: "",
-          addressUrdu: "",
-          mapUrl: "",
-          rsvpPhone: ""
+          dateTime: "2026-12-04T16:00:00+05:00",
+          displayDate: "Friday, 4th December 2026",
+          displayDateUrdu: "بروز جمعۃ المبارک، ۴ دسمبر ۲۰۲۶ء",
+          displayTime: "Sehra Bandi: 4:00 PM · Departure: 5:00 PM",
+          displayTimeUrdu: "سہرہ بندی: سہ پہر ۴:۰۰ بجے · روانگی بارات: شام ۵:۰۰ بجے",
+          venue: "Royal Celebrations, Shahdara, Lahore (near Al Khan Restaurant)",
+          venueUrdu: "رائل سیلیبریشنز، شاہدرہ، لاہور (نزد ال خان ریسٹورنٹ)",
+          address: "Departure from: House # 223, Block-6, A-2 Sector, Township, Lahore · Event at: Royal Celebrations Shahdara",
+          addressUrdu: "روانگی: مکان نمبر ۲۲۳، بلاک ۶، سیکٹر اے-۲، ٹاؤن شپ، لاہور · تقریب: رائل سیلیبریشنز، شاہدرہ، لاہور",
+          mapUrl: "https://maps.app.goo.gl/wMjnLxajg8tztUzp8?g_st=ac",
+          rsvpPhone: "+923238146200"
         },
         walima: {
-          dateTime: "", // e.g. "2027-01-18T19:30:00+05:00"
-          displayDate: "",
-          displayDateUrdu: "",
-          displayTime: "",
-          displayTimeUrdu: "",
-          venue: "",
-          venueUrdu: "",
-          address: "",
-          addressUrdu: "",
-          mapUrl: "",
-          rsvpPhone: ""
+          dateTime: "2026-12-05T18:00:00+05:00",
+          displayDate: "Saturday, 5th December 2026",
+          displayDateUrdu: "بروز ہفتہ، ۵ دسمبر ۲۰۲۶ء",
+          displayTime: "6:00 PM",
+          displayTimeUrdu: "شام ۶:۰۰ بجے",
+          venue: "Le Grand Chalet Marquee, Civic Center, Ali Road, Township, Lahore",
+          venueUrdu: "لی گرینڈ شالے مارکی، سوک سینٹر، علی روڈ، ٹاؤن شپ، لاہور",
+          address: "Civic Center, Ali Road, Township, Lahore",
+          addressUrdu: "سوک سینٹر، علی روڈ، ٹاؤن شپ، لاہور",
+          mapUrl: "https://maps.app.goo.gl/wEFtpzJmmjQiCPPc6?g_st=ac",
+          rsvpPhone: "+923238146200"
         }
       }
     };
 
     const EVENT_META = {
       mehndi: {
-        en: "Mehndi",
-        ur: "تقریبِ مہندی",
+        en: "Mehndi (Rasm-e-Hina)",
+        ur: "تقریبِ مہندی (رسمِ حنا)",
         number: "01",
         descEn: "An enchanting evening of vibrant music, colorful traditions, dholak beats, and blessings.",
         descUr: "رنگ، خوشیوں، ڈھولک کی تھاپ اور دعاؤں سے سجی روایتی تقریبِ حنا۔"
@@ -1110,8 +1213,9 @@
         subTitle: "A Royal Wedding Invitation",
         ayahText: "\"And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts.\"",
         ayahRef: "— Surah Ar-Rum (30:21)",
-        hostLine: "Mr. Irshad Ali",
-        invitationLine: "cordially requests the honour of your gracious presence and prayers to celebrate the wedding ceremonies of his beloved son",
+        hostLine: "Mr. & Mrs. Irshad Ali",
+        invitationLine: "cordially request the honour of your gracious presence and prayers to celebrate the wedding ceremonies of their beloved son",
+        awaitingTitle: "Awaiting to Welcome",
         openInviteBtn: "Open Invitation",
         openingBtn: "Opening...",
         letterNote: "With love & prayers",
@@ -1153,8 +1257,9 @@
         subTitle: "شاہی دعوت نامہ شادی",
         ayahText: "”اور اُس کی نشانیوں میں سے یہ ہے کہ اُس نے تمہارے لیے تمہاری ہی جنس سے جوڑے بنائے تاکہ تم اُن کے پاس سکون حاصل کرو اور تمہارے درمیان محبت اور رحمت پیدا کر دی۔“",
         ayahRef: "— سورۃ الروم (۳۰:۲۱)",
-        hostLine: "ارشاد علی صاحب",
+        hostLine: "جناب و محترمہ ارشاد علی",
         invitationLine: "اپنے فرزند ارجمند کی شادی خانۂ آبادی کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں",
+        awaitingTitle: "منتظرینِ کرم / خوش آمدید",
         openInviteBtn: "دعوت نامہ کھولیں",
         openingBtn: "کھولا جا رہا ہے...",
         letterNote: "خلوص و دعاؤں کے ساتھ",
@@ -1265,6 +1370,35 @@
       if (currentLang === "ur" && e.addressUrdu) return e.addressUrdu;
       if (e.address) return e.address;
       return t.addressTBD;
+    }
+
+    function buildWelcomeHostsHtml() {
+      const t = I18N[currentLang];
+      const hosts = WEDDING.welcomeHosts || [];
+      if (!hosts.length) return "";
+      
+      const cardsHtml = hosts.map(h => {
+        const name = currentLang === "ur" ? h.nameUrdu : h.name;
+        const cleanPhone = h.phone.replace(/[^0-9]/g, "");
+        return `
+          <a class="host-card" href="tel:${h.phone}" aria-label="Call ${name}">
+            <div class="host-card-info">
+              <div class="host-card-name">${name}</div>
+              <span class="host-card-phone">${h.phone}</span>
+            </div>
+            <span class="host-call-badge" title="Call">📞</span>
+          </a>
+        `;
+      }).join("");
+
+      return `
+        <div class="welcome-hosts-wrapper">
+          <div class="welcome-hosts-title">✦ ${t.awaitingTitle} ✦</div>
+          <div class="welcome-hosts-grid">
+            ${cardsHtml}
+          </div>
+        </div>
+      `;
     }
 
     /* ==============================================================
@@ -1464,6 +1598,8 @@
           ${t.openInviteBtn}
         </button>
 
+        ${buildWelcomeHostsHtml()}
+
         <footer class="site-footer">
           <p>${t.footerRegards} · <strong>${host}</strong></p>
         </footer>
@@ -1529,6 +1665,8 @@
         <div class="event-cards-grid">
           ${cardsHtml}
         </div>
+
+        ${buildWelcomeHostsHtml()}
 
         <footer class="site-footer">
           <p>${t.footerRegards} · <strong>${host}</strong></p>
@@ -1660,6 +1798,8 @@
                 🔗 ${t.shareBtn}
               </button>
             </div>
+
+            ${buildWelcomeHostsHtml()}
           </div>
 
           <footer class="site-footer seq-step seq-7">
