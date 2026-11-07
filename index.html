@@ -642,9 +642,9 @@
     }
 
     .ceremonies-guide-banner {
-      margin: 1.4rem auto 0.6rem;
-      padding: 10px 18px;
-      border-radius: 12px;
+      margin: 1rem auto 0.5rem;
+      padding: 8px 16px;
+      border-radius: 10px;
       background: linear-gradient(135deg, rgba(19, 54, 41, 0.92), rgba(10, 31, 23, 0.92));
       border: 1.5px solid rgba(212, 173, 93, 0.65);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(212, 173, 93, 0.18);
@@ -653,7 +653,7 @@
     }
     .guide-banner-en {
       font-family: var(--sans);
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -661,18 +661,18 @@
     }
     .guide-banner-ur {
       font-family: var(--urdu);
-      font-size: 0.98rem;
+      font-size: 0.92rem;
       color: var(--cream-ivory);
-      margin-top: 3px;
+      margin-top: 2px;
       direction: rtl;
     }
 
     .event-cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 18px;
+      gap: 12px;
       width: 100%;
-      margin: 1.2rem 0 2rem;
+      margin: 0.7rem 0 1.8rem;
     }
 
     .event-card {
@@ -680,8 +680,8 @@
       text-align: left;
       border: 1.5px solid rgba(212, 173, 93, 0.68);
       background: linear-gradient(145deg, #15382b 0%, #0b2018 100%);
-      padding: 22px 18px 18px;
-      min-height: 220px;
+      padding: 14px 16px 13px;
+      min-height: 0;
       cursor: pointer;
       color: var(--cream-ivory);
       transition: var(--transition);
@@ -703,44 +703,50 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
     .event-badge-num {
       color: var(--gold-primary);
       font-family: var(--serif);
       font-style: italic;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 600;
+    }
+    .event-card-titles-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
     }
     .event-card-name {
       font-family: var(--serif);
-      font-size: 2.05rem;
+      font-size: 1.75rem;
       font-weight: 600;
-      line-height: 1.15;
+      line-height: 1.1;
       color: var(--cream-ivory);
     }
     .event-card-urdu {
       font-family: var(--urdu);
-      font-size: 1.3rem;
+      font-size: 1.18rem;
       color: var(--gold-light);
-      margin-top: 4px;
+      line-height: 1.2;
       direction: rtl;
     }
     .event-card-date {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       color: var(--cream-muted);
-      margin-top: 12px;
+      margin-top: 8px;
       border-top: 1px dashed var(--gold-line);
-      padding-top: 8px;
+      padding-top: 6px;
     }
 
     /* Prominent Gold Action Button inside each Ceremony Card */
     .event-card-cta-bar {
       position: relative;
-      margin-top: 14px;
-      padding: 10px 14px;
+      margin-top: 9px;
+      padding: 8px 14px;
       border-radius: 999px;
       background: linear-gradient(135deg, #e5c985 0%, #b98e43 100%);
       border: 1px solid #fff3cf;
@@ -750,7 +756,7 @@
       justify-content: center;
       gap: 7px;
       font-family: var(--sans);
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -2318,15 +2324,22 @@
       // 1. Always start from the very top of the All Ceremonies page
       window.scrollTo(0, 0);
 
-      // 2. Smoothly scroll down to the Mehndi, Baraat, Walima tabs after 550ms
+      // 2. Smoothly scroll down so all 3 ceremony buttons (Mehndi, Baraat, Walima) are fully in view
       scrollTutorialTimer = setTimeout(() => {
-        const targetEl = document.getElementById("ceremoniesCardsSection") || document.getElementById("ceremoniesGridEl");
-        if (!targetEl) return;
-        const rect = targetEl.getBoundingClientRect();
+        const gridEl = document.getElementById("ceremoniesGridEl");
+        if (!gridEl) return;
+        const rect = gridEl.getBoundingClientRect();
         const currentY = window.scrollY || window.pageYOffset || 0;
-        const topPadding = Math.max(68, Math.min(110, (window.innerHeight - rect.height) / 3));
-        const targetY = Math.max(0, Math.round(currentY + rect.top - topPadding));
-        if (targetY > 20) {
+        const vh = window.innerHeight;
+        // Center the 3 ceremony buttons in the viewport, or ensure the 3rd button's bottom has at least 28px margin
+        let targetY = currentY + rect.top - Math.max(48, (vh - rect.height) / 2);
+        const minScrollForBottom = currentY + rect.bottom - vh + 28;
+        if (targetY < minScrollForBottom) {
+          targetY = minScrollForBottom;
+        }
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - vh);
+        targetY = Math.max(0, Math.min(maxScroll, Math.round(targetY)));
+        if (targetY > 15) {
           animateScrollToY(targetY, 950, () => {
             updateScrollTutorialVisibility();
           });
@@ -3016,8 +3029,10 @@
                 <span class="event-badge-num">${meta.number}</span>
                 <span class="cta-bar-arrow" style="color:var(--gold-primary);">✦</span>
               </div>
-              <div class="event-card-name">${meta.en}</div>
-              <div class="event-card-urdu">${meta.ur}</div>
+              <div class="event-card-titles-row">
+                <div class="event-card-name">${meta.en}</div>
+                <div class="event-card-urdu">${meta.ur}</div>
+              </div>
             </div>
             <div>
               <div class="event-card-date">📅 ${dateStr}</div>
