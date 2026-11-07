@@ -417,18 +417,18 @@
     .envelope.open .letter-slide {
       transform: translateY(-95px);
     }
-    .envelope.open ~ .envelope-hand-tutorial,
-    .envelope.open .envelope-hand-tutorial {
+    .envelope.open ~ .envelope-tutorial-overlay,
+    .envelope.open .envelope-tutorial-overlay {
       opacity: 0 !important;
       pointer-events: none !important;
-      transform: scale(0.6);
+      transform: scale(0.85);
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     /* ==============================================================
-       ENVELOPE HAND TUTORIAL (Tap to Open Gesture & Ripples)
+       DECENT ENVELOPE TUTORIAL (Circle Wave Ripples + Animating Finger + Static Text)
        ============================================================== */
-    .envelope-hand-tutorial {
+    .envelope-tutorial-overlay {
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -438,7 +438,7 @@
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    /* Expanding Golden Ripples over Wax Seal */
+    /* Good Expanding Circle Wave Ripples on Wax Seal */
     .tap-ripple-ring {
       position: absolute;
       left: 50%;
@@ -448,180 +448,149 @@
       border-radius: 50%;
       transform: translate(-50%, -50%) scale(0.8);
       border: 2px solid var(--gold-bright);
-      box-shadow: 0 0 16px rgba(243, 229, 171, 0.7);
+      box-shadow: 0 0 16px rgba(243, 229, 171, 0.65);
       pointer-events: none;
       opacity: 0;
-      animation: tapRipplePulse 1.8s ease-out infinite;
+      animation: tapWavePulse 2s ease-out infinite;
     }
     .tap-ripple-ring.delay {
-      animation: tapRipplePulseSecond 1.8s ease-out infinite;
+      animation: tapWavePulseSecond 2s ease-out infinite;
     }
 
-    @keyframes tapRipplePulse {
-      0%, 36% {
-        transform: translate(-50%, -50%) scale(0.7);
-        opacity: 0;
-      }
-      42% {
-        transform: translate(-50%, -50%) scale(0.85);
-        opacity: 0.95;
-      }
-      62% {
-        transform: translate(-50%, -50%) scale(1.85);
-        opacity: 0.4;
-      }
-      78%, 100% {
-        transform: translate(-50%, -50%) scale(2.4);
-        opacity: 0;
-      }
+    @keyframes tapWavePulse {
+      0%, 25% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+      32% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.95; }
+      60% { transform: translate(-50%, -50%) scale(1.9); opacity: 0.35; }
+      85%, 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
     }
 
-    @keyframes tapRipplePulseSecond {
-      0%, 56% {
-        transform: translate(-50%, -50%) scale(0.7);
-        opacity: 0;
-      }
-      62% {
-        transform: translate(-50%, -50%) scale(0.85);
-        opacity: 0.9;
-      }
-      80% {
-        transform: translate(-50%, -50%) scale(1.8);
-        opacity: 0.35;
-      }
-      94%, 100% {
-        transform: translate(-50%, -50%) scale(2.3);
-        opacity: 0;
-      }
+    @keyframes tapWavePulseSecond {
+      0%, 45% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+      52% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.9; }
+      75% { transform: translate(-50%, -50%) scale(1.85); opacity: 0.3; }
+      95%, 100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
     }
 
-    /* Hand & Tooltip Container */
-    .hand-cursor-wrapper {
+    /* Animating Finger ONLY */
+    .finger-tap-indicator {
       position: absolute;
       left: 50%;
       top: 131px;
-      pointer-events: auto;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: handTapRhythm 1.8s ease-in-out infinite;
-      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+      pointer-events: none;
+      z-index: 26;
     }
 
-    @keyframes handTapRhythm {
+    .finger-tap-glyph {
+      position: absolute;
+      left: -6px;
+      top: 4px;
+      width: 32px;
+      height: 32px;
+      fill: var(--gold-bright);
+      stroke: #1a1202;
+      stroke-width: 0.8px;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.75));
+      animation: gentleFingerTap 2s ease-in-out infinite;
+    }
+
+    @keyframes gentleFingerTap {
       0%, 100% {
-        transform: translate(14px, 22px) rotate(12deg) scale(1);
+        transform: translate(6px, 12px) scale(1);
         opacity: 0.95;
       }
-      30% {
-        transform: translate(2px, 8px) rotate(5deg) scale(1);
+      24% {
+        transform: translate(1px, 2px) scale(1);
+        opacity: 1;
+      }
+      32% {
+        /* Soft tap onto wax seal center */
+        transform: translate(-3px, -7px) scale(0.9);
         opacity: 1;
       }
       42% {
-        /* Main TAP down on wax seal! */
-        transform: translate(-18.5px, -4.5px) rotate(0deg) scale(0.88);
-        opacity: 1;
+        /* Gentle rebound */
+        transform: translate(-1px, -3px) scale(0.94);
       }
       52% {
-        /* Gentle rebound */
-        transform: translate(-12px, 0px) rotate(3deg) scale(0.94);
+        /* Second soft tap */
+        transform: translate(-3px, -7px) scale(0.9);
       }
-      62% {
-        /* Quick second tap */
-        transform: translate(-18.5px, -4.5px) rotate(0deg) scale(0.88);
-      }
-      76% {
-        /* Retreat */
-        transform: translate(14px, 22px) rotate(12deg) scale(1);
+      68% {
+        transform: translate(6px, 12px) scale(1);
         opacity: 0.95;
       }
     }
 
-    .hand-svg-box {
-      width: 46px;
-      height: 46px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s ease;
+    html[dir="rtl"] .finger-tap-glyph {
+      animation-name: gentleFingerTapUrdu;
     }
-    .hand-pointer-svg {
-      width: 46px;
-      height: 46px;
-      display: block;
+    @keyframes gentleFingerTapUrdu {
+      0%, 100% {
+        transform: translate(-6px, 12px) scaleX(-1) scale(1);
+        opacity: 0.95;
+      }
+      24% {
+        transform: translate(-1px, 2px) scaleX(-1) scale(1);
+        opacity: 1;
+      }
+      32% {
+        transform: translate(3px, -7px) scaleX(-1) scale(0.9);
+        opacity: 1;
+      }
+      42% {
+        transform: translate(1px, -3px) scaleX(-1) scale(0.94);
+      }
+      52% {
+        transform: translate(3px, -7px) scaleX(-1) scale(0.9);
+      }
+      68% {
+        transform: translate(-6px, 12px) scaleX(-1) scale(1);
+        opacity: 0.95;
+      }
     }
 
-    .tap-instruction-pill {
-      margin-top: 4px;
-      margin-left: 12px;
-      background: linear-gradient(135deg, rgba(8, 26, 19, 0.97), rgba(20, 56, 42, 0.97));
-      border: 1.5px solid var(--gold-bright);
+    /* Completely STATIONARY / Static Text Pill - DOES NOT MOVE */
+    .static-instruction-pill {
+      position: absolute;
+      left: 50%;
+      top: 175px;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, rgba(8, 26, 19, 0.96), rgba(18, 52, 38, 0.96));
+      border: 1px solid var(--gold-primary);
       color: var(--gold-light);
       font-family: var(--sans);
       font-size: 0.76rem;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 5px 12px;
+      padding: 6px 16px;
       border-radius: 999px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.8), 0 0 14px rgba(212, 173, 93, 0.5);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 12px rgba(212, 173, 93, 0.3);
       white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
       pointer-events: auto;
       cursor: pointer;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .tap-instruction-pill:hover {
-      transform: scale(1.05);
+    .static-instruction-pill:hover {
       border-color: #fff;
       color: #fff;
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.9), 0 0 18px rgba(243, 229, 171, 0.75);
+      transform: translateX(-50%) scale(1.04);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85), 0 0 16px rgba(243, 229, 171, 0.6);
     }
     .tap-sparkle {
       color: var(--gold-bright);
       font-size: 0.72rem;
-      animation: sparkleTwinkle 1.4s ease-in-out infinite alternate;
     }
-    @keyframes sparkleTwinkle {
-      0% { transform: scale(0.85); opacity: 0.6; }
-      100% { transform: scale(1.2); opacity: 1; }
-    }
-    html[dir="rtl"] .tap-instruction-pill {
+    html[dir="rtl"] .static-instruction-pill {
       font-family: var(--urdu), var(--sans);
       letter-spacing: normal;
       font-size: 0.82rem;
-    }
-    html[dir="rtl"] .hand-cursor-wrapper {
-      animation-name: handTapRhythmUrdu;
-    }
-    @keyframes handTapRhythmUrdu {
-      0%, 100% {
-        transform: translate(-14px, 22px) scaleX(-1) rotate(12deg) scale(1);
-        opacity: 0.95;
-      }
-      30% {
-        transform: translate(-2px, 8px) scaleX(-1) rotate(5deg) scale(1);
-        opacity: 1;
-      }
-      42% {
-        transform: translate(18.5px, -4.5px) scaleX(-1) rotate(0deg) scale(0.88);
-        opacity: 1;
-      }
-      52% {
-        transform: translate(12px, 0px) scaleX(-1) rotate(3deg) scale(0.94);
-      }
-      62% {
-        transform: translate(18.5px, -4.5px) scaleX(-1) rotate(0deg) scale(0.88);
-      }
-      76% {
-        transform: translate(-14px, 22px) scaleX(-1) rotate(12deg) scale(1);
-        opacity: 0.95;
-      }
     }
 
     /* Buttons */
@@ -2829,29 +2798,24 @@
             </button>
           </div>
 
-          <!-- Animated Hand Tutorial: Tap to Open -->
-          <div class="envelope-hand-tutorial" id="envelopeHandTutorial" role="button" tabindex="0" aria-label="Tap to open invitation">
+          <!-- Decent Envelope Tutorial: Good Wave Ripples + Animating Finger + Stationary Pill -->
+          <div class="envelope-tutorial-overlay" id="envelopeHandTutorial" role="button" tabindex="0" aria-label="Tap to open invitation">
+            <!-- Good Circle Wave Ripples -->
             <div class="tap-ripple-ring" aria-hidden="true"></div>
             <div class="tap-ripple-ring delay" aria-hidden="true"></div>
-            <div class="hand-cursor-wrapper" aria-hidden="true">
-              <div class="hand-svg-box">
-                <svg class="hand-pointer-svg" viewBox="0 0 36 36" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <filter id="handGlow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="rgba(0,0,0,0.75)"/>
-                    </filter>
-                  </defs>
-                  <g filter="url(#handGlow)">
-                    <path d="M12 15V6a2.5 2.5 0 0 1 5 0v8.5m0-6a2.5 2.5 0 0 1 5 0v6m0-4a2.5 2.5 0 0 1 5 0v5m0-3a2.5 2.5 0 0 1 5 0v6.5c0 6-5 10.5-11 10.5h-2c-3.5 0-6.8-1.5-9-4l-4.5-5.2a2.2 2.2 0 0 1 3.3-2.9L12 20" 
-                          fill="#ffdf79" stroke="#2d1d03" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                </svg>
-              </div>
-              <div class="tap-instruction-pill">
-                <span class="tap-sparkle">✦</span>
-                <span id="tapTutorialLabelText">${t.tapToOpenTutorial || (currentLang === 'ur' ? 'کھولنے کے لیے ٹیپ کریں' : 'Tap to open')}</span>
-                <span class="tap-sparkle">✦</span>
-              </div>
+
+            <!-- Animating Finger ONLY -->
+            <div class="finger-tap-indicator" aria-hidden="true">
+              <svg class="finger-tap-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.84 15.87l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
+              </svg>
+            </div>
+
+            <!-- Completely Stationary / Static Text Pill (DOES NOT MOVE) -->
+            <div class="static-instruction-pill">
+              <span class="tap-sparkle">✦</span>
+              <span id="tapTutorialLabelText">${t.tapToOpenTutorial || (currentLang === 'ur' ? 'کھولنے کے لیے ٹیپ کریں' : 'Tap to open')}</span>
+              <span class="tap-sparkle">✦</span>
             </div>
           </div>
         </div>
