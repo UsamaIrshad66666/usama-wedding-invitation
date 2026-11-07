@@ -1098,10 +1098,11 @@
       font-size: 0.82rem;
     }
 
-    /* Footer */
+    /* Footer & Crafted By Branding */
     .site-footer {
       margin-top: auto;
-      padding-top: 2.5rem;
+      padding-top: 2.2rem;
+      padding-bottom: 0.5rem;
       color: var(--cream-muted);
       font-family: var(--serif);
       font-style: italic;
@@ -1109,10 +1110,88 @@
       text-align: center;
       position: relative;
       z-index: 10;
+      width: 100%;
     }
     .site-footer strong {
       color: var(--gold-light);
       font-style: normal;
+    }
+
+    .brand-credit-line {
+      margin-top: 14px;
+      padding-top: 10px;
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      color: var(--gold-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .brand-credit-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      color: var(--gold-light);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      opacity: 0.92;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .brand-credit-btn:hover {
+      color: #fff;
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(212, 173, 93, 0.6);
+    }
+
+    .brand-social-badges {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .brand-social-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(8, 26, 19, 0.75);
+      border: 1px solid var(--gold-line);
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-family: var(--sans);
+      letter-spacing: 0.04em;
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .brand-social-badge:hover {
+      border-color: var(--gold-primary);
+      background: rgba(19, 51, 40, 0.95);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(212, 173, 93, 0.35);
+    }
+    .brand-social-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
     }
 
     /* RTL */
@@ -1224,6 +1303,7 @@
       groom: "Syed Usama Irshad",
       groomUrdu: "سید اسامہ ارشاد",
       bride: "Dr. Bissal Khan",
+      brideUrdu: "ڈاکٹر بسل خان",
       host: "Mr. & Mrs. Irshad Ali",
       hostUrdu: "جناب و محترمہ ارشاد علی",
       welcomeHosts: [
@@ -1280,6 +1360,7 @@
       groom: "Ahmed Raza",
       groomUrdu: "احمد رضا",
       bride: "Ayesha Malik",
+      brideUrdu: "عائشہ ملک",
       host: "Mr. & Mrs. Tariq Mahmood",
       hostUrdu: "جناب و محترمہ طارق محمود",
       welcomeHosts: [
@@ -1754,6 +1835,56 @@
       `;
     }
 
+    function buildSiteFooterHtml() {
+      const t = I18N[currentLang];
+      const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
+      const cleanWaPhone = "923238146200";
+      const waMsg = encodeURIComponent("Hello! I am interested in creating a digital wedding invitation on E-dawatnama.com");
+      const waUrl = `https://wa.me/${cleanWaPhone}?text=${waMsg}`;
+      const instaUrl = "https://www.instagram.com/elitara_pk?xtok=MW5seTVrM2pvcjNhaw==";
+
+      return `
+        <footer class="site-footer">
+          <p>${t.footerRegards} · <strong>${host}</strong></p>
+          <div class="brand-credit-line">
+            <button class="brand-credit-btn" type="button" data-brand-goto-front="true" title="Go to Front Page & Contact Details">
+              ✦ Crafted by E-dawatnama.com ✦
+            </button>
+            <div class="brand-social-badges">
+              <a class="brand-social-badge" href="${instaUrl}" target="_blank" rel="noopener noreferrer" aria-label="Visit Elitara on Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <span>Instagram</span>
+              </a>
+              <a class="brand-social-badge" href="${waUrl}" target="_blank" rel="noopener noreferrer" aria-label="Contact us on WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.074-2.122-.493-1.825-.724-3.003-2.569-3.094-2.69-.091-.122-.745-.992-.745-1.892s.471-1.343.638-1.528c.167-.184.364-.231.485-.231.122 0 .243.001.349.006.111.005.259-.042.405.31.146.353.499 1.218.544 1.309.045.091.076.197.015.319-.061.122-.091.197-.182.304-.091.107-.193.24-.275.322-.091.091-.186.19-.08.372.106.182.471.777 1.01 1.258.694.619 1.28.812 1.462.903.182.091.288.076.394-.045.106-.122.456-.531.577-.713.122-.182.243-.152.405-.091.162.061 1.033.486 1.211.577.178.091.299.137.344.213.045.076.045.441-.099.846zm-3.4-12.416c-5.523 0-10 4.477-10 10 0 1.761.459 3.417 1.261 4.86l-1.342 4.908 5.034-1.321c1.402.766 3.002 1.202 4.707 1.202 5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18.25c-1.527 0-2.955-.429-4.175-1.17l-.3-.182-3.1 3.1.825-3.013-.197-.314c-.815-1.293-1.286-2.822-1.286-4.469 0-4.549 3.701-8.25 8.25-8.25s8.25 3.701 8.25 8.25-3.701 8.25-8.25 8.25z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </footer>
+      `;
+    }
+
+    // Delegated click listener: Clicking "Crafted by E-dawatnama.com" anywhere takes user to the 1st page & scrolls to contact details
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-brand-goto-front]");
+      if (btn) {
+        const { card, event, view } = getUrlState();
+        if (event || view === "events" || !document.getElementById("envelopeElement")) {
+          updateUrlState(card, null, true, "cover");
+          renderEnvelopeScreen(true);
+        }
+        setTimeout(() => {
+          const hostsEl = document.querySelector(".welcome-hosts-wrapper") || document.querySelector(".site-footer");
+          if (hostsEl) {
+            hostsEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }, 120);
+      }
+    });
+
     /* ==============================================================
        ANIMATED STAGE BUILDERS (High-Res Faceless Art + Live Twinkle/Petals)
        ============================================================== */
@@ -1919,6 +2050,7 @@
       updateNavigationControls("cover");
       const t = I18N[currentLang];
       const groom = currentLang === "ur" ? WEDDING.groomUrdu : WEDDING.groom;
+      const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
 
       app.innerHTML = `
@@ -1942,7 +2074,7 @@
         <h1 class="couple-title rise-in">
           <span class="couple-fullname">${groom}</span>
           <span class="ampersand">&</span>
-          <span class="couple-fullname">${WEDDING.bride}</span>
+          <span class="couple-fullname">${bride}</span>
         </h1>
 
         <div class="envelope-stage rise-in">
@@ -1965,9 +2097,7 @@
 
         ${buildWelcomeHostsHtml()}
 
-        <footer class="site-footer">
-          <p>${t.footerRegards} · <strong>${host}</strong></p>
-        </footer>
+        ${buildSiteFooterHtml()}
       `;
 
       function triggerOpening() {
@@ -1998,6 +2128,7 @@
       const validEventKeys = CARD_VARIANTS[card] || CARD_VARIANTS.all;
       const t = I18N[currentLang];
       const groom = currentLang === "ur" ? WEDDING.groomUrdu : WEDDING.groom;
+      const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
 
       const cardsHtml = validEventKeys.map(key => {
@@ -2025,7 +2156,7 @@
         </div>
         <div class="eyebrow-text rise-in">${t.eventsTitle}</div>
         <h2 class="couple-title rise-in" style="font-size:clamp(1.8rem, 4.5vw, 2.5rem); margin-bottom: 0.2rem;">
-          ${groom} <span class="ampersand">&</span> ${WEDDING.bride}
+          ${groom} <span class="ampersand">&</span> ${bride}
         </h2>
         <p class="request-text rise-in" style="margin-top:0;">${t.eventsSub}</p>
 
@@ -2035,9 +2166,7 @@
 
         ${buildWelcomeHostsHtml()}
 
-        <footer class="site-footer">
-          <p>${t.footerRegards} · <strong>${host}</strong></p>
-        </footer>
+        ${buildSiteFooterHtml()}
       `;
 
       app.querySelectorAll("[data-event-key]").forEach(btn => {
@@ -2172,9 +2301,7 @@
             ${buildWelcomeHostsHtml()}
           </div>
 
-          <footer class="site-footer seq-step seq-7">
-            <p>${t.footerRegards} · <strong>${host}</strong></p>
-          </footer>
+          ${buildSiteFooterHtml()}
         </div>
       `;
 
