@@ -641,78 +641,177 @@
       transform: translateY(-1px);
     }
 
+    .ceremonies-guide-banner {
+      margin: 1.4rem auto 0.6rem;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(19, 54, 41, 0.92), rgba(10, 31, 23, 0.92));
+      border: 1.5px solid rgba(212, 173, 93, 0.65);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(212, 173, 93, 0.18);
+      max-width: 560px;
+      text-align: center;
+    }
+    .guide-banner-en {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .guide-banner-ur {
+      font-family: var(--urdu);
+      font-size: 0.98rem;
+      color: var(--cream-ivory);
+      margin-top: 3px;
+      direction: rtl;
+    }
+
     .event-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 18px;
       width: 100%;
-      margin: 2rem 0;
+      margin: 1.2rem 0 2rem;
     }
 
     .event-card {
       position: relative;
       text-align: left;
-      border: 1px solid var(--gold-line);
-      background: linear-gradient(145deg, var(--green-card) 0%, #0d241c 100%);
-      padding: 24px 20px;
-      min-height: 190px;
+      border: 1.5px solid rgba(212, 173, 93, 0.68);
+      background: linear-gradient(145deg, #15382b 0%, #0b2018 100%);
+      padding: 22px 18px 18px;
+      min-height: 220px;
       cursor: pointer;
       color: var(--cream-ivory);
       transition: var(--transition);
-      border-radius: 4px;
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
-    .event-card:hover {
+    .event-card:hover,
+    .event-card:focus-visible {
       transform: translateY(-4px);
-      border-color: var(--gold-primary);
-      background: linear-gradient(145deg, var(--green-card-hover) 0%, #123025 100%);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 173, 93, 0.12);
+      border-color: var(--gold-light);
+      background: linear-gradient(145deg, #1b4636 0%, #102d22 100%);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 18px rgba(212, 173, 93, 0.28);
     }
 
     .event-card-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: 8px;
     }
     .event-badge-num {
       color: var(--gold-primary);
       font-family: var(--serif);
       font-style: italic;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
     }
     .event-card-name {
       font-family: var(--serif);
-      font-size: 2rem;
+      font-size: 2.05rem;
       font-weight: 600;
       line-height: 1.15;
       color: var(--cream-ivory);
     }
     .event-card-urdu {
       font-family: var(--urdu);
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       color: var(--gold-light);
       margin-top: 4px;
       direction: rtl;
     }
     .event-card-date {
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
       color: var(--cream-muted);
-      margin-top: 14px;
+      margin-top: 12px;
       border-top: 1px dashed var(--gold-line);
       padding-top: 8px;
     }
-    .event-arrow {
-      align-self: flex-end;
-      color: var(--gold-primary);
-      font-size: 1.2rem;
+
+    /* Prominent Gold Action Button inside each Ceremony Card */
+    .event-card-cta-bar {
+      position: relative;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e5c985 0%, #b98e43 100%);
+      border: 1px solid #fff3cf;
+      color: #091c14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-family: var(--sans);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+    }
+    .event-card:hover .event-card-cta-bar {
+      filter: brightness(1.07);
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(212, 173, 93, 0.45);
+    }
+    .cta-bar-text-ur {
+      font-family: var(--urdu);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: normal;
+      line-height: 1.1;
+    }
+    .cta-bar-arrow {
+      font-size: 0.9rem;
+      line-height: 1;
       transition: transform 0.25s ease;
     }
-    .event-card:hover .event-arrow {
-      transform: translate(3px, -3px);
+    .event-card:hover .cta-bar-arrow {
+      transform: translateX(3px);
+    }
+
+    /* Subtle White Tapping Finger & Wave on the First Card's CTA Button */
+    .card-cta-tutorial-anchor {
+      position: absolute;
+      right: 22px;
+      bottom: -8px;
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+      z-index: 15;
+    }
+    .card-cta-wave {
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 12px rgba(247, 231, 190, 0.8);
+      opacity: 0;
+      animation: tapWavePulse 2s ease-out infinite;
+    }
+    .card-cta-finger {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 26px;
+      height: 26px;
+      fill: #ffffff !important;
+      stroke: rgba(0, 0, 0, 0.45);
+      stroke-width: 0.7px;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.75));
+      animation: gentleFingerTap 2s ease-in-out infinite;
     }
 
     /* ==============================================================
@@ -2211,6 +2310,32 @@
       }, 550);
     }
 
+    function performEventsListEntryScroll() {
+      cancelAutoScroll();
+      if (scrollTutorialTimer) clearTimeout(scrollTutorialTimer);
+      if (scrollTutorialPill) scrollTutorialPill.classList.remove("visible");
+
+      // 1. Always start from the very top of the All Ceremonies page
+      window.scrollTo(0, 0);
+
+      // 2. Smoothly scroll down to the Mehndi, Baraat, Walima tabs after 550ms
+      scrollTutorialTimer = setTimeout(() => {
+        const targetEl = document.getElementById("ceremoniesCardsSection") || document.getElementById("ceremoniesGridEl");
+        if (!targetEl) return;
+        const rect = targetEl.getBoundingClientRect();
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        const topPadding = Math.max(68, Math.min(110, (window.innerHeight - rect.height) / 3));
+        const targetY = Math.max(0, Math.round(currentY + rect.top - topPadding));
+        if (targetY > 20) {
+          animateScrollToY(targetY, 950, () => {
+            updateScrollTutorialVisibility();
+          });
+        } else {
+          updateScrollTutorialVisibility();
+        }
+      }, 550);
+    }
+
     window.addEventListener("wheel", () => { if (isAutoScrolling) cancelAutoScroll(); }, { passive: true });
     window.addEventListener("touchstart", () => { if (isAutoScrolling) cancelAutoScroll(); }, { passive: true });
     window.addEventListener("scroll", () => {
@@ -2872,20 +2997,38 @@
       const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
 
-      const cardsHtml = validEventKeys.map(key => {
+      const cardsHtml = validEventKeys.map((key, idx) => {
         const meta = EVENT_META[key];
         const dateStr = getEventDateFormatted(key);
+        const firstCardFingerHtml = idx === 0 ? `
+          <div class="card-cta-tutorial-anchor" aria-hidden="true">
+            <div class="card-cta-wave"></div>
+            <svg class="card-cta-finger" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
+              <path fill="#ffffff" d="M18.84 15.87l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
+            </svg>
+          </div>
+        ` : "";
+
         return `
-          <button class="event-card rise-in" type="button" data-event-key="${key}" aria-label="View details for ${meta.en}">
+          <button class="event-card rise-in" type="button" data-event-key="${key}" aria-label="Open event details for ${meta.en}">
             <div>
               <div class="event-card-header">
                 <span class="event-badge-num">${meta.number}</span>
-                <span class="event-arrow">↗</span>
+                <span class="cta-bar-arrow" style="color:var(--gold-primary);">✦</span>
               </div>
               <div class="event-card-name">${meta.en}</div>
               <div class="event-card-urdu">${meta.ur}</div>
             </div>
-            <div class="event-card-date">${dateStr}</div>
+            <div>
+              <div class="event-card-date">📅 ${dateStr}</div>
+              <div class="event-card-cta-bar">
+                <span>Tap for Details</span>
+                <span style="opacity:0.65;">·</span>
+                <span class="cta-bar-text-ur">تفصیلات دیکھیں</span>
+                <span class="cta-bar-arrow">➔</span>
+                ${firstCardFingerHtml}
+              </div>
+            </div>
           </button>
         `;
       }).join("");
@@ -2901,7 +3044,12 @@
         </h2>
         <p class="request-text rise-in" style="margin-top:0;">${t.eventsSub}</p>
 
-        <div class="event-cards-grid">
+        <div class="ceremonies-guide-banner rise-in" id="ceremoniesCardsSection">
+          <div class="guide-banner-en">✦ Tap any ceremony button below to open Time, Venue & Map ✦</div>
+          <div class="guide-banner-ur">وقت، مقام اور نقشہ دیکھنے کے لیے نیچے کسی بھی تقریب کے بٹن پر کلک کریں</div>
+        </div>
+
+        <div class="event-cards-grid" id="ceremoniesGridEl">
           ${cardsHtml}
         </div>
 
@@ -2918,7 +3066,7 @@
         });
       });
 
-      performPageEntryScroll(animateGlide);
+      performEventsListEntryScroll();
     }
 
     function renderEventDetailScreen(eventKey, animateGlide = true) {
