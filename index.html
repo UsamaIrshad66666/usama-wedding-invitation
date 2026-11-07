@@ -2997,17 +2997,17 @@
       const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
 
-      const cardsHtml = validEventKeys.map((key, idx) => {
+      const cardsHtml = validEventKeys.map((key) => {
         const meta = EVENT_META[key];
         const dateStr = getEventDateFormatted(key);
-        const firstCardFingerHtml = idx === 0 ? `
+        const cardFingerHtml = `
           <div class="card-cta-tutorial-anchor" aria-hidden="true">
             <div class="card-cta-wave"></div>
             <svg class="card-cta-finger" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
               <path fill="#ffffff" d="M18.84 15.87l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
             </svg>
           </div>
-        ` : "";
+        `;
 
         return `
           <button class="event-card rise-in" type="button" data-event-key="${key}" aria-label="Open event details for ${meta.en}">
@@ -3026,7 +3026,7 @@
                 <span style="opacity:0.65;">·</span>
                 <span class="cta-bar-text-ur">تفصیلات دیکھیں</span>
                 <span class="cta-bar-arrow">➔</span>
-                ${firstCardFingerHtml}
+                ${cardFingerHtml}
               </div>
             </div>
           </button>
