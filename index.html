@@ -23,16 +23,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root, [data-theme="emerald"] {
+      --theme-bg-base: #06130e;
+      --theme-bg-gradient: radial-gradient(ellipse at 50% 0%, #1c4535 0%, #0d241c 45%, #06130e 100%);
+      --theme-card-bg: #112d23;
+      --theme-card-hover: #173b2e;
+      --theme-card-surface: rgba(17, 45, 35, 0.72);
+      --theme-panel-bg: linear-gradient(145deg, #133328 0%, #0c2018 100%);
+      --theme-env-body: linear-gradient(145deg, #16382c 0%, #0d261e 100%);
+      --theme-env-pocket: linear-gradient(135deg, #102d23 0%, #0b1f18 100%);
+      --theme-env-flap: linear-gradient(135deg, #194334 0%, #123327 100%);
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #ffd987, #b88b39 70%, #6d4f13 100%);
+      --theme-seal-border: #fff2cc;
+      --theme-gold-primary: #d4ad5d;
+      --theme-gold-bright: #ffe082;
+      --theme-gold-light: #f7e7be;
+      --theme-gold-dark: #8c6a23;
+      --theme-gold-gradient: linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%);
+      --theme-gold-line: rgba(212, 173, 93, 0.38);
+      --theme-pill-bg: linear-gradient(135deg, rgba(12, 36, 27, 0.97), rgba(22, 58, 44, 0.97));
+      --theme-ctrl-btn-bg: rgba(13, 36, 28, 0.7);
+      --theme-ctrl-btn-hover: rgba(19, 51, 40, 0.9);
+      --theme-banner-bg: linear-gradient(135deg, rgba(19, 54, 41, 0.92), rgba(10, 31, 23, 0.92));
+    }
+
+    [data-theme="ruby"] {
+      --theme-bg-base: #140307;
+      --theme-bg-gradient: radial-gradient(ellipse at 50% 0%, #4a0f1d 0%, #25070f 45%, #140307 100%);
+      --theme-card-bg: #2d0b14;
+      --theme-card-hover: #42111e;
+      --theme-card-surface: rgba(45, 11, 20, 0.78);
+      --theme-panel-bg: linear-gradient(145deg, #380d19 0%, #1d050c 100%);
+      --theme-env-body: linear-gradient(145deg, #3d0e1b 0%, #20060d 100%);
+      --theme-env-pocket: linear-gradient(135deg, #2c0913 0%, #180408 100%);
+      --theme-env-flap: linear-gradient(135deg, #4d1323 0%, #2c0913 100%);
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #ffd5ba, #c46845 70%, #702e1b 100%);
+      --theme-seal-border: #ffe8db;
+      --theme-gold-primary: #e6a782;
+      --theme-gold-bright: #ffd2ba;
+      --theme-gold-light: #fbe6db;
+      --theme-gold-dark: #a15833;
+      --theme-gold-gradient: linear-gradient(135deg, #fff0e8 0%, #e6a782 50%, #b36339 100%);
+      --theme-gold-line: rgba(230, 167, 130, 0.42);
+      --theme-pill-bg: linear-gradient(135deg, rgba(45, 11, 20, 0.97), rgba(65, 17, 30, 0.97));
+      --theme-ctrl-btn-bg: rgba(45, 11, 20, 0.75);
+      --theme-ctrl-btn-hover: rgba(65, 17, 30, 0.9);
+      --theme-banner-bg: linear-gradient(135deg, rgba(60, 15, 27, 0.92), rgba(35, 9, 16, 0.92));
+    }
+
+    [data-theme="sapphire"] {
+      --theme-bg-base: #030813;
+      --theme-bg-gradient: radial-gradient(ellipse at 50% 0%, #122c54 0%, #091730 45%, #030813 100%);
+      --theme-card-bg: #0f2242;
+      --theme-card-hover: #17335e;
+      --theme-card-surface: rgba(15, 34, 66, 0.78);
+      --theme-panel-bg: linear-gradient(145deg, #12284d 0%, #07152b 100%);
+      --theme-env-body: linear-gradient(145deg, #15305c 0%, #081730 100%);
+      --theme-env-pocket: linear-gradient(135deg, #0e2242 0%, #050f20 100%);
+      --theme-env-flap: linear-gradient(135deg, #1a3c73 0%, #0e2242 100%);
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #ffe499, #c79e44 70%, #6e5015 100%);
+      --theme-seal-border: #fff4d1;
+      --theme-gold-primary: #e0b862;
+      --theme-gold-bright: #ffe699;
+      --theme-gold-light: #fcf1d4;
+      --theme-gold-dark: #916e25;
+      --theme-gold-gradient: linear-gradient(135deg, #fef6df 0%, #e0b862 50%, #9c7324 100%);
+      --theme-gold-line: rgba(224, 184, 98, 0.42);
+      --theme-pill-bg: linear-gradient(135deg, rgba(14, 32, 60, 0.97), rgba(20, 48, 90, 0.97));
+      --theme-ctrl-btn-bg: rgba(14, 32, 60, 0.75);
+      --theme-ctrl-btn-hover: rgba(22, 50, 92, 0.9);
+      --theme-banner-bg: linear-gradient(135deg, rgba(20, 48, 90, 0.92), rgba(10, 24, 46, 0.92));
+    }
+
+    [data-theme="plum"] {
+      --theme-bg-base: #0b0310;
+      --theme-bg-gradient: radial-gradient(ellipse at 50% 0%, #35104d 0%, #1e092b 45%, #0b0310 100%);
+      --theme-card-bg: #270e38;
+      --theme-card-hover: #381550;
+      --theme-card-surface: rgba(39, 14, 56, 0.78);
+      --theme-panel-bg: linear-gradient(145deg, #301145 0%, #170521 100%);
+      --theme-env-body: linear-gradient(145deg, #35124c 0%, #1a0826 100%);
+      --theme-env-pocket: linear-gradient(135deg, #250b36 0%, #12041c 100%);
+      --theme-env-flap: linear-gradient(135deg, #441761 0%, #250b36 100%);
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #ffe2a6, #c2944a 70%, #6e4a1a 100%);
+      --theme-seal-border: #fff2d6;
+      --theme-gold-primary: #dcb06b;
+      --theme-gold-bright: #ffe3a8;
+      --theme-gold-light: #faedd7;
+      --theme-gold-dark: #916829;
+      --theme-gold-gradient: linear-gradient(135deg, #fff3dc 0%, #dcb06b 50%, #946828 100%);
+      --theme-gold-line: rgba(220, 176, 107, 0.42);
+      --theme-pill-bg: linear-gradient(135deg, rgba(35, 12, 50, 0.97), rgba(52, 18, 74, 0.97));
+      --theme-ctrl-btn-bg: rgba(35, 12, 50, 0.75);
+      --theme-ctrl-btn-hover: rgba(55, 18, 78, 0.9);
+      --theme-banner-bg: linear-gradient(135deg, rgba(50, 16, 70, 0.92), rgba(28, 9, 39, 0.92));
+    }
+
     :root {
-      --green-darkest: #06130e;
-      --green-dark: #0b2019;
-      --green-card: #112d23;
-      --green-card-hover: #173b2e;
-      --gold-primary: #d4ad5d;
-      --gold-light: #f7e7be;
-      --gold-dark: #8c6a23;
-      --gold-gradient: linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%);
-      --gold-line: rgba(212, 173, 93, 0.38);
+      --green-darkest: var(--theme-bg-base);
+      --green-dark: var(--theme-card-bg);
+      --green-card: var(--theme-card-bg);
+      --green-card-hover: var(--theme-card-hover);
+      --gold-primary: var(--theme-gold-primary);
+      --gold-bright: var(--theme-gold-bright);
+      --gold-light: var(--theme-gold-light);
+      --gold-dark: var(--theme-gold-dark);
+      --gold-gradient: var(--theme-gold-gradient);
+      --gold-line: var(--theme-gold-line);
       --cream-ivory: #faf4e6;
       --cream-muted: #d0c8b6;
       --serif: "Cormorant Garamond", Garamond, Georgia, serif;
@@ -54,9 +151,8 @@
     }
 
     body {
-      background-color: var(--green-darkest);
-      background-image: 
-        radial-gradient(ellipse at 50% 0%, #1c4535 0%, #0d241c 45%, #06130e 100%);
+      background-color: var(--theme-bg-base);
+      background-image: var(--theme-bg-gradient);
       color: var(--cream-ivory);
       font-family: var(--sans);
       min-height: 100vh;
@@ -145,7 +241,7 @@
     }
 
     .ctrl-btn {
-      background: rgba(13, 36, 28, 0.7);
+      background: var(--theme-ctrl-btn-bg);
       border: 1px solid var(--gold-line);
       color: var(--gold-light);
       font-family: var(--sans);
@@ -162,7 +258,7 @@
     }
     .ctrl-btn:hover {
       border-color: var(--gold-primary);
-      background: rgba(19, 51, 40, 0.9);
+      background: var(--theme-ctrl-btn-hover);
       transform: translateY(-1px);
     }
 
@@ -189,7 +285,7 @@
       justify-content: center;
       margin: 0.8rem auto 1rem;
       position: relative;
-      background: radial-gradient(circle at 35% 30%, #1c4535 0%, #0d241c 80%);
+      background: radial-gradient(circle at 35% 30%, var(--theme-card-hover) 0%, var(--theme-card-bg) 80%);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
     .monogram-badge::before {
@@ -318,7 +414,7 @@
     .envelope {
       position: absolute;
       inset: 35px 0 0;
-      background: linear-gradient(145deg, #16382c 0%, #0d261e 100%);
+      background: var(--theme-env-body);
       border: 1px solid var(--gold-line);
       border-radius: 4px;
       overflow: visible;
@@ -327,7 +423,7 @@
     .env-inner-pocket {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, #102d23 0%, #0b1f18 100%);
+      background: var(--theme-env-pocket);
       clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
       z-index: 4;
       border-top: 1px solid var(--gold-line);
@@ -339,7 +435,7 @@
       left: 0;
       width: 100%;
       height: 110px;
-      background: linear-gradient(135deg, #194334 0%, #123327 100%);
+      background: var(--theme-env-flap);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top;
       transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -356,8 +452,8 @@
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #ffd987, #b88b39 70%, #6d4f13 100%);
-      border: 1.5px solid #fff2cc;
+      background: var(--theme-seal-bg);
+      border: 1.5px solid var(--theme-seal-border);
       color: #3b2803;
       display: flex;
       align-items: center;
@@ -557,7 +653,7 @@
       left: 50%;
       top: 175px;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, rgba(8, 26, 19, 0.96), rgba(18, 52, 38, 0.96));
+      background: var(--theme-pill-bg);
       border: 1px solid var(--gold-primary);
       color: var(--gold-light);
       font-family: var(--sans);
@@ -645,7 +741,7 @@
       margin: 1rem auto 0.5rem;
       padding: 8px 16px;
       border-radius: 10px;
-      background: linear-gradient(135deg, rgba(19, 54, 41, 0.92), rgba(10, 31, 23, 0.92));
+      background: var(--theme-banner-bg);
       border: 1.5px solid rgba(212, 173, 93, 0.65);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(212, 173, 93, 0.18);
       max-width: 560px;
@@ -679,7 +775,7 @@
       position: relative;
       text-align: left;
       border: 1.5px solid rgba(212, 173, 93, 0.68);
-      background: linear-gradient(145deg, #15382b 0%, #0b2018 100%);
+      background: var(--theme-panel-bg);
       padding: 14px 16px 13px;
       min-height: 0;
       cursor: pointer;
@@ -695,7 +791,7 @@
     .event-card:focus-visible {
       transform: translateY(-4px);
       border-color: var(--gold-light);
-      background: linear-gradient(145deg, #1b4636 0%, #102d22 100%);
+      background: var(--theme-env-body);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 18px rgba(212, 173, 93, 0.28);
     }
 
@@ -859,7 +955,7 @@
 
     .detail-panel {
       border: 1px solid var(--gold-line);
-      background: linear-gradient(145deg, #133328 0%, #0c2018 100%);
+      background: var(--theme-panel-bg);
       padding: clamp(18px, 3.5vw, 34px);
       border-radius: 4px;
       position: relative;
@@ -1139,7 +1235,7 @@
       font-family: var(--serif);
       font-style: italic;
       padding: 10px;
-      background: rgba(7, 21, 16, 0.6);
+      background: var(--theme-card-surface);
       border: 1px dashed var(--gold-line);
       border-radius: 3px;
     }
@@ -1154,7 +1250,7 @@
     }
     .info-cell {
       padding: 14px 16px;
-      background: rgba(7, 21, 16, 0.45);
+      background: var(--theme-card-surface);
       border-left: 2px solid var(--gold-primary);
       border-radius: 0 4px 4px 0;
     }
@@ -1207,7 +1303,7 @@
       gap: 10px;
     }
     .host-card {
-      background: rgba(7, 21, 16, 0.55);
+      background: var(--theme-card-surface);
       border: 1px solid var(--gold-line);
       border-radius: 4px;
       padding: 10px 14px;
@@ -1219,7 +1315,7 @@
       transition: var(--transition);
     }
     .host-card:hover {
-      background: rgba(17, 45, 35, 0.7);
+      background: var(--theme-card-hover);
       border-color: var(--gold-primary);
       transform: translateY(-2px);
     }
@@ -1287,7 +1383,7 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: #194334;
+      background: var(--theme-card-bg);
       border: 1px solid var(--gold-primary);
       color: var(--gold-light);
       padding: 10px 22px;
@@ -1310,7 +1406,7 @@
       bottom: 28px;
       left: 50%;
       transform: translateX(-50%) translateY(60px);
-      background: linear-gradient(135deg, rgba(12, 36, 27, 0.97), rgba(22, 58, 44, 0.97));
+      background: var(--theme-pill-bg);
       border: 1.5px solid var(--gold-primary);
       color: var(--gold-light);
       padding: 10px 20px;
@@ -1579,15 +1675,17 @@
     }
     .about-demo-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
       gap: 16px;
       margin-bottom: 2.5rem;
+      width: 100%;
+      max-width: 1040px;
     }
     .about-demo-card {
       background: rgba(10, 31, 23, 0.85);
       border: 1px solid var(--gold-line);
       border-radius: 12px;
-      padding: 1.6rem 1.4rem;
+      padding: 1.5rem 1.3rem;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -1595,12 +1693,44 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .about-demo-card::before {
       content: "";
       position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
+      top: 0; left: 0; right: 0; height: 4px;
       background: var(--gold-gradient);
+    }
+    .about-demo-card[data-card-theme="emerald"]::before {
+      background: linear-gradient(90deg, #1c4535, #d4ad5d, #06130e);
+    }
+    .about-demo-card[data-card-theme="ruby"]::before {
+      background: linear-gradient(90deg, #5c1424, #e6a782, #1f050b);
+    }
+    .about-demo-card[data-card-theme="sapphire"]::before {
+      background: linear-gradient(90deg, #183c74, #e0b862, #051022);
+    }
+    .about-demo-card[data-card-theme="plum"]::before {
+      background: linear-gradient(90deg, #4c186e, #dcb06b, #13041c);
+    }
+    .theme-swatches-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 0 auto 0.9rem;
+      padding: 4px 10px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .theme-swatch-circle {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      display: inline-block;
     }
     .about-demo-card:hover {
       border-color: var(--gold-primary);
@@ -1794,6 +1924,10 @@
         </button>
       </div>
       <div class="top-controls-right">
+        <button class="ctrl-btn" id="themeToggleBtn" type="button" aria-label="Change Color Theme" title="Switch Theme">
+          <span id="themeIcon">🎨</span>
+          <span id="themeText">Theme</span>
+        </button>
         <button class="ctrl-btn" id="langToggleBtn" type="button" aria-label="Switch between English and Urdu">
           <span id="langLabel">اردو / English</span>
         </button>
@@ -1984,22 +2118,73 @@
       return "about";
     }
 
+    const THEMES_LIST = ["emerald", "ruby", "sapphire", "plum"];
+    const THEME_LABELS = {
+      en: {
+        emerald: "Emerald",
+        ruby: "Ruby",
+        sapphire: "Sapphire",
+        plum: "Plum"
+      },
+      ur: {
+        emerald: "زمرد",
+        ruby: "یاقوت",
+        sapphire: "نیلم",
+        plum: "جامنی"
+      }
+    };
+
+    function applyCurrentTheme(themeName) {
+      const validTheme = THEMES_LIST.includes(themeName) ? themeName : "emerald";
+      document.body.setAttribute("data-theme", validTheme);
+      document.documentElement.setAttribute("data-theme", validTheme);
+      
+      const themeColors = {
+        emerald: "#0d241c",
+        ruby: "#25070f",
+        sapphire: "#091730",
+        plum: "#1e092b"
+      };
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.setAttribute("content", themeColors[validTheme] || "#0d241c");
+
+      const themeTextEl = document.getElementById("themeText");
+      if (themeTextEl) {
+        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
+        themeTextEl.textContent = lbl[validTheme] || "Theme";
+      }
+    }
+
     function resolveCurrentWeddingConfig() {
       const params = new URLSearchParams(window.location.search);
       const encoded = params.get("invite") || params.get("d");
+      let cfg = null;
       if (encoded) {
         const dyn = decodeWeddingData(encoded);
         if (dyn && dyn.groom && dyn.bride) {
           if (!dyn.slug) dyn.slug = "wedding-invitation";
-          return dyn;
+          cfg = dyn;
         }
       }
 
-      const path = decodeURIComponent(window.location.pathname || "");
-      if (path.toLowerCase().includes("ahmed-&-ayesha") || path.toLowerCase().includes("demo")) {
-        return WEDDING_DATA_DEMO;
+      if (!cfg) {
+        const path = decodeURIComponent(window.location.pathname || "");
+        if (path.toLowerCase().includes("ahmed-&-ayesha") || path.toLowerCase().includes("demo")) {
+          cfg = JSON.parse(JSON.stringify(WEDDING_DATA_DEMO));
+        } else {
+          cfg = JSON.parse(JSON.stringify(WEDDING_DATA_USAMA));
+        }
       }
-      return WEDDING_DATA_USAMA;
+
+      // Check URL param or path for theme override
+      const urlTheme = params.get("theme");
+      if (urlTheme && THEMES_LIST.includes(urlTheme.toLowerCase())) {
+        cfg.theme = urlTheme.toLowerCase();
+      } else if (!cfg.theme || !THEMES_LIST.includes(cfg.theme)) {
+        cfg.theme = "emerald";
+      }
+
+      return cfg;
     }
 
     let WEDDING = resolveCurrentWeddingConfig();
@@ -2093,7 +2278,16 @@
         aboutDemoTemplateTitle: "Ahmed & Ayesha",
         aboutDemoTemplateSub: "Demo Template · Ready for You",
         aboutDemoTemplateDesc: "Explore our ready-to-customize royal template featuring all 3 wedding ceremonies, animated Mughal scenes, and countdowns.",
+        aboutDemoEmeraldTag: "Royal Emerald · Classic Mughal",
+        aboutDemoEmeraldDesc: "Classic forest emerald velvet & antique gold with wax-seal unboxing, faceless animations, and live countdowns.",
+        aboutDemoRubyTag: "Royal Ruby · Velvet Crimson",
+        aboutDemoRubyDesc: "Regal velvet crimson maroon & rose gold aesthetic for an intensely romantic, opulent royal wedding atmosphere.",
+        aboutDemoSapphireTag: "Midnight Sapphire · Celestial Gold",
+        aboutDemoSapphireDesc: "Deep imperial midnight navy & celestial pure gold inspired by starlit palace courtyards and majestic luxury.",
+        aboutDemoPlumTag: "Majestic Plum · Imperial Violet",
+        aboutDemoPlumDesc: "Aristocratic imperial amethyst & champagne gold exuding timeless Mughal royalty and bespoke elegance.",
         aboutOpenCardBtn: "Open Interactive Card ↗",
+        aboutOpenThemeBtn: "Explore Theme ↗",
         aboutFeaturesHeading: "Why Choose Dawat Nama?",
         aboutFeat1Title: "Faceless Mughal Art",
         aboutFeat1Desc: "Handcrafted festive animations for Mehndi, Baraat, and Walima with clapping crowd and dholki beats.",
@@ -2169,7 +2363,16 @@
         aboutDemoTemplateTitle: "احمد اور عائشہ",
         aboutDemoTemplateSub: "ڈیمو ٹیمپلیٹ · آپ کے لیے تیار",
         aboutDemoTemplateDesc: "مہندی، بارات اور ولیمہ کی تمام تر تفصیلات اور شاہی اینیمیشنز کے ساتھ تیار ٹیمپلیٹ ملاحظہ فرمائیں۔",
+        aboutDemoEmeraldTag: "شاہی زمرد · کلاسک مغلیہ",
+        aboutDemoEmeraldDesc: "کلاسک مغلیہ شاہی زمرد اور سنہرا انداز، ڈیجیٹل شاہی مہر، اینیمیشنز اور لائیو کاؤنٹ ڈاؤن۔",
+        aboutDemoRubyTag: "شاہی یاقوت · مخملی قرمزی",
+        aboutDemoRubyDesc: "شاہی مخملی سرخ، قرمزی اور روز گولڈ کا دلکش سنگم جو شادی کو بے پناہ پروقار بنا دے۔",
+        aboutDemoSapphireTag: "شاہی نیلم · سنہرا کندن",
+        aboutDemoSapphireDesc: "شاہی مڈ نائٹ بلیو اور کندن کی چمک، چاند تاروں سے آراستہ شاہانہ محل جیسا احساس۔",
+        aboutDemoPlumTag: "شاہی جامنی · ارغوانی شیمپین",
+        aboutDemoPlumDesc: "شاہی ارغوانی جامنی اور شیمپین گولڈ کا نایاب شاہکار جو آپ کے معزز مہمانوں کو مسحور کر دے۔",
         aboutOpenCardBtn: "کارڈ کھولیں ↗",
+        aboutOpenThemeBtn: "کارڈ کھولیں ↗",
         aboutFeaturesHeading: "دعوت نامہ کی خصوصیات",
         aboutFeat1Title: "فیس لیس شاہانہ عکاسی",
         aboutFeat1Desc: "مہندی، بارات اور ولیمہ کی دلکش اینیمیشنز، تالیوں اور ڈھولک کے روایتی انداز کے ساتھ۔",
@@ -2407,6 +2610,9 @@
       } else {
         view = "cover";
       }
+      if (WEDDING && WEDDING.theme && WEDDING.theme !== "emerald") {
+        p.set("theme", WEDDING.theme);
+      }
       const qs = p.toString();
       let targetPath = window.location.pathname;
       if (window.location.protocol !== "file:") {
@@ -2475,26 +2681,39 @@
     }
 
     function getHeartBadgeSvg(size = 36) {
+      const theme = (WEDDING && WEDDING.theme) || "emerald";
+      let c1 = "#fff4d0", c2 = "#f5d68d", c3 = "#d4ad5d", c4 = "#9a7126";
+      let innerBg = "rgba(11, 32, 25, 0.45)";
+      if (theme === "ruby") {
+        c1 = "#fff0e8"; c2 = "#ffd2ba"; c3 = "#e6a782"; c4 = "#a15833";
+        innerBg = "rgba(45, 11, 20, 0.55)";
+      } else if (theme === "sapphire") {
+        c1 = "#fef6df"; c2 = "#ffe699"; c3 = "#e0b862"; c4 = "#916e25";
+        innerBg = "rgba(15, 34, 66, 0.55)";
+      } else if (theme === "plum") {
+        c1 = "#fff3dc"; c2 = "#ffe3a8"; c3 = "#dcb06b"; c4 = "#916829";
+        innerBg = "rgba(39, 14, 56, 0.55)";
+      }
       return `
         <svg class="monogram-heart-svg" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="goldHeartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#fff4d0"/>
-              <stop offset="35%" stop-color="#f5d68d"/>
-              <stop offset="70%" stop-color="#d4ad5d"/>
-              <stop offset="100%" stop-color="#9a7126"/>
+            <linearGradient id="goldHeartGrad_${theme}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${c1}"/>
+              <stop offset="35%" stop-color="${c2}"/>
+              <stop offset="70%" stop-color="${c3}"/>
+              <stop offset="100%" stop-color="${c4}"/>
             </linearGradient>
-            <linearGradient id="innerGlowGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+            <linearGradient id="innerGlowGrad_${theme}" x1="50%" y1="0%" x2="50%" y2="100%">
               <stop offset="0%" stop-color="#fff" stop-opacity="0.6"/>
               <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
             </linearGradient>
           </defs>
           <!-- Elegant Interlocking Royal Heart Knot -->
           <path d="M20 33.5 C19.2 33.5 8 24.8 4.6 18.2 C1.8 12.8 3.5 6.2 9.2 4.6 C13.6 3.4 17.6 5.8 20 9.2 C22.4 5.8 26.4 3.4 30.8 4.6 C36.5 6.2 38.2 12.8 35.4 18.2 C32 24.8 20.8 33.5 20 33.5 Z" 
-                fill="url(#goldHeartGrad)" stroke="#fae8be" stroke-width="1.2" stroke-linejoin="round"/>
+                fill="url(#goldHeartGrad_${theme})" stroke="${c2}" stroke-width="1.2" stroke-linejoin="round"/>
           <!-- Inner Graceful Filigree Arch / Hand-in-Hand Ribbon Motif -->
           <path d="M12 14.5 C14 10.5 17.5 9.8 20 13.5 C22.5 9.8 26 10.5 28 14.5 C25 20.5 20 25.5 20 25.5 C20 25.5 15 20.5 12 14.5 Z" 
-                fill="rgba(11, 32, 25, 0.45)" stroke="url(#goldHeartGrad)" stroke-width="1" stroke-linecap="round"/>
+                fill="${innerBg}" stroke="url(#goldHeartGrad_${theme})" stroke-width="1" stroke-linecap="round"/>
           <!-- Center Golden Sparkle Accent -->
           <circle cx="20" cy="18" r="1.8" fill="#fff" opacity="0.95"/>
           <path d="M20 14.8 L20 21.2 M16.8 18 L23.2 18" stroke="#fff" stroke-width="0.9" stroke-linecap="round" opacity="0.8"/>
@@ -2723,14 +2942,30 @@
     function updateNavigationControls(viewName) {
       const homeNavBtn = document.getElementById("homeNavBtn");
       const homeNavText = document.getElementById("homeNavText");
+      const themeToggleBtn = document.getElementById("themeToggleBtn");
+      const themeText = document.getElementById("themeText");
       if (!homeNavBtn) return;
       const t = I18N[currentLang];
       if (homeNavText) homeNavText.textContent = t.frontPageBtn || "Front Page";
+
+      if (themeText) {
+        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
+        const curTheme = (WEDDING && WEDDING.theme) || "emerald";
+        themeText.textContent = lbl[curTheme] || "Theme";
+      }
       
       if (viewName === "cover" || viewName === "about" || viewName === "admin") {
         homeNavBtn.style.display = "none";
       } else {
         homeNavBtn.style.display = "inline-flex";
+      }
+
+      if (themeToggleBtn) {
+        if (viewName === "about" || viewName === "admin") {
+          themeToggleBtn.style.display = "none";
+        } else {
+          themeToggleBtn.style.display = "inline-flex";
+        }
       }
     }
 
@@ -2739,6 +2974,7 @@
        ============================================================== */
     function renderAboutPage(animateGlide = false) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
+      applyCurrentTheme("emerald");
       updateNavigationControls("about");
       document.title = currentLang === "ur" ? "دعوت نامہ بائے ایلی تارا — شاہانہ ڈیجیٹل شادی دعوت نامے" : "Dawat Nama by Elitara — Royal Digital Wedding Invitations";
       const t = I18N[currentLang];
@@ -2778,20 +3014,77 @@
           </div>
         </section>
 
-        <!-- Live Samples Showcase -->
+        <!-- Live Samples Showcase: 4 Themes -->
         <div class="m-divider"><span>❖</span></div>
         <h2 class="about-section-heading rise-in">${t.aboutLiveDemos}</h2>
-        <p class="about-section-sub rise-in">${currentLang === "ur" ? "ہمارے شاہانہ ڈیجیٹل شادی کارڈ کا لائیو جائزہ لیں:" : "Experience our real interactive wedding invitation:"}</p>
+        <p class="about-section-sub rise-in">${currentLang === "ur" ? "ہمارے شاہانہ ڈیجیٹل شادی کارڈز کے ۴ مختلف کلر تھیمز ملاحظہ فرمائیں:" : "Experience our 4 bespoke royal wedding themes with live countdowns & maps:"}</p>
 
-        <div class="about-demo-grid rise-in" style="max-width: 520px; margin: 0 auto 2.5rem;">
-          <div class="about-demo-card">
+        <div class="about-demo-grid rise-in">
+          <!-- Theme 1: Royal Emerald -->
+          <div class="about-demo-card" data-card-theme="emerald">
             <div>
-              <span class="about-demo-tag">${t.aboutDemoTemplateSub}</span>
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#0b2019;"></span>
+                <span class="theme-swatch-circle" style="background:#173b2e;"></span>
+                <span class="theme-swatch-circle" style="background:#d4ad5d;"></span>
+              </div>
+              <span class="about-demo-tag">${t.aboutDemoEmeraldTag}</span>
               <h3 class="about-demo-names">${t.aboutDemoTemplateTitle}</h3>
-              <p class="about-demo-desc">${t.aboutDemoTemplateDesc}</p>
+              <p class="about-demo-desc">${t.aboutDemoEmeraldDesc}</p>
             </div>
-            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation" style="margin-top:auto;">
-              ${t.aboutOpenCardBtn}
+            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation?theme=emerald" style="margin-top:auto;">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
+          <!-- Theme 2: Royal Ruby & Rose Gold -->
+          <div class="about-demo-card" data-card-theme="ruby">
+            <div>
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#22070e;"></span>
+                <span class="theme-swatch-circle" style="background:#45131f;"></span>
+                <span class="theme-swatch-circle" style="background:#e6a782;"></span>
+              </div>
+              <span class="about-demo-tag">${t.aboutDemoRubyTag}</span>
+              <h3 class="about-demo-names">${t.aboutDemoTemplateTitle}</h3>
+              <p class="about-demo-desc">${t.aboutDemoRubyDesc}</p>
+            </div>
+            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation?theme=ruby" style="margin-top:auto;">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
+          <!-- Theme 3: Midnight Sapphire & Celestial Gold -->
+          <div class="about-demo-card" data-card-theme="sapphire">
+            <div>
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#08142a;"></span>
+                <span class="theme-swatch-circle" style="background:#152d58;"></span>
+                <span class="theme-swatch-circle" style="background:#e0b862;"></span>
+              </div>
+              <span class="about-demo-tag">${t.aboutDemoSapphireTag}</span>
+              <h3 class="about-demo-names">${t.aboutDemoTemplateTitle}</h3>
+              <p class="about-demo-desc">${t.aboutDemoSapphireDesc}</p>
+            </div>
+            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation?theme=sapphire" style="margin-top:auto;">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
+          <!-- Theme 4: Majestic Plum & Champagne Gold -->
+          <div class="about-demo-card" data-card-theme="plum">
+            <div>
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#190924;"></span>
+                <span class="theme-swatch-circle" style="background:#37164e;"></span>
+                <span class="theme-swatch-circle" style="background:#dcb06b;"></span>
+              </div>
+              <span class="about-demo-tag">${t.aboutDemoPlumTag}</span>
+              <h3 class="about-demo-names">${t.aboutDemoTemplateTitle}</h3>
+              <p class="about-demo-desc">${t.aboutDemoPlumDesc}</p>
+            </div>
+            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation?theme=plum" style="margin-top:auto;">
+              ${t.aboutOpenThemeBtn}
             </a>
           </div>
         </div>
@@ -3343,9 +3636,12 @@
       const pageMode = resolveCurrentPageMode();
 
       if (pageMode === "about") {
+        applyCurrentTheme("emerald");
         renderAboutPage(isPopState);
         return;
       }
+
+      applyCurrentTheme(WEDDING.theme || "emerald");
 
       const { card, event, view } = getUrlState();
       if (event) {
@@ -3364,6 +3660,37 @@
     const langToggleBtn = document.getElementById("langToggleBtn");
     const langLabel = document.getElementById("langLabel");
     const homeNavBtn = document.getElementById("homeNavBtn");
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener("click", () => {
+        const cur = (WEDDING && WEDDING.theme) || "emerald";
+        const idx = THEMES_LIST.indexOf(cur);
+        const next = THEMES_LIST[(idx + 1) % THEMES_LIST.length];
+        if (WEDDING) WEDDING.theme = next;
+        applyCurrentTheme(next);
+
+        // Update URL query param ?theme= without reload
+        const p = new URLSearchParams(window.location.search);
+        if (next === "emerald") {
+          p.delete("theme");
+        } else {
+          p.set("theme", next);
+        }
+        const qs = p.toString();
+        const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+        window.history.replaceState(window.history.state, "", newUrl);
+
+        // Re-render heart monogram with matching theme colors
+        const badges = document.querySelectorAll(".monogram-badge");
+        badges.forEach(b => {
+          b.innerHTML = getHeartBadgeSvg(b.clientWidth > 50 ? 38 : 34);
+        });
+
+        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
+        showToast(currentLang === "ur" ? `تھیم: ${lbl[next]}` : `Theme: ${lbl[next]}`);
+      });
+    }
 
     if (homeNavBtn) {
       homeNavBtn.addEventListener("click", () => {
@@ -3379,6 +3706,13 @@
       document.documentElement.lang = isUrdu ? "ur" : "en";
       document.documentElement.dir = isUrdu ? "rtl" : "ltr";
       langLabel.textContent = I18N[currentLang].langBtn;
+
+      const themeTextEl = document.getElementById("themeText");
+      if (themeTextEl) {
+        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
+        const curTheme = (WEDDING && WEDDING.theme) || "emerald";
+        themeTextEl.textContent = lbl[curTheme] || "Theme";
+      }
 
       const music = document.getElementById("weddingMusic");
       const musicText = document.getElementById("musicText");
@@ -3456,9 +3790,12 @@
       const pageMode = resolveCurrentPageMode();
 
       if (pageMode === "about") {
+        applyCurrentTheme("emerald");
         renderAboutPage(false);
         return;
       }
+
+      applyCurrentTheme(WEDDING.theme || "emerald");
 
       const { card, event, view } = getUrlState();
       if (event) {

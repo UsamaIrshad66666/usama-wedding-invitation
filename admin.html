@@ -326,6 +326,16 @@
             <input class="admin-input" type="text" id="f_brideUrdu" placeholder="e.g. عائشہ ملک" dir="rtl" required>
           </div>
         </div>
+
+        <div style="margin-top:14px;">
+          <label class="admin-field-label">🎨 Royal Color Theme</label>
+          <select class="admin-input" id="f_theme" style="background:#040f0b; color:#fff; cursor:pointer;">
+            <option value="emerald" selected>🌿 Royal Emerald & Antique Gold (Classic Mughal Green)</option>
+            <option value="ruby">🌹 Royal Ruby & Rose Gold (Velvet Crimson Maroon)</option>
+            <option value="sapphire">💎 Midnight Sapphire & Celestial Gold (Deep Imperial Navy)</option>
+            <option value="plum">👑 Majestic Plum & Champagne Gold (Imperial Violet)</option>
+          </select>
+        </div>
       </div>
 
       <!-- Family & Hosts -->
@@ -597,6 +607,7 @@
       document.getElementById("f_w_map").value = "https://maps.google.com/?q=Nishat+Banquets+Lahore";
       document.getElementById("f_w_rsvp").value = "+923012345678";
 
+      if (document.getElementById("f_theme")) document.getElementById("f_theme").value = "emerald";
       currentHosts = [
         { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
         { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
@@ -610,6 +621,7 @@
     document.getElementById("loadDemoBtn").addEventListener("click", fillSampleData);
     document.getElementById("clearFormBtn").addEventListener("click", () => {
       document.getElementById("cardGeneratorForm").reset();
+      if (document.getElementById("f_theme")) document.getElementById("f_theme").value = "emerald";
       currentHosts = [{ name: "", nameUrdu: "", phone: "+92 " }];
       renderHostsInputs();
       showToast("Form cleared!");
@@ -628,15 +640,26 @@
         container.innerHTML = `<p style="font-size:0.86rem; color:var(--cream-muted); font-style:italic;">No saved invitations yet. Generate a card above to see it here!</p>`;
         return;
       }
+      const themeBadges = {
+        emerald: "🌿 Emerald",
+        ruby: "🌹 Ruby",
+        sapphire: "💎 Sapphire",
+        plum: "👑 Plum"
+      };
       container.innerHTML = `
         <div class="admin-saved-list">
           ${savedCards.map((c, idx) => {
-            const liveUrl = `${window.location.origin}/?invite=${c.encoded}`;
+            const themeParam = c.theme && c.theme !== "emerald" ? `&theme=${c.theme}` : "";
+            const liveUrl = `${window.location.origin}/?invite=${c.encoded}${themeParam}`;
+            const themeBadge = themeBadges[c.theme] || "🌿 Emerald";
             return `
               <div class="admin-saved-item">
                 <div>
                   <strong style="color:var(--gold-light); font-size:1rem;">${c.groom} & ${c.bride}</strong>
-                  <div style="font-size:0.76rem; color:var(--cream-muted); margin-top:2px;">${c.createdAt || 'Saved Card'}</div>
+                  <div style="font-size:0.76rem; color:var(--cream-muted); margin-top:2px;">
+                    <span style="display:inline-block; padding:1px 6px; border-radius:4px; background:rgba(212,173,93,0.18); color:var(--gold-primary); font-size:0.7rem; margin-right:6px;">${themeBadge}</span>
+                    ${c.createdAt || 'Saved Card'}
+                  </div>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
                   <a class="outline-btn" style="padding:6px 12px; font-size:0.78rem;" href="${liveUrl}" target="_blank">Open Card ↗</a>
@@ -685,6 +708,8 @@
       const host = document.getElementById("f_host").value.trim();
       const hostUrdu = document.getElementById("f_hostUrdu").value.trim();
 
+      const theme = document.getElementById("f_theme") ? document.getElementById("f_theme").value : "emerald";
+
       const cardData = {
         slug: `${groom.replace(/[^a-zA-Z0-9]/g, "-")}-&-${bride.replace(/[^a-zA-Z0-9]/g, "-")}-wedding-invitation`,
         groom,
@@ -693,6 +718,7 @@
         brideUrdu,
         host,
         hostUrdu,
+        theme,
         welcomeHosts: currentHosts.filter(h => h.name && h.phone),
         events: {
           mehndi: {
@@ -738,13 +764,15 @@
       };
 
       const encoded = encodeWeddingData(cardData);
-      const liveUrl = `${window.location.origin}/?invite=${encoded}`;
+      const themeParam = theme && theme !== "emerald" ? `&theme=${theme}` : "";
+      const liveUrl = `${window.location.origin}/?invite=${encoded}${themeParam}`;
       const waShareText = `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${groom} & ${bride}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`;
 
       // Save to localStorage
       const newRecord = {
         groom,
         bride,
+        theme,
         encoded,
         createdAt: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
       };
