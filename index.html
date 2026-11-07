@@ -50,7 +50,7 @@
     }
 
     html {
-      scroll-behavior: smooth;
+      scroll-behavior: auto;
     }
 
     body {
@@ -618,27 +618,27 @@
       line-height: 1.6;
     }
 
-    /* Sequential One-by-One Staggered Reveal Classes */
+    /* Sequential Reveal Classes (Fast so content is visible during 1s scroll-to-top glide) */
     .seq-step {
-      opacity: 0;
-      animation: seqReveal 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 1;
+      animation: seqReveal 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
     }
-    .seq-1 { animation-delay: 0.08s; }
-    .seq-2 { animation-delay: 0.24s; }
-    .seq-3 { animation-delay: 0.42s; }
-    .seq-4 { animation-delay: 0.60s; }
-    .seq-5 { animation-delay: 0.80s; }
-    .seq-6 { animation-delay: 1.00s; }
-    .seq-7 { animation-delay: 1.20s; }
+    .seq-1 { animation-delay: 0.02s; }
+    .seq-2 { animation-delay: 0.05s; }
+    .seq-3 { animation-delay: 0.08s; }
+    .seq-4 { animation-delay: 0.10s; }
+    .seq-5 { animation-delay: 0.12s; }
+    .seq-6 { animation-delay: 0.14s; }
+    .seq-7 { animation-delay: 0.16s; }
 
     @keyframes seqReveal {
       from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
+        opacity: 0.25;
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
@@ -683,6 +683,7 @@
       position: relative;
       width: 100%;
       max-width: 620px;
+      aspect-ratio: 4 / 3;
       margin: 1rem auto 1.6rem;
       border-radius: 8px;
       overflow: hidden;
@@ -1025,29 +1026,29 @@
     /* Bottom Scroll Tutorial / Swipe-Up Hint Pill */
     .scroll-tutorial-pill {
       position: fixed;
-      bottom: 18px;
+      bottom: 28px;
       left: 50%;
-      transform: translateX(-50%) translateY(90px);
-      background: linear-gradient(135deg, rgba(10, 31, 23, 0.95), rgba(18, 49, 37, 0.95));
-      border: 1px solid var(--gold-primary);
+      transform: translateX(-50%) translateY(60px);
+      background: linear-gradient(135deg, rgba(12, 36, 27, 0.97), rgba(22, 58, 44, 0.97));
+      border: 1.5px solid var(--gold-primary);
       color: var(--gold-light);
-      padding: 9px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
       gap: 10px;
       font-family: var(--sans);
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
       z-index: 95;
       opacity: 0;
       pointer-events: none;
       cursor: pointer;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 15px rgba(212, 173, 93, 0.22);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75), 0 0 18px rgba(212, 173, 93, 0.35);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: opacity 0.25s ease, transform 0.25s ease;
       white-space: nowrap;
       max-width: calc(100vw - 32px);
     }
@@ -1055,6 +1056,17 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
       pointer-events: auto;
+      animation: tutorialPillPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes tutorialPillPulse {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75), 0 0 16px rgba(212, 173, 93, 0.32);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-4px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.82), 0 0 24px rgba(212, 173, 93, 0.55);
+      }
     }
     .scroll-tutorial-pill:hover {
       border-color: var(--gold-bright);
@@ -1193,14 +1205,15 @@
 
     <main class="main-canvas" id="app" aria-live="polite"></main>
 
-    <button class="scroll-tutorial-pill" id="scrollTutorialPill" type="button" aria-label="Scroll down for more details">
-      <span class="scroll-tutorial-icon" aria-hidden="true">⇅</span>
-      <span id="scrollTutorialText">Swipe up to scroll for full details ↓</span>
-    </button>
-
-    <div class="toast-msg" id="toastMsg" role="alert">Link copied to clipboard!</div>
     <audio id="weddingMusic" loop preload="none" src="assets/wedding-music.mp3"></audio>
   </div>
+
+  <button class="scroll-tutorial-pill" id="scrollTutorialPill" type="button" aria-label="Scroll down for more details">
+    <span class="scroll-tutorial-icon" aria-hidden="true">⇅</span>
+    <span id="scrollTutorialText">Swipe up to scroll for full details ↓</span>
+  </button>
+
+  <div class="toast-msg" id="toastMsg" role="alert">Link copied to clipboard!</div>
 
   <script>
     /* ==============================================================
@@ -1402,7 +1415,7 @@
 
     function cancelAutoScroll() {
       if (activeScrollRaf) {
-        cancelAnimationFrame(activeScrollRaf);
+        clearInterval(activeScrollRaf);
         activeScrollRaf = null;
       }
       isAutoScrolling = false;
@@ -1414,7 +1427,7 @@
         scrollTutorialTextEl.textContent = I18N[currentLang].scrollTutorialText;
       }
       const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      if (maxScroll > 70 && window.scrollY < 85) {
+      if (maxScroll > 60 && (window.scrollY || window.pageYOffset || 0) < 85) {
         scrollTutorialPill.classList.add("visible");
       } else {
         scrollTutorialPill.classList.remove("visible");
@@ -1434,24 +1447,25 @@
       isAutoScrolling = true;
       const startTime = performance.now();
 
-      function step(now) {
-        if (!isAutoScrolling) return;
-        const elapsed = Math.min(1, (now - startTime) / durationMs);
+      activeScrollRaf = setInterval(() => {
+        if (!isAutoScrolling) {
+          clearInterval(activeScrollRaf);
+          activeScrollRaf = null;
+          return;
+        }
+        const elapsed = Math.min(1, Math.max(0, (performance.now() - startTime) / durationMs));
         // Smooth cosine ease-in-out so the 1-second glide is clearly visible
         const eased = 0.5 - Math.cos(elapsed * Math.PI) / 2;
         window.scrollTo(0, Math.round(startY + distance * eased));
 
-        if (elapsed < 1) {
-          activeScrollRaf = requestAnimationFrame(step);
-        } else {
-          window.scrollTo(0, targetY);
-          isAutoScrolling = false;
+        if (elapsed >= 1) {
+          clearInterval(activeScrollRaf);
           activeScrollRaf = null;
+          window.scrollTo(0, targetY);
+          setTimeout(() => { isAutoScrolling = false; }, 60);
           if (onComplete) onComplete();
         }
-      }
-
-      activeScrollRaf = requestAnimationFrame(step);
+      }, 16);
     }
 
     function performPageEntryScroll(animateGlide = true) {
@@ -1461,7 +1475,7 @@
 
       const previousScrollY = window.scrollY || window.pageYOffset || 0;
 
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
         if (!animateGlide) {
@@ -1488,7 +1502,7 @@
           window.scrollTo(0, 0);
           scrollTutorialTimer = setTimeout(updateScrollTutorialVisibility, 400);
         }
-      });
+      }, 15);
     }
 
     window.addEventListener("wheel", () => { if (isAutoScrolling) cancelAutoScroll(); }, { passive: true });
