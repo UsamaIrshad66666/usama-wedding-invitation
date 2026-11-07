@@ -1,3 +1,7 @@
+/admin/assets/*                              /assets/:splat  200
+/about/assets/*                              /assets/:splat  200
+/demo/assets/*                               /assets/:splat  200
+/card/assets/*                               /assets/:splat  200
 /Usama-&-Bissal-wedding-invitation/assets/*   /assets/:splat  200
 /Ahmed-&-Ayesha-wedding-invitation/assets/*   /assets/:splat  200
 /*                                            /index.html     200

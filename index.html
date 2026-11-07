@@ -1194,6 +1194,376 @@
       flex-shrink: 0;
     }
 
+    /* ==============================================================
+       ABOUT & SHOWCASE PAGE STYLES (Dawat Nama by Elitara)
+       ============================================================== */
+    .about-hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .about-brand-tagline {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2.8vw, 1.35rem);
+      color: var(--gold-primary);
+      font-style: italic;
+      margin: 0.4rem 0 1rem;
+    }
+    .about-intro-text {
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      font-family: var(--sans);
+      font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+      line-height: 1.7;
+      color: var(--cream);
+      opacity: 0.92;
+    }
+
+    /* 2 Main Badges Bar: WhatsApp & Instagram */
+    .about-badges-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 1.8rem 0;
+    }
+    .about-badge-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .about-badge-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+    .about-badge-wa {
+      background: linear-gradient(135deg, #1f6b45, #144a30);
+      border: 1px solid #25d366;
+      color: #fff;
+    }
+    .about-badge-wa:hover {
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+    }
+    .about-badge-insta {
+      background: linear-gradient(135deg, rgba(131, 58, 180, 0.7), rgba(225, 48, 108, 0.7), rgba(253, 175, 69, 0.7));
+      border: 1px solid var(--gold-primary);
+      color: #fff;
+    }
+    .about-badge-insta:hover {
+      background: linear-gradient(135deg, #833ab4, #e1306c, #fdaf69);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
+    }
+    .about-badge-call {
+      background: rgba(14, 43, 33, 0.9);
+      border: 1px solid var(--gold-line);
+      color: var(--gold-light);
+    }
+    .about-badge-call:hover {
+      border-color: var(--gold-primary);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Live Demos Section */
+    .about-section-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+      color: var(--gold-light);
+      text-align: center;
+      margin: 2.2rem 0 0.4rem;
+      letter-spacing: 0.05em;
+    }
+    .about-section-sub {
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--cream-muted);
+      margin-bottom: 1.4rem;
+    }
+    .about-demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 2.5rem;
+    }
+    .about-demo-card {
+      background: rgba(10, 31, 23, 0.85);
+      border: 1px solid var(--gold-line);
+      border-radius: 12px;
+      padding: 1.6rem 1.4rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-demo-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--gold-gradient);
+    }
+    .about-demo-card:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(212, 173, 93, 0.2);
+    }
+    .about-demo-tag {
+      display: inline-block;
+      align-self: center;
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: rgba(212, 173, 93, 0.15);
+      border: 1px solid var(--gold-line);
+      color: var(--gold-light);
+      font-size: 0.72rem;
+      font-family: var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .about-demo-names {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .about-demo-desc {
+      font-family: var(--sans);
+      font-size: 0.84rem;
+      color: var(--cream-muted);
+      line-height: 1.5;
+      margin-bottom: 1.4rem;
+    }
+
+    /* Features Grid */
+    .about-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 2.5rem;
+    }
+    .about-feature-box {
+      background: rgba(8, 25, 18, 0.75);
+      border: 1px solid rgba(212, 173, 93, 0.25);
+      border-radius: 10px;
+      padding: 1.2rem 1rem;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .about-feature-box:hover {
+      border-color: var(--gold-primary);
+      background: rgba(13, 38, 28, 0.85);
+    }
+    .about-feature-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .about-feature-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+    .about-feature-desc {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--cream-muted);
+      line-height: 1.5;
+    }
+
+    /* Ordering CTA Box */
+    .about-order-cta {
+      background: linear-gradient(135deg, rgba(16, 48, 36, 0.95), rgba(8, 26, 19, 0.95));
+      border: 1px solid var(--gold-primary);
+      border-radius: 14px;
+      padding: 2.2rem 1.6rem;
+      text-align: center;
+      margin: 2rem 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .about-order-cta-title {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3vw, 1.65rem);
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+    .about-order-cta-sub {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      color: var(--cream);
+      max-width: 580px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* ==============================================================
+       ADMIN PANEL STYLES (Zero-Cost Invitation Studio)
+       ============================================================== */
+    .admin-wrapper {
+      max-width: 880px;
+      margin: 0 auto;
+      padding-bottom: 3rem;
+    }
+    .admin-login-card {
+      max-width: 440px;
+      margin: 2.5rem auto;
+      background: rgba(10, 31, 23, 0.94);
+      border: 1px solid var(--gold-primary);
+      border-radius: 14px;
+      padding: 2.4rem 2rem;
+      text-align: center;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+    }
+    .admin-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 6px;
+      background: rgba(4, 15, 11, 0.88);
+      border: 1px solid var(--gold-line);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      outline: none;
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+    .admin-input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 10px rgba(212, 173, 93, 0.4);
+    }
+    .admin-top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gold-line);
+    }
+    .admin-section {
+      background: rgba(10, 31, 23, 0.75);
+      border: 1px solid var(--gold-line);
+      border-radius: 10px;
+      padding: 1.4rem;
+      margin-bottom: 1.4rem;
+    }
+    .admin-section-header {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px dashed rgba(212, 173, 93, 0.25);
+      padding-bottom: 6px;
+    }
+    .admin-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .admin-field-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gold-primary);
+      margin-bottom: 4px;
+    }
+    .admin-hosts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .admin-host-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr auto;
+      gap: 8px;
+      align-items: center;
+      background: rgba(5, 18, 13, 0.6);
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(212, 173, 93, 0.15);
+    }
+    @media (max-width: 640px) {
+      .admin-host-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+    .admin-remove-btn {
+      background: none;
+      border: 1px solid rgba(255, 100, 100, 0.4);
+      color: #ff8888;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+    .admin-remove-btn:hover {
+      background: rgba(255, 60, 60, 0.2);
+      color: #fff;
+    }
+    .admin-result-box {
+      background: rgba(14, 45, 33, 0.95);
+      border: 1px solid var(--gold-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      animation: fadeIn 0.4s ease;
+    }
+    .admin-link-display {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+    .admin-saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .admin-saved-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(6, 20, 15, 0.75);
+      border: 1px solid rgba(212, 173, 93, 0.2);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
     /* RTL */
     html[dir="rtl"] body {
       font-family: var(--urdu), var(--sans);
@@ -1208,9 +1578,25 @@
     html[dir="rtl"] .countdown-unit,
     html[dir="rtl"] .info-cell-label,
     html[dir="rtl"] .info-cell-value,
-    html[dir="rtl"] .site-footer {
+    html[dir="rtl"] .site-footer,
+    html[dir="rtl"] .about-intro-text,
+    html[dir="rtl"] .about-section-sub,
+    html[dir="rtl"] .about-order-cta-sub,
+    html[dir="rtl"] .about-demo-desc,
+    html[dir="rtl"] .about-feature-desc {
       font-family: var(--urdu), var(--sans);
       letter-spacing: normal;
+    }
+    html[dir="rtl"] .about-demo-names,
+    html[dir="rtl"] .about-section-heading,
+    html[dir="rtl"] .about-order-cta-title,
+    html[dir="rtl"] .about-feature-title,
+    html[dir="rtl"] .about-brand-tagline {
+      font-family: var(--urdu), var(--serif);
+      letter-spacing: normal;
+    }
+    html[dir="rtl"] .about-feature-box {
+      text-align: right;
     }
     html[dir="rtl"] .info-cell {
       text-align: right;
@@ -1412,7 +1798,71 @@
       }
     };
 
+    function encodeWeddingData(data) {
+      try {
+        const json = JSON.stringify(data);
+        return btoa(encodeURIComponent(json));
+      } catch (err) {
+        console.error("Failed to encode card data", err);
+        return "";
+      }
+    }
+
+    function decodeWeddingData(str) {
+      try {
+        if (!str) return null;
+        const json = decodeURIComponent(atob(str));
+        return JSON.parse(json);
+      } catch (err) {
+        console.error("Failed to decode card data", err);
+        return null;
+      }
+    }
+
+    function resolveCurrentPageMode() {
+      const path = decodeURIComponent(window.location.pathname || "").toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+
+      if (path.includes("/admin")) {
+        return "admin";
+      }
+
+      // If user provided a dynamic card via query param:
+      if (params.get("invite") || params.get("d")) {
+        return "wedding";
+      }
+
+      // If specific invitation slug in path:
+      if (path.includes("ahmed-&-ayesha") || path.includes("demo")) {
+        return "wedding";
+      }
+      if (path.includes("usama-&-bissal")) {
+        return "wedding";
+      }
+
+      // Root path / or /about or index.html:
+      if (path === "" || path === "/" || path.endsWith("/index.html") || path.includes("/about")) {
+        return "about";
+      }
+
+      if (path.includes("wedding") || path.includes("invitation")) {
+        return "wedding";
+      }
+
+      return "about";
+    }
+
     function resolveCurrentWeddingConfig() {
+      const params = new URLSearchParams(window.location.search);
+      const encoded = params.get("invite") || params.get("d");
+      if (encoded) {
+        const dyn = decodeWeddingData(encoded);
+        if (dyn && dyn.groom && dyn.bride) {
+          if (!dyn.slug) dyn.slug = "wedding-invitation";
+          return dyn;
+        }
+      }
+
       const path = decodeURIComponent(window.location.pathname || "");
       if (path.toLowerCase().includes("ahmed-&-ayesha") || path.toLowerCase().includes("demo")) {
         return WEDDING_DATA_DEMO;
@@ -1420,7 +1870,7 @@
       return WEDDING_DATA_USAMA;
     }
 
-    const WEDDING = resolveCurrentWeddingConfig();
+    let WEDDING = resolveCurrentWeddingConfig();
 
     const EVENT_META = {
       mehndi: {
@@ -1497,7 +1947,40 @@
         viewYourEventsBtn: "View Your Invitation Events",
         baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
         baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
-        scrollTutorialText: "Swipe up to scroll for full details ↓"
+        scrollTutorialText: "Swipe up to scroll for full details ↓",
+        aboutTitle: "Dawat Nama by Elitara",
+        aboutTagline: "Bespoke Royal Mughal Digital Wedding Invitations",
+        aboutIntro: "We craft interactive, animated digital wedding invitations inspired by timeless Mughal heritage and modern luxury. Give your wedding guests an unforgettable opening experience with live ceremony countdowns, interactive Google Maps, and instant WhatsApp RSVP.",
+        aboutContactHeading: "Order Your Custom Invitation",
+        aboutContactSub: "Contact Usama directly via WhatsApp or Phone to create your personalized card within 24 hours.",
+        aboutCallUs: "Direct Call: 0329 8120981",
+        aboutChatWA: "Chat on WhatsApp · 0329 8120981",
+        aboutFollowInsta: "Follow @elitara_pk",
+        aboutLiveDemos: "Explore Live Sample Cards",
+        aboutDemoTemplateTitle: "Ahmed & Ayesha",
+        aboutDemoTemplateSub: "Demo Template · Ready for You",
+        aboutDemoTemplateDesc: "Explore our ready-to-customize royal template featuring all 3 wedding ceremonies, animated Mughal scenes, and countdowns.",
+        aboutSignatureTitle: "Usama & Bissal",
+        aboutSignatureSub: "Royal Signature Edition",
+        aboutSignatureDesc: "Our flagship royal invitation celebrating the union of Syed Usama Irshad and Dr. Bissal Khan in Lahore.",
+        aboutOpenCardBtn: "Open Interactive Card ↗",
+        aboutFeaturesHeading: "Why Choose Dawat Nama?",
+        aboutFeat1Title: "Faceless Mughal Art",
+        aboutFeat1Desc: "Handcrafted festive animations for Mehndi, Baraat, and Walima with clapping crowd and dholki beats.",
+        aboutFeat2Title: "Urdu & English Nastaliq",
+        aboutFeat2Desc: "Authentic bilingual support allowing guests to switch between English and Urdu with 1 tap.",
+        aboutFeat3Title: "Interactive Wax Seal",
+        aboutFeat3Desc: "A digital envelope and wax-seal unboxing experience that honors your invited guests.",
+        aboutFeat4Title: "Live Ceremony Countdowns",
+        aboutFeat4Desc: "Real-time countdown timer ticking down to each sacred ceremony.",
+        aboutFeat5Title: "1-Tap Google Maps Navigation",
+        aboutFeat5Desc: "Turn-by-turn GPS directions directly to your wedding marquee or banquet hall.",
+        aboutFeat6Title: "Instant WhatsApp RSVP",
+        aboutFeat6Desc: "Direct WhatsApp buttons for family hosts to collect guest confirmations effortlessly.",
+        aboutOrderHeading: "Ready to Create Your Wedding Card?",
+        aboutOrderSub: "Send your wedding details on WhatsApp, and we'll deliver your live e-dawatnama.com link within 24 hours.",
+        aboutOrderBtn: "Order on WhatsApp (0329 8120981)",
+        aboutAdminLink: "Admin Studio"
       },
       ur: {
         langBtn: "English / اردو",
@@ -1543,7 +2026,40 @@
         viewYourEventsBtn: "اپنے دعوت نامے کی تقریبات دیکھیں",
         baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
         baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
-        scrollTutorialText: "مکمل تفصیلات دیکھنے کے لیے اوپر سوائپ کریں ↓"
+        scrollTutorialText: "مکمل تفصیلات دیکھنے کے لیے اوپر سوائپ کریں ↓",
+        aboutTitle: "دعوت نامہ بائے ایلی تارا",
+        aboutTagline: "شاہانہ مغلیہ ڈیجیٹل شادی دعوت نامے",
+        aboutIntro: "ہم مغل فن و روایات اور جدید ٹیکنالوجی کے امتزاج سے شاہانہ ڈیجیٹل شادی کارڈز تیار کرتے ہیں، جو آپ کے معزز مہمانوں کے لیے ایک یادگار تجربہ بن جائیں۔ لائیو کاؤنٹ ڈاؤن، گوگل میپس، اور واٹس ایپ پر فوری تصدیق۔",
+        aboutContactHeading: "اپنا شادی کارڈ بنوائیں",
+        aboutContactSub: "صرف 24 گھنٹوں میں اپنا شاندار ڈیجیٹل شادی کارڈ تیار کروانے کے لیے اسامہ سے واٹس ایپ یا فون پر رابطہ کریں۔",
+        aboutCallUs: "براہِ راست کال: 0329 8120981",
+        aboutChatWA: "واٹس ایپ رابطہ · 0329 8120981",
+        aboutFollowInsta: "انسٹاگرام فالو کریں @elitara_pk",
+        aboutLiveDemos: "تیار شدہ کارڈز کے نمونے",
+        aboutDemoTemplateTitle: "احمد اور عائشہ",
+        aboutDemoTemplateSub: "ڈیمو ٹیمپلیٹ · آپ کے لیے تیار",
+        aboutDemoTemplateDesc: "مہندی، بارات اور ولیمہ کی تمام تر تفصیلات اور شاہی اینیمیشنز کے ساتھ تیار ٹیمپلیٹ ملاحظہ فرمائیں۔",
+        aboutSignatureTitle: "اسامہ اور بسل",
+        aboutSignatureSub: "شاہانہ سگنیچر ایڈیشن",
+        aboutSignatureDesc: "سید اسامہ ارشاد اور ڈاکٹر بسل خان کی لاہور میں منعقدہ شادی کا شاہی ڈیجیٹل دعوت نامہ۔",
+        aboutOpenCardBtn: "کارڈ کھولیں ↗",
+        aboutFeaturesHeading: "دعوت نامہ کی خصوصیات",
+        aboutFeat1Title: "فیس لیس شاہانہ عکاسی",
+        aboutFeat1Desc: "مہندی، بارات اور ولیمہ کی دلکش اینیمیشنز، تالیوں اور ڈھولک کے روایتی انداز کے ساتھ۔",
+        aboutFeat2Title: "اردو نستعلیق و انگلش",
+        aboutFeat2Desc: "خوبصورت اردو اور انگریزی کا مکمل امتزاج، ایک کلک پر زبان کی تبدیلی۔",
+        aboutFeat3Title: "شاہانہ لفافہ اور مہر",
+        aboutFeat3Desc: "ڈیجیٹل شاہی مہر اور لفافہ کھلنے کا شاندار احساس جو مہمانوں کا دل جیت لے۔",
+        aboutFeat4Title: "لائیو کاؤنٹ ڈاؤن ٹائمر",
+        aboutFeat4Desc: "شادی کی ہر تقریب کے آغاز تک باقی وقت کا لائیو ٹائمر۔",
+        aboutFeat5Title: "گوگل میپس لوکیشن",
+        aboutFeat5Desc: "مہمانوں کے لیے شادی ہال یا مارکی کا درست راستہ ایک کلک پر۔",
+        aboutFeat6Title: "واٹس ایپ پر فوری تصدیق (RSVP)",
+        aboutFeat6Desc: "مہمانوں کی شرکت کی فوری تصدیق براہِ راست فیملی کے واٹس ایپ پر۔",
+        aboutOrderHeading: "کیا آپ اپنے کارڈ کا آرڈر دینا چاہتے ہیں؟",
+        aboutOrderSub: "شادی کی تفصیلات ہمیں واٹس ایپ پر بھیجیں، ہم 24 گھنٹوں میں آپ کا لائیو کارڈ e-dawatnama.com پر تیار کر دیں گے۔",
+        aboutOrderBtn: "واٹس ایپ پر آرڈر دیں (0329 8120981)",
+        aboutAdminLink: "ایڈمن سٹوڈیو"
       }
     };
 
@@ -1838,8 +2354,8 @@
     function buildSiteFooterHtml() {
       const t = I18N[currentLang];
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
-      const cleanWaPhone = "923238146200";
-      const waMsg = encodeURIComponent("Hello! I am interested in creating a digital wedding invitation on E-dawatnama.com");
+      const cleanWaPhone = "923298120981";
+      const waMsg = encodeURIComponent("Hello! I am interested in creating a digital wedding invitation on Dawat Nama by Elitara");
       const waUrl = `https://wa.me/${cleanWaPhone}?text=${waMsg}`;
       const instaUrl = "https://www.instagram.com/elitara_pk?xtok=MW5seTVrM2pvcjNhaw==";
 
@@ -1859,6 +2375,9 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.074-2.122-.493-1.825-.724-3.003-2.569-3.094-2.69-.091-.122-.745-.992-.745-1.892s.471-1.343.638-1.528c.167-.184.364-.231.485-.231.122 0 .243.001.349.006.111.005.259-.042.405.31.146.353.499 1.218.544 1.309.045.091.076.197.015.319-.061.122-.091.197-.182.304-.091.107-.193.24-.275.322-.091.091-.186.19-.08.372.106.182.471.777 1.01 1.258.694.619 1.28.812 1.462.903.182.091.288.076.394-.045.106-.122.456-.531.577-.713.122-.182.243-.152.405-.091.162.061 1.033.486 1.211.577.178.091.299.137.344.213.045.076.045.441-.099.846zm-3.4-12.416c-5.523 0-10 4.477-10 10 0 1.761.459 3.417 1.261 4.86l-1.342 4.908 5.034-1.321c1.402.766 3.002 1.202 4.707 1.202 5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18.25c-1.527 0-2.955-.429-4.175-1.17l-.3-.182-3.1 3.1.825-3.013-.197-.314c-.815-1.293-1.286-2.822-1.286-4.469 0-4.549 3.701-8.25 8.25-8.25s8.25 3.701 8.25 8.25-3.701 8.25-8.25 8.25z"/></svg>
                 <span>WhatsApp</span>
               </a>
+              <a class="brand-social-badge" href="/" title="Dawat Nama by Elitara Showcase">
+                <span>About</span>
+              </a>
             </div>
           </div>
         </footer>
@@ -1869,6 +2388,11 @@
     document.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-brand-goto-front]");
       if (btn) {
+        const pageMode = resolveCurrentPageMode();
+        if (pageMode === "about" || pageMode === "admin") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
         const { card, event, view } = getUrlState();
         if (event || view === "events" || !document.getElementById("envelopeElement")) {
           updateUrlState(card, null, true, "cover");
@@ -2038,11 +2562,695 @@
       const t = I18N[currentLang];
       if (homeNavText) homeNavText.textContent = t.frontPageBtn || "Front Page";
       
-      if (viewName === "cover") {
+      if (viewName === "cover" || viewName === "about" || viewName === "admin") {
         homeNavBtn.style.display = "none";
       } else {
         homeNavBtn.style.display = "inline-flex";
       }
+    }
+
+    /* ==============================================================
+       ABOUT & SHOWCASE PAGE (Dawat Nama by Elitara)
+       ============================================================== */
+    function renderAboutPage(animateGlide = false) {
+      if (activeTimerHandle) clearInterval(activeTimerHandle);
+      updateNavigationControls("about");
+      const t = I18N[currentLang];
+      const instaUrl = "https://www.instagram.com/elitara_pk?xtok=MW5seTVrM2pvcjNhaw==";
+      const waUrl = "https://wa.me/923298120981?text=" + encodeURIComponent("Hello Elitara! I would like to order a digital wedding invitation from Dawat Nama.");
+
+      app.innerHTML = `
+        <div class="bismillah-calligraphy fade-in">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="monogram-badge rise-in">
+          ${getHeartBadgeSvg(44)}
+        </div>
+
+        <section class="about-hero rise-in">
+          <h1 class="couple-title" style="font-size: clamp(2rem, 5.5vw, 3.2rem); margin-bottom: 0.3rem;">
+            ${t.aboutTitle}
+          </h1>
+          <div class="about-brand-tagline">
+            ${t.aboutTagline}
+          </div>
+          <p class="about-intro-text">
+            ${t.aboutIntro}
+          </p>
+
+          <!-- 2 Main Badges: WhatsApp & Instagram + Direct Call -->
+          <div class="about-badges-bar">
+            <a class="about-badge-btn about-badge-wa" href="${waUrl}" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.074-2.122-.493-1.825-.724-3.003-2.569-3.094-2.69-.091-.122-.745-.992-.745-1.892s.471-1.343.638-1.528c.167-.184.364-.231.485-.231.122 0 .243.001.349.006.111.005.259-.042.405.31.146.353.499 1.218.544 1.309.045.091.076.197.015.319-.061.122-.091.197-.182.304-.091.107-.193.24-.275.322-.091.091-.186.19-.08.372.106.182.471.777 1.01 1.258.694.619 1.28.812 1.462.903.182.091.288.076.394-.045.106-.122.456-.531.577-.713.122-.182.243-.152.405-.091.162.061 1.033.486 1.211.577.178.091.299.137.344.213.045.076.045.441-.099.846zm-3.4-12.416c-5.523 0-10 4.477-10 10 0 1.761.459 3.417 1.261 4.86l-1.342 4.908 5.034-1.321c1.402.766 3.002 1.202 4.707 1.202 5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18.25c-1.527 0-2.955-.429-4.175-1.17l-.3-.182-3.1 3.1.825-3.013-.197-.314c-.815-1.293-1.286-2.822-1.286-4.469 0-4.549 3.701-8.25 8.25-8.25s8.25 3.701 8.25 8.25-3.701 8.25-8.25 8.25z"/></svg>
+              <span>${t.aboutChatWA}</span>
+            </a>
+            <a class="about-badge-btn about-badge-insta" href="${instaUrl}" target="_blank" rel="noopener noreferrer" aria-label="Follow Elitara on Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>${t.aboutFollowInsta}</span>
+            </a>
+            <a class="about-badge-btn about-badge-call" href="tel:03298120981" aria-label="Call Us Directly">
+              <span>📞 ${t.aboutCallUs}</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Live Samples Showcase -->
+        <div class="m-divider"><span>❖</span></div>
+        <h2 class="about-section-heading rise-in">${t.aboutLiveDemos}</h2>
+        <p class="about-section-sub rise-in">${currentLang === "ur" ? "ہمارے شاہانہ ڈیجیٹل شادی کارڈز کا لائیو جائزہ لیں:" : "Experience our real interactive invitations:"}</p>
+
+        <div class="about-demo-grid rise-in">
+          <div class="about-demo-card">
+            <div>
+              <span class="about-demo-tag">${t.aboutDemoTemplateSub}</span>
+              <h3 class="about-demo-names">${t.aboutDemoTemplateTitle}</h3>
+              <p class="about-demo-desc">${t.aboutDemoTemplateDesc}</p>
+            </div>
+            <a class="gold-btn" href="/Ahmed-&-Ayesha-wedding-invitation" style="margin-top:auto;">
+              ${t.aboutOpenCardBtn}
+            </a>
+          </div>
+
+          <div class="about-demo-card">
+            <div>
+              <span class="about-demo-tag">${t.aboutSignatureSub}</span>
+              <h3 class="about-demo-names">${t.aboutSignatureTitle}</h3>
+              <p class="about-demo-desc">${t.aboutSignatureDesc}</p>
+            </div>
+            <a class="outline-btn" href="/Usama-&-Bissal-wedding-invitation" style="margin-top:auto;">
+              ${t.aboutOpenCardBtn}
+            </a>
+          </div>
+        </div>
+
+        <!-- Features of Work Grid -->
+        <div class="m-divider"><span>❖</span></div>
+        <h2 class="about-section-heading rise-in">${t.aboutFeaturesHeading}</h2>
+        <div class="about-features-grid rise-in">
+          <div class="about-feature-box">
+            <span class="about-feature-icon">🎨</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat1Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat1Desc}</div>
+            </div>
+          </div>
+          <div class="about-feature-box">
+            <span class="about-feature-icon">📜</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat2Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat2Desc}</div>
+            </div>
+          </div>
+          <div class="about-feature-box">
+            <span class="about-feature-icon">💌</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat3Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat3Desc}</div>
+            </div>
+          </div>
+          <div class="about-feature-box">
+            <span class="about-feature-icon">⏱️</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat4Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat4Desc}</div>
+            </div>
+          </div>
+          <div class="about-feature-box">
+            <span class="about-feature-icon">📍</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat5Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat5Desc}</div>
+            </div>
+          </div>
+          <div class="about-feature-box">
+            <span class="about-feature-icon">💬</span>
+            <div>
+              <div class="about-feature-title">${t.aboutFeat6Title}</div>
+              <div class="about-feature-desc">${t.aboutFeat6Desc}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action Section -->
+        <div class="about-order-cta rise-in">
+          <div class="monogram-badge" style="margin: 0 auto 0.8rem;">
+            ${getHeartBadgeSvg(34)}
+          </div>
+          <h2 class="about-order-cta-title">${t.aboutOrderHeading}</h2>
+          <p class="about-order-cta-sub">${t.aboutOrderSub}</p>
+          <a class="gold-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 1.02rem; padding: 14px 28px;">
+            ${t.aboutOrderBtn}
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+          <p>Dawat Nama by Elitara · <strong>0329 8120981</strong></p>
+          <div class="brand-credit-line">
+            <div class="brand-social-badges">
+              <a class="brand-social-badge" href="${instaUrl}" target="_blank" rel="noopener noreferrer">
+                <span>Instagram @elitara_pk</span>
+              </a>
+              <a class="brand-social-badge" href="${waUrl}" target="_blank" rel="noopener noreferrer">
+                <span>WhatsApp: 0329 8120981</span>
+              </a>
+              <a class="brand-social-badge" href="/admin" title="Admin Invitation Studio">
+                <span>✦ ${t.aboutAdminLink}</span>
+              </a>
+            </div>
+          </div>
+        </footer>
+      `;
+      performPageEntryScroll(animateGlide);
+    }
+
+    /* ==============================================================
+       ADMIN PANEL (Zero-Cost Invitation Generator & Studio)
+       ============================================================== */
+    function renderAdminPage() {
+      if (activeTimerHandle) clearInterval(activeTimerHandle);
+      updateNavigationControls("admin");
+
+      const isAuthed = sessionStorage.getItem("edawatnama_admin_authed") === "true";
+
+      if (!isAuthed) {
+        app.innerHTML = `
+          <div class="bismillah-calligraphy fade-in">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+          <div class="monogram-badge rise-in">${getHeartBadgeSvg(40)}</div>
+          
+          <div class="admin-login-card rise-in">
+            <h2 class="couple-title" style="font-size:1.6rem; margin-bottom: 0.5rem;">Dawat Nama Studio</h2>
+            <p style="font-family:var(--sans); font-size:0.88rem; color:var(--cream-muted); margin-bottom:1.5rem;">
+              Enter your admin passcode to create and manage digital wedding invitations.
+            </p>
+            <form id="adminLoginForm">
+              <div style="margin-bottom:1.2rem;">
+                <input class="admin-input" type="password" id="adminPasscodeInput" placeholder="Enter Admin Passcode" autocomplete="current-password" autofocus required>
+              </div>
+              <button class="gold-btn" type="submit" style="width:100%;">✦ Unlock Studio ✦</button>
+            </form>
+            <p style="margin-top:1.2rem; font-size:0.75rem; color:var(--gold-primary); opacity:0.85;">
+              Passcode: <code>elitara2026</code> (100% Free · Zero Purchase Required)
+            </p>
+            <div style="margin-top:1.2rem;">
+              <a href="/" style="color:var(--cream-muted); font-size:0.8rem; text-decoration:underline;">← Back to Showcase</a>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("adminLoginForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const pass = document.getElementById("adminPasscodeInput").value.trim();
+          if (pass === "elitara2026" || pass === "dawatnama" || pass === "elitara") {
+            sessionStorage.setItem("edawatnama_admin_authed", "true");
+            renderAdminPage();
+          } else {
+            showToast("Incorrect passcode. Try elitara2026");
+          }
+        });
+        return;
+      }
+
+      // Load saved cards from localStorage
+      let savedCards = [];
+      try {
+        savedCards = JSON.parse(localStorage.getItem("edawatnama_saved_cards") || "[]");
+      } catch (e) {
+        savedCards = [];
+      }
+
+      function getSavedCardsListHtml() {
+        if (!savedCards.length) {
+          return `<p style="font-size:0.85rem; color:var(--cream-muted); font-style:italic;">No saved invitations yet. Fill out the form above to generate your first card!</p>`;
+        }
+        return `
+          <div class="admin-saved-list">
+            ${savedCards.map((c, idx) => {
+              const liveUrl = `${window.location.origin}/?invite=${c.encoded}`;
+              return `
+                <div class="admin-saved-item">
+                  <div>
+                    <strong style="color:var(--gold-light); font-size:0.95rem;">${c.groom} & ${c.bride}</strong>
+                    <div style="font-size:0.75rem; color:var(--cream-muted);">${c.createdAt || 'Saved Invitation'}</div>
+                  </div>
+                  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <a class="outline-btn" style="padding:4px 10px; font-size:0.75rem;" href="${liveUrl}" target="_blank">Open ↗</a>
+                    <button class="outline-btn" style="padding:4px 10px; font-size:0.75rem;" type="button" data-copy-link="${liveUrl}">Copy Link 📋</button>
+                    <button class="admin-remove-btn" type="button" data-delete-card="${idx}">Delete 🗑️</button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      app.innerHTML = `
+        <div class="admin-wrapper rise-in">
+          <div class="admin-top-bar">
+            <div>
+              <h1 class="couple-title" style="font-size:1.5rem; margin:0;">Dawat Nama Invitation Studio</h1>
+              <span style="font-size:0.78rem; color:var(--gold-primary);">100% Free · Zero Extra Purchase Required</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="outline-btn" id="loadDemoBtn" type="button" style="padding:6px 14px; font-size:0.8rem;">✨ Load Demo Data</button>
+              <a class="outline-btn" href="/" style="padding:6px 14px; font-size:0.8rem;">🌐 Showcase</a>
+              <button class="admin-remove-btn" id="logoutBtn" type="button" style="padding:6px 14px; font-size:0.8rem;">🔒 Lock</button>
+            </div>
+          </div>
+
+          <form id="cardGeneratorForm">
+            <!-- Couple Section -->
+            <div class="admin-section">
+              <div class="admin-section-header">👑 1. Bride & Groom Details</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Groom Full Name (English)</label>
+                  <input class="admin-input" type="text" id="f_groom" placeholder="e.g. Ahmed Raza" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Groom Name (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_groomUrdu" placeholder="e.g. احمد رضا" dir="rtl" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Bride Full Name (English)</label>
+                  <input class="admin-input" type="text" id="f_bride" placeholder="e.g. Ayesha Malik" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Bride Name (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_brideUrdu" placeholder="e.g. عائشہ ملک" dir="rtl" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hosts Section -->
+            <div class="admin-section">
+              <div class="admin-section-header">🏛️ 2. Family & Hosts</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Main Host Line (English)</label>
+                  <input class="admin-input" type="text" id="f_host" placeholder="e.g. Mr. & Mrs. Tariq Mahmood" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Main Host Line (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_hostUrdu" placeholder="e.g. جناب و محترمہ طارق محمود" dir="rtl" required>
+                </div>
+              </div>
+
+              <div style="margin-top:1rem;">
+                <label class="admin-field-label">Welcoming Hosts (Awaiting to Welcome / چشم براہ)</label>
+                <div class="admin-hosts-list" id="hostsListContainer"></div>
+                <button class="outline-btn" id="addHostBtn" type="button" style="padding:6px 12px; font-size:0.8rem;">+ Add Another Host</button>
+              </div>
+            </div>
+
+            <!-- Mehndi Ceremony -->
+            <div class="admin-section">
+              <div class="admin-section-header">🌿 3. Mehndi Ceremony (Rasm-e-Hina)</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Date & Time</label>
+                  <input class="admin-input" type="datetime-local" id="f_m_dt" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Date (English)</label>
+                  <input class="admin-input" type="text" id="f_m_date" placeholder="e.g. Thursday, 10th December 2026" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Display Date (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_m_dateUr" placeholder="e.g. بروز جمعرات، ۱۰ دسمبر ۲۰۲۶ء" dir="rtl" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Time (English & Urdu)</label>
+                  <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Venue Name (English)</label>
+                  <input class="admin-input" type="text" id="f_m_venue" placeholder="e.g. Royal Palm Golf & Country Club, Lahore" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Address (English)</label>
+                  <input class="admin-input" type="text" id="f_m_addr" placeholder="e.g. 52 Canal Bank Road, Lahore" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Google Maps Link</label>
+                  <input class="admin-input" type="url" id="f_m_map" placeholder="https://maps.google.com/..." required>
+                </div>
+                <div>
+                  <label class="admin-field-label">RSVP WhatsApp Number</label>
+                  <input class="admin-input" type="text" id="f_m_rsvp" placeholder="+923012345678" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Baraat Ceremony -->
+            <div class="admin-section">
+              <div class="admin-section-header">🎺 4. Baraat Ceremony</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Date & Time</label>
+                  <input class="admin-input" type="datetime-local" id="f_b_dt" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Date (English)</label>
+                  <input class="admin-input" type="text" id="f_b_date" placeholder="e.g. Friday, 11th December 2026" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Display Date (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_b_dateUr" placeholder="e.g. بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء" dir="rtl" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Time (English & Urdu)</label>
+                  <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. Sehra Bandi: 4:30 PM · Departure: 5:30 PM" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Venue Name (English)</label>
+                  <input class="admin-input" type="text" id="f_b_venue" placeholder="e.g. Grand Ballroom, Pearl Continental, Lahore" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Address (English)</label>
+                  <input class="admin-input" type="text" id="f_b_addr" placeholder="e.g. Shahrah-e-Quaid-e-Azam, Lahore" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Google Maps Link</label>
+                  <input class="admin-input" type="url" id="f_b_map" placeholder="https://maps.google.com/..." required>
+                </div>
+                <div>
+                  <label class="admin-field-label">RSVP WhatsApp Number</label>
+                  <input class="admin-input" type="text" id="f_b_rsvp" placeholder="+923012345678" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Walima Ceremony -->
+            <div class="admin-section">
+              <div class="admin-section-header">✨ 5. Walima Reception</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Date & Time</label>
+                  <input class="admin-input" type="datetime-local" id="f_w_dt" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Date (English)</label>
+                  <input class="admin-input" type="text" id="f_w_date" placeholder="e.g. Saturday, 12th December 2026" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Display Date (Urdu)</label>
+                  <input class="admin-input" type="text" id="f_w_dateUr" placeholder="e.g. بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء" dir="rtl" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Display Time (English & Urdu)</label>
+                  <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Venue Name (English)</label>
+                  <input class="admin-input" type="text" id="f_w_venue" placeholder="e.g. Crystal Hall, Nishat Banquets, Emporium Mall, Lahore" required>
+                </div>
+                <div>
+                  <label class="admin-field-label">Address (English)</label>
+                  <input class="admin-input" type="text" id="f_w_addr" placeholder="e.g. Abdul Haque Road, Johar Town, Lahore" required>
+                </div>
+              </div>
+              <div class="admin-grid-2">
+                <div>
+                  <label class="admin-field-label">Google Maps Link</label>
+                  <input class="admin-input" type="url" id="f_w_map" placeholder="https://maps.google.com/..." required>
+                </div>
+                <div>
+                  <label class="admin-field-label">RSVP WhatsApp Number</label>
+                  <input class="admin-input" type="text" id="f_w_rsvp" placeholder="+923012345678" required>
+                </div>
+              </div>
+            </div>
+
+            <button class="gold-btn" type="submit" style="width:100%; font-size:1.05rem; padding:14px;">
+              ✦ Generate & Save Digital Invitation Card ✦
+            </button>
+          </form>
+
+          <!-- Result Container -->
+          <div id="adminResultArea" style="display:none;"></div>
+
+          <!-- Saved Cards Section -->
+          <div class="admin-section" style="margin-top:2rem;">
+            <div class="admin-section-header">📁 Your Created Invitations</div>
+            <div id="savedCardsContainer">
+              ${getSavedCardsListHtml()}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Wire Hosts List
+      let currentHosts = [
+        { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
+        { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
+        { name: "Hamza Tariq", nameUrdu: "حمزہ طارق", phone: "+92 303 4567890" },
+        { name: "Zain Ali", nameUrdu: "زین علی", phone: "+92 304 5678901" }
+      ];
+
+      function renderHostsInputs() {
+        const c = document.getElementById("hostsListContainer");
+        if (!c) return;
+        c.innerHTML = currentHosts.map((h, i) => `
+          <div class="admin-host-row">
+            <input class="admin-input" type="text" placeholder="Name (EN)" value="${h.name}" data-host-idx="${i}" data-host-prop="name">
+            <input class="admin-input" type="text" placeholder="Name (UR)" value="${h.nameUrdu}" dir="rtl" data-host-idx="${i}" data-host-prop="nameUrdu">
+            <input class="admin-input" type="text" placeholder="Phone (+92 301 ...)" value="${h.phone}" data-host-idx="${i}" data-host-prop="phone">
+            <button class="admin-remove-btn" type="button" data-del-host="${i}">✕</button>
+          </div>
+        `).join("");
+
+        c.querySelectorAll("input").forEach(inp => {
+          inp.addEventListener("input", (e) => {
+            const idx = parseInt(e.target.getAttribute("data-host-idx"));
+            const prop = e.target.getAttribute("data-host-prop");
+            currentHosts[idx][prop] = e.target.value;
+          });
+        });
+
+        c.querySelectorAll("[data-del-host]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.getAttribute("data-del-host"));
+            currentHosts.splice(idx, 1);
+            renderHostsInputs();
+          });
+        });
+      }
+
+      renderHostsInputs();
+
+      document.getElementById("addHostBtn").addEventListener("click", () => {
+        currentHosts.push({ name: "", nameUrdu: "", phone: "+92 " });
+        renderHostsInputs();
+      });
+
+      // Sample Data Loader
+      function fillSampleData() {
+        document.getElementById("f_groom").value = "Ahmed Raza";
+        document.getElementById("f_groomUrdu").value = "احمد رضا";
+        document.getElementById("f_bride").value = "Ayesha Malik";
+        document.getElementById("f_brideUrdu").value = "عائشہ ملک";
+        document.getElementById("f_host").value = "Mr. & Mrs. Tariq Mahmood";
+        document.getElementById("f_hostUrdu").value = "جناب و محترمہ طارق محمود";
+
+        document.getElementById("f_m_dt").value = "2026-12-10T19:00";
+        document.getElementById("f_m_date").value = "Thursday, 10th December 2026";
+        document.getElementById("f_m_dateUr").value = "بروز جمعرات، ۱۰ دسمبر ۲۰۲۶ء";
+        document.getElementById("f_m_time").value = "7:00 PM";
+        document.getElementById("f_m_venue").value = "Royal Palm Golf & Country Club, Lahore";
+        document.getElementById("f_m_addr").value = "52 Canal Bank Road, Lahore";
+        document.getElementById("f_m_map").value = "https://maps.google.com/?q=Royal+Palm+Golf+and+Country+Club+Lahore";
+        document.getElementById("f_m_rsvp").value = "+923012345678";
+
+        document.getElementById("f_b_dt").value = "2026-12-11T16:30";
+        document.getElementById("f_b_date").value = "Friday, 11th December 2026";
+        document.getElementById("f_b_dateUr").value = "بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء";
+        document.getElementById("f_b_time").value = "Sehra Bandi: 4:30 PM · Departure: 5:30 PM";
+        document.getElementById("f_b_venue").value = "Grand Ballroom, Pearl Continental, Lahore";
+        document.getElementById("f_b_addr").value = "Shahrah-e-Quaid-e-Azam, Lahore";
+        document.getElementById("f_b_map").value = "https://maps.google.com/?q=Pearl+Continental+Hotel+Lahore";
+        document.getElementById("f_b_rsvp").value = "+923012345678";
+
+        document.getElementById("f_w_dt").value = "2026-12-12T19:00";
+        document.getElementById("f_w_date").value = "Saturday, 12th December 2026";
+        document.getElementById("f_w_dateUr").value = "بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء";
+        document.getElementById("f_w_time").value = "7:00 PM";
+        document.getElementById("f_w_venue").value = "Crystal Hall, Nishat Banquets, Emporium Mall, Lahore";
+        document.getElementById("f_w_addr").value = "Abdul Haque Road, Johar Town, Lahore";
+        document.getElementById("f_w_map").value = "https://maps.google.com/?q=Nishat+Banquets+Lahore";
+        document.getElementById("f_w_rsvp").value = "+923012345678";
+
+        currentHosts = [
+          { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
+          { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
+          { name: "Hamza Tariq", nameUrdu: "حمزہ طارق", phone: "+92 303 4567890" },
+          { name: "Zain Ali", nameUrdu: "زین علی", phone: "+92 304 5678901" }
+        ];
+        renderHostsInputs();
+        showToast("Demo data loaded!");
+      }
+
+      document.getElementById("loadDemoBtn").addEventListener("click", fillSampleData);
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem("edawatnama_admin_authed");
+        renderAdminPage();
+      });
+
+      // Handle Card Generation
+      document.getElementById("cardGeneratorForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const groom = document.getElementById("f_groom").value.trim();
+        const groomUrdu = document.getElementById("f_groomUrdu").value.trim();
+        const bride = document.getElementById("f_bride").value.trim();
+        const brideUrdu = document.getElementById("f_brideUrdu").value.trim();
+        const host = document.getElementById("f_host").value.trim();
+        const hostUrdu = document.getElementById("f_hostUrdu").value.trim();
+
+        const cardData = {
+          slug: `${groom.replace(/[^a-zA-Z0-9]/g, "-")}-&-${bride.replace(/[^a-zA-Z0-9]/g, "-")}-wedding-invitation`,
+          groom,
+          groomUrdu,
+          bride,
+          brideUrdu,
+          host,
+          hostUrdu,
+          welcomeHosts: currentHosts.filter(h => h.name && h.phone),
+          events: {
+            mehndi: {
+              dateTime: document.getElementById("f_m_dt").value + ":00+05:00",
+              displayDate: document.getElementById("f_m_date").value.trim(),
+              displayDateUrdu: document.getElementById("f_m_dateUr").value.trim(),
+              displayTime: document.getElementById("f_m_time").value.trim(),
+              displayTimeUrdu: document.getElementById("f_m_time").value.trim(),
+              venue: document.getElementById("f_m_venue").value.trim(),
+              venueUrdu: document.getElementById("f_m_venue").value.trim(),
+              address: document.getElementById("f_m_addr").value.trim(),
+              addressUrdu: document.getElementById("f_m_addr").value.trim(),
+              mapUrl: document.getElementById("f_m_map").value.trim(),
+              rsvpPhone: document.getElementById("f_m_rsvp").value.trim()
+            },
+            baraat: {
+              dateTime: document.getElementById("f_b_dt").value + ":00+05:00",
+              displayDate: document.getElementById("f_b_date").value.trim(),
+              displayDateUrdu: document.getElementById("f_b_dateUr").value.trim(),
+              displayTime: document.getElementById("f_b_time").value.trim(),
+              displayTimeUrdu: document.getElementById("f_b_time").value.trim(),
+              venue: document.getElementById("f_b_venue").value.trim(),
+              venueUrdu: document.getElementById("f_b_venue").value.trim(),
+              address: document.getElementById("f_b_addr").value.trim(),
+              addressUrdu: document.getElementById("f_b_addr").value.trim(),
+              mapUrl: document.getElementById("f_b_map").value.trim(),
+              rsvpPhone: document.getElementById("f_b_rsvp").value.trim()
+            },
+            walima: {
+              dateTime: document.getElementById("f_w_dt").value + ":00+05:00",
+              displayDate: document.getElementById("f_w_date").value.trim(),
+              displayDateUrdu: document.getElementById("f_w_dateUr").value.trim(),
+              displayTime: document.getElementById("f_w_time").value.trim(),
+              displayTimeUrdu: document.getElementById("f_w_time").value.trim(),
+              venue: document.getElementById("f_w_venue").value.trim(),
+              venueUrdu: document.getElementById("f_w_venue").value.trim(),
+              address: document.getElementById("f_w_addr").value.trim(),
+              addressUrdu: document.getElementById("f_w_addr").value.trim(),
+              mapUrl: document.getElementById("f_w_map").value.trim(),
+              rsvpPhone: document.getElementById("f_w_rsvp").value.trim()
+            }
+          }
+        };
+
+        const encoded = encodeWeddingData(cardData);
+        const liveUrl = `${window.location.origin}/?invite=${encoded}`;
+        const waShareText = `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${groom} & ${bride}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`;
+
+        // Save to localStorage
+        const newRecord = {
+          groom,
+          bride,
+          encoded,
+          createdAt: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
+        };
+        savedCards.unshift(newRecord);
+        try {
+          localStorage.setItem("edawatnama_saved_cards", JSON.stringify(savedCards));
+        } catch (e) {}
+
+        const resultArea = document.getElementById("adminResultArea");
+        resultArea.style.display = "block";
+        resultArea.innerHTML = `
+          <div class="admin-result-box">
+            <h3 style="color:var(--gold-light); font-family:var(--serif); margin:0 0 6px;">✦ Digital Invitation Generated Successfully! ✦</h3>
+            <p style="font-size:0.85rem; color:var(--cream); margin-bottom:12px;">
+              Your royal wedding card is ready to share. Anyone with this link can open and experience the full card.
+            </p>
+            <div class="admin-link-display">
+              <input class="admin-input" type="text" id="generatedLinkInput" value="${liveUrl}" readonly>
+              <button class="gold-btn" id="copyGenLinkBtn" type="button" style="white-space:nowrap;">📋 Copy Link</button>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+              <a class="gold-btn" href="${liveUrl}" target="_blank">👁️ Open Card in New Tab</a>
+              <button class="outline-btn" id="copyWaShareBtn" type="button">💬 Copy WhatsApp Message</button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("copyGenLinkBtn").addEventListener("click", () => {
+          navigator.clipboard.writeText(liveUrl);
+          showToast("Link copied to clipboard!");
+        });
+
+        document.getElementById("copyWaShareBtn").addEventListener("click", () => {
+          navigator.clipboard.writeText(waShareText);
+          showToast("WhatsApp message copied!");
+        });
+
+        document.getElementById("savedCardsContainer").innerHTML = getSavedCardsListHtml();
+        wireSavedCardsActions();
+        resultArea.scrollIntoView({ behavior: "smooth" });
+      });
+
+      function wireSavedCardsActions() {
+        document.querySelectorAll("[data-copy-link]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const link = btn.getAttribute("data-copy-link");
+            navigator.clipboard.writeText(link);
+            showToast("Invitation link copied!");
+          });
+        });
+
+        document.querySelectorAll("[data-delete-card]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.getAttribute("data-delete-card"));
+            if (confirm("Are you sure you want to delete this saved invitation?")) {
+              savedCards.splice(idx, 1);
+              try {
+                localStorage.setItem("edawatnama_saved_cards", JSON.stringify(savedCards));
+              } catch (e) {}
+              document.getElementById("savedCardsContainer").innerHTML = getSavedCardsListHtml();
+              wireSavedCardsActions();
+            }
+          });
+        });
+      }
+
+      wireSavedCardsActions();
     }
 
     function renderEnvelopeScreen(animateGlide = false) {
@@ -2450,6 +3658,18 @@
     }
 
     function routeCurrentState(isPopState = false) {
+      WEDDING = resolveCurrentWeddingConfig();
+      const pageMode = resolveCurrentPageMode();
+
+      if (pageMode === "about") {
+        renderAboutPage(isPopState);
+        return;
+      }
+      if (pageMode === "admin") {
+        renderAdminPage();
+        return;
+      }
+
       const { card, event, view } = getUrlState();
       if (event) {
         renderEventDetailScreen(event, true);
@@ -2489,6 +3709,16 @@
         musicText.textContent = I18N[currentLang].musicOff;
       } else {
         musicText.textContent = I18N[currentLang].musicOn;
+      }
+
+      const pageMode = resolveCurrentPageMode();
+      if (pageMode === "about") {
+        renderAboutPage(false);
+        return;
+      }
+      if (pageMode === "admin") {
+        renderAdminPage();
+        return;
       }
 
       const { event, view } = getUrlState();
@@ -2536,7 +3766,31 @@
       }
     });
 
+    // Intercept client-side link navigation for smooth SPA feel
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("a[href^='/']");
+      if (link && !link.target && !link.hasAttribute("download")) {
+        const href = link.getAttribute("href");
+        if (href.startsWith("/#") || href.includes("mailto:") || href.includes("tel:")) return;
+        e.preventDefault();
+        window.history.pushState(null, "", href);
+        routeCurrentState(false);
+      }
+    });
+
     function initAppHistoryAndRoute() {
+      WEDDING = resolveCurrentWeddingConfig();
+      const pageMode = resolveCurrentPageMode();
+
+      if (pageMode === "about") {
+        renderAboutPage(false);
+        return;
+      }
+      if (pageMode === "admin") {
+        renderAdminPage();
+        return;
+      }
+
       const { card, event, view } = getUrlState();
       if (event) {
         // Synthesize an "events" history entry behind this detail view
