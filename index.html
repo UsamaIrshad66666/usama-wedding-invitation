@@ -1328,17 +1328,33 @@
       return { card, event };
     }
 
+    function getCleanInvitationPath() {
+      // If deployed in a subfolder or root, keep base path but allow custom slug
+      let path = window.location.pathname;
+      if (path.endsWith("index.html")) {
+        path = path.slice(0, -10);
+      }
+      if (!path.endsWith("/")) {
+        path += "/";
+      }
+      return `${path}Usama-&-Bissal-wedding-invitation`;
+    }
+
     function updateUrlState(card, event, push = true) {
       const p = new URLSearchParams();
       if (card && card !== "all") {
         p.set("card", card);
-      } else {
-        p.set("card", "all");
       }
       if (event) {
         p.set("event", event);
       }
-      const newUrl = `${window.location.pathname}?${p.toString()}`;
+      const qs = p.toString();
+      // Keep custom path if already on it, or preserve standard
+      let targetPath = window.location.pathname;
+      if (targetPath.includes("Usama-&-Bissal-wedding-invitation")) {
+        targetPath = getCleanInvitationPath();
+      }
+      const newUrl = qs ? `${targetPath}?${qs}` : targetPath;
       if (push) {
         window.history.pushState({ card, event }, "", newUrl);
       } else {
@@ -1962,9 +1978,20 @@
     }
 
     async function handleShareEvent() {
-      const shareUrl = window.location.href;
+      const { card, event } = getUrlState();
+      const p = new URLSearchParams();
+      if (card && card !== "all") {
+        p.set("card", card);
+      }
+      if (event) {
+        p.set("event", event);
+      }
+      const qs = p.toString();
+      const origin = window.location.origin;
+      const basePath = getCleanInvitationPath();
+      const shareUrl = qs ? `${origin}${basePath}?${qs}` : `${origin}${basePath}`;
       const t = I18N[currentLang];
-      const shareTitle = `${WEDDING.groom} & ${WEDDING.bride} — Wedding Invitation`;
+      const shareTitle = `Usama & Bissal — Wedding Invitation`;
 
       if (navigator.share) {
         try {
