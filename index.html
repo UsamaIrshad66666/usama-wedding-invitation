@@ -1328,16 +1328,13 @@
       return { card, event };
     }
 
+    const ASSET_BASE = window.location.protocol === "file:" ? "assets/" : "/assets/";
+
     function getCleanInvitationPath() {
-      // If deployed in a subfolder or root, keep base path but allow custom slug
-      let path = window.location.pathname;
-      if (path.endsWith("index.html")) {
-        path = path.slice(0, -10);
+      if (window.location.protocol === "file:") {
+        return window.location.pathname;
       }
-      if (!path.endsWith("/")) {
-        path += "/";
-      }
-      return `${path}Usama-&-Bissal-wedding-invitation`;
+      return "/Usama-&-Bissal-wedding-invitation";
     }
 
     function updateUrlState(card, event, push = true) {
@@ -1349,10 +1346,12 @@
         p.set("event", event);
       }
       const qs = p.toString();
-      // Keep custom path if already on it, or preserve standard
       let targetPath = window.location.pathname;
-      if (targetPath.includes("Usama-&-Bissal-wedding-invitation")) {
-        targetPath = getCleanInvitationPath();
+      if (window.location.protocol !== "file:") {
+        // Keep clean single-segment slug without ever duplicating it
+        if (decodeURIComponent(targetPath).includes("Usama-&-Bissal-wedding-invitation")) {
+          targetPath = "/Usama-&-Bissal-wedding-invitation";
+        }
       }
       const newUrl = qs ? `${targetPath}?${qs}` : targetPath;
       if (push) {
@@ -1473,8 +1472,8 @@
       return `
         <div class="illustration-stage seq-step seq-3">
           <div class="scene-flipbook motion-mehndi">
-            <img class="scene-artwork-img frame-1" src="assets/mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
-            <img class="scene-artwork-img frame-2" src="assets/mehndi-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
+            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}mehndi-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
           </div>
           <!-- Live Twinkling Fairy Lights & Soft Floating Marigold Petals Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -1524,7 +1523,7 @@
     function buildBaraatStage() {
       return `
         <div class="illustration-stage seq-step seq-4">
-          <img class="scene-artwork-img motion-baraat" src="assets/baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
+          <img class="scene-artwork-img motion-baraat" src="${ASSET_BASE}baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
           <!-- Live Twinkling Mughal Arch Lights & Falling Red Rose Petals Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -1568,8 +1567,8 @@
       return `
         <div class="illustration-stage seq-step seq-3">
           <div class="scene-flipbook motion-walima">
-            <img class="scene-artwork-img frame-1" src="assets/walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
-            <img class="scene-artwork-img frame-2" src="assets/walima-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
+            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}walima-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
           </div>
           <!-- Live Chandelier Sparkles & Gown Sequin Shimmer Overlay -->
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
