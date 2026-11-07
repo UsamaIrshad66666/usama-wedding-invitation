@@ -1011,7 +1011,7 @@
       padding: 10px 22px;
       font-size: 0.85rem;
       border-radius: 25px;
-      z-index: 100;
+      z-index: 110;
       opacity: 0;
       transition: var(--transition);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
@@ -1020,6 +1020,70 @@
     .toast-msg.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
+    }
+
+    /* Bottom Scroll Tutorial / Swipe-Up Hint Pill */
+    .scroll-tutorial-pill {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(90px);
+      background: linear-gradient(135deg, rgba(10, 31, 23, 0.95), rgba(18, 49, 37, 0.95));
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      padding: 9px 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      z-index: 95;
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 15px rgba(212, 173, 93, 0.22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      white-space: nowrap;
+      max-width: calc(100vw - 32px);
+    }
+    .scroll-tutorial-pill.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .scroll-tutorial-pill:hover {
+      border-color: var(--gold-bright);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 173, 93, 0.38);
+    }
+    .scroll-tutorial-icon {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(212, 173, 93, 0.18);
+      border: 1px solid rgba(212, 173, 93, 0.55);
+      color: var(--gold-bright);
+      font-size: 0.85rem;
+      line-height: 1;
+      flex-shrink: 0;
+      animation: swipeUpGesture 1.5s ease-in-out infinite;
+    }
+    @keyframes swipeUpGesture {
+      0%, 100% { transform: translateY(3px); opacity: 0.75; }
+      50% { transform: translateY(-3px); opacity: 1; }
+    }
+    html[dir="rtl"] .scroll-tutorial-pill {
+      font-family: var(--urdu), var(--sans);
+      letter-spacing: normal;
+      font-size: 0.82rem;
     }
 
     /* Footer */
@@ -1128,6 +1192,11 @@
     </header>
 
     <main class="main-canvas" id="app" aria-live="polite"></main>
+
+    <button class="scroll-tutorial-pill" id="scrollTutorialPill" type="button" aria-label="Scroll down for more details">
+      <span class="scroll-tutorial-icon" aria-hidden="true">⇅</span>
+      <span id="scrollTutorialText">Swipe up to scroll for full details ↓</span>
+    </button>
 
     <div class="toast-msg" id="toastMsg" role="alert">Link copied to clipboard!</div>
     <audio id="weddingMusic" loop preload="none" src="assets/wedding-music.mp3"></audio>
@@ -1266,7 +1335,8 @@
         eventUnavailableMsg: "The requested event is not part of this invitation card.",
         viewYourEventsBtn: "View Your Invitation Events",
         baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
-        baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain"
+        baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
+        scrollTutorialText: "Swipe up to scroll for full details ↓"
       },
       ur: {
         langBtn: "English / اردو",
@@ -1311,14 +1381,133 @@
         eventUnavailableMsg: "یہ تقریب اس دعوت نامے میں شامل نہیں ہے۔",
         viewYourEventsBtn: "اپنے دعوت نامے کی تقریبات دیکھیں",
         baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
-        baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain"
+        baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
+        scrollTutorialText: "مکمل تفصیلات دیکھنے کے لیے اوپر سوائپ کریں ↓"
       }
     };
 
     let currentLang = "en";
     let activeTimerHandle = null;
+    let activeScrollRaf = null;
+    let scrollTutorialTimer = null;
+    let isAutoScrolling = false;
     const app = document.getElementById("app");
     const toast = document.getElementById("toastMsg");
+    const scrollTutorialPill = document.getElementById("scrollTutorialPill");
+    const scrollTutorialTextEl = document.getElementById("scrollTutorialText");
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    function cancelAutoScroll() {
+      if (activeScrollRaf) {
+        cancelAnimationFrame(activeScrollRaf);
+        activeScrollRaf = null;
+      }
+      isAutoScrolling = false;
+    }
+
+    function updateScrollTutorialVisibility() {
+      if (!scrollTutorialPill) return;
+      if (scrollTutorialTextEl) {
+        scrollTutorialTextEl.textContent = I18N[currentLang].scrollTutorialText;
+      }
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      if (maxScroll > 70 && window.scrollY < 85) {
+        scrollTutorialPill.classList.add("visible");
+      } else {
+        scrollTutorialPill.classList.remove("visible");
+      }
+    }
+
+    function animateScrollToY(targetY, durationMs = 1000, onComplete = null) {
+      cancelAutoScroll();
+      const startY = window.scrollY || window.pageYOffset || 0;
+      const distance = targetY - startY;
+      if (Math.abs(distance) < 4) {
+        window.scrollTo(0, targetY);
+        if (onComplete) onComplete();
+        return;
+      }
+
+      isAutoScrolling = true;
+      const startTime = performance.now();
+
+      function step(now) {
+        if (!isAutoScrolling) return;
+        const elapsed = Math.min(1, (now - startTime) / durationMs);
+        // Smooth cosine ease-in-out so the 1-second glide is clearly visible
+        const eased = 0.5 - Math.cos(elapsed * Math.PI) / 2;
+        window.scrollTo(0, Math.round(startY + distance * eased));
+
+        if (elapsed < 1) {
+          activeScrollRaf = requestAnimationFrame(step);
+        } else {
+          window.scrollTo(0, targetY);
+          isAutoScrolling = false;
+          activeScrollRaf = null;
+          if (onComplete) onComplete();
+        }
+      }
+
+      activeScrollRaf = requestAnimationFrame(step);
+    }
+
+    function performPageEntryScroll(animateGlide = true) {
+      cancelAutoScroll();
+      if (scrollTutorialTimer) clearTimeout(scrollTutorialTimer);
+      if (scrollTutorialPill) scrollTutorialPill.classList.remove("visible");
+
+      const previousScrollY = window.scrollY || window.pageYOffset || 0;
+
+      requestAnimationFrame(() => {
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+        if (!animateGlide) {
+          window.scrollTo(0, 0);
+          scrollTutorialTimer = setTimeout(updateScrollTutorialVisibility, 900);
+          return;
+        }
+
+        // Start from the previous scroll offset (or a 260px lower preview if near the top)
+        // so the user watches the new page glide up to the top in 1 second
+        const startOffset = previousScrollY > 140
+          ? Math.min(previousScrollY, Math.max(220, maxScroll))
+          : Math.min(260, maxScroll);
+
+        if (startOffset > 30) {
+          window.scrollTo(0, startOffset);
+          // Brief 90ms paint pause so the lower section is seen before gliding up over 1.0s
+          scrollTutorialTimer = setTimeout(() => {
+            animateScrollToY(0, 1000, () => {
+              updateScrollTutorialVisibility();
+            });
+          }, 90);
+        } else {
+          window.scrollTo(0, 0);
+          scrollTutorialTimer = setTimeout(updateScrollTutorialVisibility, 400);
+        }
+      });
+    }
+
+    window.addEventListener("wheel", () => { if (isAutoScrolling) cancelAutoScroll(); }, { passive: true });
+    window.addEventListener("touchstart", () => { if (isAutoScrolling) cancelAutoScroll(); }, { passive: true });
+    window.addEventListener("scroll", () => {
+      if (isAutoScrolling) return;
+      if (window.scrollY > 85 && scrollTutorialPill) {
+        scrollTutorialPill.classList.remove("visible");
+      }
+    }, { passive: true });
+
+    if (scrollTutorialPill) {
+      scrollTutorialPill.addEventListener("click", () => {
+        scrollTutorialPill.classList.remove("visible");
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const nextY = Math.min(maxScroll, (window.scrollY || 0) + Math.round(window.innerHeight * 0.68));
+        animateScrollToY(nextY, 750);
+      });
+    }
 
     function getUrlState() {
       const p = new URLSearchParams(window.location.search);
@@ -1624,7 +1813,7 @@
       }
     }
 
-    function renderEnvelopeScreen() {
+    function renderEnvelopeScreen(animateGlide = false) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("cover");
       const t = I18N[currentLang];
@@ -1692,15 +1881,16 @@
         setTimeout(() => {
           const { card } = getUrlState();
           updateUrlState(card, null, true);
-          renderEventListScreen();
+          renderEventListScreen(true);
         }, 900);
       }
 
       document.getElementById("openInviteActionBtn").addEventListener("click", triggerOpening);
       document.getElementById("waxSealBtn").addEventListener("click", triggerOpening);
+      performPageEntryScroll(animateGlide);
     }
 
-    function renderEventListScreen() {
+    function renderEventListScreen(animateGlide = true) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("events");
       const { card } = getUrlState();
@@ -1753,12 +1943,14 @@
         btn.addEventListener("click", () => {
           const targetKey = btn.getAttribute("data-event-key");
           updateUrlState(card, targetKey, true);
-          renderEventDetailScreen(targetKey);
+          renderEventDetailScreen(targetKey, true);
         });
       });
+
+      performPageEntryScroll(animateGlide);
     }
 
-    function renderEventDetailScreen(eventKey) {
+    function renderEventDetailScreen(eventKey, animateGlide = true) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("detail");
       const { card } = getUrlState();
@@ -1887,13 +2079,13 @@
 
       document.getElementById("backToEventsBtn").addEventListener("click", () => {
         updateUrlState(card, null, true);
-        renderEventListScreen();
+        renderEventListScreen(true);
       });
 
       document.getElementById("shareDetailBtn").addEventListener("click", handleShareEvent);
 
       startCountdown(eventKey);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      performPageEntryScroll(animateGlide);
     }
 
     function renderUnavailableScreen() {
@@ -1903,7 +2095,7 @@
       app.innerHTML = `
         <div class="detail-container fade-in" style="margin-top:2rem;">
           <div class="detail-panel">
-            <div class="monogram-badge"><span class="monogram-text">UI</span></div>
+            <div class="monogram-badge">${getHeartBadgeSvg(38)}</div>
             <h2 class="detail-title" style="font-size:2rem;">${t.eventUnavailableTitle}</h2>
             <p class="detail-desc" style="margin-top:1rem;">${t.eventUnavailableMsg}</p>
             <button class="gold-btn" id="returnVariantEventsBtn" style="margin-top:1.5rem;" type="button">
@@ -1914,8 +2106,9 @@
       `;
       document.getElementById("returnVariantEventsBtn").addEventListener("click", () => {
         updateUrlState(card, null, true);
-        renderEventListScreen();
+        renderEventListScreen(true);
       });
+      performPageEntryScroll(false);
     }
 
     function startCountdown(eventKey) {
@@ -2024,17 +2217,17 @@
       }, 3000);
     }
 
-    function routeCurrentState() {
+    function routeCurrentState(isPopState = false) {
       const { card, event } = getUrlState();
       if (event) {
-        renderEventDetailScreen(event);
+        renderEventDetailScreen(event, true);
       } else {
-        renderEnvelopeScreen();
+        renderEnvelopeScreen(isPopState);
       }
     }
 
     window.addEventListener("popstate", () => {
-      routeCurrentState();
+      routeCurrentState(true);
     });
 
     const langToggleBtn = document.getElementById("langToggleBtn");
@@ -2045,8 +2238,7 @@
       homeNavBtn.addEventListener("click", () => {
         const { card } = getUrlState();
         updateUrlState(card, null, true);
-        renderEnvelopeScreen();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        renderEnvelopeScreen(true);
       });
     }
 
@@ -2067,11 +2259,11 @@
 
       const { event } = getUrlState();
       if (event) {
-        renderEventDetailScreen(event);
+        renderEventDetailScreen(event, false);
       } else if (document.getElementById("envelopeElement")) {
-        renderEnvelopeScreen();
+        renderEnvelopeScreen(false);
       } else {
-        renderEventListScreen();
+        renderEventListScreen(false);
       }
     }
 
