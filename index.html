@@ -1217,9 +1217,10 @@
 
   <script>
     /* ==============================================================
-       WEDDING CONFIGURATION & DETAILS
+       WEDDING CONFIGURATIONS (ACTIVE + DEMO TEMPLATE)
        ============================================================== */
-    const WEDDING = {
+    const WEDDING_DATA_USAMA = {
+      slug: "Usama-&-Bissal-wedding-invitation",
       groom: "Syed Usama Irshad",
       groomUrdu: "سید اسامہ ارشاد",
       bride: "Dr. Bissal Khan",
@@ -1273,6 +1274,72 @@
         }
       }
     };
+
+    const WEDDING_DATA_DEMO = {
+      slug: "Ahmed-&-Ayesha-wedding-invitation",
+      groom: "Ahmed Raza",
+      groomUrdu: "احمد رضا",
+      bride: "Ayesha Malik",
+      host: "Mr. & Mrs. Tariq Mahmood",
+      hostUrdu: "جناب و محترمہ طارق محمود",
+      welcomeHosts: [
+        { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
+        { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
+        { name: "Hamza Tariq", nameUrdu: "حمزہ طارق", phone: "+92 303 4567890" },
+        { name: "Zain Ali", nameUrdu: "زین علی", phone: "+92 304 5678901" }
+      ],
+      events: {
+        mehndi: {
+          dateTime: "2026-12-10T19:00:00+05:00",
+          displayDate: "Thursday, 10th December 2026",
+          displayDateUrdu: "بروز جمعرات، ۱۰ دسمبر ۲۰۲۶ء",
+          displayTime: "7:00 PM",
+          displayTimeUrdu: "شام ۷:۰۰ بجے",
+          venue: "Royal Palm Golf & Country Club, Lahore",
+          venueUrdu: "رائل پام گالف اینڈ کنٹری کلب، لاہور",
+          address: "52 Canal Bank Road, Lahore",
+          addressUrdu: "۵۲ کینال بینک روڈ، لاہور",
+          mapUrl: "https://maps.google.com/?q=Royal+Palm+Golf+and+Country+Club+Lahore",
+          rsvpPhone: "+923012345678"
+        },
+        baraat: {
+          dateTime: "2026-12-11T16:30:00+05:00",
+          displayDate: "Friday, 11th December 2026",
+          displayDateUrdu: "بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء",
+          displayTime: "Sehra Bandi: 4:30 PM · Departure: 5:30 PM",
+          displayTimeUrdu: "سہرہ بندی: سہ پہر ۴:۳۰ بجے · روانگی بارات: شام ۵:۳۰ بجے",
+          venue: "Grand Ballroom, Pearl Continental, Lahore",
+          venueUrdu: "گرینڈ بال روم، پرل کانٹینینٹل، لاہور",
+          address: "Shahrah-e-Quaid-e-Azam, Lahore",
+          addressUrdu: "شاہراہ قائد اعظم، لاہور",
+          mapUrl: "https://maps.google.com/?q=Pearl+Continental+Hotel+Lahore",
+          rsvpPhone: "+923012345678"
+        },
+        walima: {
+          dateTime: "2026-12-12T19:00:00+05:00",
+          displayDate: "Saturday, 12th December 2026",
+          displayDateUrdu: "بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء",
+          displayTime: "7:00 PM",
+          displayTimeUrdu: "شام ۷:۰۰ بجے",
+          venue: "Crystal Hall, Nishat Banquets, Emporium Mall, Lahore",
+          venueUrdu: "کرسٹل ہال، نشاط بینکوئٹس، امپوریم مال، لاہور",
+          address: "Abdul Haque Road, Johar Town, Lahore",
+          addressUrdu: "عبد الحق روڈ، جوہر ٹاؤن، لاہور",
+          mapUrl: "https://maps.google.com/?q=Nishat+Banquets+Lahore",
+          rsvpPhone: "+923012345678"
+        }
+      }
+    };
+
+    function resolveCurrentWeddingConfig() {
+      const path = decodeURIComponent(window.location.pathname || "");
+      if (path.toLowerCase().includes("ahmed-&-ayesha") || path.toLowerCase().includes("demo")) {
+        return WEDDING_DATA_DEMO;
+      }
+      return WEDDING_DATA_USAMA;
+    }
+
+    const WEDDING = resolveCurrentWeddingConfig();
 
     const EVENT_META = {
       mehndi: {
@@ -1547,7 +1614,7 @@
       if (window.location.protocol === "file:") {
         return window.location.pathname;
       }
-      return "/Usama-&-Bissal-wedding-invitation";
+      return `/${WEDDING.slug}`;
     }
 
     function updateUrlState(card, event, push = true, view = null) {
@@ -1566,9 +1633,14 @@
       const qs = p.toString();
       let targetPath = window.location.pathname;
       if (window.location.protocol !== "file:") {
-        // Keep clean single-segment slug without ever duplicating it
-        if (decodeURIComponent(targetPath).includes("Usama-&-Bissal-wedding-invitation")) {
+        // Keep clean single-segment slug matching the current wedding config
+        const decoded = decodeURIComponent(targetPath);
+        if (decoded.includes("Usama-&-Bissal-wedding-invitation")) {
           targetPath = "/Usama-&-Bissal-wedding-invitation";
+        } else if (decoded.includes("Ahmed-&-Ayesha-wedding-invitation") || decoded.includes("demo")) {
+          targetPath = "/Ahmed-&-Ayesha-wedding-invitation";
+        } else {
+          targetPath = `/${WEDDING.slug}`;
         }
       }
       const newUrl = qs ? `${targetPath}?${qs}` : targetPath;
@@ -2216,7 +2288,7 @@
       const basePath = getCleanInvitationPath();
       const shareUrl = qs ? `${origin}${basePath}?${qs}` : `${origin}${basePath}`;
       const t = I18N[currentLang];
-      const shareTitle = `Usama & Bissal — Wedding Invitation`;
+      const shareTitle = `${WEDDING.groom} & ${WEDDING.bride} — Wedding Invitation`;
 
       if (navigator.share) {
         try {
