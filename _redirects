@@ -1,3 +1,5 @@
+/admin                                       /admin.html     200
+/admin.html                                  /admin.html     200
 /admin/assets/*                              /assets/:splat  200
 /about/assets/*                              /assets/:splat  200
 /demo/assets/*                               /assets/:splat  200
