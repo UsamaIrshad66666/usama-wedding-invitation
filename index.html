@@ -1924,23 +1924,13 @@
         </button>
       </div>
       <div class="top-controls-right">
-        <button class="ctrl-btn" id="themeToggleBtn" type="button" aria-label="Change Color Theme" title="Switch Theme">
-          <span id="themeIcon">🎨</span>
-          <span id="themeText">Theme</span>
-        </button>
         <button class="ctrl-btn" id="langToggleBtn" type="button" aria-label="Switch between English and Urdu">
           <span id="langLabel">اردو / English</span>
-        </button>
-        <button class="ctrl-btn" id="musicToggleBtn" type="button" aria-pressed="false" aria-label="Toggle background music">
-          <span id="musicIcon">♫</span>
-          <span id="musicText">Music: Off</span>
         </button>
       </div>
     </header>
 
     <main class="main-canvas" id="app" aria-live="polite"></main>
-
-    <audio id="weddingMusic" loop preload="none" src="assets/wedding-music.mp3"></audio>
   </div>
 
   <button class="scroll-tutorial-pill" id="scrollTutorialPill" type="button" aria-label="Scroll down for more details">
@@ -2118,24 +2108,110 @@
       return "about";
     }
 
+    function normalizeThemeKey(k) {
+      if (!k) return "emerald";
+      const s = String(k).toLowerCase().trim();
+      if (s === "ruby" || s === "romantic") return "ruby";
+      if (s === "sapphire" || s === "celestial") return "sapphire";
+      if (s === "plum" || s === "blossom") return "plum";
+      if (s === "emerald" || s === "mughal") return "emerald";
+      return "emerald";
+    }
+
     const THEMES_LIST = ["emerald", "ruby", "sapphire", "plum"];
+
+    const THEMES_CONFIG = {
+      emerald: {
+        id: "emerald",
+        nameEn: "Royal Mughal Darbar",
+        nameUr: "شاہی مغل دربار",
+        tagEn: "Emerald & Antique Gold",
+        tagUr: "زمرد و شاہی سنہرا",
+        artStyleEn: "Royal Mughal Palaces & Heritage Dholki",
+        artStyleUr: "شاہی محلات، روایتی ڈھولک اور کلاسیکی بارات",
+        descEn: "Timeless Mughal grandeur featuring royal palace arches, rich emerald green velvet, and antique gold foil.",
+        descUr: "روایتی مغل شاہی انداز، شاہانہ محرابوں، گہرے زمردی رنگ اور کلاسیکی سنہری نقاشی کے ساتھ۔",
+        swatches: ["#0c251e", "#1b4d3e", "#d4af37", "#f3e5ab"],
+        badgeIcon: "👑",
+        scenes: {
+          mehndi: { f1: "mehndi-scene.jpg", f2: "mehndi-scene-2.jpg", alt: "Royal Mughal Mehndi Ceremony" },
+          baraat: { f1: "baraat-scene.jpg", f2: "baraat-scene-2.jpg", alt: "Royal Mughal Baraat Ceremony" },
+          walima: { f1: "walima-scene.jpg", f2: "walima-scene-2.jpg?v=2", alt: "Royal Mughal Walima Reception" }
+        }
+      },
+      ruby: {
+        id: "ruby",
+        nameEn: "Romantic Velvet Rose",
+        nameUr: "رومانوی گلاب و مخمل",
+        tagEn: "Crimson Velvet & Rose Gold",
+        tagUr: "یاقوتی مخمل و روز گولڈ",
+        artStyleEn: "Velvet Rose Canopy & Romantic Petal Shower",
+        artStyleUr: "پھولوں کی چادر، سرخ گلابوں کی بارش اور رومانوی شام",
+        descEn: "Soft cinematic Pakistani romance with crimson velvet, cascading rose canopies, and blushing rose-gold foil.",
+        descUr: "رومانوی پاکستانی خاندانی وقار، مخملی یاقوتی رنگ، تازہ گلابوں کے چھاؤں اور روز گولڈ کی لطافت۔",
+        swatches: ["#30070e", "#58111e", "#d9927b", "#f7c6b5"],
+        badgeIcon: "🌹",
+        scenes: {
+          mehndi: { f1: "romantic-mehndi.jpg", alt: "Romantic Velvet Rose Mehndi Ceremony" },
+          baraat: { f1: "romantic-baraat.jpg", alt: "Romantic Velvet Rose Baraat Ceremony" },
+          walima: { f1: "romantic-walima.jpg", alt: "Romantic Velvet Rose Walima Reception" }
+        }
+      },
+      sapphire: {
+        id: "sapphire",
+        nameEn: "Midnight Celestial Starlight",
+        nameUr: "شبِ مہتاب و نیلم",
+        tagEn: "Imperial Navy & Celestial Gold",
+        tagUr: "شاہی نیلم و درخشاں ستارے",
+        artStyleEn: "Starlit Night Sky & Pyrotechnic Ballroom",
+        artStyleUr: "تاروں بھرا آسمان، جدید بال روم اور سنہری فانوس",
+        descEn: "Contemporary chic and starry night elegance with midnight sapphire, crystal chandeliers, and starlight gold.",
+        descUr: "جدید شاہانہ انداز، تاروں بھری رات کا سحر، نیلمی جادو اور درخشاں سنہری فانوسوں کی چمک۔",
+        swatches: ["#06162d", "#0c2b54", "#c99d3e", "#fae392"],
+        badgeIcon: "✨",
+        scenes: {
+          mehndi: { f1: "celestial-mehndi.jpg", alt: "Celestial Starlight Mehndi Ceremony" },
+          baraat: { f1: "celestial-baraat.jpg", alt: "Celestial Starlight Baraat Ceremony" },
+          walima: { f1: "celestial-walima.jpg", alt: "Celestial Starlight Walima Reception" }
+        }
+      },
+      plum: {
+        id: "plum",
+        nameEn: "Majestic Pastel Blossom",
+        nameUr: "نورِ بہار و گلستان",
+        tagEn: "Imperial Plum & Champagne Gold",
+        tagUr: "شاہی جامنی و شیمپین سنہرا",
+        artStyleEn: "Daylight Garden Shaadi & Jasmine Arbors",
+        artStyleUr: "باغیچہ شادی، موتیے اور چنبیلی کے جھولے اور شیمپین گولڈ",
+        descEn: "Daylight garden shaadi splendor with royal amethyst plum, blossoming jasmine arbors, and soft champagne gold.",
+        descUr: "بہار کے باغیچوں کا دلفریب منظر، موتیے اور چنبیلی کے جھولے، جامنی نزاکت اور شیمپین گولڈ۔",
+        swatches: ["#240925", "#47154a", "#d4b270", "#f9edd0"],
+        badgeIcon: "🌸",
+        scenes: {
+          mehndi: { f1: "blossom-mehndi.jpg", alt: "Pastel Garden Blossom Mehndi Ceremony" },
+          baraat: { f1: "blossom-baraat.jpg", alt: "Pastel Garden Blossom Baraat Ceremony" },
+          walima: { f1: "blossom-walima.jpg", alt: "Pastel Garden Blossom Walima Reception" }
+        }
+      }
+    };
+
     const THEME_LABELS = {
       en: {
-        emerald: "Emerald",
-        ruby: "Ruby",
-        sapphire: "Sapphire",
-        plum: "Plum"
+        emerald: "Royal Mughal",
+        ruby: "Romantic Rose",
+        sapphire: "Midnight Celestial",
+        plum: "Pastel Blossom"
       },
       ur: {
-        emerald: "زمرد",
-        ruby: "یاقوت",
-        sapphire: "نیلم",
-        plum: "جامنی"
+        emerald: "شاہی مغل",
+        ruby: "رومانوی گلاب",
+        sapphire: "شبِ مہتاب",
+        plum: "نورِ بہار"
       }
     };
 
     function applyCurrentTheme(themeName) {
-      const validTheme = THEMES_LIST.includes(themeName) ? themeName : "emerald";
+      const validTheme = normalizeThemeKey(themeName);
       document.body.setAttribute("data-theme", validTheme);
       document.documentElement.setAttribute("data-theme", validTheme);
       
@@ -2147,12 +2223,6 @@
       };
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) metaTheme.setAttribute("content", themeColors[validTheme] || "#0d241c");
-
-      const themeTextEl = document.getElementById("themeText");
-      if (themeTextEl) {
-        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
-        themeTextEl.textContent = lbl[validTheme] || "Theme";
-      }
     }
 
     function resolveCurrentWeddingConfig() {
@@ -2178,10 +2248,12 @@
 
       // Check URL param or path for theme override
       const urlTheme = params.get("theme");
-      if (urlTheme && THEMES_LIST.includes(urlTheme.toLowerCase())) {
-        cfg.theme = urlTheme.toLowerCase();
-      } else if (!cfg.theme || !THEMES_LIST.includes(cfg.theme)) {
+      if (urlTheme) {
+        cfg.theme = normalizeThemeKey(urlTheme);
+      } else if (!cfg.theme) {
         cfg.theme = "emerald";
+      } else {
+        cfg.theme = normalizeThemeKey(cfg.theme);
       }
 
       return cfg;
@@ -2278,14 +2350,14 @@
         aboutDemoTemplateTitle: "Ahmed & Ayesha",
         aboutDemoTemplateSub: "Demo Template · Ready for You",
         aboutDemoTemplateDesc: "Explore our ready-to-customize royal template featuring all 3 wedding ceremonies, animated Mughal scenes, and countdowns.",
-        aboutDemoEmeraldTag: "Royal Emerald · Classic Mughal",
-        aboutDemoEmeraldDesc: "Classic forest emerald velvet & antique gold with wax-seal unboxing, faceless animations, and live countdowns.",
-        aboutDemoRubyTag: "Royal Ruby · Velvet Crimson",
-        aboutDemoRubyDesc: "Regal velvet crimson maroon & rose gold aesthetic for an intensely romantic, opulent royal wedding atmosphere.",
-        aboutDemoSapphireTag: "Midnight Sapphire · Celestial Gold",
-        aboutDemoSapphireDesc: "Deep imperial midnight navy & celestial pure gold inspired by starlit palace courtyards and majestic luxury.",
-        aboutDemoPlumTag: "Majestic Plum · Imperial Violet",
-        aboutDemoPlumDesc: "Aristocratic imperial amethyst & champagne gold exuding timeless Mughal royalty and bespoke elegance.",
+        aboutDemoEmeraldTag: "Royal Mughal Darbar · Emerald & Antique Gold",
+        aboutDemoEmeraldDesc: "Classic Mughal heritage featuring royal palace arches, traditional festive dholki, and antique gold foil.",
+        aboutDemoRubyTag: "Romantic Velvet Rose · Crimson & Rose Gold",
+        aboutDemoRubyDesc: "Soft Pakistani romance with crimson velvet, cascading rose canopies, and gentle floral petal showers.",
+        aboutDemoSapphireTag: "Midnight Celestial Starlight · Sapphire & Gold",
+        aboutDemoSapphireDesc: "Modern starry elegance with midnight navy, crystal chandeliers, indoor cold fireworks, and pure gold.",
+        aboutDemoPlumTag: "Majestic Pastel Blossom · Plum & Champagne",
+        aboutDemoPlumDesc: "Daylight garden shaadi splendor with royal amethyst plum, blossoming jasmine arbors, and champagne gold.",
         aboutOpenCardBtn: "Open Interactive Card ↗",
         aboutOpenThemeBtn: "Explore Theme ↗",
         aboutFeaturesHeading: "Why Choose Dawat Nama?",
@@ -2363,14 +2435,14 @@
         aboutDemoTemplateTitle: "احمد اور عائشہ",
         aboutDemoTemplateSub: "ڈیمو ٹیمپلیٹ · آپ کے لیے تیار",
         aboutDemoTemplateDesc: "مہندی، بارات اور ولیمہ کی تمام تر تفصیلات اور شاہی اینیمیشنز کے ساتھ تیار ٹیمپلیٹ ملاحظہ فرمائیں۔",
-        aboutDemoEmeraldTag: "شاہی زمرد · کلاسک مغلیہ",
-        aboutDemoEmeraldDesc: "کلاسک مغلیہ شاہی زمرد اور سنہرا انداز، ڈیجیٹل شاہی مہر، اینیمیشنز اور لائیو کاؤنٹ ڈاؤن۔",
-        aboutDemoRubyTag: "شاہی یاقوت · مخملی قرمزی",
-        aboutDemoRubyDesc: "شاہی مخملی سرخ، قرمزی اور روز گولڈ کا دلکش سنگم جو شادی کو بے پناہ پروقار بنا دے۔",
-        aboutDemoSapphireTag: "شاہی نیلم · سنہرا کندن",
-        aboutDemoSapphireDesc: "شاہی مڈ نائٹ بلیو اور کندن کی چمک، چاند تاروں سے آراستہ شاہانہ محل جیسا احساس۔",
-        aboutDemoPlumTag: "شاہی جامنی · ارغوانی شیمپین",
-        aboutDemoPlumDesc: "شاہی ارغوانی جامنی اور شیمپین گولڈ کا نایاب شاہکار جو آپ کے معزز مہمانوں کو مسحور کر دے۔",
+        aboutDemoEmeraldTag: "شاہی مغل دربار · زمرد و شاہی سنہرا",
+        aboutDemoEmeraldDesc: "روایتی مغل شاہی انداز، شاہانہ محرابوں، روایتی ڈھولک اور کلاسیکی سنہری نقاشی کے ساتھ۔",
+        aboutDemoRubyTag: "رومانوی گلاب و مخمل · یاقوتی و روز گولڈ",
+        aboutDemoRubyDesc: "رومانوی خاندانی وقار، پھولوں کی چادر، تازہ سرخ گلابوں کی بارش اور روز گولڈ کی لطافت۔",
+        aboutDemoSapphireTag: "شبِ مہتاب و نیلم · شاہی نیلم و درخشاں ستارے",
+        aboutDemoSapphireDesc: "جدید شاہانہ انداز، تاروں بھری رات کا سحر، کولڈ فائر سپارکلرز اور درخشاں سنہری فانوسوں کی چمک۔",
+        aboutDemoPlumTag: "نورِ بہار و گلستان · شاہی جامنی و شیمپین سنہرا",
+        aboutDemoPlumDesc: "بہار کے باغیچوں کا دلفریب منظر، موتیے اور چنبیلی کے جھولے، باغیچہ شادی اور شیمپین گولڈ۔",
         aboutOpenCardBtn: "کارڈ کھولیں ↗",
         aboutOpenThemeBtn: "کارڈ کھولیں ↗",
         aboutFeaturesHeading: "دعوت نامہ کی خصوصیات",
@@ -2794,17 +2866,157 @@
     });
 
     /* ==============================================================
-       ANIMATED STAGE BUILDERS (High-Res Faceless Art + Live Twinkle/Petals)
+       WAX SEAL EMBLEM (Theme-Specific Bespoke Insignia)
+       ============================================================== */
+    function getWaxSealInsigniaSvg(size = 28) {
+      const curTheme = normalizeThemeKey((WEDDING && WEDDING.theme) || "emerald");
+      let goldC1 = "#fff4d0", goldC2 = "#d4ad5d";
+      if (curTheme === "ruby") {
+        goldC1 = "#fff0f0"; goldC2 = "#e29c87";
+        return `
+          <svg class="wax-seal-insignia" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sealGold_${curTheme}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${goldC1}"/>
+                <stop offset="100%" stop-color="${goldC2}"/>
+              </linearGradient>
+            </defs>
+            <path d="M20 33 C19.2 33 8.5 25 5.5 19 C3 14 4.5 7.5 10 6 C14 5 17.5 7 20 10.5 C22.5 7 26 5 30 6 C35.5 7.5 37 14 34.5 19 C31.5 25 20.8 33 20 33 Z" 
+                  fill="url(#sealGold_${curTheme})" stroke="#ffe1d6" stroke-width="1.2"/>
+            <path d="M20 13 C17 10 13 11 12 14 C11 17 14 20 20 25 C26 20 29 17 28 14 C27 11 23 10 20 13 Z" 
+                  fill="#4a0f19" opacity="0.6"/>
+            <circle cx="20" cy="17" r="3.2" fill="url(#sealGold_${curTheme})"/>
+            <circle cx="20" cy="17" r="1.6" fill="#4a0f19"/>
+          </svg>
+        `;
+      } else if (curTheme === "sapphire") {
+        goldC1 = "#fffbe0"; goldC2 = "#c99d3e";
+        return `
+          <svg class="wax-seal-insignia" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sealGold_${curTheme}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${goldC1}"/>
+                <stop offset="100%" stop-color="${goldC2}"/>
+              </linearGradient>
+            </defs>
+            <path d="M20 4 L23.5 13.5 L33 14.5 L25.5 21 L28 30.5 L20 25.5 L12 30.5 L14.5 21 L7 14.5 L16.5 13.5 Z" 
+                  fill="url(#sealGold_${curTheme})" stroke="#fae392" stroke-width="1.2" stroke-linejoin="round"/>
+            <circle cx="20" cy="19" r="4.5" fill="#091b38" stroke="url(#sealGold_${curTheme})" stroke-width="1"/>
+            <circle cx="20" cy="19" r="1.8" fill="#fff"/>
+          </svg>
+        `;
+      } else if (curTheme === "plum") {
+        goldC1 = "#fff3dc"; goldC2 = "#d4b270";
+        return `
+          <svg class="wax-seal-insignia" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sealGold_${curTheme}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${goldC1}"/>
+                <stop offset="100%" stop-color="${goldC2}"/>
+              </linearGradient>
+            </defs>
+            <circle cx="20" cy="20" r="14.5" stroke="url(#sealGold_${curTheme})" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <path d="M20 7 C21.5 12 25 15 30 15 C25 18 24 22 25 28 C21 25 19 25 15 28 C16 22 15 18 10 15 C15 15 18.5 12 20 7 Z" 
+                  fill="url(#sealGold_${curTheme})" stroke="#ffeaa7" stroke-width="1"/>
+            <circle cx="20" cy="20" r="3.5" fill="#2d0b33" stroke="url(#sealGold_${curTheme})" stroke-width="1"/>
+          </svg>
+        `;
+      } else {
+        return `
+          <svg class="wax-seal-insignia" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sealGold_${curTheme}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${goldC1}"/>
+                <stop offset="100%" stop-color="${goldC2}"/>
+              </linearGradient>
+            </defs>
+            <path d="M8 28 H32 V31 H8 V28 Z" fill="url(#sealGold_${curTheme})"/>
+            <path d="M9 25 L12 12 L17 18 L20 9 L23 18 L28 12 L31 25 Z" 
+                  fill="url(#sealGold_${curTheme})" stroke="#fffbe0" stroke-width="1" stroke-linejoin="round"/>
+            <circle cx="20" cy="8.5" r="2" fill="#fff"/>
+            <circle cx="12" cy="11.5" r="1.5" fill="#f5d68d"/>
+            <circle cx="28" cy="11.5" r="1.5" fill="#f5d68d"/>
+            <circle cx="20" cy="21" r="2.5" fill="#0b241c"/>
+          </svg>
+        `;
+      }
+    }
+
+    /* ==============================================================
+       ANIMATED STAGE BUILDERS (Dynamic Theme Artwork + Live Particles)
        ============================================================== */
 
     function buildMehndiStage() {
-      return `
-        <div class="illustration-stage seq-step seq-3">
+      const curTheme = normalizeThemeKey((WEDDING && WEDDING.theme) || "emerald");
+      const theme = THEMES_CONFIG[curTheme] || THEMES_CONFIG.emerald;
+      const sc = theme.scenes.mehndi;
+      const isFlipbook = !!sc.f2;
+
+      let artworkHtml = "";
+      if (isFlipbook) {
+        artworkHtml = `
           <div class="scene-flipbook motion-mehndi">
-            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}mehndi-scene.jpg" alt="Mehndi Dholki Ceremony Illustration" loading="eager">
-            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}mehndi-scene-2.jpg" alt="" aria-hidden="true" loading="eager">
+            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}${sc.f2.replace('assets/','')}" alt="" aria-hidden="true" loading="eager">
           </div>
-          <!-- Live Twinkling Fairy Lights & Soft Floating Marigold Petals Overlay -->
+        `;
+      } else {
+        artworkHtml = `
+          <img class="scene-artwork-img motion-mehndi" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+        `;
+      }
+
+      let overlaySvg = "";
+      if (curTheme === "ruby") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="roseGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="50" cy="40" r="4" fill="#ffd1dc" class="twinkle-bulb tb-1" filter="url(#roseGlow)"/>
+            <circle cx="130" cy="30" r="3.5" fill="#fff0f5" class="twinkle-bulb tb-3" filter="url(#roseGlow)"/>
+            <circle cx="220" cy="45" r="4" fill="#ffb6c1" class="twinkle-bulb tb-2" filter="url(#roseGlow)"/>
+            <circle cx="380" cy="35" r="4" fill="#ffd1dc" class="twinkle-bulb tb-5" filter="url(#roseGlow)"/>
+            <circle cx="480" cy="42" r="3.5" fill="#fff0f5" class="twinkle-bulb tb-4" filter="url(#roseGlow)"/>
+            <circle cx="550" cy="38" r="4" fill="#ffb6c1" class="twinkle-bulb tb-1" filter="url(#roseGlow)"/>
+            <g class="petal-float pf-1" transform="translate(100, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-2" transform="translate(220, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#e63946"/></g>
+            <g class="petal-float pf-3" transform="translate(360, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#ff4d6d"/></g>
+            <g class="petal-float pf-4" transform="translate(480, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#c91836"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "sapphire") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <polygon points="90,40 92,46 98,48 92,50 90,56 88,50 82,48 88,46" fill="#fff" class="sparkle-star tb-1" filter="url(#starGlow)"/>
+            <polygon points="240,30 242,36 248,38 242,40 240,46 238,40 232,38 238,36" fill="#fae392" class="sparkle-star tb-3" filter="url(#starGlow)"/>
+            <polygon points="390,45 392,51 398,53 392,55 390,61 388,55 382,53 388,51" fill="#fff" class="sparkle-star tb-2" filter="url(#starGlow)"/>
+            <polygon points="510,35 512,41 518,43 512,45 510,51 508,45 502,43 508,41" fill="#fae392" class="sparkle-star tb-4" filter="url(#starGlow)"/>
+            <g class="petal-float pf-1" transform="translate(130, 0)"><circle cx="0" cy="0" r="3" fill="#fae392"/></g>
+            <g class="petal-float pf-2" transform="translate(270, 0)"><circle cx="0" cy="0" r="2.5" fill="#fff"/></g>
+            <g class="petal-float pf-3" transform="translate(420, 0)"><circle cx="0" cy="0" r="3.5" fill="#fae392"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "plum") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="petal-float pf-1" transform="translate(110, 0)"><path d="M 0 0 C 6 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+            <g class="petal-float pf-2" transform="translate(240, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fbcfe8"/></g>
+            <g class="petal-float pf-3" transform="translate(370, 0)"><path d="M 0 0 C 6 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+            <g class="petal-float pf-4" transform="translate(490, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fbcfe8"/></g>
+          </svg>
+        `;
+      } else {
+        overlaySvg = `
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <filter id="glowBulb" x="-50%" y="-50%" width="200%" height="200%">
@@ -2812,48 +3024,96 @@
                 <feComposite in="SourceGraphic" in2="blur" operator="over"/>
               </filter>
             </defs>
-            <!-- Top Hanging Fairy Light Twinkles -->
             <circle cx="45" cy="40" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
-            <circle cx="95" cy="28" r="3.5" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
             <circle cx="150" cy="52" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
-            <circle cx="215" cy="35" r="3.5" fill="#ffe680" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
             <circle cx="280" cy="48" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
-            <circle cx="345" cy="32" r="4" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#glowBulb)"/>
             <circle cx="410" cy="50" r="3.5" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
-            <circle cx="475" cy="30" r="4" fill="#ffe680" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
             <circle cx="545" cy="42" r="4" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
-
-            <!-- Side Curtain Fairy Light Twinkles -->
-            <circle cx="38" cy="125" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#glowBulb)"/>
-            <circle cx="62" cy="185" r="3.5" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#glowBulb)"/>
-            <circle cx="28" cy="245" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
-            <circle cx="562" cy="125" r="4" fill="#fffbe0" class="twinkle-bulb tb-4" filter="url(#glowBulb)"/>
-            <circle cx="538" cy="185" r="3.5" fill="#ffe680" class="twinkle-bulb tb-1" filter="url(#glowBulb)"/>
-            <circle cx="572" cy="245" r="4" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#glowBulb)"/>
-
-            <!-- Soft Organic Marigold Petals Drifting Down -->
-            <g class="petal-float pf-1" transform="translate(120, 0)">
-              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/>
-            </g>
-            <g class="petal-float pf-2" transform="translate(230, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/>
-            </g>
-            <g class="petal-float pf-3" transform="translate(350, 0)">
-              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/>
-            </g>
-            <g class="petal-float pf-4" transform="translate(460, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/>
-            </g>
+            <g class="petal-float pf-1" transform="translate(120, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/></g>
+            <g class="petal-float pf-2" transform="translate(230, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/></g>
+            <g class="petal-float pf-3" transform="translate(350, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffb703"/></g>
+            <g class="petal-float pf-4" transform="translate(460, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fb8500"/></g>
           </svg>
+        `;
+      }
+
+      return `
+        <div class="illustration-stage seq-step seq-3">
+          ${artworkHtml}
+          ${overlaySvg}
         </div>
       `;
     }
 
     function buildBaraatStage() {
-      return `
-        <div class="illustration-stage seq-step seq-4">
-          <img class="scene-artwork-img motion-baraat" src="${ASSET_BASE}baraat-scene.jpg" alt="Baraat Groom Lifting Bride Illustration" loading="eager">
-          <!-- Live Twinkling Mughal Arch Lights & Falling Red Rose Petals Overlay -->
+      const curTheme = normalizeThemeKey((WEDDING && WEDDING.theme) || "emerald");
+      const theme = THEMES_CONFIG[curTheme] || THEMES_CONFIG.emerald;
+      const sc = theme.scenes.baraat;
+      const isFlipbook = !!sc.f2;
+
+      let artworkHtml = "";
+      if (isFlipbook) {
+        artworkHtml = `
+          <div class="scene-flipbook motion-baraat">
+            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}${sc.f2.replace('assets/','')}" alt="" aria-hidden="true" loading="eager">
+          </div>
+        `;
+      } else {
+        artworkHtml = `
+          <img class="scene-artwork-img motion-baraat" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+        `;
+      }
+
+      let overlaySvg = "";
+      if (curTheme === "ruby") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="baraatRoseGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="300" cy="38" r="4.5" fill="#ffd1dc" class="twinkle-bulb tb-1" filter="url(#baraatRoseGlow)"/>
+            <circle cx="210" cy="72" r="4" fill="#fff0f5" class="twinkle-bulb tb-3" filter="url(#baraatRoseGlow)"/>
+            <circle cx="390" cy="72" r="4" fill="#ffd1dc" class="twinkle-bulb tb-2" filter="url(#baraatRoseGlow)"/>
+            <g class="petal-float pf-1" transform="translate(90, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-2" transform="translate(200, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#990f26"/></g>
+            <g class="petal-float pf-3" transform="translate(320, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-4" transform="translate(440, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#e63946"/></g>
+            <g class="petal-float pf-5" transform="translate(530, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "sapphire") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="celestialSparkGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <polygon points="60,340 63,346 69,349 63,352 60,358 57,352 51,349 57,346" fill="#fff" class="sparkle-star tb-1" filter="url(#celestialSparkGlow)"/>
+            <polygon points="80,280 82,285 87,287 82,289 80,294 78,289 73,287 78,285" fill="#fae392" class="sparkle-star tb-3" filter="url(#celestialSparkGlow)"/>
+            <polygon points="530,340 533,346 539,349 533,352 530,358 527,352 521,349 527,346" fill="#fff" class="sparkle-star tb-2" filter="url(#celestialSparkGlow)"/>
+            <polygon points="510,280 512,285 517,287 512,289 510,294 508,289 503,287 508,285" fill="#fae392" class="sparkle-star tb-4" filter="url(#celestialSparkGlow)"/>
+            <g class="petal-float pf-1" transform="translate(140, 0)"><circle cx="0" cy="0" r="3" fill="#fae392"/></g>
+            <g class="petal-float pf-2" transform="translate(280, 0)"><circle cx="0" cy="0" r="2.5" fill="#fff"/></g>
+            <g class="petal-float pf-3" transform="translate(420, 0)"><circle cx="0" cy="0" r="3.5" fill="#fae392"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "plum") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="petal-float pf-1" transform="translate(100, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffd1dc"/></g>
+            <g class="petal-float pf-2" transform="translate(230, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#f8edeb"/></g>
+            <g class="petal-float pf-3" transform="translate(360, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#ffd1dc"/></g>
+            <g class="petal-float pf-4" transform="translate(490, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 12 -5 5 0 0 Z" fill="#fbcfe8"/></g>
+          </svg>
+        `;
+      } else {
+        overlaySvg = `
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <filter id="baraatGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -2861,45 +3121,105 @@
                 <feComposite in="SourceGraphic" in2="blur" operator="over"/>
               </filter>
             </defs>
-            <!-- Mughal Arch Fairy Bulbs -->
             <circle cx="298" cy="36" r="4.5" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#baraatGlow)"/>
             <circle cx="268" cy="68" r="4" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#baraatGlow)"/>
             <circle cx="205" cy="96" r="4" fill="#fffbe0" class="twinkle-bulb tb-2" filter="url(#baraatGlow)"/>
-            <circle cx="165" cy="148" r="4" fill="#ffe680" class="twinkle-bulb tb-5" filter="url(#baraatGlow)"/>
-            <circle cx="145" cy="205" r="4" fill="#fffbe0" class="twinkle-bulb tb-4" filter="url(#baraatGlow)"/>
             <circle cx="365" cy="68" r="4" fill="#ffe680" class="twinkle-bulb tb-2" filter="url(#baraatGlow)"/>
-            <circle cx="465" cy="310" r="4" fill="#fffbe0" class="twinkle-bulb tb-1" filter="url(#baraatGlow)"/>
-            <circle cx="465" cy="370" r="4" fill="#ffe680" class="twinkle-bulb tb-3" filter="url(#baraatGlow)"/>
-
-            <!-- Soft Falling Crimson Rose Petals -->
-            <g class="petal-float pf-1" transform="translate(95, 0)">
-              <path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/>
-            </g>
-            <g class="petal-float pf-2" transform="translate(210, 0)">
-              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#990f26"/>
-            </g>
-            <g class="petal-float pf-3" transform="translate(340, 0)">
-              <path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/>
-            </g>
-            <g class="petal-float pf-4" transform="translate(470, 0)">
-              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#e63946"/>
-            </g>
-            <g class="petal-float pf-5" transform="translate(155, 0)">
-              <path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#c91836"/>
-            </g>
+            <g class="petal-float pf-1" transform="translate(95, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-2" transform="translate(210, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#990f26"/></g>
+            <g class="petal-float pf-3" transform="translate(340, 0)"><path d="M 0 0 C 7 -5 14 5 7 12 C 0 16 -7 7 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-4" transform="translate(470, 0)"><path d="M 0 0 C 6 -4 12 4 6 10 C 0 14 -6 6 0 0 Z" fill="#e63946"/></g>
           </svg>
+        `;
+      }
+
+      return `
+        <div class="illustration-stage seq-step seq-4">
+          ${artworkHtml}
+          ${overlaySvg}
         </div>
       `;
     }
 
     function buildWalimaStage() {
-      return `
-        <div class="illustration-stage seq-step seq-3">
+      const curTheme = normalizeThemeKey((WEDDING && WEDDING.theme) || "emerald");
+      const theme = THEMES_CONFIG[curTheme] || THEMES_CONFIG.emerald;
+      const sc = theme.scenes.walima;
+      const isFlipbook = !!sc.f2;
+
+      let artworkHtml = "";
+      if (isFlipbook) {
+        artworkHtml = `
           <div class="scene-flipbook motion-walima">
-            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}walima-scene.jpg" alt="Walima Grand Entrance with Welcoming Crowd Illustration" loading="eager">
-            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}walima-scene-2.jpg?v=2" alt="" aria-hidden="true" loading="eager">
+            <img class="scene-artwork-img frame-1" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+            <img class="scene-artwork-img frame-2" src="${ASSET_BASE}${sc.f2.replace('assets/','')}" alt="" aria-hidden="true" loading="eager">
           </div>
-          <!-- Live Chandelier Sparkles & Gown Sequin Shimmer Overlay -->
+        `;
+      } else {
+        artworkHtml = `
+          <img class="scene-artwork-img motion-walima" src="${ASSET_BASE}${sc.f1.replace('assets/','')}" alt="${sc.alt}" loading="eager">
+        `;
+      }
+
+      let overlaySvg = "";
+      if (curTheme === "ruby") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="walimaRoseGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="95" cy="55" r="4" fill="#fff" class="twinkle-bulb tb-1" filter="url(#walimaRoseGlow)"/>
+            <circle cx="300" cy="50" r="4.5" fill="#ffd1dc" class="twinkle-bulb tb-3" filter="url(#walimaRoseGlow)"/>
+            <circle cx="505" cy="55" r="4" fill="#fff" class="twinkle-bulb tb-2" filter="url(#walimaRoseGlow)"/>
+            <polygon points="330,270 333,276 339,279 333,282 330,288 327,282 321,279 327,276" fill="#ffd1dc" class="sparkle-star tb-1"/>
+            <polygon points="365,325 368,331 374,334 368,337 365,343 362,337 356,334 362,331" fill="#fff" class="sparkle-star tb-3"/>
+            <g class="petal-float pf-1" transform="translate(160, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/></g>
+            <g class="petal-float pf-2" transform="translate(260, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#e63946"/></g>
+            <g class="petal-float pf-3" transform="translate(380, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/></g>
+            <g class="petal-float pf-4" transform="translate(490, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#e63946"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "sapphire") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="walimaStarGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="100" cy="50" r="4.5" fill="#fff" class="twinkle-bulb tb-1" filter="url(#walimaStarGlow)"/>
+            <circle cx="300" cy="45" r="5" fill="#fae392" class="twinkle-bulb tb-3" filter="url(#walimaStarGlow)"/>
+            <circle cx="500" cy="50" r="4.5" fill="#fff" class="twinkle-bulb tb-2" filter="url(#walimaStarGlow)"/>
+            <polygon points="340,260 343,266 349,269 343,272 340,278 337,272 331,269 337,266" fill="#fff" class="sparkle-star tb-1"/>
+            <polygon points="370,315 373,321 379,324 373,327 370,333 367,327 361,324 367,321" fill="#fae392" class="sparkle-star tb-3"/>
+            <g class="petal-float pf-1" transform="translate(180, 0)"><circle cx="0" cy="0" r="3" fill="#fae392"/></g>
+            <g class="petal-float pf-2" transform="translate(300, 0)"><circle cx="0" cy="0" r="2.5" fill="#fff"/></g>
+            <g class="petal-float pf-3" transform="translate(420, 0)"><circle cx="0" cy="0" r="3.5" fill="#fae392"/></g>
+          </svg>
+        `;
+      } else if (curTheme === "plum") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="walimaPlumGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="120" cy="60" r="4" fill="#fff" class="twinkle-bulb tb-1" filter="url(#walimaPlumGlow)"/>
+            <circle cx="300" cy="55" r="4.5" fill="#fde047" class="twinkle-bulb tb-3" filter="url(#walimaPlumGlow)"/>
+            <circle cx="480" cy="60" r="4" fill="#fff" class="twinkle-bulb tb-2" filter="url(#walimaPlumGlow)"/>
+            <g class="petal-float pf-1" transform="translate(170, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+            <g class="petal-float pf-2" transform="translate(280, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fbcfe8"/></g>
+            <g class="petal-float pf-3" transform="translate(390, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+          </svg>
+        `;
+      } else {
+        overlaySvg = `
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <filter id="walimaGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -2907,30 +3227,22 @@
                 <feComposite in="SourceGraphic" in2="blur" operator="over"/>
               </filter>
             </defs>
-            <!-- Chandelier Twinkles -->
             <circle cx="88" cy="58" r="4" fill="#fff" class="twinkle-bulb tb-1" filter="url(#walimaGlow)"/>
             <circle cx="300" cy="55" r="4.5" fill="#fffbe0" class="twinkle-bulb tb-3" filter="url(#walimaGlow)"/>
             <circle cx="512" cy="58" r="4" fill="#fff" class="twinkle-bulb tb-2" filter="url(#walimaGlow)"/>
-
-            <!-- Bridal Gown Sequin Glints -->
             <polygon points="340,260 343,266 349,269 343,272 340,278 337,272 331,269 337,266" fill="#fffbe0" class="sparkle-star tb-1"/>
             <polygon points="370,315 373,321 379,324 373,327 370,333 367,327 361,324 367,321" fill="#fff" class="sparkle-star tb-3"/>
-            <polygon points="325,355 328,361 334,364 328,367 325,373 322,367 316,364 322,361" fill="#fffbe0" class="sparkle-star tb-4"/>
-
-            <!-- Floating White & Crimson Rose Petals -->
-            <g class="petal-float pf-1" transform="translate(180, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/>
-            </g>
-            <g class="petal-float pf-2" transform="translate(275, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#c91836"/>
-            </g>
-            <g class="petal-float pf-3" transform="translate(390, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/>
-            </g>
-            <g class="petal-float pf-4" transform="translate(320, 0)">
-              <path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#c91836"/>
-            </g>
+            <g class="petal-float pf-1" transform="translate(180, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/></g>
+            <g class="petal-float pf-2" transform="translate(275, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#c91836"/></g>
+            <g class="petal-float pf-3" transform="translate(390, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fffaf0"/></g>
           </svg>
+        `;
+      }
+
+      return `
+        <div class="illustration-stage seq-step seq-3">
+          ${artworkHtml}
+          ${overlaySvg}
         </div>
       `;
     }
@@ -2942,31 +3254,16 @@
     function updateNavigationControls(viewName) {
       const homeNavBtn = document.getElementById("homeNavBtn");
       const homeNavText = document.getElementById("homeNavText");
-      const themeToggleBtn = document.getElementById("themeToggleBtn");
-      const themeText = document.getElementById("themeText");
       if (!homeNavBtn) return;
       const t = I18N[currentLang];
       if (homeNavText) homeNavText.textContent = t.frontPageBtn || "Front Page";
 
-      if (themeText) {
-        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
-        const curTheme = (WEDDING && WEDDING.theme) || "emerald";
-        themeText.textContent = lbl[curTheme] || "Theme";
-      }
-      
       if (viewName === "cover" || viewName === "about" || viewName === "admin") {
         homeNavBtn.style.display = "none";
       } else {
         homeNavBtn.style.display = "inline-flex";
       }
-
-      if (themeToggleBtn) {
-        if (viewName === "about" || viewName === "admin") {
-          themeToggleBtn.style.display = "none";
-        } else {
-          themeToggleBtn.style.display = "inline-flex";
-        }
-      }
+    }
     }
 
     /* ==============================================================
@@ -3017,7 +3314,7 @@
         <!-- Live Samples Showcase: 4 Themes -->
         <div class="m-divider"><span>❖</span></div>
         <h2 class="about-section-heading rise-in">${t.aboutLiveDemos}</h2>
-        <p class="about-section-sub rise-in">${currentLang === "ur" ? "ہمارے شاہانہ ڈیجیٹل شادی کارڈز کے ۴ مختلف کلر تھیمز ملاحظہ فرمائیں:" : "Experience our 4 bespoke royal wedding themes with live countdowns & maps:"}</p>
+        <p class="about-section-sub rise-in">${currentLang === "ur" ? "ہمارے شاہانہ ڈیجیٹل شادی کارڈز کے ۴ مختلف شاہی ڈیزائن و آرٹ اسٹائلز ملاحظہ فرمائیں:" : "Experience our 4 bespoke design themes with distinct art styles, assets & countdowns:"}</p>
 
         <div class="about-demo-grid rise-in">
           <!-- Theme 1: Royal Emerald -->
@@ -3211,7 +3508,7 @@
             <div class="env-flap"></div>
             <div class="env-inner-pocket"></div>
             <button class="wax-seal" id="waxSealBtn" type="button" aria-label="Open envelope wax seal">
-              ${getHeartBadgeSvg(24)}
+              ${getWaxSealInsigniaSvg(28)}
             </button>
           </div>
 
@@ -3660,37 +3957,6 @@
     const langToggleBtn = document.getElementById("langToggleBtn");
     const langLabel = document.getElementById("langLabel");
     const homeNavBtn = document.getElementById("homeNavBtn");
-    const themeToggleBtn = document.getElementById("themeToggleBtn");
-
-    if (themeToggleBtn) {
-      themeToggleBtn.addEventListener("click", () => {
-        const cur = (WEDDING && WEDDING.theme) || "emerald";
-        const idx = THEMES_LIST.indexOf(cur);
-        const next = THEMES_LIST[(idx + 1) % THEMES_LIST.length];
-        if (WEDDING) WEDDING.theme = next;
-        applyCurrentTheme(next);
-
-        // Update URL query param ?theme= without reload
-        const p = new URLSearchParams(window.location.search);
-        if (next === "emerald") {
-          p.delete("theme");
-        } else {
-          p.set("theme", next);
-        }
-        const qs = p.toString();
-        const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
-        window.history.replaceState(window.history.state, "", newUrl);
-
-        // Re-render heart monogram with matching theme colors
-        const badges = document.querySelectorAll(".monogram-badge");
-        badges.forEach(b => {
-          b.innerHTML = getHeartBadgeSvg(b.clientWidth > 50 ? 38 : 34);
-        });
-
-        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
-        showToast(currentLang === "ur" ? `تھیم: ${lbl[next]}` : `Theme: ${lbl[next]}`);
-      });
-    }
 
     if (homeNavBtn) {
       homeNavBtn.addEventListener("click", () => {
@@ -3705,22 +3971,7 @@
       const isUrdu = lang === "ur";
       document.documentElement.lang = isUrdu ? "ur" : "en";
       document.documentElement.dir = isUrdu ? "rtl" : "ltr";
-      langLabel.textContent = I18N[currentLang].langBtn;
-
-      const themeTextEl = document.getElementById("themeText");
-      if (themeTextEl) {
-        const lbl = THEME_LABELS[currentLang] || THEME_LABELS.en;
-        const curTheme = (WEDDING && WEDDING.theme) || "emerald";
-        themeTextEl.textContent = lbl[curTheme] || "Theme";
-      }
-
-      const music = document.getElementById("weddingMusic");
-      const musicText = document.getElementById("musicText");
-      if (music.paused) {
-        musicText.textContent = I18N[currentLang].musicOff;
-      } else {
-        musicText.textContent = I18N[currentLang].musicOn;
-      }
+      if (langLabel) langLabel.textContent = I18N[currentLang].langBtn;
 
       const pageMode = resolveCurrentPageMode();
       if (pageMode === "about") {
@@ -3738,40 +3989,12 @@
       }
     }
 
-    langToggleBtn.addEventListener("click", () => {
-      const nextLang = currentLang === "en" ? "ur" : "en";
-      setLanguage(nextLang);
-    });
-
-    const musicToggleBtn = document.getElementById("musicToggleBtn");
-    const weddingMusic = document.getElementById("weddingMusic");
-    const musicText = document.getElementById("musicText");
-    const musicIcon = document.getElementById("musicIcon");
-
-    musicToggleBtn.addEventListener("click", async () => {
-      const t = I18N[currentLang];
-      if (weddingMusic.paused) {
-        try {
-          await weddingMusic.play();
-          musicText.textContent = t.musicOn;
-          musicIcon.textContent = "♫";
-          musicToggleBtn.setAttribute("aria-pressed", "true");
-        } catch (err) {
-          musicText.textContent = t.musicMissing;
-          musicIcon.textContent = "🔇";
-          musicToggleBtn.setAttribute("aria-pressed", "false");
-          setTimeout(() => {
-            musicText.textContent = t.musicOff;
-            musicIcon.textContent = "♫";
-          }, 3200);
-        }
-      } else {
-        weddingMusic.pause();
-        musicText.textContent = t.musicOff;
-        musicIcon.textContent = "♫";
-        musicToggleBtn.setAttribute("aria-pressed", "false");
-      }
-    });
+    if (langToggleBtn) {
+      langToggleBtn.addEventListener("click", () => {
+        const nextLang = currentLang === "en" ? "ur" : "en";
+        setLanguage(nextLang);
+      });
+    }
 
     // Intercept client-side link navigation for smooth SPA feel
     document.addEventListener("click", (e) => {
