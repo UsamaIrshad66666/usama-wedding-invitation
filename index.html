@@ -1528,7 +1528,17 @@
       const rawCard = p.get("card");
       const card = CARD_VARIANTS[rawCard] ? rawCard : "all";
       const event = p.get("event") || null;
-      return { card, event };
+      const viewParam = p.get("view");
+      const stateView = window.history.state && window.history.state.view;
+      let view = "cover";
+      if (event) {
+        view = "detail";
+      } else if (viewParam === "events" || stateView === "events") {
+        view = "events";
+      } else if (stateView === "cover") {
+        view = "cover";
+      }
+      return { card, event, view };
     }
 
     const ASSET_BASE = window.location.protocol === "file:" ? "assets/" : "/assets/";
@@ -1540,13 +1550,18 @@
       return "/Usama-&-Bissal-wedding-invitation";
     }
 
-    function updateUrlState(card, event, push = true) {
+    function updateUrlState(card, event, push = true, view = null) {
       const p = new URLSearchParams();
       if (card && card !== "all") {
         p.set("card", card);
       }
       if (event) {
         p.set("event", event);
+        view = "detail";
+      } else if (view === "events") {
+        p.set("view", "events");
+      } else {
+        view = "cover";
       }
       const qs = p.toString();
       let targetPath = window.location.pathname;
@@ -1558,9 +1573,9 @@
       }
       const newUrl = qs ? `${targetPath}?${qs}` : targetPath;
       if (push) {
-        window.history.pushState({ card, event }, "", newUrl);
+        window.history.pushState({ card, event, view }, "", newUrl);
       } else {
-        window.history.replaceState({ card, event }, "", newUrl);
+        window.history.replaceState({ card, event, view }, "", newUrl);
       }
     }
 
@@ -1894,7 +1909,7 @@
         }
         setTimeout(() => {
           const { card } = getUrlState();
-          updateUrlState(card, null, true);
+          updateUrlState(card, null, true, "events");
           renderEventListScreen(true);
         }, 900);
       }
@@ -1956,7 +1971,7 @@
       app.querySelectorAll("[data-event-key]").forEach(btn => {
         btn.addEventListener("click", () => {
           const targetKey = btn.getAttribute("data-event-key");
-          updateUrlState(card, targetKey, true);
+          updateUrlState(card, targetKey, true, "detail");
           renderEventDetailScreen(targetKey, true);
         });
       });
@@ -2092,8 +2107,12 @@
       `;
 
       document.getElementById("backToEventsBtn").addEventListener("click", () => {
-        updateUrlState(card, null, true);
-        renderEventListScreen(true);
+        if (window.history.state && window.history.state.view === "detail") {
+          window.history.back();
+        } else {
+          updateUrlState(card, null, true, "events");
+          renderEventListScreen(true);
+        }
       });
 
       document.getElementById("shareDetailBtn").addEventListener("click", handleShareEvent);
@@ -2232,9 +2251,11 @@
     }
 
     function routeCurrentState(isPopState = false) {
-      const { card, event } = getUrlState();
+      const { card, event, view } = getUrlState();
       if (event) {
         renderEventDetailScreen(event, true);
+      } else if (view === "events") {
+        renderEventListScreen(true);
       } else {
         renderEnvelopeScreen(isPopState);
       }
@@ -2251,7 +2272,7 @@
     if (homeNavBtn) {
       homeNavBtn.addEventListener("click", () => {
         const { card } = getUrlState();
-        updateUrlState(card, null, true);
+        updateUrlState(card, null, true, "cover");
         renderEnvelopeScreen(true);
       });
     }
@@ -2271,13 +2292,13 @@
         musicText.textContent = I18N[currentLang].musicOn;
       }
 
-      const { event } = getUrlState();
+      const { event, view } = getUrlState();
       if (event) {
         renderEventDetailScreen(event, false);
-      } else if (document.getElementById("envelopeElement")) {
-        renderEnvelopeScreen(false);
-      } else {
+      } else if (view === "events" || !document.getElementById("envelopeElement")) {
         renderEventListScreen(false);
+      } else {
+        renderEnvelopeScreen(false);
       }
     }
 
@@ -2316,7 +2337,34 @@
       }
     });
 
-    routeCurrentState();
+    function initAppHistoryAndRoute() {
+      const { card, event, view } = getUrlState();
+      if (event) {
+        // Synthesize an "events" history entry behind this detail view
+        // so pressing phone BACK immediately goes to All Ceremonies!
+        const pEvents = new URLSearchParams();
+        if (card && card !== "all") pEvents.set("card", card);
+        pEvents.set("view", "events");
+        const listUrl = `${getCleanInvitationPath()}?${pEvents.toString()}`;
+        window.history.replaceState({ card, event: null, view: "events" }, "", listUrl);
+
+        const pDetail = new URLSearchParams();
+        if (card && card !== "all") pDetail.set("card", card);
+        pDetail.set("event", event);
+        const detailUrl = `${getCleanInvitationPath()}?${pDetail.toString()}`;
+        window.history.pushState({ card, event, view: "detail" }, "", detailUrl);
+
+        renderEventDetailScreen(event, false);
+      } else if (view === "events") {
+        window.history.replaceState({ card, event: null, view: "events" }, "", window.location.href);
+        renderEventListScreen(false);
+      } else {
+        window.history.replaceState({ card, event: null, view: "cover" }, "", window.location.href);
+        renderEnvelopeScreen(false);
+      }
+    }
+
+    initAppHistoryAndRoute();
   </script>
 </body>
 </html>
