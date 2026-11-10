@@ -200,6 +200,33 @@
       --theme-banner-bg: linear-gradient(135deg, rgba(46, 28, 80, 0.92), rgba(24, 14, 43, 0.92));
     }
 
+    /* ==============================================================
+       THEME 8: NOOR-E-NIKKAH · PEARL IVORY & 24K CHAMPAGNE GOLD
+       ============================================================== */
+    [data-theme="ivory"], [data-theme="nikkah"] {
+      --theme-bg-base: #141009;
+      --theme-bg-gradient: radial-gradient(ellipse at 50% 0%, #2e2414 0%, #17120a 50%, #0a0805 100%);
+      --theme-card-bg: #211a10;
+      --theme-card-hover: #302617;
+      --theme-card-surface: rgba(33, 26, 16, 0.85);
+      --theme-panel-bg: linear-gradient(145deg, #281f13 0%, #141009 100%);
+      --theme-env-body: linear-gradient(145deg, #2e2416 0%, #18120b 100%);
+      --theme-env-pocket: linear-gradient(135deg, #221a0f 0%, #120e07 100%);
+      --theme-env-flap: linear-gradient(135deg, #3d301c 0%, #20180d 100%);
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #fff2cc 0%, #e0b852 45%, #9b7519 80%, #5e4307 100%);
+      --theme-seal-border: #fff4d4;
+      --theme-gold-primary: #e0b852;
+      --theme-gold-bright: #ffe8a8;
+      --theme-gold-light: #fff5db;
+      --theme-gold-dark: #8f6c18;
+      --theme-gold-gradient: linear-gradient(135deg, #fff2cc 0%, #e0b852 45%, #a87d1f 75%, #f7e2a9 100%);
+      --theme-gold-line: rgba(224, 184, 82, 0.45);
+      --theme-pill-bg: linear-gradient(135deg, rgba(38, 30, 18, 0.97), rgba(24, 18, 10, 0.97));
+      --theme-ctrl-btn-bg: rgba(38, 30, 18, 0.75);
+      --theme-ctrl-btn-hover: rgba(58, 46, 28, 0.9);
+      --theme-banner-bg: linear-gradient(135deg, rgba(58, 46, 28, 0.92), rgba(28, 22, 12, 0.92));
+    }
+
 
     /* ==============================================================
        THEME 8: THE ROYAL MUGHAL SHAHI FARMAN (IMPERIAL SCROLL)
@@ -2313,6 +2340,13 @@
     .about-demo-card[data-card-theme="lilac"]::before {
       background: linear-gradient(90deg, #371e5c, #cbb2e8, #120921);
     }
+        .about-demo-card[data-card-theme="royal-grace"]::before {
+      background: linear-gradient(90deg, #3b4432, #9aa584, #e8d0a0, #252c20);
+    }
+.about-demo-card[data-card-theme="ivory"]::before,
+    .about-demo-card[data-card-theme="nikkah"]::before {
+      background: linear-gradient(90deg, #fdfbf7, #e0b852, #8f6c18, #2a2013);
+    }
     .theme-swatches-pill {
       display: inline-flex;
       align-items: center;
@@ -2902,7 +2936,22 @@
       const themeParam = (params.get("theme") || "").toLowerCase().trim();
       const hasWeddingTheme = themeParam && themeParam !== "about";
 
-      // 0. Explicit /burgundy-romance route, or ?theme=burgundy
+      // 0a. Explicit /noor-e-nikkah route, or ?theme=ivory / ?theme=nikkah
+      if (routeSlug.includes("noor-e-nikkah") || routeSlug.includes("noor-nikkah") || routeSlug.includes("ivory-gold")) {
+        if (!isFileProto && !window.location.pathname.includes("noor-e-nikkah")) {
+          window.location.replace("/noor-e-nikkah");
+        }
+        return "wedding";
+      }
+
+            // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
+      if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
+        if (!isFileProto && !window.location.pathname.includes("royal-grace")) {
+          window.location.replace("/royal-grace");
+        }
+        return "wedding";
+      }
+// 0. Explicit /burgundy-romance route, or ?theme=burgundy
       if (routeSlug.includes("burgundy") || themeParam === "burgundy") {
         if (!isFileProto && !window.location.pathname.includes("burgundy-romance")) {
           window.location.replace("/burgundy-romance");
@@ -2977,13 +3026,32 @@
       if (s === "marble" || s === "sage" || s === "botanical") return "marble";
       if (s === "lilac" || s === "lavender" || s === "wisteria") return "lilac";
       if (s === "farman" || s === "shahi-farman" || s === "scroll" || s === "parchment") return "farman";
+      if (s === "ivory" || s === "nikkah" || s === "noor-e-nikkah" || s === "pearl") return "ivory";
       if (s === "emerald" || s === "mughal") return "emerald";
       return "emerald";
     }
 
-    const THEMES_LIST = ["emerald", "ruby", "sapphire", "plum", "obsidian", "marble", "lilac", "farman"];
+    const THEMES_LIST = ["emerald", "ruby", "sapphire", "plum", "obsidian", "marble", "lilac", "ivory", "farman"];
 
     const THEMES_CONFIG = {
+      ivory: {
+        id: "ivory",
+        nameEn: "Noor-e-Nikkah",
+        nameUr: "نورِ نکاح و ولیمہ",
+        tagEn: "Pearl Ivory & 24K Champagne Gold",
+        tagUr: "عاجی و شیمپین گولڈ",
+        artStyleEn: "Luminous Pearl Silk, Jasmine Arbors & 24K Gold Arches",
+        artStyleUr: "روشن عاجی ریشم، سفید چنبیلی اور ۲۴ قیراط گولڈ محرابیں",
+        descEn: "Sacred daytime elegance featuring warm pearl ivory silk, illuminated 24K gold geometric arches, cascading white jasmine, and serene Nikkah ambiance.",
+        descUr: "عقدِ نکاح اور دن کے ولیمہ کے لیے روشن اور پرنور شاہکار، ۲۴ قیراط گولڈ، سفید چنبیلی اور عاجی ریشم کے ساتھ۔",
+        swatches: ["#fdfbf7", "#f3e7ce", "#d4af37", "#3a2a11"],
+        badgeIcon: "🕊️",
+        scenes: {
+          mehndi: { f1: "blossom-mehndi.jpg", alt: "Noor-e-Nikkah Rasm-e-Hina" },
+          baraat: { f1: "noor-nikkah-hero.jpg", alt: "Noor-e-Nikkah Sacred Ceremony" },
+          walima: { f1: "marble-walima.jpg", alt: "Noor-e-Nikkah Dawat-e-Walima" }
+        }
+      },
       farman: {
         id: "farman",
         nameEn: "Royal Mughal Shahi Farman",
@@ -3362,6 +3430,11 @@
         aboutRank1Badge: "ðŸ‘‘ #1 Flagship Choice",
         aboutRank2Badge: "ðŸŒ¹ #2 Regal Crimson Choice",
         aboutRank3Badge: "ðŸ· #3 Modern Luxury Choice",
+        aboutTabNikkah: "🕊️ 3. Noor-e-Nikkah Collection",
+        aboutDemoNikkahTag: "Noor-e-Nikkah · Pearl Ivory & 24K Champagne Gold",
+        aboutDemoNikkahDesc: "Luminous pearl silk, sacred Quranic verses, 24K gold geometric arches, cascading white jasmine blossoms, and elegant daytime Nikkah & Walima ceremony itinerary.",
+        aboutDemoRoyalGraceTag: "Royal Grace Â· Sage Garden & Pearl Drapes Nikkah",
+        aboutDemoRoyalGraceDesc: "Serene palatial garden ambiance with draped pearl curtains, cinematic gate reveal, Quranic blessing, metallic scratch-to-reveal date card, live countdown, and direct WhatsApp RSVP.",
         aboutDemoTemplateTitle: "Ahmed & Ayesha",
         aboutDemoTemplateSub: "Demo Template · Ready for You",
         aboutDemoTemplateDesc: "Explore our ready-to-customize royal template featuring all 3 wedding ceremonies, animated Mughal scenes, and countdowns.",
@@ -3497,6 +3570,9 @@
         aboutRank1Badge: "ðŸ‘‘ Ù†Ù…Ø¨Ø± Û± Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· Ø´Ø§ÛÛŒ Ø¯Ø±Ø¨Ø§Ø±",
         aboutRank2Badge: "ðŸŒ¹ Ù†Ù…Ø¨Ø± Û² Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· ÛŒØ§Ù‚ÙˆØªÛŒ Ø³Ø±Ø® Ù…Ø®Ù…Ù„",
         aboutRank3Badge: "ðŸ· Ù†Ù…Ø¨Ø± Û³ Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· Ø¨Ø±Ú¯Ù†ÚˆÛŒ Ù…Ø§ÚˆØ±Ù† Ø±ÙˆÙ…Ø§Ù†Ø³",
+        aboutTabNikkah: "🕊️ ۳. نورِ نکاح کلیکشن",
+        aboutDemoNikkahTag: "نورِ نکاح و ولیمہ · عاجی و شیمپین گولڈ",
+        aboutDemoNikkahDesc: "روشن عاجی ریشم، سنہری قرآنی آیات، ۲۴ قیراط گولڈ محرابیں، سفید چنبیلی کے پھول اور پروقار عقدِ نکاح و دعوتِ ولیمہ کا شیڈول۔",
         aboutDemoTemplateTitle: "احمد اور عائشہ",
         aboutDemoTemplateSub: "ڈیمو ٹیمپلیٹ · آپ کے لیے تیار",
         aboutDemoTemplateDesc: "مہندی، بارات اور ولیمہ کی تمام تر تفصیلات اور شاہی اینیمیشنز کے ساتھ تیار ٹیمپلیٹ ملاحظہ فرمائیں۔",
@@ -4445,6 +4521,25 @@
             <g class="petal-float pf-3" transform="translate(390, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
           </svg>
         `;
+      } else if (curTheme === "ivory") {
+        overlaySvg = `
+          <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="walimaIvoryGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="95" cy="52" r="4.5" fill="#fffdfa" class="twinkle-bulb tb-1" filter="url(#walimaIvoryGlow)"/>
+            <circle cx="300" cy="48" r="5" fill="#f5db96" class="twinkle-bulb tb-3" filter="url(#walimaIvoryGlow)"/>
+            <circle cx="505" cy="52" r="4.5" fill="#fffdfa" class="twinkle-bulb tb-2" filter="url(#walimaIvoryGlow)"/>
+            <polygon points="340,260 343,266 349,269 343,272 340,278 337,272 331,269 337,266" fill="#f5db96" class="sparkle-star tb-1"/>
+            <polygon points="370,315 373,321 379,324 373,327 370,333 367,327 361,324 367,321" fill="#ffffff" class="sparkle-star tb-3"/>
+            <g class="petal-float pf-1" transform="translate(160, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+            <g class="petal-float pf-2" transform="translate(290, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#fff6dd"/></g>
+            <g class="petal-float pf-3" transform="translate(410, 0)"><path d="M 0 0 C 5 -3 10 3 5 8 C 0 11 -5 5 0 0 Z" fill="#ffffff"/></g>
+          </svg>
+        `;
       } else {
         overlaySvg = `
           <svg class="stage-overlay-svg" viewBox="0 0 600 450" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -4818,8 +4913,10 @@
       const isBrideInitial = (currentDemoSide === "bride");
       const initRoyalCouple = isBrideInitial ? (currentLang === "ur" ? "عائشہ اور احمد" : "Ayesha & Ahmed") : (currentLang === "ur" ? "احمد اور عائشہ" : "Ahmed & Ayesha");
       const initBurgundyCouple = isBrideInitial ? (currentLang === "ur" ? "آئلہ اور دانیال" : "Ayla & Daniyal") : (currentLang === "ur" ? "دانیال اور آئلہ" : "Daniyal & Ayla");
+      const initNikkahCouple = isBrideInitial ? (currentLang === "ur" ? "رانیہ اور زایان" : "Rania & Zayan") : (currentLang === "ur" ? "زایان اور رانیہ" : "Zayan & Rania");
       const initRoyalBadge = isBrideInitial ? t.aboutBrideBaraatTag : t.aboutGroomWalimaTag;
       const initBurgundyBadge = isBrideInitial ? t.aboutBrideBaraatTag : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ" : "Groom's Side · Walima Reception");
+      const initNikkahBadge = isBrideInitial ? (currentLang === "ur" ? "لڑکی والے · نکاح و رخصتی" : "Bride's Side · Nikkah & Rukhsati") : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ و نکاح" : "Groom's Side · Walima & Nikkah");
       const initSideParam = isBrideInitial ? "bride" : "groom";
 
       app.innerHTML = `
@@ -4870,6 +4967,9 @@
           </button>
           <button class="cat-tab-btn ${currentDemoTab === 'burgundy' ? 'active' : ''}" type="button" data-tab="burgundy">
             <span>${t.aboutTabBurgundy}</span>
+          </button>
+          <button class="cat-tab-btn ${currentDemoTab === 'nikkah' ? 'active' : ''}" type="button" data-tab="nikkah">
+            <span>${t.aboutTabNikkah}</span>
           </button>
           <button class="cat-tab-btn ${currentDemoTab === 'most-liked' ? 'active' : ''}" type="button" data-tab="most-liked">
             <span>${t.aboutTabMostLiked}</span>
@@ -5072,6 +5172,53 @@
             </a>
           </div>
 
+                    <!-- Royal Grace — Sage Garden & Pearl Drapes (Sacred Nikkah & Walima Edition) -->
+          <div class="about-demo-card dynamic-demo-card most-liked-card" data-collection="nikkah" data-card-theme="royal-grace" data-most-liked="true" style="border: 1.5px solid rgba(154, 165, 132, 0.65); box-shadow: 0 10px 32px rgba(59, 68, 50, 0.25);">
+            <div class="about-demo-img-wrap" style="position:relative; overflow:hidden; border-radius:10px; margin-bottom:12px;">
+              <img src="/assets/royal-grace-welcome-bg.jpg" alt="Royal Grace Nikkah Invitation" style="width:100%; height:220px; object-fit:cover; object-position:center top; border-radius:10px;">
+              <div style="position:absolute; top:12px; right:12px; background:linear-gradient(135deg, #4a5540, #3b4432); color:#faf7f0; font-size:11px; padding:4px 12px; border-radius:20px; border:1px solid rgba(232, 208, 160, 0.6); font-weight:800; letter-spacing:1px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">NEW THEME 🌿</div>
+            </div>
+            <div class="about-demo-info">
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#3b4432;"></span>
+                <span class="theme-swatch-circle" style="background:#5c6650;"></span>
+                <span class="theme-swatch-circle" style="background:#9aa584;"></span>
+                <span class="theme-swatch-circle" style="background:#e8d0a0;"></span>
+              </div>
+              <span class="about-demo-side-badge">${initNikkahBadge}</span>
+              <span class="about-demo-tag">${t.aboutDemoRoyalGraceTag}</span>
+              <h3 class="about-demo-names">${initNikkahCouple}</h3>
+              <p class="about-demo-desc">${t.aboutDemoRoyalGraceDesc}</p>
+            </div>
+            <a class="gold-btn" href="/royal-grace?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
+
+          <!-- 11. Noor-e-Nikkah — Pearl Ivory & 24K Champagne Gold (Sacred Nikkah & Walima Edition) -->
+          <div class="about-demo-card dynamic-demo-card" data-collection="nikkah" data-card-theme="ivory" data-most-liked="true" style="border: 1.5px solid rgba(224, 184, 82, 0.65); box-shadow: 0 10px 32px rgba(184, 138, 34, 0.25);">
+            <div class="about-demo-img-wrap" style="position:relative; overflow:hidden; border-radius:10px; margin-bottom:12px;">
+              <img src="/assets/noor-nikkah-hero.jpg" alt="Noor-e-Nikkah Wedding Invitation" style="width:100%; height:220px; object-fit:cover; object-position:center top; border-radius:10px;">
+              <div style="position:absolute; top:12px; right:12px; background:linear-gradient(135deg, #fff2cc, #d4ad5d); color:#2b1f09; font-size:11px; padding:4px 12px; border-radius:20px; border:1px solid #ffe8a8; font-weight:800; letter-spacing:1px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">NEW THEME 🕊️</div>
+            </div>
+            <div class="about-demo-info">
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#fdfbf7;"></span>
+                <span class="theme-swatch-circle" style="background:#f3e7ce;"></span>
+                <span class="theme-swatch-circle" style="background:#d4af37;"></span>
+                <span class="theme-swatch-circle" style="background:#3a2a11;"></span>
+              </div>
+              <span class="about-demo-side-badge">${initNikkahBadge}</span>
+              <span class="about-demo-tag">${t.aboutDemoNikkahTag}</span>
+              <h3 class="about-demo-names">${initNikkahCouple}</h3>
+              <p class="about-demo-desc">${t.aboutDemoNikkahDesc}</p>
+            </div>
+            <a class="gold-btn" href="/noor-e-nikkah?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #fff2cc 0%, #d4ad5d 50%, #9e7529 100%); color:#2b1f09; font-weight:700;">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
         </div>
 
         <!-- MOST LIKED BY CLIENTS SPOTLIGHT SECTION (BELOW DEMOS) -->
@@ -5141,6 +5288,53 @@
                 <p class="about-demo-desc">${t.aboutDemoBurgundyDesc}</p>
               </div>
               <a class="gold-btn" href="/burgundy-romance?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%); color:#2c060d; font-weight:700;">
+                ${t.aboutOpenThemeBtn}
+              </a>
+            </div>
+
+                      <!-- Royal Grace — Sage Garden & Pearl Drapes (Sacred Nikkah & Walima Edition) -->
+          <div class="about-demo-card dynamic-demo-card most-liked-card" data-collection="nikkah" data-card-theme="royal-grace" data-most-liked="true" style="border: 1.5px solid rgba(154, 165, 132, 0.65); box-shadow: 0 10px 32px rgba(59, 68, 50, 0.25);">
+            <div class="about-demo-img-wrap" style="position:relative; overflow:hidden; border-radius:10px; margin-bottom:12px;">
+              <img src="/assets/royal-grace-welcome-bg.jpg" alt="Royal Grace Nikkah Invitation" style="width:100%; height:220px; object-fit:cover; object-position:center top; border-radius:10px;">
+              <div style="position:absolute; top:12px; right:12px; background:linear-gradient(135deg, #4a5540, #3b4432); color:#faf7f0; font-size:11px; padding:4px 12px; border-radius:20px; border:1px solid rgba(232, 208, 160, 0.6); font-weight:800; letter-spacing:1px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">NEW THEME 🌿</div>
+            </div>
+            <div class="about-demo-info">
+              <div class="theme-swatches-pill" aria-hidden="true">
+                <span class="theme-swatch-circle" style="background:#3b4432;"></span>
+                <span class="theme-swatch-circle" style="background:#5c6650;"></span>
+                <span class="theme-swatch-circle" style="background:#9aa584;"></span>
+                <span class="theme-swatch-circle" style="background:#e8d0a0;"></span>
+              </div>
+              <span class="about-demo-side-badge">${initNikkahBadge}</span>
+              <span class="about-demo-tag">${t.aboutDemoRoyalGraceTag}</span>
+              <h3 class="about-demo-names">${initNikkahCouple}</h3>
+              <p class="about-demo-desc">${t.aboutDemoRoyalGraceDesc}</p>
+            </div>
+            <a class="gold-btn" href="/royal-grace?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
+              ${t.aboutOpenThemeBtn}
+            </a>
+          </div>
+
+
+            <!-- 4. Noor-e-Nikkah — Sacred Ivory & Champagne Gold -->
+            <div class="about-demo-card dynamic-demo-card most-liked-card" data-collection="nikkah" data-card-theme="ivory" style="border: 1.5px solid rgba(224, 184, 82, 0.6) !important; background: rgba(33, 26, 16, 0.95) !important;">
+              <span class="most-liked-rank-badge" style="background:linear-gradient(135deg, #fff2cc, #d4ad5d); color:#2b1f09;">🕊️ ${currentLang === 'ur' ? 'نمبر ۴ پسندیدہ · نورِ نکاح' : '#4 Sacred Nikkah Choice'}</span>
+              <div class="about-demo-img-wrap" style="position:relative; overflow:hidden; border-radius:10px; margin-bottom:12px;">
+                <img src="/assets/noor-nikkah-hero.jpg" alt="Noor-e-Nikkah Wedding Invitation" style="width:100%; height:200px; object-fit:cover; object-position:center top; border-radius:10px;">
+              </div>
+              <div class="about-demo-info">
+                <div class="theme-swatches-pill" aria-hidden="true">
+                  <span class="theme-swatch-circle" style="background:#fdfbf7;"></span>
+                  <span class="theme-swatch-circle" style="background:#f3e7ce;"></span>
+                  <span class="theme-swatch-circle" style="background:#d4af37;"></span>
+                  <span class="theme-swatch-circle" style="background:#3a2a11;"></span>
+                </div>
+                <span class="about-demo-side-badge">${initNikkahBadge}</span>
+                <span class="about-demo-tag">${t.aboutDemoNikkahTag}</span>
+                <h3 class="about-demo-names">${initNikkahCouple}</h3>
+                <p class="about-demo-desc">${t.aboutDemoNikkahDesc}</p>
+              </div>
+              <a class="gold-btn" href="/noor-e-nikkah?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #fff2cc 0%, #d4ad5d 50%, #9e7529 100%); color:#2b1f09; font-weight:700;">
                 ${t.aboutOpenThemeBtn}
               </a>
             </div>
@@ -5276,6 +5470,20 @@
             if (btnEl) {
               btnEl.href = `/burgundy-romance?side=${isBride ? 'bride' : 'groom'}`;
             }
+          } else if (col === "nikkah") {
+            if (nameEl) {
+              nameEl.textContent = isBride ? (currentLang === "ur" ? "رانیہ اور زایان" : "Rania & Zayan") : (currentLang === "ur" ? "زایان اور رانیہ" : "Zayan & Rania");
+            }
+            if (sideBadgeEl) {
+              sideBadgeEl.textContent = isBride ? (currentLang === "ur" ? "لڑکی والے · نکاح و رخصتی" : "Bride's Side · Nikkah & Rukhsati") : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ و نکاح" : "Groom's Side · Walima & Nikkah");
+            }
+            if (btnEl) {
+              if (theme === "royal-grace") {
+                btnEl.href = /royal-grace?side= + (isBride ? 'bride' : 'groom');
+              } else {
+                btnEl.href = /noor-e-nikkah?side= + (isBride ? 'bride' : 'groom');
+              }
+            }
           } else {
             if (nameEl) {
               nameEl.textContent = isBride ? (currentLang === "ur" ? "عائشہ اور احمد" : "Ayesha & Ahmed") : (currentLang === "ur" ? "احمد اور عائشہ" : "Ahmed & Ayesha");
@@ -5309,6 +5517,8 @@
             show = (col === "royal");
           } else if (tabKey === "burgundy") {
             show = (col === "burgundy");
+          } else if (tabKey === "nikkah") {
+            show = (col === "nikkah");
           } else if (tabKey === "most-liked") {
             show = isMostLiked;
           }
@@ -6001,7 +6211,7 @@
           href.startsWith("/#") ||
           href.includes("mailto:") ||
           href.includes("tel:") ||
-          hLow.includes("burgundy") ||
+          hLow.includes("royal-grace") || hLow.includes("grace") || hLow.includes("burgundy") ||
           hLow.includes("farman") ||
           hLow.includes("shahi") ||
           hLow.includes("admin") ||
