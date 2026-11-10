@@ -1,9 +1,76 @@
+/rohan-and-zara /burgundy-romance 200
+/rohan-&-zara /burgundy-romance 200
+/Rohan-and-Zara /burgundy-romance 200
 /admin                                       /admin.html     200
 /admin.html                                  /admin.html     200
+/order                                       /order.html     200
+/order.html                                  /order.html     200
+/order-bride                                 /order.html     200
+/order-groom                                 /order.html     200
+/form                                        /order.html     200
+/form/bride                                  /order.html     200
+/form/groom                                  /order.html     200
+/form-bride                                  /order.html     200
+/form-groom                                  /order.html     200
+
+/about                                       /about.html     200
+/about.html                                  /about.html     200
+
+/shahi-farman                                /shahi-farman.html 200
+/shahi-farman.html                           /shahi-farman.html 200
+/farman                                      /shahi-farman.html 200
+/farman.html                                 /shahi-farman.html 200
+
+/burgundy-romance                            /burgundy-romance.html 200
+/burgundy-romance.html                       /burgundy-romance.html 200
+/Daniyal-and-Ayla-wedding-invitation         /burgundy-romance.html 200
+/Daniyal-%26-Ayla-wedding-invitation         /burgundy-romance.html 200
+/Daniyal-&-Ayla-wedding-invitation           /burgundy-romance.html 200
+/daniyal-and-ayla-wedding-invitation         /burgundy-romance.html 200
+/daniyal-%26-ayla-wedding-invitation         /burgundy-romance.html 200
+/daniyal-&-ayla-wedding-invitation           /burgundy-romance.html 200
+/daniyal-and-ayla                            /burgundy-romance.html 200
+/daniyal-&-ayla                              /burgundy-romance.html 200
+/burgundy                                    /burgundy-romance.html 200
+/velvet-romance                              /burgundy-romance.html 200
+/gabriella-and-zachary                       /burgundy-romance.html 200
+/gabriella-&-zachary                         /burgundy-romance.html 200
+/demo-burgundy                               /burgundy-romance.html 200
+
+/Usama-&-Bissal-wedding-invitation           /usama-and-bissal 200
+/Usama-%26-Bissal-wedding-invitation         /usama-and-bissal 200
+/usama-&-bissal-wedding-invitation           /usama-and-bissal 200
+/usama-%26-bissal-wedding-invitation         /usama-and-bissal 200
+/Usama-and-Bissal-wedding-invitation         /usama-and-bissal 200
+/usama-and-bissal-wedding-invitation         /usama-and-bissal 200
+/Usama-&-Bissal                              /usama-and-bissal 200
+/Usama-%26-Bissal                            /usama-and-bissal 200
+/usama-&-bissal                              /usama-and-bissal 200
+/usama-%26-bissal                            /usama-and-bissal 200
+/usama-bissal                                /usama-and-bissal 200
+/Usama-Bissal                                /usama-and-bissal 200
+/mehndi-walima                               /usama-and-bissal 200
+/walima                                      /usama-and-bissal 200
+/mehndi                                      /usama-and-bissal 200
+/baraat                                      /usama-and-bissal 200
+
+/Ahmed-&-Ayesha-wedding-invitation           /ahmed-and-ayesha 200
+/Ahmed-%26-Ayesha-wedding-invitation         /ahmed-and-ayesha 200
+/ahmed-&-ayesha-wedding-invitation           /ahmed-and-ayesha 200
+/ahmed-%26-ayesha-wedding-invitation         /ahmed-and-ayesha 200
+/Ahmed-and-Ayesha-wedding-invitation         /ahmed-and-ayesha 200
+/ahmed-and-ayesha-wedding-invitation         /ahmed-and-ayesha 200
+/Ahmed-&-Ayesha                              /ahmed-and-ayesha 200
+/ahmed-&-ayesha                              /ahmed-and-ayesha 200
+/demo                                        /ahmed-and-ayesha 200
+/demo-template                               /ahmed-and-ayesha 200
+
+/wedding-invitation                          /               200
+
+/order/assets/*                              /assets/:splat  200
 /admin/assets/*                              /assets/:splat  200
 /about/assets/*                              /assets/:splat  200
 /demo/assets/*                               /assets/:splat  200
 /card/assets/*                               /assets/:splat  200
-/Usama-&-Bissal-wedding-invitation/assets/*   /assets/:splat  200
-/Ahmed-&-Ayesha-wedding-invitation/assets/*   /assets/:splat  200
-/*                                            /index.html     200
+/assets/*                                    /assets/:splat  200
+/*                                           /               200
