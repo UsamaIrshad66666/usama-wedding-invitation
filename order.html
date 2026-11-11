@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Wedding Invitation Order Form · Dawat Nama by Elitara</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root {
+
+      --bg-color: #071912;
+
+      --card-bg: rgba(10, 31, 23, 0.92);
+
+      --gold-primary: #d4af37;
+
+      --gold-light: #f3e5ab;
+
+      --gold-dark: #aa820a;
+
+      --gold-line: rgba(212, 175, 55, 0.35);
+
+      --gold-gradient: linear-gradient(135deg, #f7d070 0%, #d4ad5d 50%, #9e782f 100%);
+
+      --cream: #fbf9f4;
+
+      --cream-muted: #c9c3b2;
+
+      --serif: "Cinzel", serif;
+
+      --sans: "Montserrat", sans-serif;
+
+      --urdu: "Noto Nastaliq Urdu", serif;
+
+      --transition: all 0.25s ease;
+
+    }
+
+
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+      -webkit-tap-highlight-color: transparent;
+
+    }
+
+
+
+    body {
+
+      background-color: var(--bg-color);
+
+      color: var(--cream);
+
+      font-family: var(--sans);
+
+      min-height: 100vh;
+
+      padding: 1.5rem 1rem 3.5rem;
+
+      background-image: 
+
+        radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+
+        radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 40%);
+
+      background-attachment: fixed;
+
+    }
+
+
+
+    .form-wrapper {
+
+      max-width: 760px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    /* Header */
+
+    .form-header {
+
+      text-align: center;
+
+      margin-bottom: 1.8rem;
+
+      padding-bottom: 1.2rem;
+
+      border-bottom: 1px solid var(--gold-line);
+
+    }
+
+    .form-brand-title {
+
+      font-family: var(--serif);
+
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+
+      color: var(--gold-light);
+
+      letter-spacing: 0.06em;
+
+      margin-bottom: 0.25rem;
+
+    }
+
+    .form-brand-urdu {
+
+      font-family: var(--urdu);
+
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+
+      color: var(--gold-primary);
+
+      margin-bottom: 0.5rem;
+
+      direction: rtl;
+
+    }
+
+    .form-brand-sub {
+
+      color: var(--cream-muted);
+
+      font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+
+      max-width: 620px;
+
+      margin: 0 auto;
+
+      line-height: 1.6;
+
+    }
+
+    .form-brand-sub-urdu {
+
+      font-family: var(--urdu);
+
+      font-size: 0.98rem;
+
+      color: var(--gold-light);
+
+      margin-top: 6px;
+
+      line-height: 1.8;
+
+      direction: rtl;
+
+    }
+
+
+
+    /* Side Selector Tabs */
+
+    .side-tabs-container {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      margin-bottom: 1.8rem;
+
+    }
+
+    .side-tab-btn {
+
+      flex: 1;
+
+      max-width: 320px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      background: rgba(10, 31, 23, 0.7);
+
+      border: 1px solid var(--gold-line);
+
+      color: var(--cream-muted);
+
+      padding: 14px 18px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-family: var(--sans);
+
+      font-size: 0.95rem;
+
+      font-weight: 600;
+
+      transition: var(--transition);
+
+      text-decoration: none;
+
+    }
+
+    .side-tab-btn:hover {
+
+      border-color: var(--gold-primary);
+
+      color: #fff;
+
+      transform: translateY(-2px);
+
+    }
+
+    .side-tab-btn.active {
+
+      background: var(--gold-gradient);
+
+      color: #071912;
+
+      border-color: #ffe89e;
+
+      box-shadow: 0 4px 18px rgba(212, 173, 93, 0.35);
+
+    }
+
+    .side-tab-btn .tab-urdu {
+
+      font-family: var(--urdu);
+
+      font-size: 1.05rem;
+
+      margin-left: 4px;
+
+    }
+
+
+
+    /* Section Boxes */
+
+    .form-section {
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--gold-line);
+
+      border-radius: 12px;
+
+      padding: 1.5rem;
+
+      margin-bottom: 1.5rem;
+
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+      position: relative;
+
+    }
+
+    .form-section-header {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+
+      padding-bottom: 0.75rem;
+
+      margin-bottom: 1.2rem;
+
+      font-family: var(--serif);
+
+      font-size: 1.15rem;
+
+      color: var(--gold-light);
+
+      letter-spacing: 0.04em;
+
+    }
+
+    .header-urdu {
+
+      font-family: var(--urdu);
+
+      font-size: 1.1rem;
+
+      color: var(--gold-primary);
+
+      direction: rtl;
+
+    }
+
+
+
+    
+    /* Dynamic Events & Remove Event Buttons */
+    .remove-event-btn {
+      background: rgba(255, 80, 80, 0.08);
+      border: 1px solid rgba(255, 120, 120, 0.45);
+      color: #ff9e9e;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .remove-event-btn:hover {
+      background: rgba(255, 60, 60, 0.22);
+      border-color: #ff6b6b;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .add-event-card {
+      background: linear-gradient(135deg, rgba(16, 45, 34, 0.95), rgba(8, 26, 19, 0.95));
+      border: 1.5px dashed var(--gold-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .add-event-flex {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .event-section {
+      animation: fadeIn 0.35s ease;
+    }
+    .custom-event-badge {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-light);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: var(--sans);
+    }
+
+    /* Grids & Inputs */
+
+    .form-grid-2 {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      margin-bottom: 14px;
+
+    }
+
+    @media (max-width: 600px) {
+
+      .form-grid-2 {
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+      }
+
+      .form-section {
+
+        padding: 1.1rem 0.9rem;
+
+      }
+
+    }
+
+
+
+    .form-field-group {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 6px;
+
+    }
+
+    .form-field-label {
+
+      font-size: 0.82rem;
+
+      font-weight: 600;
+
+      color: var(--gold-light);
+
+      letter-spacing: 0.03em;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+    .urdu-label {
+
+      font-family: var(--urdu);
+
+      font-size: 0.92rem;
+
+      color: var(--gold-primary);
+
+      direction: rtl;
+
+    }
+
+
+
+    .form-input, .form-select, .form-textarea {
+
+      width: 100%;
+
+      background: rgba(3, 14, 10, 0.75);
+
+      border: 1px solid rgba(212, 175, 55, 0.35);
+
+      border-radius: 8px;
+
+      padding: 12px 14px;
+
+      color: var(--cream);
+
+      font-family: var(--sans);
+
+      font-size: 0.95rem;
+
+      outline: none;
+
+      transition: var(--transition);
+
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+
+      border-color: var(--gold-primary);
+
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+
+      background: rgba(3, 14, 10, 0.95);
+
+    }
+
+    .form-input::placeholder {
+
+      color: rgba(201, 195, 178, 0.45);
+
+      font-size: 0.88rem;
+
+    }
+
+
+
+    .optional-pill {
+
+      font-size: 0.7rem;
+
+      padding: 2px 7px;
+
+      border-radius: 12px;
+
+      background: rgba(212, 175, 55, 0.15);
+
+      border: 1px solid rgba(212, 175, 55, 0.3);
+
+      color: var(--gold-light);
+
+      font-weight: 500;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.05em;
+
+    }
+
+
+
+    /* Host Repeater (Welcoming persons) */
+
+    .hosts-container {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+
+      margin-top: 10px;
+
+    }
+
+    .host-row {
+
+      display: grid;
+
+      grid-template-columns: 1.4fr 1fr auto;
+
+      gap: 8px;
+
+      align-items: center;
+
+    }
+
+    @media (max-width: 520px) {
+
+      .host-row {
+
+        grid-template-columns: 1fr auto;
+
+      }
+
+      .host-row input:first-child {
+
+        grid-column: 1 / -1;
+
+      }
+
+    }
+
+    .remove-btn {
+
+      background: rgba(255, 77, 77, 0.12);
+
+      border: 1px solid rgba(255, 77, 77, 0.3);
+
+      color: #ff6b6b;
+
+      width: 36px;
+
+      height: 38px;
+
+      border-radius: 6px;
+
+      cursor: pointer;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: bold;
+
+      transition: var(--transition);
+
+    }
+
+    .remove-btn:hover {
+
+      background: rgba(255, 60, 60, 0.25);
+
+      color: #fff;
+
+    }
+
+
+
+    /* Theme Option Grid */
+
+    .theme-selection-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+
+      gap: 10px;
+
+      margin-top: 10px;
+
+    }
+
+    .theme-card-option {
+
+      border: 1px solid rgba(212, 173, 93, 0.25);
+
+      background: rgba(4, 15, 11, 0.8);
+
+      border-radius: 8px;
+
+      padding: 10px 12px;
+
+      cursor: pointer;
+
+      transition: var(--transition);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+    .theme-card-option:hover {
+
+      border-color: var(--gold-primary);
+
+      background: rgba(10, 31, 23, 0.9);
+
+    }
+
+    .theme-card-option input {
+
+      accent-color: var(--gold-primary);
+
+      transform: scale(1.15);
+
+    }
+
+    .theme-card-option.active {
+
+      border-color: #ffe89e;
+
+      background: rgba(26, 77, 58, 0.5);
+
+      box-shadow: 0 0 10px rgba(212, 173, 93, 0.3);
+
+    }
+
+    .theme-title-text {
+
+      font-size: 0.8rem;
+
+      font-weight: 500;
+
+      color: var(--cream);
+
+      line-height: 1.3;
+
+    }
+
+
+
+    /* Buttons */
+
+    .gold-btn {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      background: var(--gold-gradient);
+
+      color: #071912;
+
+      border: 1px solid #ffe89e;
+
+      padding: 14px 28px;
+
+      border-radius: 8px;
+
+      font-family: var(--sans);
+
+      font-size: 1.02rem;
+
+      font-weight: 600;
+
+      letter-spacing: 0.04em;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      transition: var(--transition);
+
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+      width: 100%;
+
+    }
+
+    .gold-btn:hover {
+
+      filter: brightness(1.1);
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 6px 22px rgba(212, 173, 93, 0.45);
+
+    }
+
+
+
+    .wa-btn {
+
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+
+      color: #fff;
+
+      border: 1px solid #48e684;
+
+    }
+
+    .wa-btn:hover {
+
+      background: linear-gradient(135deg, #2ae06f 0%, #17a090 100%);
+
+      box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4);
+
+    }
+
+
+
+    .outline-btn {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+      background: rgba(10, 31, 23, 0.8);
+
+      border: 1px solid var(--gold-line);
+
+      color: var(--gold-light);
+
+      padding: 8px 16px;
+
+      border-radius: 6px;
+
+      font-size: 0.82rem;
+
+      font-weight: 500;
+
+      cursor: pointer;
+
+      transition: var(--transition);
+
+    }
+
+    .outline-btn:hover {
+
+      border-color: var(--gold-primary);
+
+      background: rgba(26, 77, 58, 0.85);
+
+      color: #fff;
+
+    }
+
+
+
+    /* Success / Submission Modal */
+
+    .modal-overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.85);
+
+      backdrop-filter: blur(6px);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 1.5rem;
+
+      z-index: 9999;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition: all 0.3s ease;
+
+    }
+
+    .modal-overlay.show {
+
+      opacity: 1;
+
+      pointer-events: auto;
+
+    }
+
+    .modal-card {
+
+      background: #0a1f17;
+
+      border: 1px solid var(--gold-primary);
+
+      border-radius: 14px;
+
+      padding: 2rem 1.6rem;
+
+      max-width: 500px;
+
+      width: 100%;
+
+      text-align: center;
+
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+
+    }
+
+    .modal-card h2 {
+
+      font-family: var(--serif);
+
+      color: var(--gold-light);
+
+      font-size: 1.5rem;
+
+      margin-bottom: 0.5rem;
+
+    }
+
+    .modal-card p {
+
+      color: var(--cream-muted);
+
+      font-size: 0.9rem;
+
+      line-height: 1.6;
+
+      margin-bottom: 1.5rem;
+
+    }
+
+
+
+    #toast {
+
+      position: fixed;
+
+      bottom: 24px;
+
+      left: 50%;
+
+      transform: translateX(-50%) translateY(100px);
+
+      background: #143528;
+
+      border: 1px solid var(--gold-primary);
+
+      color: var(--gold-light);
+
+      padding: 12px 24px;
+
+      border-radius: 30px;
+
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+      font-size: 0.9rem;
+
+      font-weight: 500;
+
+      opacity: 0;
+
+      transition: all 0.3s ease;
+
+      z-index: 10000;
+
+      pointer-events: none;
+
+    }
+
+    #toast.show {
+
+      transform: translateX(-50%) translateY(0);
+
+      opacity: 1;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <div class="form-wrapper">
+
+    <header class="form-header">
+
+      <h1 class="form-brand-title">Dawat Nama by Elitara</h1>
+
+      <div class="form-brand-urdu">شاہی ڈیجیٹل شادی دعوت نامہ — آرڈر فارم</div>
+
+      <p class="form-brand-sub">
+
+        Please fill in your wedding details below. Our design team will handle all professional Urdu calligraphy, translations, interactive Google Maps, and live countdown timer within 24 hours.
+
+      </p>
+
+      <div class="form-brand-sub-urdu">
+
+        براہِ کرم اپنی شادی کی تفصیلات درج فرمائیں۔ خوبصورت اردو خطاطی، ترجمہ اور ڈیزائن ہماری ٹیم کی ذمہ داری ہے۔
+
+      </div>
+
+    </header>
+
+
+
+    <!-- Side Selector (Bride vs Groom) -->
+
+    <div class="side-tabs-container">
+
+      <button class="side-tab-btn active" id="tabGroom" type="button">
+
+        <span>🤵 Groom's Side</span>
+
+        <span class="tab-urdu">(لڑکے والے)</span>
+
+      </button>
+
+      <button class="side-tab-btn" id="tabBride" type="button">
+
+        <span>👰 Bride's Side</span>
+
+        <span class="tab-urdu">(لڑکی والے)</span>
+
+      </button>
+
+    </div>
+
+
+
+    <form id="clientOrderForm">
+
+      <!-- Hidden side input -->
+
+      <input type="hidden" id="f_side" value="groom">
+
+
+
+      <!-- 1. Couple Details -->
+
+      <div class="form-section">
+
+        <div class="form-section-header">
+
+          <span id="coupleSectionTitle">👑 1. Groom & Bride Names</span>
+
+          <span class="header-urdu">دولہا اور دلہن کے مبارک نام</span>
+
+        </div>
+
+
+
+        <div id="coupleNamesContainer">
+
+          <div class="form-field-group" id="groomNameGroup" style="margin-bottom: 14px;">
+
+            <label class="form-field-label">
+
+              <span>Groom Full Name</span>
+
+              <span class="urdu-label">دولہا کا پورا نام</span>
+
+            </label>
+
+            <input class="form-input" type="text" id="c_groom" placeholder="e.g. Ahmed Raza" required>
+
+          </div>
+
+
+
+          <div class="form-field-group" id="brideNameGroup">
+
+            <label class="form-field-label">
+
+              <span>Bride Full Name</span>
+
+              <span class="urdu-label">دلہن کا پورا نام</span>
+
+            </label>
+
+            <input class="form-input" type="text" id="c_bride" placeholder="e.g. Ayesha Malik" required>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 2. Parents & Host Line -->
+
+      <div class="form-section">
+
+        <div class="form-section-header">
+
+          <span id="hostSectionTitle">🏛️ 2. Main Hosts (Parents)</span>
+
+          <span class="header-urdu" id="hostSectionTitleUr">والدین و میزبانِ گرامی</span>
+
+        </div>
+
+        
+
+        <div class="form-field-group">
+
+          <label class="form-field-label">
+
+            <span id="labelHostEn">Groom's Parents / Inviting Hosts</span>
+
+            <span class="urdu-label" id="labelHostUr">والدینِ دولہا و میزبان</span>
+
+          </label>
+
+          <input class="form-input" type="text" id="c_host" placeholder="e.g. Mr. & Mrs. Tariq Mahmood" required>
+
+        </div>
+
+
+
+        <!-- Welcoming Persons (Awaiting to Welcome / چشم براہ) -->
+
+        <div style="margin-top:1.2rem;">
+
+          <label class="form-field-label">
+
+            <span>Awaiting to Welcome / Contact Persons <span class="optional-pill">Optional</span></span>
+
+            <span class="urdu-label">چشم براہ و رابطہ کار احباب</span>
+
+          </label>
+
+          <div class="hosts-container" id="clientHostsContainer"></div>
+
+          <button class="outline-btn" id="clientAddHostBtn" type="button" style="margin-top:8px;">+ Add Contact / Welcoming Person</button>
+
+        </div>
+
+      </div>
+
+
+
+                        <!-- 3. Dynamic Events Builder Section -->
+      <div class="events-main-wrapper" style="margin-bottom:1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:1.2rem; padding:0 4px;">
+          <div>
+            <h2 style="font-family:var(--serif); font-size:1.35rem; color:var(--gold-light); margin:0 0 2px;">
+              <span>📅 3. Wedding & Reception Events</span>
+            </h2>
+            <div style="font-family:var(--urdu); font-size:1.05rem; color:var(--gold-primary); direction:rtl;">
+              شادی اور دیگر تمام تقاریب کے شیڈول
+            </div>
+          </div>
+          <span style="font-size:0.8rem; color:var(--cream-muted); background:rgba(0,0,0,0.3); padding:4px 12px; border-radius:20px; border:1px solid rgba(212,175,55,0.25);">
+            ✦ Add or remove single or multiple events
+          </span>
+        </div>
+
+        <!-- Dynamic Events Container -->
+        <div id="eventsContainer"></div>
+
+        <!-- Add Event Card / Selector Controls -->
+        <div class="add-event-card">
+          <div style="font-family:var(--serif); font-size:1.15rem; color:var(--gold-light); margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+            <span>✨ Add An Event to Your Invitation</span>
+          </div>
+          <div style="font-family:var(--urdu); font-size:0.95rem; color:var(--gold-primary); direction:rtl; margin-bottom:12px;">
+            فہرست سے تقریب منتخب کریں اور "+ نیا ایونٹ شامل کریں" پر کلک کریں
+          </div>
+          <div class="add-event-flex">
+            <div style="flex:1; min-width:240px;">
+              <label class="form-field-label" style="margin-bottom:6px;">
+                <span>Select Event Type</span>
+                <span class="urdu-label">ایونٹ کی قسم</span>
+              </label>
+              <select id="eventSelectorDropdown" class="form-input" style="font-size:0.98rem; padding:12px 14px; background:rgba(6,22,16,0.95); border:1px solid var(--gold-primary); color:#fff; cursor:pointer;">
+                <option value="mehndi">🌸 Mehndi (رسمِ حنا / مہندی)</option>
+                <option value="barat" selected>👑 Barat (بارات / رخصتی)</option>
+                <option value="walima">✨ Walima (دعوتِ ولیمہ)</option>
+                <option value="engagement">💍 Engagement (منگنی تقریب)</option>
+                <option value="nikkah">📜 Nikah Ceremony (نکاح تقریب)</option>
+                <option value="custom">✨ Custom Event (کسٹم ایونٹ — کوئی بھی تقریب)</option>
+              </select>
+            </div>
+            <button type="button" id="addEventBtn" class="gold-btn" style="padding:13px 26px; font-size:0.96rem; display:flex; align-items:center; gap:8px; white-space:nowrap; cursor:pointer;">
+              <span>+ Add Event</span>
+              <span style="font-family:var(--urdu); font-size:0.95rem;">(+ نیا ایونٹ شامل کریں)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 4. Design Theme (Optional) -->
+
+      <div class="form-section">
+
+        <div class="form-section-header">
+
+          <span>🎨 4. Preferred Luxury Theme <span class="optional-pill">Optional — اختیاری</span></span>
+
+          <span class="header-urdu">پسندیدہ ڈیزائن تھیم</span>
+
+        </div>
+
+        <p style="font-size:0.84rem; color:var(--cream-muted); margin-bottom:12px;">
+
+          Theme selection is completely optional. You can choose a specific style or let our senior designer select the best matching theme for your colors and family traditions.
+
+        </p>
+
+
+
+        <div class="theme-selection-grid">
+
+          <label class="theme-card-option active" style="grid-column: 1 / -1;">
+
+            <input type="radio" name="c_theme" value="optional" checked>
+
+            <div>
+
+              <div class="theme-title-text" style="color:var(--gold-light); font-weight:600;">✨ Let Elitara Choose (Recommended / ایلی تارا کی پسندیدہ تھیم)</div>
+
+              <div style="font-size:0.74rem; color:var(--cream-muted);">Our designers will match the most regal palette for your ceremonies.</div>
+
+            </div>
+
+          </label>
+
+
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="emerald">
+
+            <div class="theme-title-text">👑 Royal Mughal Darbar (Emerald)</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="ruby">
+
+            <div class="theme-title-text">🌹 Romantic Velvet Rose (Ruby)</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="sapphire">
+
+            <div class="theme-title-text">✨ Midnight Celestial (Sapphire)</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="plum">
+
+            <div class="theme-title-text">🌸 Majestic Pastel Blossom (Plum)</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="obsidian">
+
+            <div class="theme-title-text">🖤 Royal Obsidian & Gold Foil</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="marble">
+
+            <div class="theme-title-text">🏛️ Carrara Marble & Sage Green</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="lilac">
+
+            <div class="theme-title-text">🪻 Kashmiri Lilac & Lavender</div>
+
+          </label>
+
+          <label class="theme-card-option">
+
+            <input type="radio" name="c_theme" value="royal-grace">
+            <div class="theme-title-text">🌿 Royal Grace (Sage Garden & Pearl Drapes Nikkah)</div>
+          </label>
+
+          <label class="theme-card-option">
+            <input type="radio" name="c_theme" value="farman">
+
+            <div class="theme-title-text">📜 Royal Mughal Shahi Farman</div>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 7. Client Contact & Submission -->
+
+      <div class="form-section" style="border:1px solid var(--gold-primary);">
+
+        <div class="form-section-header">
+
+          <span>📱 5. Your Contact Details</span>
+
+          <span class="header-urdu">آپ کا رابطہ نمبر</span>
+
+        </div>
+
+        <div class="form-grid-2">
+
+          <div class="form-field-group">
+
+            <label class="form-field-label">
+
+              <span>Your Name (Client Name)</span>
+
+              <span class="urdu-label">آپ کا نام</span>
+
+            </label>
+
+            <input class="form-input" type="text" id="c_client_name" placeholder="e.g. Usama / Ahmed" required>
+
+          </div>
+
+          <div class="form-field-group">
+
+            <label class="form-field-label">
+
+              <span>Your WhatsApp Number</span>
+
+              <span class="urdu-label">آپ کا واٹس ایپ نمبر</span>
+
+            </label>
+
+            <input class="form-input" type="text" id="c_client_phone" placeholder="e.g. 0301 2345678" required>
+
+          </div>
+
+        </div>
+
+
+
+        <button class="gold-btn wa-btn" type="submit" style="margin-top:14px; font-size:1.05rem; padding:16px;">
+
+          <span>💬</span>
+
+          <span>Submit & Send Details on WhatsApp (واٹس ایپ پر تفصیلات بھیجیں)</span>
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+
+  <!-- Submission Confirmation Modal -->
+
+  <div class="modal-overlay" id="orderModal">
+
+    <div class="modal-card">
+
+      <h2>✦ Details Submitted! ✦</h2>
+
+      <div style="font-family:var(--urdu); font-size:1.2rem; color:var(--gold-primary); margin-bottom:12px; direction:rtl;">
+
+        آپ کی شادی کارڈ کی تفصیلات کامیابی سے درج ہو چکی ہیں!
+
+      </div>
+
+      <p id="modalOrderSummary">
+
+        Click below to send your details directly to our design team on WhatsApp. We will start preparing your royal invitation immediately!
+
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+
+        <a class="gold-btn wa-btn" id="modalWaBtn" href="#" target="_blank">
+
+          <span>💬 Open WhatsApp & Send Order</span>
+
+        </a>
+
+        <button class="outline-btn" id="modalCopyBtn" type="button">
+
+          📋 Copy Order Summary
+
+        </button>
+
+        <button class="outline-btn" id="modalCloseBtn" type="button" style="border:none; color:var(--cream-muted);">
+
+          Close Window
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div id="toast"></div>
+
+
+
+  <script>
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3200);
+    }
+
+    // =========================================================================
+    // WELCOMING HOSTS STATE (English Name & Phone only)
+    // =========================================================================
+    let clientHosts = [
+      { name: "", phone: "+92 " }
+    ];
+
+    const clientHostsContainer = document.getElementById("clientHostsContainer");
+    const clientAddHostBtn = document.getElementById("clientAddHostBtn");
+
+    function renderClientHosts() {
+      clientHostsContainer.innerHTML = "";
+      clientHosts.forEach((host, idx) => {
+        const row = document.createElement("div");
+        row.className = "host-row";
+        row.innerHTML = `
+          <input class="form-input" type="text" placeholder="Welcoming Host Name e.g. Uncle / Brother" value="${host.name}" data-idx="${idx}" data-field="name">
+          <input class="form-input" type="text" placeholder="Phone e.g. +92 301 2345678" value="${host.phone}" data-idx="${idx}" data-field="phone">
+          <button class="remove-host-btn" type="button" data-idx="${idx}" title="Remove Contact">×</button>
+        `;
+        clientHostsContainer.appendChild(row);
+      });
+
+      clientHostsContainer.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", (e) => {
+          const idx = parseInt(e.target.dataset.idx, 10);
+          const field = e.target.dataset.field;
+          clientHosts[idx][field] = e.target.value;
+        });
+      });
+
+      clientHostsContainer.querySelectorAll(".remove-host-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const idx = parseInt(e.target.dataset.idx, 10);
+          clientHosts.splice(idx, 1);
+          renderClientHosts();
+        });
+      });
+    }
+
+    clientAddHostBtn.addEventListener("click", () => {
+      clientHosts.push({ name: "", phone: "+92 " });
+      renderClientHosts();
+    });
+
+    renderClientHosts();
+
+    // =========================================================================
+    // DYNAMIC EVENTS BUILDER (Mehndi, Barat, Walima, Engagement, Nikah, Custom)
+    // =========================================================================
+    const eventsContainer = document.getElementById("eventsContainer");
+    const eventSelectorDropdown = document.getElementById("eventSelectorDropdown");
+    const addEventBtn = document.getElementById("addEventBtn");
+
+    let eventCounter = 0;
+
+    const EVENT_META = {
+      mehndi: {
+        icon: "🌸",
+        titleEn: "Mehndi Ceremony (Rasm-e-Hina)",
+        titleUr: "رسمِ حنا (مہندی)",
+        defaultTime: "7:00 PM",
+        venuePlaceholder: "e.g. Royal Palm Golf & Country Club"
+      },
+      barat: {
+        icon: "👑",
+        titleEn: "Baraat Ceremony",
+        titleUr: "تقریبِ بارات",
+        titleEnBride: "Baraat & Rukhsati Ceremony",
+        titleUrBride: "تقریبِ بارات و رخصتی",
+        defaultTime: "8:00 PM",
+        venuePlaceholder: "e.g. Grand Ballroom, Pearl Continental"
+      },
+      walima: {
+        icon: "✨",
+        titleEn: "Walima Reception",
+        titleUr: "دعوتِ ولیمہ",
+        defaultTime: "7:30 PM",
+        venuePlaceholder: "e.g. Crystal Hall, Nishat Banquets"
+      },
+      engagement: {
+        icon: "💍",
+        titleEn: "Engagement Ceremony",
+        titleUr: "تقریبِ منگنی",
+        defaultTime: "6:00 PM",
+        venuePlaceholder: "e.g. Heritage Hall / Family Residence"
+      },
+      nikkah: {
+        icon: "📜",
+        titleEn: "Nikah Ceremony",
+        titleUr: "تقریبِ نکاح",
+        defaultTime: "4:00 PM",
+        venuePlaceholder: "e.g. Badshahi Mosque, Lahore / Marquee"
+      },
+      custom: {
+        icon: "✨",
+        titleEn: "Custom Event",
+        titleUr: "کسٹم ایونٹ",
+        defaultTime: "8:00 PM",
+        venuePlaceholder: "e.g. Farmhouse, Banquet Hall or Residence"
+      }
+    };
+
+    function updateEventNumbers() {
+      const cards = eventsContainer.querySelectorAll(".event-section");
+      if (cards.length === 0) {
+        eventsContainer.innerHTML = `
+          <div id="noEventsNotice" style="text-align:center; padding:2rem 1.2rem; background:rgba(0,0,0,0.25); border:1.5px dashed rgba(212,175,55,0.3); border-radius:12px; margin-bottom:1.5rem;">
+            <div style="font-size:2rem; margin-bottom:8px;">📅</div>
+            <div style="font-family:var(--serif); font-size:1.15rem; color:var(--gold-light); margin-bottom:4px;">No Events Added Yet</div>
+            <div style="font-family:var(--urdu); font-size:1rem; color:var(--gold-primary); margin-bottom:8px;">ابھی کوئی ایونٹ شامل نہیں کیا گیا</div>
+            <p style="font-size:0.83rem; color:var(--cream-muted); max-width:440px; margin:0 auto;">
+              Choose an event from the dropdown below (Mehndi, Barat, Walima, Engagement, Nikah, or Custom) and click <strong>"+ Add Event"</strong> to begin.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const notice = document.getElementById("noEventsNotice");
+      if (notice) notice.remove();
+
+      cards.forEach((card, idx) => {
+        const numEl = card.querySelector(".event-display-index");
+        if (numEl) numEl.textContent = `${idx + 1}`;
+      });
+    }
+
+    function createEventCard(type, initData = {}) {
+      eventCounter++;
+      const id = `event_card_${eventCounter}`;
+      const sideEl = document.getElementById("f_side");
+      const side = sideEl ? sideEl.value : "groom";
+      const meta = EVENT_META[type] || EVENT_META.custom;
+
+      const card = document.createElement("div");
+      card.className = "form-section event-section";
+      card.id = id;
+      card.dataset.eventId = id;
+      card.dataset.eventType = type;
+
+      let bodyHtml = "";
+
+      if (type === "mehndi") {
+        bodyHtml = `
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Mehndi Date</span><span class="urdu-label">تاریخِ مہندی</span></label>
+              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">مہندی کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 7:00 PM" required value="${initData.time || meta.defaultTime}">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا فارم ہاؤس کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. 52 Canal Bank Road, Lahore" value="${initData.address || ''}">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "barat") {
+        const isBride = side === "bride";
+        bodyHtml = `
+          <div class="form-field-group" style="margin-bottom:14px;">
+            <label class="form-field-label"><span>Baraat Date</span><span class="urdu-label">تاریخِ بارات</span></label>
+            <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+          </div>
+
+          <!-- Groom Side Timings Wrap -->
+          <div class="groom-barat-times-wrap form-grid-2" style="display:${isBride ? 'none' : 'grid'};">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Sehra Bandi Time</span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
+              <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:00 PM" value="${initData.sehraTime || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Departure of Baraat Time</span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
+              <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:00 PM" value="${initData.departureTime || ''}">
+            </div>
+          </div>
+
+          <!-- Bride Side Timings Wrap -->
+          <div class="bride-barat-times-wrap" style="display:${isBride ? 'block' : 'none'};">
+            <div class="form-field-group" style="margin-bottom:14px;">
+              <label class="form-field-label"><span>Baraat Arrival / Reception Time</span><span class="urdu-label">آمدِ بارات / استقبال کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 7:00 PM" value="${initData.time || meta.defaultTime}">
+            </div>
+            <div class="form-field-group" style="margin-bottom:14px;">
+              <label class="form-field-label"><span>Ceremony Milestones <span class="optional-pill">Optional — اختیاری</span></span><span class="urdu-label">پروگرام شیڈول</span></label>
+              <div class="form-grid-2">
+                <input class="form-input evt-b-arrival" type="text" placeholder="Arrival (آمد): e.g. 8:00 PM" value="${initData.arrival || ''}" style="margin-bottom:8px;">
+                <input class="form-input evt-b-nikkah" type="text" placeholder="Nikkah (نکاح): e.g. 9:00 PM" value="${initData.nikkah || ''}" style="margin-bottom:8px;">
+                <input class="form-input evt-b-dinner" type="text" placeholder="Dinner (طعام): e.g. 9:30 PM" value="${initData.dinner || ''}">
+                <input class="form-input evt-b-rukhsati" type="text" placeholder="Rukhsati (رخصتی): e.g. 11:00 PM" value="${initData.rukhsati || ''}">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا میرج کلب کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Shahrah-e-Quaid-e-Azam, Lahore" value="${initData.address || ''}">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "walima") {
+        bodyHtml = `
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Walima Date</span><span class="urdu-label">تاریخِ ولیمہ</span></label>
+              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">ولیمہ کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 7:30 PM" required value="${initData.time || meta.defaultTime}">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Abdul Haque Road, Johar Town, Lahore" value="${initData.address || ''}">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "engagement") {
+        bodyHtml = `
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Engagement Date</span><span class="urdu-label">تاریخِ منگنی</span></label>
+              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">منگنی کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 6:00 PM" required value="${initData.time || meta.defaultTime}">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا رہائش گاہ کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Address <span class="optional-pill">Optional</span></span><span class="urdu-label">پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Sector F-7/2, Islamabad" value="${initData.address || ''}">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "nikkah") {
+        bodyHtml = `
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Nikah Date</span><span class="urdu-label">تاریخِ نکاح</span></label>
+              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Nikah Time</span><span class="urdu-label">نکاح کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 4:00 PM (بعد نمازِ عصر)" required value="${initData.time || meta.defaultTime}">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Mosque / Venue Name</span><span class="urdu-label">مسجد یا وینیو کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Address <span class="optional-pill">Optional</span></span><span class="urdu-label">پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Walled City, Lahore" value="${initData.address || ''}">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "custom") {
+        card.style.border = "1.5px solid var(--gold-primary)";
+        card.style.background = "linear-gradient(135deg, rgba(20,55,42,0.9), rgba(8,26,19,0.95))";
+
+        bodyHtml = `
+          <!-- Custom Event Name Inputs -->
+          <div class="form-grid-2" style="background:rgba(0,0,0,0.25); padding:12px; border-radius:8px; border:1px solid rgba(212,175,55,0.25); margin-bottom:14px;">
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span style="color:var(--gold-light); font-weight:600;">Custom Event Name (English) *</span>
+                <span class="urdu-label">ایونٹ کا نام (انگریزی)</span>
+              </label>
+              <input class="form-input evt-custom-name" type="text" placeholder="e.g. Qawwali Night, Dholki, Bridal Shower, Milad, Reception..." required value="${initData.customName || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Custom Event Name (Urdu) <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">ایونٹ کا نام (اردو میں)</span>
+              </label>
+              <input class="form-input evt-custom-name-ur" type="text" placeholder="مثلاً: محفلِ قوالی، محفلِ میلاد، ڈھولکی" dir="rtl" value="${initData.customNameUr || ''}">
+            </div>
+          </div>
+
+          <!-- All other fields in Custom Event can be skipped (NO required attributes) -->
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Event Date <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">تاریخ (اختیاری)</span>
+              </label>
+              <input class="form-input evt-date" type="date" value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Event Time <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">وقت (اختیاری)</span>
+              </label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 8:00 PM (Optional / اختیاری)" value="${initData.time || ''}">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Venue / Location <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">مقام یا وینیو (اختیاری)</span>
+              </label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder} (Optional)" value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Address <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">پتہ (اختیاری)</span>
+              </label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Complete Address or Area (Optional)" value="${initData.address || ''}">
+            </div>
+          </div>
+
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Google Maps Link <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">گوگل میپس لنک (اختیاری)</span>
+              </label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/... (Optional)" value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>WhatsApp RSVP Number <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">واٹس ایپ نمبر (اختیاری)</span>
+              </label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678 (Optional)" value="${initData.rsvpPhone || ''}">
+            </div>
+          </div>
+
+          <div class="form-field-group" style="margin-top:14px; margin-bottom:0;">
+            <label class="form-field-label">
+              <span>Special Instructions / Dress Code <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label">خصوصی ہدایات یا لباس (اختیاری)</span>
+            </label>
+            <input class="form-input evt-notes" type="text" placeholder="e.g. Traditional attire, family gathering only (Optional)" value="${initData.notes || ''}">
+          </div>
+        `;
+      }
+
+      const isBride = side === "bride";
+      const displayTitleEn = type === "barat" && isBride ? meta.titleEnBride : meta.titleEn;
+      const displayTitleUr = type === "barat" && isBride ? meta.titleUrBride : meta.titleUr;
+
+      card.innerHTML = `
+        <div class="form-section-header">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span class="event-section-num" style="font-weight:600;">
+              ${meta.icon} <span class="event-display-index"></span>. 
+              <span class="event-title-text">${displayTitleEn}</span>
+            </span>
+            <span class="header-urdu event-urdu-text">${displayTitleUr}</span>
+            ${type === 'custom' ? '<span class="custom-event-badge">Skipping Fields Allowed · خانے چھوڑ سکتے ہیں</span>' : ''}
+          </div>
+          <button type="button" class="remove-event-btn" data-remove-id="${id}">
+            <span>🗑️</span>
+            <span>Remove Event (حذف کریں)</span>
+          </button>
+        </div>
+        ${bodyHtml}
+      `;
+
+      eventsContainer.appendChild(card);
+      updateEventNumbers();
+
+      // Hook up remove button
+      const removeBtn = card.querySelector(".remove-event-btn");
+      if (removeBtn) {
+        removeBtn.addEventListener("click", () => {
+          card.remove();
+          updateEventNumbers();
+          showToast("Event removed from invitation.");
+        });
+      }
+
+      // If custom event, update title on typing
+      if (type === "custom") {
+        const nameInput = card.querySelector(".evt-custom-name");
+        const titleEl = card.querySelector(".event-title-text");
+        if (nameInput && titleEl) {
+          nameInput.addEventListener("input", () => {
+            const val = nameInput.value.trim();
+            titleEl.textContent = val ? `Custom: ${val}` : "Custom Event";
+          });
+        }
+      }
+
+      return card;
+    }
+
+    addEventBtn.addEventListener("click", () => {
+      const selectedType = eventSelectorDropdown.value || "mehndi";
+      const newCard = createEventCard(selectedType);
+      showToast(`+ Added ${EVENT_META[selectedType].titleEn}!`);
+      newCard.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      if (selectedType === "custom") {
+        const customNameInput = newCard.querySelector(".evt-custom-name");
+        if (customNameInput) setTimeout(() => customNameInput.focus(), 400);
+      }
+    });
+
+    // Initialize Default Starter Events (Mehndi, Barat, Walima)
+    createEventCard("mehndi");
+    createEventCard("barat");
+    createEventCard("walima");
+
+    // =========================================================================
+    // SIDE SELECTOR (Bride vs Groom)
+    // =========================================================================
+    const tabGroom = document.getElementById("tabGroom");
+    const tabBride = document.getElementById("tabBride");
+    const hiddenSideInput = document.getElementById("f_side");
+
+    const coupleSectionTitle = document.getElementById("coupleSectionTitle");
+    const coupleNamesContainer = document.getElementById("coupleNamesContainer");
+    const groomNameGroup = document.getElementById("groomNameGroup");
+    const brideNameGroup = document.getElementById("brideNameGroup");
+
+    const hostSectionTitle = document.getElementById("hostSectionTitle");
+    const hostSectionTitleUr = document.getElementById("hostSectionTitleUr");
+    const labelHostEn = document.getElementById("labelHostEn");
+    const labelHostUr = document.getElementById("labelHostUr");
+
+    function setFormSide(side) {
+      hiddenSideInput.value = side;
+      if (side === "bride") {
+        tabBride.classList.add("active");
+        tabGroom.classList.remove("active");
+
+        coupleSectionTitle.textContent = "👑 1. Bride & Groom Names";
+        coupleNamesContainer.insertBefore(brideNameGroup, groomNameGroup);
+        brideNameGroup.style.marginBottom = "14px";
+        groomNameGroup.style.marginBottom = "0";
+
+        hostSectionTitle.textContent = "🏛️ 2. Bride's Parents & Main Hosts";
+        hostSectionTitleUr.textContent = "والدینِ دلہن و میزبان";
+        labelHostEn.textContent = "Bride's Parents / Inviting Hosts";
+        labelHostUr.textContent = "والدینِ دلہن و میزبان";
+
+        // Update all Barat cards dynamically
+        document.querySelectorAll('.event-section[data-event-type="barat"]').forEach(card => {
+          const titleText = card.querySelector(".event-title-text");
+          const urduText = card.querySelector(".event-urdu-text");
+          const groomWrap = card.querySelector(".groom-barat-times-wrap");
+          const brideWrap = card.querySelector(".bride-barat-times-wrap");
+          if (titleText) titleText.textContent = "Baraat & Rukhsati Ceremony";
+          if (urduText) urduText.textContent = "تقریبِ بارات و رخصتی";
+          if (groomWrap) groomWrap.style.display = "none";
+          if (brideWrap) brideWrap.style.display = "block";
+        });
+
+      } else {
+        tabGroom.classList.add("active");
+        tabBride.classList.remove("active");
+
+        coupleSectionTitle.textContent = "👑 1. Groom & Bride Names";
+        coupleNamesContainer.insertBefore(groomNameGroup, brideNameGroup);
+        groomNameGroup.style.marginBottom = "14px";
+        brideNameGroup.style.marginBottom = "0";
+
+        hostSectionTitle.textContent = "🏛️ 2. Groom's Parents & Main Hosts";
+        hostSectionTitleUr.textContent = "والدینِ دولہا و میزبان";
+        labelHostEn.textContent = "Groom's Parents / Inviting Hosts";
+        labelHostUr.textContent = "والدینِ دولہا و میزبان";
+
+        // Update all Barat cards dynamically
+        document.querySelectorAll('.event-section[data-event-type="barat"]').forEach(card => {
+          const titleText = card.querySelector(".event-title-text");
+          const urduText = card.querySelector(".event-urdu-text");
+          const groomWrap = card.querySelector(".groom-barat-times-wrap");
+          const brideWrap = card.querySelector(".bride-barat-times-wrap");
+          if (titleText) titleText.textContent = "Baraat Ceremony";
+          if (urduText) urduText.textContent = "تقریبِ بارات";
+          if (groomWrap) groomWrap.style.display = "grid";
+          if (brideWrap) brideWrap.style.display = "none";
+        });
+      }
+    }
+
+    tabGroom.addEventListener("click", () => setFormSide("groom"));
+    tabBride.addEventListener("click", () => setFormSide("bride"));
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const pathLower = window.location.pathname.toLowerCase();
+    if (urlParams.get("side") === "bride" || pathLower.includes("bride")) {
+      setFormSide("bride");
+    } else {
+      setFormSide("groom");
+    }
+
+    // Theme selection UI
+    document.querySelectorAll(".theme-card-option input").forEach(radio => {
+      radio.addEventListener("change", () => {
+        document.querySelectorAll(".theme-card-option").forEach(c => c.classList.remove("active"));
+        radio.closest(".theme-card-option").classList.add("active");
+      });
+    });
+
+    // =========================================================================
+    // FORM SUBMISSION & WHATSAPP MESSAGE BUILDER
+    // =========================================================================
+    const form = document.getElementById("clientOrderForm");
+    const modal = document.getElementById("orderModal");
+    const modalWaBtn = document.getElementById("modalWaBtn");
+    const modalCopyBtn = document.getElementById("modalCopyBtn");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const eventCards = eventsContainer.querySelectorAll(".event-section");
+      if (eventCards.length === 0) {
+        showToast("Please add at least one event (e.g. Barat, Walima, Mehndi, Nikah, or Custom)!");
+        eventSelectorDropdown.focus();
+        return;
+      }
+
+      const side = hiddenSideInput.value;
+      const groom = document.getElementById("c_groom").value.trim();
+      const bride = document.getElementById("c_bride").value.trim();
+      const host = document.getElementById("c_host").value.trim();
+      const clientName = document.getElementById("c_client_name").value.trim();
+      const clientPhone = document.getElementById("c_client_phone").value.trim();
+
+      const themeRadio = document.querySelector('input[name="c_theme"]:checked');
+      const themeValue = themeRadio ? themeRadio.value : "optional";
+
+      const eventsList = [];
+      let eventsWaText = "";
+
+      eventCards.forEach((card, idx) => {
+        const type = card.dataset.eventType;
+        const num = idx + 1;
+        const date = card.querySelector(".evt-date") ? card.querySelector(".evt-date").value : "";
+        const venue = card.querySelector(".evt-venue") ? card.querySelector(".evt-venue").value.trim() : "";
+        const addr = card.querySelector(".evt-addr") ? card.querySelector(".evt-addr").value.trim() : "";
+        const mapUrl = card.querySelector(".evt-map") ? card.querySelector(".evt-map").value.trim() : "";
+        const rsvp = card.querySelector(".evt-rsvp") ? card.querySelector(".evt-rsvp").value.trim() : "";
+
+        if (type === "mehndi") {
+          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+          eventsList.push({
+            type: "mehndi",
+            name: "Mehndi Ceremony",
+            nameUrdu: "رسمِ حنا (مہندی)",
+            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
+          });
+          eventsWaText += "\n\n🌸 " + num + ". MEHNDI (رسمِ حنا):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
+          if (addr) eventsWaText += "\n• Home Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+
+        } else if (type === "barat") {
+          let sehraTime = "";
+          let departureTime = "";
+          let generalTime = "";
+          let formattedTime = "";
+          let arrival = "";
+          let nikkah = "";
+          let dinner = "";
+          let rukhsati = "";
+
+          if (side === "groom") {
+            sehraTime = card.querySelector(".evt-b-sehra") ? card.querySelector(".evt-b-sehra").value.trim() : "";
+            departureTime = card.querySelector(".evt-b-departure") ? card.querySelector(".evt-b-departure").value.trim() : "";
+            if (sehraTime && departureTime) {
+              formattedTime = `Sehra Bandi: ${sehraTime} · Departure: ${departureTime}`;
+            } else {
+              formattedTime = sehraTime || departureTime || "5:00 PM";
+            }
+          } else {
+            generalTime = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+            formattedTime = generalTime || "7:00 PM";
+            arrival = card.querySelector(".evt-b-arrival") ? card.querySelector(".evt-b-arrival").value.trim() : "";
+            nikkah = card.querySelector(".evt-b-nikkah") ? card.querySelector(".evt-b-nikkah").value.trim() : "";
+            dinner = card.querySelector(".evt-b-dinner") ? card.querySelector(".evt-b-dinner").value.trim() : "";
+            rukhsati = card.querySelector(".evt-b-rukhsati") ? card.querySelector(".evt-b-rukhsati").value.trim() : "";
+          }
+
+          eventsList.push({
+            type: "barat",
+            name: side === "bride" ? "Baraat & Rukhsati" : "Baraat Ceremony",
+            nameUrdu: side === "bride" ? "تقریبِ بارات و رخصتی" : "تقریبِ بارات",
+            date, sehraTime, departureTime, time: formattedTime, arrival, nikkah, dinner, rukhsati,
+            venue, address: addr, mapUrl, rsvpPhone: rsvp
+          });
+
+          eventsWaText += "\n\n👑 " + num + ". BARAAT " + (side === "bride" ? "& RUKHSATI (بارات و رخصتی)" : "(بارات)") + ":\n• Date: " + date;
+          if (side === "groom") {
+            eventsWaText += "\n• Sehra Bandi: " + (sehraTime || "N/A") + "\n• Departure of Baraat: " + (departureTime || "N/A");
+          } else {
+            eventsWaText += "\n• Event / Arrival Time: " + (generalTime || "N/A");
+            if (nikkah) eventsWaText += "\n• Nikkah: " + nikkah;
+            if (dinner) eventsWaText += "\n• Dinner: " + dinner;
+            if (rukhsati) eventsWaText += "\n• Rukhsati: " + rukhsati;
+          }
+          eventsWaText += "\n• Venue: " + venue;
+          if (addr) eventsWaText += "\n• Home Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+
+        } else if (type === "walima") {
+          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+          eventsList.push({
+            type: "walima",
+            name: "Walima Reception",
+            nameUrdu: "دعوتِ ولیمہ",
+            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
+          });
+          eventsWaText += "\n\n✨ " + num + ". WALIMA (دعوتِ ولیمہ):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
+          if (addr) eventsWaText += "\n• Home Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+
+        } else if (type === "engagement") {
+          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+          eventsList.push({
+            type: "engagement",
+            name: "Engagement Ceremony",
+            nameUrdu: "تقریبِ منگنی",
+            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
+          });
+          eventsWaText += "\n\n💍 " + num + ". ENGAGEMENT (تقریبِ منگنی):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
+          if (addr) eventsWaText += "\n• Home Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+
+        } else if (type === "nikkah") {
+          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+          eventsList.push({
+            type: "nikkah",
+            name: "Nikah Ceremony",
+            nameUrdu: "تقریبِ نکاح",
+            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
+          });
+          eventsWaText += "\n\n📜 " + num + ". NIKAH CEREMONY (تقریبِ نکاح):\n• Date: " + date + "\n• Time: " + time + "\n• Mosque / Venue: " + venue;
+          if (addr) eventsWaText += "\n• Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+
+        } else if (type === "custom") {
+          const customName = card.querySelector(".evt-custom-name") ? card.querySelector(".evt-custom-name").value.trim() : "Custom Event";
+          const customNameUr = card.querySelector(".evt-custom-name-ur") ? card.querySelector(".evt-custom-name-ur").value.trim() : "";
+          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
+          const notes = card.querySelector(".evt-notes") ? card.querySelector(".evt-notes").value.trim() : "";
+
+          eventsList.push({
+            type: "custom",
+            name: customName,
+            nameUrdu: customNameUr,
+            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp, notes
+          });
+
+          eventsWaText += "\n\n✨ " + num + ". " + customName.toUpperCase() + (customNameUr ? ` (${customNameUr})` : "") + ":";
+          if (date) eventsWaText += "\n• Date: " + date;
+          if (time) eventsWaText += "\n• Time: " + time;
+          if (venue) eventsWaText += "\n• Venue: " + venue;
+          if (addr) eventsWaText += "\n• Address: " + addr;
+          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
+          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+          if (notes) eventsWaText += "\n• Special Notes: " + notes;
+        }
+      });
+
+      const orderData = {
+        id: "order_" + Date.now(),
+        status: "pending",
+        createdAt: new Date().toLocaleString("en-PK", { timeZone: "Asia/Karachi" }),
+        clientName,
+        clientPhone,
+        cardSide: side,
+        theme: themeValue,
+        groom,
+        groomUrdu: "",
+        bride,
+        brideUrdu: "",
+        host,
+        hostUrdu: "",
+        welcomeHosts: clientHosts.filter(h => h.name && h.phone),
+        eventsList: eventsList,
+        // Backward-compatibility for admin studio
+        events: {
+          mehndi: eventsList.find(e => e.type === "mehndi") || {},
+          baraat: eventsList.find(e => e.type === "barat") || {},
+          walima: eventsList.find(e => e.type === "walima") || {}
+        }
+      };
+
+      try {
+        let existing = JSON.parse(localStorage.getItem("edawatnama_client_orders") || "[]");
+        existing.unshift(orderData);
+        localStorage.setItem("edawatnama_client_orders", JSON.stringify(existing));
+      } catch (err) {
+        console.error("Storage error:", err);
+      }
+
+      const coupleTitle = side === "bride" ? `${bride} & ${groom}` : `${groom} & ${bride}`;
+      const sideText = side === "bride" ? "Bride's Side (لڑکی والے)" : "Groom's Side (لڑکے والے)";
+
+      let welcomingWa = "";
+      if (orderData.welcomeHosts && orderData.welcomeHosts.length > 0) {
+        welcomingWa = "\n\n🤝 WELCOMING PERSONS:\n" + orderData.welcomeHosts.map(h => `• ${h.name} (${h.phone})`).join("\n");
+      }
+
+      const waText = 
+`✦ NEW DAWAT NAMA WEDDING INVITATION ORDER ✦
+======================================
+• Invitation Side: ${sideText}
+• Client: ${clientName} (${clientPhone})
+• Couple: ${coupleTitle}
+• Groom: ${groom}
+• Bride: ${bride}
+• Main Host / Parents: ${host}
+• Preferred Theme: ${themeValue === "optional" ? "Elitara's Choice (Optional)" : themeValue}
+${eventsWaText}${welcomingWa}`;
+
+      const waUrl = `https://wa.me/923298120981?text=${encodeURIComponent(waText)}`;
+
+      // Update Modal
+      modalWaBtn.href = waUrl;
+      modalCopyBtn.onclick = () => {
+        navigator.clipboard.writeText(waText);
+        showToast("Order summary copied to clipboard!");
+      };
+
+      modal.classList.add("show");
+    });
+
+    modalCloseBtn.addEventListener("click", () => {
+      modal.classList.remove("show");
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("show");
+      }
+    });
+
+</script>
+
+</body>
+
+</html>
+
