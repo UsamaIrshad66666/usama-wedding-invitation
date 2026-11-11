@@ -23,7 +23,7 @@ const THEME_IMAGES = {
 const DEFAULT_BRAND = {
   title: "E-Dawatnama — Royal Digital Wedding Invitations",
   desc: "Pakistan's Premier Interactive Digital Wedding Invitations by Elitara. Bespoke Mughal & modern royal themes with animated scenes, countdowns, venue map & dynamic RSVP.",
-  image: "https://e-dawatnama.com/assets/offer_post_portrait.png"
+  image: "https://e-dawatnama.com/assets/baraat-scene.jpg"
 };
 
 function capitalizeWord(w) {
@@ -48,12 +48,62 @@ function resolveMetadata(url) {
   const themeParam = (url.searchParams.get("theme") || "").toLowerCase().trim();
   const themeImg = THEME_IMAGES[themeParam] || THEME_IMAGES.emerald;
 
+  // 0. PRIORITY CHECK: Dynamic Base64 Wedding Payload (?invite= or ?d=)
+  const invitePayload = url.searchParams.get("invite") || url.searchParams.get("d");
+  if (invitePayload) {
+    try {
+      const raw = atob(invitePayload);
+      let data = null;
+      try {
+        data = JSON.parse(decodeURIComponent(raw));
+      } catch (e1) {
+        try {
+          data = JSON.parse(raw);
+        } catch (e2) {
+          try {
+            data = JSON.parse(unescape(raw));
+          } catch (e3) {}
+        }
+      }
+
+      if (data && (data.groom || data.bride)) {
+        const isBride = data.cardSide === "bride" || url.searchParams.get("side") === "bride";
+        const g = (data.groom || "").trim();
+        const b = (data.bride || "").trim();
+        const couple = isBride && b ? `${b} with ${g}` : `${g} with ${b}`;
+        const cardTheme = (themeParam || data.theme || (pathLower.includes("burgundy") ? "burgundy" : "") || "").toLowerCase();
+
+        const ev = data.events || {};
+        const hasMehndi = ev.mehndi && (ev.mehndi.displayDate || ev.mehndi.dateTime);
+        const hasBarat = ev.baraat && (ev.baraat.displayDate || ev.baraat.dateTime);
+        const hasWalima = ev.walima && (ev.walima.displayDate || ev.walima.dateTime);
+
+        let eventTypeTitle = "Wedding Invitation";
+        if (hasMehndi && hasBarat && !hasWalima) {
+          eventTypeTitle = isBride ? "Baraat & Mehndi Invitation" : "Mehndi & Baraat Invitation";
+        } else if (hasBarat && !hasMehndi && !hasWalima) {
+          eventTypeTitle = "Baraat & Rukhsati Invitation";
+        } else if (hasWalima && !hasBarat && !hasMehndi) {
+          eventTypeTitle = "Walima Reception";
+        }
+
+        return {
+          title: `${couple} — ${eventTypeTitle}`,
+          desc: `With the grace of Allah Almighty, you are cordially invited to celebrate the ${eventTypeTitle} of ${couple}.`,
+          image: THEME_IMAGES[cardTheme] || THEME_IMAGES.burgundy || THEME_IMAGES.emerald
+        };
+      }
+    } catch (e) {
+      // Ignore parse failure, fall through
+    }
+  }
+
   // 1. Explicit /about route
   if (pathLower === "/about" || pathLower === "/about/") {
     return {
       title: "About E-Dawatnama — Royal Digital Wedding Invitations",
       desc: "Experience bespoke digital luxury. Interactive wedding invitations designed with royal Mughal aesthetics, music, and interactive RSVP.",
-      image: "https://e-dawatnama.com/assets/offer_post_portrait.png"
+      image: "https://e-dawatnama.com/assets/baraat-scene.jpg"
     };
   }
 
@@ -71,7 +121,7 @@ function resolveMetadata(url) {
     return {
       title: "Create Your Royal Wedding Invitation — E-Dawatnama",
       desc: "Fill out our simple form to design your customized royal digital wedding invitation.",
-      image: "https://e-dawatnama.com/assets/offer_post_portrait.png"
+      image: "https://e-dawatnama.com/assets/baraat-scene.jpg"
     };
   }
 
@@ -92,12 +142,13 @@ function resolveMetadata(url) {
     };
   }
 
-  // 3c. Burgundy Romance Theme
+  // 3c. Burgundy Romance Theme Demo
   if (
-    pathLower.includes("burgundy") ||
+    pathLower === "/burgundy-romance" ||
+    pathLower === "/burgundy-romance.html" ||
     pathLower.includes("rohan") ||
-    pathLower.includes("daniyal") ||
-    themeParam === "burgundy"
+    pathLower === "/burgundy" ||
+    pathLower === "/demo-burgundy"
   ) {
     return {
       title: "Rohan & Zara — Burgundy Romance & Walima Reception",
@@ -153,27 +204,7 @@ function resolveMetadata(url) {
     };
   }
 
-  // 7. Check for ?invite= Base64 data payload
-  const invitePayload = url.searchParams.get("invite");
-  if (invitePayload) {
-    try {
-      const decodedStr = atob(invitePayload);
-      const data = JSON.parse(decodedStr);
-      if (data && (data.groom || data.bride)) {
-        const g = (data.groom || "").trim();
-        const b = (data.bride || "").trim();
-        const couple = data.cardSide === "bride" && b ? `${b} with ${g}` : `${g} with ${b}`;
-        const cardTheme = (themeParam || data.theme || "").toLowerCase();
-        return {
-          title: `${couple} — Wedding Invitation`,
-          desc: `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${couple}.`,
-          image: THEME_IMAGES[cardTheme] || THEME_IMAGES.emerald
-        };
-      }
-    } catch (e) {
-      // Ignore parse failure, fall through
-    }
-  }
+// 7. (Moved to Rule 0 for priority metadata resolution)
 
   // 8. Dynamic Couple Slug from URL Path:
   // e.g. /Hamza-and-Fatima-wedding-invitation, /Zain-with-Amina-wedding-invitation, /Ali-and-Sara

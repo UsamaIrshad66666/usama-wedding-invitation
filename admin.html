@@ -872,10 +872,34 @@
       }
     }
 
+    function safeDecodeURI(str) {
+      try {
+        return decodeURIComponent(str);
+      } catch (e) {
+        try {
+          return unescape(str);
+        } catch (e2) {
+          return str.replace(/%([0-9A-Fa-f]{2})/g, (m, h) => {
+            try { return decodeURIComponent(m); } catch (e3) { return String.fromCharCode(parseInt(h, 16)); }
+          });
+        }
+      }
+    }
+
     function decodeWeddingData(str) {
       try {
-        const json = decodeURIComponent(atob(str));
-        return JSON.parse(json);
+        if (!str) return null;
+        const bin = atob(str);
+        try {
+          const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+          const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+          if (text.trim().startsWith("{")) return JSON.parse(text);
+        } catch (e) {}
+
+        const decoded = safeDecodeURI(bin);
+        if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
+
+        return null;
       } catch (err) {
         console.error("Decoding error", err);
         return null;
