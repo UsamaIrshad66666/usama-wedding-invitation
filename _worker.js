@@ -61,7 +61,7 @@ function resolveMetadata(url) {
           data = JSON.parse(raw);
         } catch (e2) {
           try {
-            data = JSON.parse(unescape(raw));
+            if (typeof unescape === "function") data = JSON.parse(unescape(raw));
           } catch (e3) {}
         }
       }
@@ -241,56 +241,63 @@ function resolveMetadata(url) {
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
+    try {
+      const url = new URL(request.url);
+      const path = url.pathname;
 
-    // 1. Bypass assets directly to static storage
-    const isStaticAsset = /\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|woff2?|ttf|eot|json|map|txt|xml)$/i.test(path);
-    if (isStaticAsset) {
+      // 1. Bypass static media and code assets directly to edge storage
+      const isStaticAsset = /\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|woff2?|ttf|eot|json|map|txt|xml|mp4|mp3)$/i.test(path);
+      if (isStaticAsset) {
+        return env.ASSETS.fetch(request);
+      }
+
+      // 2. Fetch base response from ASSETS
+      const response = await env.ASSETS.fetch(request);
+
+      // If not HTML response, return as-is
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("text/html")) {
+        return response;
+      }
+
+      // 3. Resolve dynamic metadata for this specific request
+      const meta = resolveMetadata(url) || DEFAULT_BRAND;
+      const title = meta.title || DEFAULT_BRAND.title;
+      const desc = meta.desc || DEFAULT_BRAND.desc;
+      const image = meta.image || DEFAULT_BRAND.image;
+
+      // 4. Transform HTML stream using Cloudflare HTMLRewriter
+      class MetaSetter {
+        constructor(content) {
+          this.content = content;
+        }
+        element(el) {
+          if (this.content) el.setAttribute("content", this.content);
+        }
+      }
+
+      class TitleSetter {
+        constructor(text) {
+          this.text = text;
+        }
+        element(el) {
+          if (this.text) el.setInnerContent(this.text);
+        }
+      }
+
+      const rewriter = new HTMLRewriter()
+        .on("title", new TitleSetter(title))
+        .on('meta[property="og:title"]', new MetaSetter(title))
+        .on('meta[name="twitter:title"]', new MetaSetter(title))
+        .on('meta[property="og:description"]', new MetaSetter(desc))
+        .on('meta[name="twitter:description"]', new MetaSetter(desc))
+        .on('meta[property="og:image"]', new MetaSetter(image))
+        .on('meta[name="twitter:image"]', new MetaSetter(image))
+        .on('meta[property="og:url"]', new MetaSetter(url.href));
+
+      return rewriter.transform(response);
+    } catch (err) {
       return env.ASSETS.fetch(request);
     }
-
-    // 2. Fetch base response from ASSETS
-    const response = await env.ASSETS.fetch(request);
-
-    // If not HTML response, return as-is
-    const contentType = response.headers.get("content-type") || "";
-    if (!contentType.includes("text/html")) {
-      return response;
-    }
-
-    // 3. Resolve dynamic metadata for this specific request
-    const meta = resolveMetadata(url);
-
-    // 4. Transform HTML stream using Cloudflare HTMLRewriter
-    class MetaSetter {
-      constructor(content) {
-        this.content = content;
-      }
-      element(el) {
-        el.setAttribute("content", this.content);
-      }
-    }
-
-    class TitleSetter {
-      constructor(text) {
-        this.text = text;
-      }
-      element(el) {
-        el.setInnerContent(this.text);
-      }
-    }
-
-    const rewriter = new HTMLRewriter()
-      .on("title", new TitleSetter(meta.title))
-      .on('meta[property="og:title"]', new MetaSetter(meta.title))
-      .on('meta[name="twitter:title"]', new MetaSetter(meta.title))
-      .on('meta[property="og:description"]', new MetaSetter(meta.desc))
-      .on('meta[name="twitter:description"]', new MetaSetter(meta.desc))
-      .on('meta[property="og:image"]', new MetaSetter(meta.image))
-      .on('meta[name="twitter:image"]', new MetaSetter(meta.image))
-      .on('meta[property="og:url"]', new MetaSetter(url.href));
-
-    return rewriter.transform(response);
   }
 };
