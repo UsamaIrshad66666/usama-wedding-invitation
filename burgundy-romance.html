@@ -2893,7 +2893,7 @@
       }
 
       // 4. LIVE REAL-TIME COUNTDOWN TIMER WITH MECHANICAL FLIP-ROLL
-        const targetWeddingDate = new Date("2026-12-08T16:00:00+05:00").getTime();
+        let targetWeddingDate = new Date("2026-12-08T16:00:00+05:00").getTime();
         const elDays = document.getElementById('cdDays');
         const elHours = document.getElementById('cdHours');
         const elMins = document.getElementById('cdMinutes');
@@ -3011,7 +3011,8 @@
           `• *Number of Guests:* ${encodeURIComponent(count)}` +
           (notes ? `%0A• *Note:* ${encodeURIComponent(notes)}` : "");
 
-        const waUrl = `https://wa.me/923012345678?text=${waText}`;
+        const targetPhone = (window.activeRsvpPhone || "923298120981").replace(/[^0-9]/g, "");
+        const waUrl = `https://wa.me/${targetPhone}?text=${waText}`;
 
         rsvpModalOverlay.classList.remove("active");
         showToast("RSVP Confirmed! Opening WhatsApp...");
@@ -3175,11 +3176,107 @@
         }
       };
 
-      // Check URL param or path for Bride Side (لڑکی والے) customization
+      function decodeWeddingData(str) {
+        try {
+          if (!str) return null;
+          const json = decodeURIComponent(atob(str));
+          return JSON.parse(json);
+        } catch (err) {
+          console.error("Failed to decode wedding data", err);
+          return null;
+        }
+      }
+
+      // Check URL param or path for Bride Side customization & dynamic payload
       const bParams = new URLSearchParams(window.location.search);
       const isBrideMode = bParams.get("side") === "bride" || window.location.pathname.toLowerCase().includes("bride");
+      const dynData = decodeWeddingData(bParams.get("invite") || bParams.get("d"));
 
-      if (isBrideMode) {
+      if (dynData) {
+        const isBride = dynData.cardSide === "bride" || isBrideMode;
+        const gEn = dynData.groom || "Daniyal";
+        const gUr = dynData.groomUrdu || gEn;
+        const bEn = dynData.bride || "Ayla";
+        const bUr = dynData.brideUrdu || bEn;
+        const hEn = dynData.host || (isBride ? `${bEn}'s Parents` : `${gEn}'s Parents`);
+        const hUr = dynData.hostUrdu || hEn;
+
+        translations.en.heroGroom = isBride ? bEn : gEn;
+        translations.en.heroBride = isBride ? gEn : bEn;
+        translations.ur.heroGroom = isBride ? bUr : gUr;
+        translations.ur.heroBride = isBride ? gUr : bUr;
+        translations.en.familyInviteTitle = hEn;
+        translations.ur.familyInviteTitle = hUr;
+        translations.en.farewellNames = isBride ? `${bEn} and ${gEn}` : `${gEn} and ${bEn}`;
+        translations.ur.farewellNames = isBride ? `${bUr} اور ${gUr}` : `${gUr} اور ${bUr}`;
+
+        const evM = dynData.events && dynData.events.mehndi && dynData.events.mehndi.displayDate ? dynData.events.mehndi : null;
+        const evB = dynData.events && dynData.events.baraat && dynData.events.baraat.displayDate ? dynData.events.baraat : null;
+        const evW = dynData.events && dynData.events.walima && dynData.events.walima.displayDate ? dynData.events.walima : null;
+
+        // Customization when Mehndi & Barat are selected (without Walima or with Walima)
+        if (evM && evB && (!evW || !evW.displayDate)) {
+          translations.en.heroSubtitle = isBride ? "Baraat & Mehndi" : "Mehndi & Baraat";
+          translations.ur.heroSubtitle = isBride ? "تقریبِ بارات و رسمِ حنا" : "رسمِ حنا و تقریبِ بارات";
+          translations.en.poetrySacred = isBride ? "Baraat & Mehndi Celebrations" : "Mehndi & Baraat Celebrations";
+          translations.ur.poetrySacred = isBride ? "تقریبِ بارات و رسمِ حنا" : "رسمِ حنا و تقریبِ بارات";
+          translations.en.countdownHeading = "The Wedding Celebrations Begin In";
+          translations.ur.countdownHeading = "شادی کی تقریبات کے آغاز میں باقی وقت";
+          translations.en.familyInviteDesc = isBride
+            ? `Cordially invite you to celebrate the blessed wedding and Baraat of their beloved daughter ${bEn} with ${gEn}`
+            : `Cordially invite you to celebrate the blessed wedding ceremonies and Baraat of their beloved son ${gEn} with ${bEn}`;
+          translations.ur.familyInviteDesc = isBride
+            ? `اپنی پیاری لختِ جگر ${bUr} کی شادی اور بارات کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`
+            : `اپنے پیارے فرزند ${gUr} کی شادی اور بارات کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`;
+
+          translations.en.time1 = evM.displayTime || "7:00 PM";
+          translations.en.event1 = `Mehndi Ceremony (رسمِ حنا) · ${evM.displayDate || ""}`;
+          translations.ur.time1 = evM.displayTimeUrdu || evM.displayTime || "۷:۰۰ شام";
+          translations.ur.event1 = `رسمِ حنا (مہندی) · ${evM.displayDateUrdu || evM.displayDate || ""}`;
+
+          translations.en.time2 = isBride ? (evB.arrival || "8:00 PM") : (evB.sehraTime || "4:30 PM");
+          translations.en.event2 = isBride ? "Arrival of Baraat & Welcome" : "Sehra Bandi & Welcoming Guests";
+          translations.ur.time2 = isBride ? (evB.arrival || "۸:۰۰ شام") : (evB.sehraTime || "۴:۳۰ شام");
+          translations.ur.event2 = isBride ? "آمدِ بارات و خیر مقدم" : "سہرہ بندی اور معزز مہمانوں کا استقبال";
+
+          translations.en.time3 = isBride ? (evB.nikkah || "9:00 PM") : (evB.departureTime || "5:30 PM");
+          translations.en.event3 = isBride ? "Sacred Nikkah Ceremony" : "Departure of Baraat (روانگیِ بارات)";
+          translations.ur.time3 = isBride ? (evB.nikkah || "۹:۰۰ شام") : (evB.departureTime || "۵:۳۰ شام");
+          translations.ur.event3 = isBride ? "عقدِ نکاح کی مبارک تقریب" : "روانگیِ بارات";
+
+          translations.en.time4 = evB.dinner || evB.displayTime || "9:30 PM";
+          translations.en.event4 = "Baraat Reception & Royal Banquet";
+          translations.ur.time4 = evB.dinner || evB.displayTime || "۹:۳۰ شام";
+          translations.ur.event4 = "پُرتکلف شاہی طعام و ضیافت";
+
+          translations.en.time5 = evB.rukhsati || "11:00 PM";
+          translations.en.event5 = "Rukhsati & Emotional Farewell";
+          translations.ur.time5 = evB.rukhsati || "۱۱:۰۰ شب";
+          translations.ur.event5 = "رخصتی اور دعاؤں کی چھاؤں";
+
+          translations.en.venueName = evB.venue || evM.venue || "Grand Ballroom";
+          translations.en.venueAddress = evB.address || evM.address || "";
+          translations.ur.venueName = evB.venueUrdu || evB.venue || evM.venue || "گرینڈ بال روم";
+          translations.ur.venueAddress = evB.addressUrdu || evB.address || evM.address || "";
+          translations.en.heroDate = evB.displayDate || evM.displayDate || "2026";
+        } else if (evB && !evM && !evW) {
+          translations.en.heroSubtitle = "Baraat & Rukhsati";
+          translations.ur.heroSubtitle = "تقریبِ بارات و رخصتی";
+          translations.en.poetrySacred = "Baraat & Rukhsati";
+          translations.ur.poetrySacred = "دعاؤں کے سائے میں رخصتی";
+          translations.en.heroDate = evB.displayDate || "2026";
+          translations.en.venueName = evB.venue || "Grand Ballroom";
+          translations.en.venueAddress = evB.address || "";
+        }
+
+        const targetDateStr = (evM && evM.dateTime) ? evM.dateTime : ((evB && evB.dateTime) ? evB.dateTime : null);
+        if (targetDateStr) {
+          const parsed = new Date(targetDateStr).getTime();
+          if (!isNaN(parsed)) targetWeddingDate = parsed;
+        }
+
+        window.activeRsvpPhone = (evB && evB.rsvpPhone) ? evB.rsvpPhone : ((evM && evM.rsvpPhone) ? evM.rsvpPhone : "+923298120981");
+      } else if (isBrideMode) {
         // EN Bride customizations
         translations.en.heroSubtitle = "Baraat & Rukhsati";
         translations.en.heroGroom = "Zara";
@@ -3276,9 +3373,15 @@
         const lc = document.getElementById("tLabelCount"); if(lc) lc.textContent = t.labelCount;
         const lnt = document.getElementById("tLabelNotes"); if(lnt) lnt.textContent = t.labelNotes;
         const sb = document.getElementById("tSubmitBtn"); if(sb) sb.textContent = t.submitBtn;
+
+        // Update couple highlights, date, and title
+        const gHl = document.querySelector(".groom-hl"); if(gHl) gHl.textContent = t.heroGroom;
+        const bHl = document.querySelector(".bride-hl"); if(bHl) bHl.textContent = t.heroBride;
+        const hd = document.getElementById("tHeroDate"); if(hd && t.heroDate) hd.textContent = t.heroDate;
+        document.title = `${t.heroGroom} & ${t.heroBride} | ${t.heroSubtitle}`;
       }
 
-      if (isBrideMode) {
+      if (isBrideMode || dynData) {
         applyBilingualTexts();
       }
 

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -9,12 +9,12 @@
   <meta property="og:title" content="E-Dawatnama — Royal Digital Wedding Invitations">
   <meta property="og:description" content="Pakistan's Premier Interactive Digital Wedding Invitations by Elitara. Discover bespoke Mughal &amp; modern luxury themes with animated scenes, countdowns, venue map &amp; dynamic RSVP.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://e-dawatnama.com/assets/offer_post_portrait.png">
+  <meta property="og:image" content="https://e-dawatnama.com/assets/baraat-scene.jpg">
   <meta property="og:image:type" content="image/png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="E-Dawatnama — Royal Digital Wedding Invitations">
   <meta name="twitter:description" content="Pakistan's Premier Interactive Digital Wedding Invitations by Elitara. Discover bespoke Mughal &amp; modern luxury themes with animated scenes, countdowns, venue map &amp; dynamic RSVP.">
-  <meta name="twitter:image" content="https://e-dawatnama.com/assets/offer_post_portrait.png">
+  <meta name="twitter:image" content="https://e-dawatnama.com/assets/baraat-scene.jpg">
   <title>E-Dawatnama | Royal Digital Wedding Invitations</title>
   
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -39,8 +39,8 @@
       --theme-env-body: linear-gradient(145deg, #16382c 0%, #0d261e 100%);
       --theme-env-pocket: linear-gradient(135deg, #102d23 0%, #0b1f18 100%);
       --theme-env-flap: linear-gradient(135deg, #194334 0%, #123327 100%);
-      --theme-seal-bg: radial-gradient(circle at 35% 30%, #ffd987, #b88b39 70%, #6d4f13 100%);
-      --theme-seal-border: #fff2cc;
+      --theme-seal-bg: radial-gradient(circle at 35% 30%, #173b2e 0%, #0d241c 65%, #06130e 100%);
+      --theme-seal-border: #d4ad5d;
       --theme-gold-primary: #d4ad5d;
       --theme-gold-bright: #ffe082;
       --theme-gold-light: #f7e7be;
@@ -1063,8 +1063,8 @@
       left: 50%;
       top: 96px;
       transform: translate(-50%, -50%);
-      width: 52px;
-      height: 52px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       background: var(--theme-seal-bg);
       border: 1.5px solid var(--theme-seal-border);
@@ -1072,47 +1072,95 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255,255,255,0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.65), 0 0 12px rgba(212, 173, 93, 0.28);
       cursor: pointer;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
+    }
+    .wax-seal::before {
+      content: "";
+      position: absolute;
+      inset: 3.5px;
+      border: 1px dashed var(--gold-line);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .wax-seal:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), 0 0 18px rgba(212, 173, 93, 0.5);
     }
     .wax-seal svg {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       display: block;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
 
-    .letter-slide {
-      position: absolute;
-      z-index: 2;
-      left: 6%;
-      width: 88%;
-      height: 135px;
-      top: 36px;
-      background: #faf4e6;
-      color: #314238;
-      border-radius: 3px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 1.25rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      transition: transform 0.9s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-      border: 1px solid #dcd1ba;
+        .letter-slide {
+      display: none !important;
     }
-    .letter-slide span {
-      font-size: 0.78rem;
-      font-style: normal;
-      font-family: var(--sans);
-      color: #796f5b;
-      margin-top: 4px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+
+    /* ==============================================================
+       ROYAL ENVELOPE GLOW REVEAL TRANSITION
+       ============================================================== */
+    /* Light beam emerging from inside the envelope pocket */
+    .env-glow-burst {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 50px;
+      transform: translate(-50%, -50%) scale(0.1);
+      width: 130px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, #ffffff 0%, #fff8db 25%, #f4cb66 50%, #d4ad5d 75%, rgba(212, 173, 93, 0) 100%);
+      opacity: 0;
+      pointer-events: none;
+      filter: blur(6px);
+      transition: transform 0.75s cubic-bezier(0.15, 0.85, 0.35, 1), opacity 0.5s ease;
+    }
+
+    .envelope.open .env-glow-burst {
+      opacity: 1;
+      transform: translate(-50%, -85px) scale(3.5);
+      filter: blur(14px);
+    }
+
+    /* Majestic Fullscreen Golden Glow Overlay */
+    .royal-screen-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255, 252, 235, 0.98) 0%, rgba(252, 237, 197, 0.96) 42%, rgba(212, 173, 93, 0.92) 75%, rgba(13, 36, 28, 0.9) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transform: scale(0.85);
+      transition: opacity 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .royal-screen-glow.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .royal-screen-glow.fade-out {
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .royal-glow-burst-core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #ffffff 0%, #fff8e1 30%, #f7dc8d 60%, transparent 100%);
+      opacity: 0.92;
+      filter: blur(20px);
+      pointer-events: none;
     }
 
     .envelope.open .env-flap {
@@ -1380,9 +1428,9 @@
     .event-cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 12px;
+      gap: 16px;
       width: 100%;
-      margin: 0.7rem 0 1.8rem;
+      margin: 1rem 0 2rem;
     }
 
     .event-card {
@@ -1390,16 +1438,17 @@
       text-align: left;
       border: 1.5px solid rgba(212, 173, 93, 0.68);
       background: var(--theme-panel-bg);
-      padding: 14px 16px 13px;
-      min-height: 0;
+      padding: 22px 20px 20px;
+      min-height: 195px;
       cursor: pointer;
       color: var(--cream-ivory);
       transition: var(--transition);
-      border-radius: 8px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
     .event-card:hover,
     .event-card:focus-visible {
@@ -1413,7 +1462,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 10px;
     }
     .event-badge-num {
       color: var(--gold-primary);
@@ -1443,20 +1492,20 @@
       direction: rtl;
     }
     .event-card-date {
-      font-size: 0.76rem;
+      font-size: 0.82rem;
       font-weight: 500;
       letter-spacing: 0.06em;
       color: var(--cream-muted);
-      margin-top: 8px;
+      margin-top: 14px;
       border-top: 1px dashed var(--gold-line);
-      padding-top: 6px;
+      padding-top: 10px;
     }
 
     /* Prominent Gold Action Button inside each Ceremony Card */
     .event-card-cta-bar {
       position: relative;
-      margin-top: 9px;
-      padding: 8px 14px;
+      margin-top: 14px;
+      padding: 10px 16px;
       border-radius: 999px;
       background: linear-gradient(135deg, #e5c985 0%, #b98e43 100%);
       border: 1px solid #fff3cf;
@@ -2400,7 +2449,7 @@
     }
 
         /* ==============================================================
-       UNIVERSAL SIDE SWITCHER (Ù„Ú‘Ú©Û’ ÙˆØ§Ù„Û’ vs Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„Û’) & DEMO TABS
+       UNIVERSAL SIDE SWITCHER (لڑکے والے vs لڑکی والے) & DEMO TABS
        ============================================================== */
     .side-universal-switcher-wrap {
       display: flex;
@@ -2421,34 +2470,40 @@
       text-align: center;
     }
     .side-universal-switcher {
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       background: rgba(8, 22, 17, 0.95);
       border: 1.5px solid var(--gold-line);
       border-radius: 999px;
-      padding: 5px;
+      padding: 4px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 2px 6px rgba(0, 0, 0, 0.4);
       gap: 6px;
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
+      box-sizing: border-box;
     }
     .switcher-side-btn {
-      flex: 1;
+      width: 100%;
+      min-width: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 18px;
+      gap: 6px;
+      padding: 8px 10px;
       border: 1px solid transparent;
       border-radius: 999px;
       background: transparent;
       color: var(--cream-muted);
       font-family: var(--sans);
-      font-size: 0.92rem;
+      font-size: clamp(0.74rem, 2.7vw, 0.9rem);
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       user-select: none;
-      white-space: nowrap;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.25;
+      box-sizing: border-box;
     }
     .switcher-side-btn .switcher-icon {
       font-size: 1.15rem;
@@ -2934,7 +2989,13 @@
       const hasInviteParam = !!(params.get("invite") || params.get("d"));
       const hasWeddingParam = !!(params.get("card") || params.get("event") || params.get("view") || params.get("side"));
       const themeParam = (params.get("theme") || "").toLowerCase().trim();
+      const templateParam = (params.get("template") || "").toLowerCase().trim();
       const hasWeddingTheme = themeParam && themeParam !== "about";
+
+      // Immediate check for demos route or demos file
+      if (rawPath.includes("demos") || routeSlug === "demos" || routeSlug === "samples" || routeSlug === "templates") {
+        return "demos";
+      }
 
       // 0a. Explicit /noor-e-nikkah route, or ?theme=ivory / ?theme=nikkah
       if (routeSlug.includes("noor-e-nikkah") || routeSlug.includes("noor-nikkah") || routeSlug.includes("ivory-gold")) {
@@ -2954,7 +3015,7 @@
 // 0. Explicit /burgundy-romance route, or ?theme=burgundy
       if (routeSlug.includes("burgundy") || themeParam === "burgundy") {
         if (!isFileProto && !window.location.pathname.includes("burgundy-romance")) {
-          window.location.replace("/burgundy-romance");
+          window.location.replace("/burgundy-romance" + window.location.search);
         }
         return "wedding";
       }
@@ -2983,7 +3044,12 @@
         return "wedding";
       }
 
-      // 3. Explicit /about route
+      // 3. Explicit /demos or /samples route
+      if (routeSlug === "demos" || routeSlug === "samples" || routeSlug === "templates" || routeSlug === "sample-cards") {
+        return "demos";
+      }
+
+      // 3b. Explicit /about route
       if (routeSlug === "about") {
         return "about";
       }
@@ -3363,7 +3429,7 @@
         invitationLine: "cordially request the honour of your gracious presence and prayers to celebrate the wedding ceremonies of their beloved son",
         invitationLineBride: "cordially request the honour of your gracious presence and prayers to celebrate the auspicious wedding ceremonies and Rukhsati of their beloved daughter",
         baraatBrideTitle: "Baraat & Rukhsati",
-        baraatBrideTaglineUrdu: "”دعاؤں کے سائے میں رخصتی“",
+        baraatBrideTaglineUrdu: "دعاؤں کے سائے میں رخصتی",
         baraatBrideTaglineRoman: "Duaon Kay Saaye Mein Rukhsati",
         arrivalLabel: "Arrival of Baraat",
         nikkahLabel: "Nikkah Ceremony",
@@ -3402,7 +3468,7 @@
         eventUnavailableTitle: "Event Not Available",
         eventUnavailableMsg: "The requested event is not part of this invitation card.",
         viewYourEventsBtn: "View Your Invitation Events",
-        baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
+        baraatTaglineUrdu: "دل والے دلہنیا لے جا رہے ہیں",
         baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
         scrollTutorialText: "Swipe up to scroll for full details ↓",
         aboutTitle: "Dawat Nama by Elitara",
@@ -3414,26 +3480,26 @@
         aboutChatWA: "Chat on WhatsApp · 0329 8120981",
         aboutFollowInsta: "Follow @elitara_pk",
                 aboutLiveDemos: "Explore Live Wedding Card Demos",
-        aboutUniversalSwitcherTitle: "Choose Family Perspective (Ø¢Ù¾ Ú©Ø§ Ø§Ù†ØªØ®Ø§Ø¨):",
-        aboutSideGroom: "ðŸ¤µ Groom's Side (Ù„Ú‘Ú©Û’ ÙˆØ§Ù„Û’)",
-        aboutSideBride: "ðŸ‘° Bride's Side (Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„Û’)",
-        aboutSideGroomHint: "Showing Groom's Side Cards Â· Focus on Walima Reception, Sehra Bandi & Groom's Family Invitation",
-        aboutSideBrideHint: "Showing Bride's Side Cards (Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„Û’) Â· Focus on Baraat & Rukhsati, Daughter-first Wording & Bridal Artwork",
-        aboutTabRoyal: "ðŸ‘‘ 1. Royal Mughal Collection (8)",
-        aboutTabBurgundy: "ðŸŒ¹ 2. Burgundy Romance Collection",
-        aboutTabMostLiked: "â­ Most Liked by Clients",
-        aboutTabAll: "âœ¨ All Themes (10)",
+        aboutUniversalSwitcherTitle: "Choose Family Perspective (آپ کا انتخاب):",
+        aboutSideGroom: "Groom's Side (لڑکے والے)",
+        aboutSideBride: "Bride's Side (لڑکی والے)",
+        aboutSideGroomHint: "Showing Groom's Side Cards · Focus on Walima Reception, Sehra Bandi & Groom's Family Invitation",
+        aboutSideBrideHint: "Showing Bride's Side Cards (لڑکی والے) · Focus on Baraat & Rukhsati, Daughter-first Wording & Bridal Artwork",
+        aboutTabRoyal: "👑 1. Royal Mughal Collection (8)",
+        aboutTabBurgundy: "🌹 2. Burgundy Romance Collection",
+        aboutTabMostLiked: "⭐ Most Liked by Clients",
+        aboutTabAll: "✨ All Themes (10)",
         aboutMostLikedHeading: "Most Liked by Clients",
-        aboutMostLikedSub: "Our top 3 client-favorite wedding invitations â€” celebrated for imperial elegance, heartwarming poetry, and royal unboxing:",
-        aboutBrideBaraatTag: "Bride's Side Â· Baraat & Rukhsati",
-        aboutGroomWalimaTag: "Groom's Side Â· Walima & Baraat",
-        aboutRank1Badge: "ðŸ‘‘ #1 Flagship Choice",
-        aboutRank2Badge: "ðŸŒ¹ #2 Regal Crimson Choice",
-        aboutRank3Badge: "ðŸ· #3 Modern Luxury Choice",
+        aboutMostLikedSub: "Our top 3 client-favorite wedding invitations — celebrated for imperial elegance, heartwarming poetry, and royal unboxing:",
+        aboutBrideBaraatTag: "Bride's Side · Baraat & Rukhsati",
+        aboutGroomWalimaTag: "Groom's Side · Walima & Baraat",
+        aboutRank1Badge: "👑 #1 Flagship Choice",
+        aboutRank2Badge: "🌹 #2 Regal Crimson Choice",
+        aboutRank3Badge: "🍷 #3 Modern Luxury Choice",
         aboutTabNikkah: "🕊️ 3. Noor-e-Nikkah Collection",
         aboutDemoNikkahTag: "Noor-e-Nikkah · Pearl Ivory & 24K Champagne Gold",
         aboutDemoNikkahDesc: "Luminous pearl silk, sacred Quranic verses, 24K gold geometric arches, cascading white jasmine blossoms, and elegant daytime Nikkah & Walima ceremony itinerary.",
-        aboutDemoRoyalGraceTag: "Royal Grace Â· Sage Garden & Pearl Drapes Nikkah",
+        aboutDemoRoyalGraceTag: "Royal Grace · Sage Garden & Pearl Drapes Nikkah",
         aboutDemoRoyalGraceDesc: "Serene palatial garden ambiance with draped pearl curtains, cinematic gate reveal, Quranic blessing, metallic scratch-to-reveal date card, live countdown, and direct WhatsApp RSVP.",
         aboutDemoTemplateTitle: "Ahmed & Ayesha",
         aboutDemoTemplateSub: "Demo Template · Ready for You",
@@ -3481,13 +3547,13 @@
         musicOn: "موسیقی: جاری",
         musicMissing: "موسیقی ابھی دستیاب نہیں",
         subTitle: "خوش آمدید / گرامی قدر مہمانان",
-        ayahText: "”اور اُس کی نشانیوں میں سے یہ ہے کہ اُس نے تمہارے لیے تمہاری ہی جنس سے جوڑے بنائے تاکہ تم اُن کے پاس سکون حاصل کرو اور تمہارے درمیان محبت اور رحمت پیدا کر دی۔“",
+        ayahText: "اور اُس کی نشانیوں میں سے یہ ہے کہ اُس نے تمہارے لیے تمہاری ہی جنس سے جوڑے بنائے تاکہ تم اُن کے پاس سکون حاصل کرو اور تمہارے درمیان محبت اور رحمت پیدا کر دی۔",
         ayahRef: "— سورۃ الروم (۳۰:۲۱)",
         hostLine: "جناب و محترمہ ارشاد علی",
         invitationLine: "اپنے فرزند ارجمند کی شادی خانۂ آبادی کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں",
         invitationLineBride: "اپنی لختِ جگر کی شادی خانہ آبادی اور رخصتی کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں",
         baraatBrideTitle: "تقریبِ بارات و رخصتی",
-        baraatBrideTaglineUrdu: "”دعاؤں کے سائے میں رخصتی“",
+        baraatBrideTaglineUrdu: "دعاؤں کے سائے میں رخصتی",
         baraatBrideTaglineRoman: "Duaon Kay Saaye Mein Rukhsati",
         arrivalLabel: "آمدِ بارات",
         nikkahLabel: "عقدِ نکاح",
@@ -3526,7 +3592,7 @@
         eventUnavailableTitle: "تقریب دستیاب نہیں",
         eventUnavailableMsg: "یہ تقریب اس دعوت نامے میں شامل نہیں ہے۔",
         viewYourEventsBtn: "اپنے دعوت نامے کی تقریبات دیکھیں",
-        baraatTaglineUrdu: "”دل والے دلہنیا لے جا رہے ہیں“",
+        baraatTaglineUrdu: "دل والے دلہنیا لے جا رہے ہیں",
         baraatTaglineRoman: "Dil Walay Dulhania Le Ja Rahay Hain",
         scrollTutorialText: "مکمل تفصیلات دیکھنے کے لیے اوپر سوائپ کریں ↓",
         aboutTitle: "دعوت نامہ بائے ایلی تارا",
@@ -3539,8 +3605,8 @@
         aboutFollowInsta: "انسٹاگرام فالو کریں @elitara_pk",
                         aboutLiveDemos: "تیار شدہ لائیو کارڈز کے نمونے",
         aboutUniversalSwitcherTitle: "اپنے خاندان کی مناسبت سے کارڈ کا انداز منتخب فرمائیں:",
-        aboutSideGroom: "🤵 لڑکے والے (Groom's Side)",
-        aboutSideBride: "👰 لڑکی والے (Bride's Side)",
+        aboutSideGroom: "لڑکے والے (Groom's Side)",
+        aboutSideBride: "لڑکی والے (Bride's Side)",
         aboutSideGroomHint: "لڑکے والوں کا کارڈ · دعوتِ ولیمہ، سہرا بندی اور دولہا کے خاندان کی طرف سے شاہی ضیافت",
         aboutSideBrideHint: "لڑکی والوں کا کارڈ · تقریبِ بارات و رخصتی، لختِ جگر کی رخصتی کی دعائیں اور دلہن کے والدین کی طرف سے دعوت",
         aboutTabRoyal: "👑 ۱. شاہی مغل کلیکشن (8 تھیمز)",
@@ -3554,22 +3620,22 @@
         aboutRank1Badge: "👑 نمبر ۱ کلائنٹ چوائس · شاہی دربار",
         aboutRank2Badge: "🌹 نمبر ۲ کلائنٹ چوائس · یاقوتی سرخ مخمل",
         aboutRank3Badge: "🍷 نمبر ۳ کلائنٹ چوائس · برگنڈی ماڈرن رومانس",
-        aboutUniversalSwitcherTitle: "Ø§Ù¾Ù†Û’ Ø®Ø§Ù†Ø¯Ø§Ù† Ú©ÛŒ Ù…Ù†Ø§Ø³Ø¨Øª Ø³Û’ Ú©Ø§Ø±Úˆ Ú©Ø§ Ø§Ù†Ø¯Ø§Ø² Ù…Ù†ØªØ®Ø¨ ÙØ±Ù…Ø§Ø¦ÛŒÚº:",
-        aboutSideGroom: "ðŸ¤µ Ù„Ú‘Ú©Û’ ÙˆØ§Ù„Û’ (Groom's Side)",
-        aboutSideBride: "ðŸ‘° Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„Û’ (Bride's Side)",
-        aboutSideGroomHint: "Ù„Ú‘Ú©Û’ ÙˆØ§Ù„ÙˆÚº Ú©Ø§ Ú©Ø§Ø±Úˆ Â· Ø¯Ø¹ÙˆØªÙ ÙˆÙ„ÛŒÙ…ÛØŒ Ø³ÛØ±Ø§ Ø¨Ù†Ø¯ÛŒ Ø§ÙˆØ± Ø¯ÙˆÙ„ÛØ§ Ú©Û’ Ø®Ø§Ù†Ø¯Ø§Ù† Ú©ÛŒ Ø·Ø±Ù Ø³Û’ Ø´Ø§ÛÛŒ Ø¶ÛŒØ§ÙØª",
-        aboutSideBrideHint: "Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„ÙˆÚº Ú©Ø§ Ú©Ø§Ø±Úˆ Â· ØªÙ‚Ø±ÛŒØ¨Ù Ø¨Ø§Ø±Ø§Øª Ùˆ Ø±Ø®ØµØªÛŒØŒ Ù„Ø®ØªÙ Ø¬Ú¯Ø± Ú©ÛŒ Ø±Ø®ØµØªÛŒ Ú©ÛŒ Ø¯Ø¹Ø§Ø¦ÛŒÚº Ø§ÙˆØ± Ø¯Ù„ÛÙ† Ú©Û’ ÙˆØ§Ù„Ø¯ÛŒÙ† Ú©ÛŒ Ø·Ø±Ù Ø³Û’ Ø¯Ø¹ÙˆØª",
-        aboutTabRoyal: "ðŸ‘‘ Û±. Ø´Ø§ÛÛŒ Ù…ØºÙ„ Ú©Ù„ÛŒÚ©Ø´Ù† (8 ØªÚ¾ÛŒÙ…Ø²)",
-        aboutTabBurgundy: "ðŸŒ¹ Û². Ø¨Ø±Ú¯Ù†ÚˆÛŒ Ø±ÙˆÙ…Ø§Ù†Ø³ Ú©Ù„ÛŒÚ©Ø´Ù†",
-        aboutTabMostLiked: "â­ Ú©Ù„Ø§Ø¦Ù†Ù¹Ø³ Ú©Û’ Ù¾Ø³Ù†Ø¯ÛŒØ¯Û ØªØ±ÛŒÙ†",
-        aboutTabAll: "âœ¨ ØªÙ…Ø§Ù… Ø´Ø§ÛÛŒ ØªÚ¾ÛŒÙ…Ø² (10)",
-        aboutMostLikedHeading: "Ú©Ù„Ø§Ø¦Ù†Ù¹Ø³ Ú©Û’ Ø³Ø¨ Ø³Û’ Ù¾Ø³Ù†Ø¯ÛŒØ¯Û ØªØ±ÛŒÙ† Ú©Ø§Ø±ÚˆØ²",
-        aboutMostLikedSub: "ÛÙ…Ø§Ø±Û’ ÙˆÛ 3 Ø´Ø§ÛÚ©Ø§Ø± Ú©Ø§Ø±ÚˆØ² Ø¬Ù†ÛÛŒÚº ÛÙ…Ø§Ø±Û’ Ù…Ø¹Ø²Ø² Ú©Ù„Ø§Ø¦Ù†Ù¹Ø³ Ù†Û’ Ø³Ø¨ Ø³Û’ Ø²ÛŒØ§Ø¯Û Ù¾Ø³Ù†Ø¯ ÙØ±Ù…Ø§ÛŒØ§ Ø§ÙˆØ± Ø¢Ø±ÚˆØ± Ú©ÛŒØ§:",
-        aboutBrideBaraatTag: "Ù„Ú‘Ú©ÛŒ ÙˆØ§Ù„Û’ Ø§Ø³Ù¾ÛŒØ´Ù„ Â· ØªÙ‚Ø±ÛŒØ¨Ù Ø¨Ø§Ø±Ø§Øª Ùˆ Ø±Ø®ØµØªÛŒ",
-        aboutGroomWalimaTag: "Ù„Ú‘Ú©Û’ ÙˆØ§Ù„Û’ Ø§Ø³Ù¾ÛŒØ´Ù„ Â· Ø¯Ø¹ÙˆØªÙ ÙˆÙ„ÛŒÙ…Û Ùˆ Ø¨Ø§Ø±Ø§Øª",
-        aboutRank1Badge: "ðŸ‘‘ Ù†Ù…Ø¨Ø± Û± Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· Ø´Ø§ÛÛŒ Ø¯Ø±Ø¨Ø§Ø±",
-        aboutRank2Badge: "ðŸŒ¹ Ù†Ù…Ø¨Ø± Û² Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· ÛŒØ§Ù‚ÙˆØªÛŒ Ø³Ø±Ø® Ù…Ø®Ù…Ù„",
-        aboutRank3Badge: "ðŸ· Ù†Ù…Ø¨Ø± Û³ Ú©Ù„Ø§Ø¦Ù†Ù¹ Ú†ÙˆØ§Ø¦Ø³ Â· Ø¨Ø±Ú¯Ù†ÚˆÛŒ Ù…Ø§ÚˆØ±Ù† Ø±ÙˆÙ…Ø§Ù†Ø³",
+        aboutUniversalSwitcherTitle: "اپنے خاندان کی مناسبت سے کارڈ کا انداز منتخب فرمائیں:",
+        aboutSideGroom: "لڑکے والے (Groom's Side)",
+        aboutSideBride: "لڑکی والے (Bride's Side)",
+        aboutSideGroomHint: "لڑکے والوں کا کارڈ · دعوتِ ولیمہ، سہرا بندی اور دولہا کے خاندان کی طرف سے شاہی ضیافت",
+        aboutSideBrideHint: "لڑکی والوں کا کارڈ · تقریبِ بارات و رخصتی، لختِ جگر کی رخصتی کی دعائیں اور دلہن کے والدین کی طرف سے دعوت",
+        aboutTabRoyal: "👑 ۱. شاہی مغل کلیکشن (8 تھیمز)",
+        aboutTabBurgundy: "🌹 ۲. برگنڈی رومانس کلیکشن",
+        aboutTabMostLiked: "⭐ کلائنٹس کے پسندیدہ ترین",
+        aboutTabAll: "✨ تمام شاہی تھیمز (10)",
+        aboutMostLikedHeading: "کلائنٹس کے سب سے پسندیدہ ترین کارڈز",
+        aboutMostLikedSub: "ہمارے وہ 3 شاہکار کارڈز جنہیں ہمارے معزز کلائنٹس نے سب سے زیادہ پسند فرمایا اور آرڈر کیا:",
+        aboutBrideBaraatTag: "لڑکی والے اسپیشل · تقریبِ بارات و رخصتی",
+        aboutGroomWalimaTag: "لڑکے والے اسپیشل · دعوتِ ولیمہ و بارات",
+        aboutRank1Badge: "👑 نمبر ۱ کلائنٹ چوائس · شاہی دربار",
+        aboutRank2Badge: "🌹 نمبر ۲ کلائنٹ چوائس · یاقوتی سرخ مخمل",
+        aboutRank3Badge: "🍷 نمبر ۳ کلائنٹ چوائس · برگنڈی ماڈرن رومانس",
         aboutTabNikkah: "🕊️ ۳. نورِ نکاح کلیکشن",
         aboutDemoNikkahTag: "نورِ نکاح و ولیمہ · عاجی و شیمپین گولڈ",
         aboutDemoNikkahDesc: "روشن عاجی ریشم، سنہری قرآنی آیات، ۲۴ قیراط گولڈ محرابیں، سفید چنبیلی کے پھول اور پروقار عقدِ نکاح و دعوتِ ولیمہ کا شیڈول۔",
@@ -3637,6 +3703,11 @@
 
     function updateScrollTutorialVisibility() {
       if (!scrollTutorialPill) return;
+      const pageMode = resolveCurrentPageMode();
+      if (pageMode === "demos" || pageMode === "about") {
+        scrollTutorialPill.classList.remove("visible");
+        return;
+      }
       if (scrollTutorialTextEl) {
         scrollTutorialTextEl.textContent = I18N[currentLang].scrollTutorialText;
       }
@@ -3750,7 +3821,7 @@
 
       // 2. Smoothly scroll down so all 3 ceremony buttons (Mehndi, Baraat, Walima) are fully in view
       scrollTutorialTimer = setTimeout(() => {
-        const gridEl = document.getElementById("ceremoniesGridEl");
+        const gridEl = document.getElementById("ceremoniesGridEl") || document.getElementById("ceremoniesCardsSection");
         if (!gridEl) return;
         const rect = gridEl.getBoundingClientRect();
         const currentY = window.scrollY || window.pageYOffset || 0;
@@ -4091,23 +4162,8 @@
           </svg>
         `;
       } else {
-        return `
-          <svg class="wax-seal-insignia" viewBox="0 0 40 40" width="${size}" height="${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="sealGold_${curTheme}" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="${goldC1}"/>
-                <stop offset="100%" stop-color="${goldC2}"/>
-              </linearGradient>
-            </defs>
-            <path d="M8 28 H32 V31 H8 V28 Z" fill="url(#sealGold_${curTheme})"/>
-            <path d="M9 25 L12 12 L17 18 L20 9 L23 18 L28 12 L31 25 Z" 
-                  fill="url(#sealGold_${curTheme})" stroke="#fffbe0" stroke-width="1" stroke-linejoin="round"/>
-            <circle cx="20" cy="8.5" r="2" fill="#fff"/>
-            <circle cx="12" cy="11.5" r="1.5" fill="#f5d68d"/>
-            <circle cx="28" cy="11.5" r="1.5" fill="#f5d68d"/>
-            <circle cx="20" cy="21" r="2.5" fill="#0b241c"/>
-          </svg>
-        `;
+        // Royal / Emerald Theme: Interlocking Royal Heart Knot Insignia (Matches top monogram badge)
+        return getHeartBadgeSvg(size);
       }
     }
 
@@ -4575,12 +4631,22 @@
 
     function updateNavigationControls(viewName) {
       const homeNavBtn = document.getElementById("homeNavBtn");
+      const homeNavIcon = document.getElementById("homeNavIcon");
       const homeNavText = document.getElementById("homeNavText");
       if (!homeNavBtn) return;
       const t = I18N[currentLang];
+
+      if (viewName === "demos" || viewName === "about") {
+        homeNavBtn.style.display = "inline-flex";
+        if (homeNavIcon) homeNavIcon.textContent = "←";
+        if (homeNavText) homeNavText.textContent = currentLang === "ur" ? "ہوم پیج" : "Home";
+        return;
+      }
+
+      if (homeNavIcon) homeNavIcon.textContent = "⌂";
       if (homeNavText) homeNavText.textContent = t.frontPageBtn || "Front Page";
 
-      if (viewName === "cover" || viewName === "about" || viewName === "admin" || viewName === "farman") {
+      if (viewName === "cover" || viewName === "admin" || viewName === "farman") {
         homeNavBtn.style.display = "none";
       } else {
         homeNavBtn.style.display = "inline-flex";
@@ -4901,11 +4967,14 @@
     let currentDemoSide = safeGetDemoSession("edawatnama_demo_side", "groom");
     let currentDemoTab = safeGetDemoSession("edawatnama_demo_tab", "royal");
 
-    function renderAboutPage(animateGlide = false) {
+        /* ==============================================================
+       DEMOS SHOWCASE PAGE (/demos)
+       ============================================================== */
+    function renderDemosPage(animateGlide = false) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       applyCurrentTheme("emerald");
-      updateNavigationControls("about");
-      document.title = currentLang === "ur" ? "دعوت نامہ بائے ایلی تارا — شاہانہ ڈیجیٹل شادی دعوت نامے" : "Dawat Nama by Elitara — Royal Digital Wedding Invitations";
+      updateNavigationControls("demos");
+      document.title = currentLang === "ur" ? "لائیو کارڈز کے شاہی نمونے — دعوت نامہ بائے ایلی تارا" : "Live Wedding Card Demos — Dawat Nama by Elitara";
       const t = I18N[currentLang];
       const instaUrl = "https://www.instagram.com/elitara_pk?xtok=MW5seTVrM2pvcjNhaw==";
       const waUrl = "https://wa.me/923298120981?text=" + encodeURIComponent("Hello Elitara! I would like to order a digital wedding invitation from Dawat Nama.");
@@ -4924,18 +4993,6 @@
         <div class="monogram-badge rise-in">
           ${getHeartBadgeSvg(44)}
         </div>
-
-        <section class="about-hero rise-in">
-          <h1 class="couple-title" style="font-size: clamp(2rem, 5.5vw, 3.2rem); margin-bottom: 0.3rem;">
-            ${t.aboutTitle}
-          </h1>
-          <div class="about-brand-tagline">
-            ${t.aboutTagline}
-          </div>
-          <p class="about-intro-text">
-            ${t.aboutIntro}
-          </p>
-        </section>
 
         <!-- Live Samples Showcase: Universal Switcher + Category Tabs -->
         <div class="m-divider"><span>❖</span></div>
@@ -5342,6 +5399,208 @@
           </div>
         </section>
 
+        <!-- Call to Action Section on Demos Page -->
+        <div class="about-order-cta rise-in" style="margin-top: 3rem;">
+          <div class="monogram-badge" style="margin: 0 auto 0.8rem;">
+            ${getHeartBadgeSvg(34)}
+          </div>
+          <h2 class="about-order-cta-title">${t.aboutOrderHeading}</h2>
+          <p class="about-order-cta-sub">${t.aboutOrderSub}</p>
+          <div class="about-badges-bar" style="margin: 1.4rem auto 0; max-width: 420px;">
+            <a class="about-badge-btn about-badge-wa" href="${waUrl}" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+              <svg viewBox="0 0 448 512" aria-hidden="true"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+              <span>${t.aboutChatWA}</span>
+            </a>
+            <a class="about-badge-btn" href="/" style="background: rgba(223, 186, 115, 0.15); border: 1px solid rgba(223, 186, 115, 0.5); color: #dfba73;">
+              <span>← ${currentLang === "ur" ? "ہوم پیج پر واپس جائیں" : "Back to Homepage"}</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+          <p>Dawat Nama by Elitara · <strong>0329 8120981</strong></p>
+          <div class="brand-credit-line">
+            <div class="brand-social-badges">
+              <a class="brand-social-badge" href="${instaUrl}" target="_blank" rel="noopener noreferrer">
+                <span>Instagram @elitara_pk</span>
+              </a>
+              <a class="brand-social-badge" href="${waUrl}" target="_blank" rel="noopener noreferrer">
+                <span>WhatsApp: 0329 8120981</span>
+              </a>
+            </div>
+          </div>
+        </footer>
+      `;
+
+      // Helper function to update universal side (Groom vs Bride)
+      function updateUniversalDemoSide(side) {
+        currentDemoSide = side;
+        safeSetDemoSession("edawatnama_demo_side", side);
+        const isBride = (side === "bride");
+        const curT = I18N[currentLang];
+
+        const btnGroom = document.getElementById("btnDemoSideGroom");
+        const btnBride = document.getElementById("btnDemoSideBride");
+        const hintEl = document.getElementById("sideSwitcherHint");
+
+        if (btnGroom) {
+          btnGroom.classList.toggle("active", !isBride);
+          btnGroom.setAttribute("aria-selected", !isBride ? "true" : "false");
+        }
+        if (btnBride) {
+          btnBride.classList.toggle("active", isBride);
+          btnBride.setAttribute("aria-selected", isBride ? "true" : "false");
+        }
+        if (hintEl) {
+          hintEl.textContent = isBride ? curT.aboutSideBrideHint : curT.aboutSideGroomHint;
+        }
+
+        document.querySelectorAll(".dynamic-demo-card").forEach(card => {
+          const theme = card.getAttribute("data-card-theme") || "emerald";
+          const col = card.getAttribute("data-collection") || "royal";
+          const nameEl = card.querySelector(".about-demo-names");
+          const sideBadgeEl = card.querySelector(".about-demo-side-badge");
+          const btnEl = card.querySelector("a.gold-btn");
+
+          if (col === "burgundy") {
+            if (nameEl) {
+              nameEl.textContent = isBride ? (currentLang === "ur" ? "آئلہ اور دانیال" : "Ayla & Daniyal") : (currentLang === "ur" ? "دانیال اور آئلہ" : "Daniyal & Ayla");
+            }
+            if (sideBadgeEl) {
+              sideBadgeEl.textContent = isBride ? curT.aboutBrideBaraatTag : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ" : "Groom's Side · Walima Reception");
+            }
+            if (btnEl) {
+              btnEl.href = `/burgundy-romance?side=${isBride ? 'bride' : 'groom'}`;
+            }
+          } else if (col === "nikkah") {
+            if (nameEl) {
+              nameEl.textContent = isBride ? (currentLang === "ur" ? "رانیہ اور زایان" : "Rania & Zayan") : (currentLang === "ur" ? "زایان اور رانیہ" : "Zayan & Rania");
+            }
+            if (sideBadgeEl) {
+              sideBadgeEl.textContent = isBride ? (currentLang === "ur" ? "لڑکی والے · نکاح و رخصتی" : "Bride's Side · Nikkah & Rukhsati") : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ و نکاح" : "Groom's Side · Walima & Nikkah");
+            }
+            if (btnEl) {
+              if (theme === "royal-grace") {
+                btnEl.href = '/royal-grace?side=' + (isBride ? 'bride' : 'groom');
+              } else {
+                btnEl.href = '/noor-e-nikkah?side=' + (isBride ? 'bride' : 'groom');
+              }
+            }
+          } else {
+            if (nameEl) {
+              nameEl.textContent = isBride ? (currentLang === "ur" ? "عائشہ اور احمد" : "Ayesha & Ahmed") : (currentLang === "ur" ? "احمد اور عائشہ" : "Ahmed & Ayesha");
+            }
+            if (sideBadgeEl) {
+              sideBadgeEl.textContent = isBride ? curT.aboutBrideBaraatTag : curT.aboutGroomWalimaTag;
+            }
+            if (btnEl) {
+              btnEl.href = `/Ahmed-and-Ayesha-wedding-invitation?theme=${theme}&side=${isBride ? 'bride' : 'groom'}`;
+            }
+          }
+        });
+      }
+
+      // Helper function to filter categories
+      function applyCategoryFilter(tabKey) {
+        currentDemoTab = tabKey;
+        safeSetDemoSession("edawatnama_demo_tab", tabKey);
+        document.querySelectorAll(".cat-tab-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.getAttribute("data-tab") === tabKey);
+        });
+
+        const cards = document.querySelectorAll("#aboutDemoGrid .dynamic-demo-card");
+        cards.forEach(card => {
+          const col = card.getAttribute("data-collection");
+          const isMostLiked = card.getAttribute("data-most-liked") === "true";
+          let show = false;
+          if (tabKey === "all") {
+            show = true;
+          } else if (tabKey === "royal") {
+            show = (col === "royal");
+          } else if (tabKey === "burgundy") {
+            show = (col === "burgundy");
+          } else if (tabKey === "nikkah") {
+            show = (col === "nikkah");
+          } else if (tabKey === "most-liked") {
+            show = isMostLiked;
+          }
+          card.style.display = show ? "flex" : "none";
+        });
+
+        if (tabKey === "most-liked") {
+          const sec = document.getElementById("mostLikedSection");
+          if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      // Attach event listeners
+      const btnG = document.getElementById("btnDemoSideGroom");
+      const btnB = document.getElementById("btnDemoSideBride");
+      if (btnG) btnG.addEventListener("click", () => updateUniversalDemoSide("groom"));
+      if (btnB) btnB.addEventListener("click", () => updateUniversalDemoSide("bride"));
+
+      document.querySelectorAll(".cat-tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tab");
+          if (tab) applyCategoryFilter(tab);
+        });
+      });
+
+      // Initialize default category filter to Royal theme
+      applyCategoryFilter(currentDemoTab);
+
+
+      performPageEntryScroll(animateGlide);
+    }
+
+function renderAboutPage(animateGlide = false) {
+      if (activeTimerHandle) clearInterval(activeTimerHandle);
+      applyCurrentTheme("emerald");
+      updateNavigationControls("about");
+      document.title = currentLang === "ur" ? "دعوت نامہ بائے ایلی تارا — شاہانہ ڈیجیٹل شادی دعوت نامے" : "Dawat Nama by Elitara — Royal Digital Wedding Invitations";
+      const t = I18N[currentLang];
+      const instaUrl = "https://www.instagram.com/elitara_pk?xtok=MW5seTVrM2pvcjNhaw==";
+      const waUrl = "https://wa.me/923298120981?text=" + encodeURIComponent("Hello Elitara! I would like to order a digital wedding invitation from Dawat Nama.");
+
+      const isBrideInitial = (currentDemoSide === "bride");
+      const initRoyalCouple = isBrideInitial ? (currentLang === "ur" ? "عائشہ اور احمد" : "Ayesha & Ahmed") : (currentLang === "ur" ? "احمد اور عائشہ" : "Ahmed & Ayesha");
+      const initBurgundyCouple = isBrideInitial ? (currentLang === "ur" ? "آئلہ اور دانیال" : "Ayla & Daniyal") : (currentLang === "ur" ? "دانیال اور آئلہ" : "Daniyal & Ayla");
+      const initNikkahCouple = isBrideInitial ? (currentLang === "ur" ? "رانیہ اور زایان" : "Rania & Zayan") : (currentLang === "ur" ? "زایان اور رانیہ" : "Zayan & Rania");
+      const initRoyalBadge = isBrideInitial ? t.aboutBrideBaraatTag : t.aboutGroomWalimaTag;
+      const initBurgundyBadge = isBrideInitial ? t.aboutBrideBaraatTag : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ" : "Groom's Side · Walima Reception");
+      const initNikkahBadge = isBrideInitial ? (currentLang === "ur" ? "لڑکی والے · نکاح و رخصتی" : "Bride's Side · Nikkah & Rukhsati") : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ و نکاح" : "Groom's Side · Walima & Nikkah");
+      const initSideParam = isBrideInitial ? "bride" : "groom";
+
+      app.innerHTML = `
+        <div class="bismillah-calligraphy fade-in">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="monogram-badge rise-in">
+          ${getHeartBadgeSvg(44)}
+        </div>
+
+        <section class="about-hero rise-in">
+          <h1 class="couple-title" style="font-size: clamp(2rem, 5.5vw, 3.2rem); margin-bottom: 0.3rem;">
+            ${t.aboutTitle}
+          </h1>
+          <div class="about-brand-tagline">
+            ${t.aboutTagline}
+          </div>
+          <p class="about-intro-text">
+            ${t.aboutIntro}
+          </p>
+        </section>
+
+                <div class="about-hero-actions rise-in" style="margin-top: 1.8rem; display: flex; flex-direction: column; align-items: center; gap: 0.85rem;">
+          <a class="gold-btn hero-demos-btn" href="/demos" style="max-width: 340px; width: 100%; text-decoration: none; padding: 1rem 1.8rem; font-size: 1.05rem; letter-spacing: 0.08em; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 8px 25px rgba(212, 173, 93, 0.35); text-align: center; border-radius: 999px;">
+            <span>✨</span>
+            <span>${currentLang === "ur" ? "تمام لائیو کارڈ نمونے دیکھیں ↗" : "Explore Sample Cards ↗"}</span>
+          </a>
+          <a class="about-secondary-wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer" style="color: #dfba73; font-size: 0.95rem; text-decoration: underline; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem;">
+            <span>💬</span>
+            <span>${currentLang === "ur" ? "یا واٹس ایپ پر کسٹم ڈیزائن بنوائیں" : "Or Order Custom Design on WhatsApp"}</span>
+          </a>
+        </div>
+
         <!-- Features of Work Grid -->
         <div class="m-divider"><span>❖</span></div>
         <h2 class="about-section-heading rise-in">${t.aboutFeaturesHeading}</h2>
@@ -5430,122 +5689,7 @@
         </footer>
       `;
 
-      // Helper function to update universal side (Groom vs Bride)
-      function updateUniversalDemoSide(side) {
-        currentDemoSide = side;
-        safeSetDemoSession("edawatnama_demo_side", side);
-        const isBride = (side === "bride");
-        const curT = I18N[currentLang];
-
-        const btnGroom = document.getElementById("btnDemoSideGroom");
-        const btnBride = document.getElementById("btnDemoSideBride");
-        const hintEl = document.getElementById("sideSwitcherHint");
-
-        if (btnGroom) {
-          btnGroom.classList.toggle("active", !isBride);
-          btnGroom.setAttribute("aria-selected", !isBride ? "true" : "false");
-        }
-        if (btnBride) {
-          btnBride.classList.toggle("active", isBride);
-          btnBride.setAttribute("aria-selected", isBride ? "true" : "false");
-        }
-        if (hintEl) {
-          hintEl.textContent = isBride ? curT.aboutSideBrideHint : curT.aboutSideGroomHint;
-        }
-
-        document.querySelectorAll(".dynamic-demo-card").forEach(card => {
-          const theme = card.getAttribute("data-card-theme") || "emerald";
-          const col = card.getAttribute("data-collection") || "royal";
-          const nameEl = card.querySelector(".about-demo-names");
-          const sideBadgeEl = card.querySelector(".about-demo-side-badge");
-          const btnEl = card.querySelector("a.gold-btn");
-
-          if (col === "burgundy") {
-            if (nameEl) {
-              nameEl.textContent = isBride ? (currentLang === "ur" ? "آئلہ اور دانیال" : "Ayla & Daniyal") : (currentLang === "ur" ? "دانیال اور آئلہ" : "Daniyal & Ayla");
-            }
-            if (sideBadgeEl) {
-              sideBadgeEl.textContent = isBride ? curT.aboutBrideBaraatTag : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ" : "Groom's Side · Walima Reception");
-            }
-            if (btnEl) {
-              btnEl.href = `/burgundy-romance?side=${isBride ? 'bride' : 'groom'}`;
-            }
-          } else if (col === "nikkah") {
-            if (nameEl) {
-              nameEl.textContent = isBride ? (currentLang === "ur" ? "رانیہ اور زایان" : "Rania & Zayan") : (currentLang === "ur" ? "زایان اور رانیہ" : "Zayan & Rania");
-            }
-            if (sideBadgeEl) {
-              sideBadgeEl.textContent = isBride ? (currentLang === "ur" ? "لڑکی والے · نکاح و رخصتی" : "Bride's Side · Nikkah & Rukhsati") : (currentLang === "ur" ? "لڑکے والے · دعوتِ ولیمہ و نکاح" : "Groom's Side · Walima & Nikkah");
-            }
-            if (btnEl) {
-              if (theme === "royal-grace") {
-                btnEl.href = /royal-grace?side= + (isBride ? 'bride' : 'groom');
-              } else {
-                btnEl.href = /noor-e-nikkah?side= + (isBride ? 'bride' : 'groom');
-              }
-            }
-          } else {
-            if (nameEl) {
-              nameEl.textContent = isBride ? (currentLang === "ur" ? "عائشہ اور احمد" : "Ayesha & Ahmed") : (currentLang === "ur" ? "احمد اور عائشہ" : "Ahmed & Ayesha");
-            }
-            if (sideBadgeEl) {
-              sideBadgeEl.textContent = isBride ? curT.aboutBrideBaraatTag : curT.aboutGroomWalimaTag;
-            }
-            if (btnEl) {
-              btnEl.href = `/Ahmed-and-Ayesha-wedding-invitation?theme=${theme}&side=${isBride ? 'bride' : 'groom'}`;
-            }
-          }
-        });
-      }
-
-      // Helper function to filter categories
-      function applyCategoryFilter(tabKey) {
-        currentDemoTab = tabKey;
-        safeSetDemoSession("edawatnama_demo_tab", tabKey);
-        document.querySelectorAll(".cat-tab-btn").forEach(btn => {
-          btn.classList.toggle("active", btn.getAttribute("data-tab") === tabKey);
-        });
-
-        const cards = document.querySelectorAll("#aboutDemoGrid .dynamic-demo-card");
-        cards.forEach(card => {
-          const col = card.getAttribute("data-collection");
-          const isMostLiked = card.getAttribute("data-most-liked") === "true";
-          let show = false;
-          if (tabKey === "all") {
-            show = true;
-          } else if (tabKey === "royal") {
-            show = (col === "royal");
-          } else if (tabKey === "burgundy") {
-            show = (col === "burgundy");
-          } else if (tabKey === "nikkah") {
-            show = (col === "nikkah");
-          } else if (tabKey === "most-liked") {
-            show = isMostLiked;
-          }
-          card.style.display = show ? "flex" : "none";
-        });
-
-        if (tabKey === "most-liked") {
-          const sec = document.getElementById("mostLikedSection");
-          if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }
-
-      // Attach event listeners
-      const btnG = document.getElementById("btnDemoSideGroom");
-      const btnB = document.getElementById("btnDemoSideBride");
-      if (btnG) btnG.addEventListener("click", () => updateUniversalDemoSide("groom"));
-      if (btnB) btnB.addEventListener("click", () => updateUniversalDemoSide("bride"));
-
-      document.querySelectorAll(".cat-tab-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const tab = btn.getAttribute("data-tab");
-          if (tab) applyCategoryFilter(tab);
-        });
-      });
-
-      // Initialize default category filter to Royal theme
-      applyCategoryFilter(currentDemoTab);
+      // Demo listeners moved to renderDemosPage
 
       performPageEntryScroll(animateGlide);
     }
@@ -5592,10 +5736,7 @@
 
         <div class="envelope-stage rise-in">
           <div class="envelope" id="envelopeElement" role="region" aria-label="Wedding Envelope">
-            <div class="letter-slide">
-              ${t.letterNote}
-              <span>${t.letterTap}</span>
-            </div>
+            <div class="env-glow-burst" id="envGlowBurst" aria-hidden="true"></div>
             <div class="env-flap"></div>
             <div class="env-inner-pocket"></div>
             <button class="wax-seal" id="waxSealBtn" type="button" aria-label="Open envelope wax seal">
@@ -5644,17 +5785,48 @@
           tutorial.style.transform = "scale(0.8)";
           setTimeout(() => { if (tutorial) tutorial.remove(); }, 280);
         }
-        if (env.classList.contains("open")) return;
+        if (!env || env.classList.contains("open")) return;
         env.classList.add("open");
         if (btn) {
           btn.disabled = true;
           btn.textContent = t.openingBtn;
         }
+
+        // Create and trigger full-screen royal golden glow reveal
+        let screenGlow = document.getElementById("royalScreenGlow");
+        if (!screenGlow) {
+          screenGlow = document.createElement("div");
+          screenGlow.id = "royalScreenGlow";
+          screenGlow.className = "royal-screen-glow";
+          screenGlow.innerHTML = `<div class="royal-glow-burst-core" aria-hidden="true"></div>`;
+          document.body.appendChild(screenGlow);
+        }
+
+        // Expand the screen glow outward from the open envelope
+        setTimeout(() => {
+          if (screenGlow) screenGlow.classList.add("active");
+        }, 180);
+
+        // At peak golden glow coverage, transition cleanly to the all ceremonies page
         setTimeout(() => {
           const { card } = getUrlState();
           updateUrlState(card, null, true, "events");
-          renderEventListScreen(true);
-        }, 900);
+          renderEventListScreen(false);
+          window.scrollTo({ top: 0, behavior: "instant" });
+
+          // Softly dissolve the golden glow, unveiling the ceremonies page
+          setTimeout(() => {
+            if (screenGlow) {
+              screenGlow.classList.remove("active");
+              screenGlow.classList.add("fade-out");
+              setTimeout(() => {
+                if (screenGlow && screenGlow.parentNode) {
+                  screenGlow.parentNode.removeChild(screenGlow);
+                }
+              }, 600);
+            }
+          }, 80);
+        }, 820);
       }
 
       document.getElementById("openInviteActionBtn").addEventListener("click", triggerOpening);
@@ -5736,11 +5908,6 @@
           <span class="couple-fullname">${formatCoupleNameHtml(nameSecond)}</span>
         </h2>
         <p class="request-text rise-in" style="margin-top:0;">${t.eventsSub}</p>
-
-        <div class="ceremonies-guide-banner rise-in" id="ceremoniesCardsSection">
-          <div class="guide-banner-en">✦ Tap any ceremony button below to open Time, Venue & Map ✦</div>
-          <div class="guide-banner-ur">وقت، مقام اور نقشہ دیکھنے کے لیے نیچے کسی بھی تقریب کے بٹن پر کلک کریں</div>
-        </div>
 
         <div class="event-cards-grid" id="ceremoniesGridEl">
           ${cardsHtml}
@@ -5953,7 +6120,7 @@
           window.history.back();
         } else {
           updateUrlState(card, null, true, "events");
-          renderEventListScreen(true);
+          renderEventListScreen(false);
         }
       });
 
@@ -5981,7 +6148,7 @@
       `;
       document.getElementById("returnVariantEventsBtn").addEventListener("click", () => {
         updateUrlState(card, null, true);
-        renderEventListScreen(true);
+        renderEventListScreen(false);
       });
       performPageEntryScroll(false);
     }
@@ -6102,6 +6269,11 @@
       WEDDING = resolveCurrentWeddingConfig();
       const pageMode = resolveCurrentPageMode();
 
+      if (pageMode === "demos") {
+        applyCurrentTheme("emerald");
+        renderDemosPage(isPopState);
+        return;
+      }
       if (pageMode === "about") {
         applyCurrentTheme("emerald");
         renderAboutPage(isPopState);
@@ -6120,7 +6292,7 @@
       if (event) {
         renderEventDetailScreen(event, true);
       } else if (view === "events") {
-        renderEventListScreen(true);
+        renderEventListScreen(false);
       } else {
         renderEnvelopeScreen(isPopState);
       }
@@ -6135,8 +6307,13 @@
     const homeNavBtn = document.getElementById("homeNavBtn");
 
     if (homeNavBtn) {
-      homeNavBtn.addEventListener("click", () => {
+      homeNavBtn.addEventListener("click", (e) => {
         const pageMode = resolveCurrentPageMode();
+        if (pageMode === "demos" || pageMode === "about") {
+          e.preventDefault();
+          window.location.href = "/";
+          return;
+        }
         if (pageMode === "farman" || (WEDDING && normalizeThemeKey(WEDDING.theme) === "farman")) {
           // Re-roll to sealed stage within Shahi Farman theme (stays in Shahi Farman)
           const unrolled = document.getElementById("farmanUnrolledStage");
@@ -6165,6 +6342,10 @@
       if (langLabel) langLabel.textContent = I18N[currentLang].langBtn;
 
       const pageMode = resolveCurrentPageMode();
+      if (pageMode === "demos") {
+        renderDemosPage(false);
+        return;
+      }
       if (pageMode === "about") {
         renderAboutPage(false);
         return;
@@ -6235,6 +6416,11 @@
       WEDDING = resolveCurrentWeddingConfig();
       const pageMode = resolveCurrentPageMode();
 
+      if (pageMode === "demos") {
+        applyCurrentTheme("emerald");
+        renderDemosPage(false);
+        return;
+      }
       if (pageMode === "about") {
         applyCurrentTheme("emerald");
         renderAboutPage(false);

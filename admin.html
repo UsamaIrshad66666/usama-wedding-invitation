@@ -260,6 +260,43 @@
       background: rgba(10, 30, 22, 0.9);
     }
 
+    /* Modal Styling */
+    .admin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .admin-modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal-card {
+      background: linear-gradient(135deg, #0d281e, #05130e);
+      border: 1px solid var(--gold-primary);
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      padding: 1.8rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    }
+    .admin-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed rgba(212, 173, 93, 0.25);
+      padding-bottom: 8px;
+    }
+
     #toast {
       position: fixed;
       bottom: 24px;
@@ -276,7 +313,7 @@
       pointer-events: none;
       transition: all 0.3s ease;
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
-      z-index: 9999;
+      z-index: 10000;
     }
     #toast.show {
       transform: translateX(-50%) translateY(0);
@@ -291,21 +328,93 @@
 </head>
 <body>
 
+  <!-- ADMIN STUDIO PRIVATE SECURITY GATE -->
+  <div id="adminLockOverlay" style="position:fixed; inset:0; background:rgba(3, 14, 10, 0.96); backdrop-filter:blur(10px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:1.5rem;">
+    <div style="background:#0a1f17; border:1px solid var(--gold-primary); border-radius:14px; padding:2.2rem 1.8rem; max-width:440px; width:100%; text-align:center; box-shadow:0 12px 50px rgba(0,0,0,0.8);">
+      <div style="font-size:2.4rem; margin-bottom:8px;">👑</div>
+      <h2 style="font-family:var(--serif); color:var(--gold-light); font-size:1.45rem; margin-bottom:4px; letter-spacing:0.04em;">Elitara Admin Studio</h2>
+      <div style="font-family:var(--urdu); font-size:1.15rem; color:var(--gold-primary); margin-bottom:12px; direction:rtl;">صرف مجاز انتظامیہ کیلئے مخصوص</div>
+      <p style="color:var(--cream-muted); font-size:0.86rem; line-height:1.6; margin-bottom:1.4rem;">
+        This panel is private and restricted. Please enter your studio password to manage client orders and deploy invitations.
+      </p>
+      <form id="adminLoginForm" onsubmit="event.preventDefault(); handleAdminLogin();">
+        <input type="password" id="adminPasswordInput" class="admin-input" placeholder="Enter Studio Password..." style="text-align:center; font-size:1.1rem; letter-spacing:0.1em; margin-bottom:12px;" autofocus required>
+        <button class="gold-btn" type="submit" style="width:100%; padding:13px; font-size:0.98rem;">✦ Unlock Studio ✦</button>
+      </form>
+      <div id="adminLoginErr" style="display:none; color:#ff6b6b; font-size:0.82rem; margin-top:10px;">Incorrect password. Please try again.</div>
+    </div>
+  </div>
+
   <div class="admin-wrapper">
     <header class="admin-header">
       <h1 class="admin-brand-title">Dawat Nama by Elitara</h1>
       <div class="admin-brand-sub">✦ Digital Wedding Invitation Studio ✦</div>
       <div class="admin-top-actions">
-        <button class="gold-btn" id="loadDemoBtn" type="button" style="padding:8px 18px; font-size:0.84rem;">✨ Load Demo Sample</button>
+        <a class="gold-btn" href="/order" target="_blank" style="padding:8px 18px; font-size:0.84rem;">📝 Client Order Form</a>
+        <button class="outline-btn" id="loadDemoBtn" type="button" style="padding:8px 18px; font-size:0.84rem;">✨ Load Sample Data</button>
         <a class="outline-btn" href="/" target="_blank" style="padding:8px 18px; font-size:0.84rem;">🌐 View Client Website</a>
         <button class="outline-btn" id="clearFormBtn" type="button" style="padding:8px 18px; font-size:0.84rem;">🧹 Clear Form</button>
+        <button class="outline-btn" type="button" onclick="handleAdminLogout()" style="padding:8px 18px; font-size:0.84rem; border-color:rgba(255,100,100,0.4); color:#ff9e9e;">🔒 Lock Studio</button>
       </div>
     </header>
 
+    <!-- 📥 Pending Client Orders Manager -->
+    <div class="admin-section" style="border-left: 4px solid var(--gold-primary); background: linear-gradient(135deg, rgba(14, 45, 34, 0.95), rgba(7, 23, 17, 0.95));">
+      <div class="admin-section-header" style="justify-content: space-between; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span>📥 Client Orders Management</span>
+          <span style="font-size:0.75rem; padding:3px 10px; border-radius:12px; background:rgba(212,175,55,0.22); color:var(--gold-light); font-weight:600;" id="pendingCountBadge">0 Pending</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="outline-btn" id="openImportModalBtn" type="button" style="padding:6px 12px; font-size:0.78rem;">📋 Paste WhatsApp Order</button>
+          <button class="outline-btn" id="viewDeployedOrdersBtn" type="button" style="padding:6px 12px; font-size:0.78rem;">📁 Deployed Archive (<span id="deployedCountBadge">0</span>)</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <label class="admin-field-label" style="font-size:0.82rem; margin-bottom:8px;">
+          Select Pending Client to Auto-Fill All Form Fields (منتظر کلائنٹس):
+        </label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <select class="admin-input" id="pendingClientsSelect" style="flex:1; min-width:280px; font-size:0.92rem; font-weight:600; cursor:pointer;">
+            <!-- Dynamically populated with pending clients only -->
+          </select>
+          <button class="gold-btn" id="autoFillSelectedClientBtn" type="button" style="padding:10px 22px; font-size:0.88rem; white-space:nowrap; width:auto;">
+            ⚡ Auto-Fill Form
+          </button>
+        </div>
+        <div id="pendingClientDetailsSnippet" style="margin-top:10px; font-size:0.82rem; color:var(--cream-muted); display:none; padding:8px 12px; background:rgba(0,0,0,0.3); border-radius:6px; border:1px solid rgba(212,175,55,0.2);"></div>
+      </div>
+    </div>
+
     <form id="cardGeneratorForm">
+      <!-- Card Side Selector (Groom vs Bride) -->
+      <div class="admin-section" style="border-left: 3px solid var(--gold-primary);">
+        <div class="admin-section-header">💌 Invitation Side (لڑکے یا لڑکی کی طرف سے دعوت نامہ)</div>
+        <p style="font-size:0.82rem; color:var(--cream-muted); margin-bottom:12px;">
+          Choose whether this invitation card is being prepared for the <strong>Groom's family</strong> or the <strong>Bride's family</strong>. This automatically tailors the title sequence, wording, and Baraat / Rukhsati schedule details.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <label style="flex:1; min-width:220px; display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:8px; border:1px solid rgba(212,175,55,0.3); background:rgba(0,0,0,0.3); cursor:pointer;" id="labelSideGroom">
+            <input type="radio" name="f_cardSide" value="groom" checked style="accent-color:var(--gold-primary); transform:scale(1.2);">
+            <div>
+              <strong style="color:var(--gold-light); display:block;">🤵 Groom's Side (لڑکے والے)</strong>
+              <span style="font-size:0.75rem; color:var(--cream-muted);">Groom first · "Dilwale Dulhania Le Jayenge"</span>
+            </div>
+          </label>
+          <label style="flex:1; min-width:220px; display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:8px; border:1px solid rgba(212,175,55,0.3); background:rgba(0,0,0,0.3); cursor:pointer;" id="labelSideBride">
+            <input type="radio" name="f_cardSide" value="bride" style="accent-color:var(--gold-primary); transform:scale(1.2);">
+            <div>
+              <strong style="color:var(--gold-light); display:block;">👰 Bride's Side (لڑکی والے)</strong>
+              <span style="font-size:0.75rem; color:var(--cream-muted);">Bride first · "Duaon Kay Saaye Mein Rukhsati" · Nikkah & Rukhsati</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
       <!-- Couple Details -->
       <div class="admin-section">
-        <div class="admin-section-header">👑 1. Bride & Groom Details</div>
+        <div class="admin-section-header" id="coupleSectionHeader">👑 1. Bride & Groom Details</div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Groom Full Name (English)</label>
@@ -334,6 +443,12 @@
             <option value="ruby">🌹 Romantic Velvet Rose (Crimson Velvet & Rose Gold · Rose Canopies & Romance)</option>
             <option value="sapphire">✨ Midnight Celestial Starlight (Sapphire & Celestial Gold · Starlit Ballroom)</option>
             <option value="plum">🌸 Majestic Pastel Blossom (Plum & Champagne Gold · Garden Shaadi & Jasmine)</option>
+            <option value="obsidian">🖤 Royal Obsidian & 24K Gold Foil (Jet Black & Pure Gold Arabesque)</option>
+            <option value="marble">🏛️ Italian Carrara Marble & Botanical Sage Green (Serene & Aristocratic)</option>
+            <option value="lilac">🪻 Kashmiri Lilac & Lavender Wisteria (Dreamy & Regal Springtime)</option>
+            <option value="burgundy">🌹 Royal Burgundy Romance (Velvet Envelope · Golden Swans & Black-Tie)</option>
+                        <option value="royal-grace">🌿 Royal Grace (Sage Garden Serenity · Pearl Drapes & Nikkah Reveal)</option>
+<option value="farman">📜 Royal Mughal Shahi Farman (Imperial Unrolling Scroll Decree)</option>
           </select>
         </div>
       </div>
@@ -343,11 +458,11 @@
         <div class="admin-section-header">🏛️ 2. Family & Hosts</div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Main Host Line (English)</label>
+            <label class="admin-field-label" id="labelHostEn">Main Host Line (English)</label>
             <input class="admin-input" type="text" id="f_host" placeholder="e.g. Mr. & Mrs. Tariq Mahmood" required>
           </div>
           <div>
-            <label class="admin-field-label">Main Host Line (Urdu)</label>
+            <label class="admin-field-label" id="labelHostUr">Main Host Line (Urdu)</label>
             <input class="admin-input" type="text" id="f_hostUrdu" placeholder="e.g. جناب و محترمہ طارق محمود" dir="rtl" required>
           </div>
         </div>
@@ -361,7 +476,7 @@
 
       <!-- Mehndi Ceremony -->
       <div class="admin-section">
-        <div class="admin-section-header">🌿 3. Mehndi Ceremony (Rasm-e-Hina)</div>
+        <div class="admin-section-header">🌸 3. Mehndi Ceremony (Rasm-e-Hina)</div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Date & Time</label>
@@ -384,18 +499,18 @@
         </div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Venue Name (English)</label>
+            <label class="admin-field-label">Venue (English)</label>
             <input class="admin-input" type="text" id="f_m_venue" placeholder="e.g. Royal Palm Golf & Country Club, Lahore" required>
           </div>
           <div>
-            <label class="admin-field-label">Address (English)</label>
-            <input class="admin-input" type="text" id="f_m_addr" placeholder="e.g. 52 Canal Bank Road, Lahore" required>
+            <label class="admin-field-label">Home Address (Optional)</label>
+            <input class="admin-input" type="text" id="f_m_addr" placeholder="e.g. 52 Canal Bank Road, Lahore">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Google Maps Link</label>
-            <input class="admin-input" type="url" id="f_m_map" placeholder="https://maps.google.com/..." required>
+            <input class="admin-input" type="url" id="f_m_map" placeholder="https://maps.google.com/...">
           </div>
           <div>
             <label class="admin-field-label">RSVP WhatsApp Number</label>
@@ -406,7 +521,7 @@
 
       <!-- Baraat Ceremony -->
       <div class="admin-section">
-        <div class="admin-section-header">🎺 4. Baraat Ceremony</div>
+        <div class="admin-section-header" id="baraatSectionHeader">🎺 4. Baraat Ceremony</div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Date & Time</label>
@@ -423,24 +538,77 @@
             <input class="admin-input" type="text" id="f_b_dateUr" placeholder="e.g. بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء" dir="rtl" required>
           </div>
           <div>
-            <label class="admin-field-label">Display Time (English & Urdu)</label>
+            <label class="admin-field-label">General Event Time (English & Urdu)</label>
             <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. Sehra Bandi: 4:30 PM · Departure: 5:30 PM" required>
           </div>
         </div>
-        <div class="admin-grid-2">
+
+        <!-- Groom Side: Separate Sehra Bandi & Departure of Baraat Schedule -->
+        <div id="adminGroomScheduleWrap" style="margin-top:14px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+          <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">🤵 Groom Side Schedule (سہرہ بندی و روانگی بارات)</div>
+          <div class="admin-grid-2">
+            <div>
+              <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
+              <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 4:00 PM">
+            </div>
+            <div>
+              <label class="admin-field-label">Departure of Baraat Time (روانگیِ بارات)</label>
+              <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 5:00 PM">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bride Side: Detailed Milestones / Schedule (Essential for Bride's Card: Nikkah, Rukhsati) -->
+        <div id="adminBrideScheduleWrap" style="display:none; margin-top:14px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+          <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏱️ Bride Side Schedule (عقدِ نکاح، آمدِ بارات، رخصتی)</div>
+          <div class="admin-grid-2">
+            <div>
+              <label class="admin-field-label">Arrival of Baraat (آمدِ بارات)</label>
+              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 8:00 PM · ۸:۰۰ بجے شب">
+            </div>
+            <div>
+              <label class="admin-field-label">Nikkah Ceremony (عقدِ نکاح)</label>
+              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 9:00 PM · ۹:۰۰ بجے شب">
+            </div>
+          </div>
+          <div class="admin-grid-2" style="margin-top:8px;">
+            <div>
+              <label class="admin-field-label">Dinner Time (طعام)</label>
+              <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM · ۹:۳۰ بجے شب">
+            </div>
+            <div>
+              <label class="admin-field-label">Rukhsati Time (رخصتی)</label>
+              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 11:00 PM · ۱۱:۰۰ بجے شب">
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Taglines for Baraat Card -->
+        <div class="admin-grid-2" style="margin-top:14px;">
           <div>
-            <label class="admin-field-label">Venue Name (English)</label>
+            <label class="admin-field-label">Baraat Tagline Badge (Urdu)</label>
+            <input class="admin-input" type="text" id="f_b_tagline_ur" placeholder=""دل والے دلہنیا لے جا رہے ہیں" یا "دعاؤں کے سائے میں رخصتی"" dir="rtl">
+          </div>
+          <div>
+            <label class="admin-field-label">Baraat Tagline Badge (English/Roman)</label>
+            <input class="admin-input" type="text" id="f_b_tagline_en" placeholder="e.g. Duaon Kay Saaye Mein Rukhsati">
+          </div>
+        </div>
+
+        <div class="admin-grid-2" style="margin-top:14px;">
+          <div>
+            <label class="admin-field-label">Venue (English)</label>
             <input class="admin-input" type="text" id="f_b_venue" placeholder="e.g. Grand Ballroom, Pearl Continental, Lahore" required>
           </div>
           <div>
-            <label class="admin-field-label">Address (English)</label>
-            <input class="admin-input" type="text" id="f_b_addr" placeholder="e.g. Shahrah-e-Quaid-e-Azam, Lahore" required>
+            <label class="admin-field-label">Home Address (Optional)</label>
+            <input class="admin-input" type="text" id="f_b_addr" placeholder="e.g. Shahrah-e-Quaid-e-Azam, Lahore">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Google Maps Link</label>
-            <input class="admin-input" type="url" id="f_b_map" placeholder="https://maps.google.com/..." required>
+            <input class="admin-input" type="url" id="f_b_map" placeholder="https://maps.google.com/...">
           </div>
           <div>
             <label class="admin-field-label">RSVP WhatsApp Number</label>
@@ -455,47 +623,47 @@
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Date & Time</label>
-            <input class="admin-input" type="datetime-local" id="f_w_dt" required>
+            <input class="admin-input" type="datetime-local" id="f_w_dt">
           </div>
           <div>
             <label class="admin-field-label">Display Date (English)</label>
-            <input class="admin-input" type="text" id="f_w_date" placeholder="e.g. Saturday, 12th December 2026" required>
+            <input class="admin-input" type="text" id="f_w_date" placeholder="e.g. Saturday, 12th December 2026">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Display Date (Urdu)</label>
-            <input class="admin-input" type="text" id="f_w_dateUr" placeholder="e.g. بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء" dir="rtl" required>
+            <input class="admin-input" type="text" id="f_w_dateUr" placeholder="e.g. بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء" dir="rtl">
           </div>
           <div>
             <label class="admin-field-label">Display Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM / شام ۷:۰۰ بجے" required>
+            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM / شام ۷:۰۰ بجے">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Venue Name (English)</label>
-            <input class="admin-input" type="text" id="f_w_venue" placeholder="e.g. Crystal Hall, Nishat Banquets, Emporium Mall, Lahore" required>
+            <label class="admin-field-label">Venue (English)</label>
+            <input class="admin-input" type="text" id="f_w_venue" placeholder="e.g. Crystal Hall, Nishat Banquets, Emporium Mall, Lahore">
           </div>
           <div>
-            <label class="admin-field-label">Address (English)</label>
-            <input class="admin-input" type="text" id="f_w_addr" placeholder="e.g. Abdul Haque Road, Johar Town, Lahore" required>
+            <label class="admin-field-label">Home Address (Optional)</label>
+            <input class="admin-input" type="text" id="f_w_addr" placeholder="e.g. Abdul Haque Road, Johar Town, Lahore">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Google Maps Link</label>
-            <input class="admin-input" type="url" id="f_w_map" placeholder="https://maps.google.com/..." required>
+            <input class="admin-input" type="url" id="f_w_map" placeholder="https://maps.google.com/...">
           </div>
           <div>
             <label class="admin-field-label">RSVP WhatsApp Number</label>
-            <input class="admin-input" type="text" id="f_w_rsvp" placeholder="+923012345678" required>
+            <input class="admin-input" type="text" id="f_w_rsvp" placeholder="+923012345678">
           </div>
         </div>
       </div>
 
       <button class="gold-btn" type="submit" style="width:100%; font-size:1.05rem; padding:15px;">
-        ✦ Generate & Save Digital Invitation Card ✦
+        ✦ Generate & Deploy Digital Invitation Card ✦
       </button>
     </form>
 
@@ -509,9 +677,184 @@
     </div>
   </div>
 
+  <!-- Modal: Import WhatsApp Order Text -->
+  <div class="admin-modal-overlay" id="importModal">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 style="color:var(--gold-light); font-family:var(--serif); margin:0;">📥 Import Client Order Text</h3>
+        <button class="admin-remove-btn" id="closeImportModalBtn" type="button">✕</button>
+      </div>
+      <p style="font-size:0.84rem; color:var(--cream-muted); margin-bottom:12px;">
+        Paste the full WhatsApp order text or payload received from the client. The studio will automatically parse and add them to your pending clients dropdown.
+      </p>
+      <textarea class="admin-input" id="importTextarea" rows="8" placeholder="Paste full WhatsApp message here..." style="font-family:monospace; font-size:0.82rem; margin-bottom:14px; resize:vertical;"></textarea>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="outline-btn" id="cancelImportBtn" type="button">Cancel</button>
+        <button class="gold-btn" id="parseAndImportBtn" type="button" style="padding:8px 20px; font-size:0.86rem;">Parse & Auto-Fill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: View Deployed Clients Archive -->
+  <div class="admin-modal-overlay" id="deployedModal">
+    <div class="admin-modal-card" style="max-width:700px;">
+      <div class="admin-modal-header">
+        <h3 style="color:var(--gold-light); font-family:var(--serif); margin:0;">📁 Deployed Clients Archive</h3>
+        <button class="admin-remove-btn" id="closeDeployedModalBtn" type="button">✕</button>
+      </div>
+      <p style="font-size:0.84rem; color:var(--cream-muted); margin-bottom:12px;">
+        These clients' invitations have been generated and deployed. They are automatically hidden from the pending clients dropdown.
+      </p>
+      <div id="deployedClientsList" style="max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
   <div id="toast"></div>
 
   <script>
+    /* ==============================================================
+       ADMIN PANEL PRIVATE PASSCODE PROTECTION
+       ============================================================== */
+    const ADMIN_PASS = "elitara786";
+
+    function checkAdminAuth() {
+      const isAuth = sessionStorage.getItem("edawatnama_admin_auth") === "true";
+      const overlay = document.getElementById("adminLockOverlay");
+      if (overlay) {
+        overlay.style.display = isAuth ? "none" : "flex";
+      }
+    }
+
+    function handleAdminLogin() {
+      const inp = document.getElementById("adminPasswordInput");
+      const err = document.getElementById("adminLoginErr");
+      if (inp && inp.value.trim() === ADMIN_PASS) {
+        sessionStorage.setItem("edawatnama_admin_auth", "true");
+        document.getElementById("adminLockOverlay").style.display = "none";
+        showToast("✓ Studio unlocked successfully!");
+      } else {
+        if (err) err.style.display = "block";
+        if (inp) { inp.value = ""; inp.focus(); }
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem("edawatnama_admin_auth");
+      checkAdminAuth();
+      showToast("🔒 Studio locked.");
+    }
+
+    // Run auth check immediately
+    checkAdminAuth();
+
+    /* ==============================================================
+       HUMAN-READABLE WHATSAPP ORDER PARSER
+       ============================================================== */
+    function parseHumanWhatsAppMessage(raw) {
+      function extractVal(line, key) {
+        const low = line.toLowerCase();
+        const search = key.toLowerCase() + ":";
+        const idx = low.indexOf(search);
+        return idx !== -1 ? line.slice(idx + search.length).trim() : null;
+      }
+
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const data = {
+        cardSide: "groom",
+        clientName: "",
+        clientPhone: "",
+        groom: "",
+        bride: "",
+        host: "",
+        theme: "optional",
+        welcomeHosts: [],
+        events: {
+          mehndi: { date: ", time: ", venue: ", address: ", mapUrl: ", rsvpPhone: " },
+          baraat: { date: ", sehraTime: ", departureTime: ", time: ", arrival: ", nikkah: ", dinner: ", rukhsati: ", venue: ", address: ", mapUrl: ", rsvpPhone: " },
+          walima: { date: ", time: ", venue: ", address: ", mapUrl: ", rsvpPhone: " }
+        }
+      };
+
+      let currentSection = "";
+
+      for (const line of lines) {
+        const lineUpper = line.toUpperCase();
+        // Section header lines do not start with a bullet "•" or dash "-"
+        const isDataLine = line.startsWith("•") || line.startsWith("-") || line.startsWith("*");
+
+        if (!isDataLine) {
+          if (lineUpper.includes("MEHNDI")) { currentSection = "mehndi"; continue; }
+          if (lineUpper.includes("BARAAT")) { currentSection = "baraat"; continue; }
+          if (lineUpper.includes("WALIMA")) { currentSection = "walima"; continue; }
+          if (lineUpper.includes("WELCOMING")) { currentSection = "welcoming"; continue; }
+        }
+
+        if (!currentSection) {
+          if (line.includes("Bride's Side") || line.includes("لڑکی والے")) data.cardSide = "bride";
+          else if (line.includes("Groom's Side") || line.includes("لڑکے والے")) data.cardSide = "groom";
+
+          let v = extractVal(line, "Client");
+          if (v) {
+            const ph = v.match(/\((.*?)\)/);
+            data.clientPhone = ph ? ph[1].trim() : "";
+            data.clientName = v.replace(/\(.*?\)/, "").trim();
+          }
+          v = extractVal(line, "Groom"); if (v) data.groom = v;
+          v = extractVal(line, "Bride"); if (v) data.bride = v;
+          v = extractVal(line, "Main Host / Parents") || extractVal(line, "Main Host") || extractVal(line, "Parents") || extractVal(line, "Host");
+          if (v) data.host = v;
+          v = extractVal(line, "Preferred Theme") || extractVal(line, "Theme");
+          if (v) data.theme = v.toLowerCase().includes("optional") ? "optional" : v.toLowerCase();
+        } else if (currentSection === "mehndi") {
+          let v = extractVal(line, "Date"); if (v) data.events.mehndi.date = v;
+          v = extractVal(line, "Time"); if (v) data.events.mehndi.time = v;
+          v = extractVal(line, "Venue"); if (v) data.events.mehndi.venue = v;
+          v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.mehndi.address = v;
+          v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.mehndi.mapUrl = v;
+          v = extractVal(line, "RSVP"); if (v) data.events.mehndi.rsvpPhone = v;
+        } else if (currentSection === "baraat") {
+          let v = extractVal(line, "Date"); if (v) data.events.baraat.date = v;
+          v = extractVal(line, "Sehra Bandi"); if (v && v !== "N/A") data.events.baraat.sehraTime = v;
+          v = extractVal(line, "Departure of Baraat") || extractVal(line, "Departure"); if (v && v !== "N/A") data.events.baraat.departureTime = v;
+          v = extractVal(line, "Event / Arrival Time") || extractVal(line, "Arrival of Baraat") || extractVal(line, "Arrival") || extractVal(line, "Time");
+          if (v && v !== "N/A") data.events.baraat.arrival = v;
+          v = extractVal(line, "Nikkah"); if (v) data.events.baraat.nikkah = v;
+          v = extractVal(line, "Dinner"); if (v) data.events.baraat.dinner = v;
+          v = extractVal(line, "Rukhsati"); if (v) data.events.baraat.rukhsati = v;
+          v = extractVal(line, "Venue"); if (v) data.events.baraat.venue = v;
+          v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.baraat.address = v;
+          v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.baraat.mapUrl = v;
+          v = extractVal(line, "RSVP"); if (v) data.events.baraat.rsvpPhone = v;
+        } else if (currentSection === "walima") {
+          let v = extractVal(line, "Date"); if (v) data.events.walima.date = v;
+          v = extractVal(line, "Time"); if (v) data.events.walima.time = v;
+          v = extractVal(line, "Venue"); if (v) data.events.walima.venue = v;
+          v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.walima.address = v;
+          v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.walima.mapUrl = v;
+          v = extractVal(line, "RSVP"); if (v) data.events.walima.rsvpPhone = v;
+        } else if (currentSection === "welcoming") {
+          const hostM = line.match(/^[•\-\*	 ]*(.+?)\s*\((.*?)\)/);
+          if (hostM) {
+            data.welcomeHosts.push({ name: hostM[1].trim(), nameUrdu: "", phone: hostM[2].trim() });
+          }
+        }
+      }
+
+      if (data.cardSide === "groom") {
+        if (data.events.baraat.sehraTime && data.events.baraat.departureTime) {
+          data.events.baraat.time = `Sehra Bandi: ${data.events.baraat.sehraTime} · Departure: ${data.events.baraat.departureTime}`;
+        } else {
+          data.events.baraat.time = data.events.baraat.sehraTime || data.events.baraat.departureTime || "";
+        }
+      } else {
+        data.events.baraat.time = data.events.baraat.arrival || "7:00 PM";
+      }
+
+      return (data.groom || data.bride) ? data : null;
+    }
+
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -529,6 +872,50 @@
       }
     }
 
+    function decodeWeddingData(str) {
+      try {
+        const json = decodeURIComponent(atob(str));
+        return JSON.parse(json);
+      } catch (err) {
+        console.error("Decoding error", err);
+        return null;
+      }
+    }
+
+    function formatDisplayDate(dateStr, lang = "en") {
+      if (!dateStr) return "";
+      try {
+        const parts = dateStr.split("-");
+        if (parts.length === 3) {
+          const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), 12, 0, 0);
+          if (!isNaN(d.getTime())) {
+            if (lang === "ur") {
+              const daysUr = ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعۃ المبارک", "ہفتہ"];
+              const monthsUr = ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"];
+              const dayName = daysUr[d.getDay()];
+              const monthName = monthsUr[d.getMonth()];
+              const urduDigits = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+              const dayNum = String(d.getDate()).split("").map(n => urduDigits[parseInt(n)] || n).join("");
+              const yearNum = String(d.getFullYear()).split("").map(n => urduDigits[parseInt(n)] || n).join("");
+              return `بروز ${dayName}، ${dayNum} ${monthName} ${yearNum}ء`;
+            } else {
+              const daysEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+              const monthsEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+              const dayName = daysEn[d.getDay()];
+              const monthName = monthsEn[d.getMonth()];
+              const dateVal = d.getDate();
+              let sfx = "th";
+              if (dateVal % 10 === 1 && dateVal !== 11) sfx = "st";
+              else if (dateVal % 10 === 2 && dateVal !== 12) sfx = "nd";
+              else if (dateVal % 10 === 3 && dateVal !== 13) sfx = "rd";
+              return `${dayName}, ${dateVal}${sfx} ${monthName} ${d.getFullYear()}`;
+            }
+          }
+        }
+      } catch (e) {}
+      return dateStr;
+    }
+
     let currentHosts = [
       { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
       { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
@@ -541,9 +928,9 @@
       if (!c) return;
       c.innerHTML = currentHosts.map((h, i) => `
         <div class="admin-host-row">
-          <input class="admin-input" type="text" placeholder="Name (EN)" value="${h.name}" data-host-idx="${i}" data-host-prop="name">
-          <input class="admin-input" type="text" placeholder="Name (UR)" value="${h.nameUrdu}" dir="rtl" data-host-idx="${i}" data-host-prop="nameUrdu">
-          <input class="admin-input" type="text" placeholder="Phone (+92 301 ...)" value="${h.phone}" data-host-idx="${i}" data-host-prop="phone">
+          <input class="admin-input" type="text" placeholder="Name (EN)" value="${h.name || ''}" data-host-idx="${i}" data-host-prop="name">
+          <input class="admin-input" type="text" placeholder="Name (UR)" value="${h.nameUrdu || ''}" dir="rtl" data-host-idx="${i}" data-host-prop="nameUrdu">
+          <input class="admin-input" type="text" placeholder="Phone (+92 301 ...)" value="${h.phone || ''}" data-host-idx="${i}" data-host-prop="phone">
           <button class="admin-remove-btn" type="button" data-del-host="${i}">✕</button>
         </div>
       `).join("");
@@ -567,18 +954,556 @@
 
     renderHostsInputs();
 
+    function getSelectedCardSide() {
+      const el = document.querySelector('input[name="f_cardSide"]:checked');
+      return el ? el.value : "groom";
+    }
+
+    document.querySelectorAll('input[name="f_cardSide"]').forEach(radio => {
+      radio.addEventListener("change", () => {
+        const side = getSelectedCardSide();
+        const header = document.getElementById("baraatSectionHeader");
+        const taglineUr = document.getElementById("f_b_tagline_ur");
+        const taglineEn = document.getElementById("f_b_tagline_en");
+        const arrivalInput = document.getElementById("f_b_arrival");
+        const nikkahInput = document.getElementById("f_b_nikkah");
+        const dinnerInput = document.getElementById("f_b_dinner");
+        const rukhsatiInput = document.getElementById("f_b_rukhsati");
+        const labelHostEn = document.getElementById("labelHostEn");
+        const labelHostUr = document.getElementById("labelHostUr");
+
+        const groomSchedWrap = document.getElementById("adminGroomScheduleWrap");
+        const brideSchedWrap = document.getElementById("adminBrideScheduleWrap");
+
+        if (side === "bride") {
+          if (header) header.textContent = "🎺 4. Baraat & Rukhsati Ceremony (تقریبِ بارات و رخصتی)";
+          if (labelHostEn) labelHostEn.textContent = "Main Host Line - Bride's Parents (English)";
+          if (labelHostUr) labelHostUr.textContent = "Main Host Line - والدینِ دلہن (Urdu)";
+          if (groomSchedWrap) groomSchedWrap.style.display = "none";
+          if (brideSchedWrap) brideSchedWrap.style.display = "block";
+          if (!taglineUr.value || taglineUr.value === "دل والے دلہنیا لے جا رہے ہیں") {
+            taglineUr.value = "دعاؤں کے سائے میں رخصتی";
+          }
+          if (!taglineEn.value || taglineEn.value === "Dil Walay Dulhania Le Ja Rahay Hain") {
+            taglineEn.value = "Duaon Kay Saaye Mein Rukhsati";
+          }
+          if (!arrivalInput.value) arrivalInput.value = "8:00 PM · ۸:۰۰ بجے شب";
+          if (!nikkahInput.value) nikkahInput.value = "9:00 PM · ۹:۰۰ بجے شب";
+          if (!dinnerInput.value) dinnerInput.value = "9:30 PM · ۹:۳۰ بجے شب";
+          if (!rukhsatiInput.value) rukhsatiInput.value = "11:00 PM · ۱۱:۰۰ بجے شب";
+        } else {
+          if (header) header.textContent = "🎺 4. Baraat Ceremony (تقریبِ بارات)";
+          if (labelHostEn) labelHostEn.textContent = "Main Host Line (English)";
+          if (labelHostUr) labelHostUr.textContent = "Main Host Line (Urdu)";
+          if (groomSchedWrap) groomSchedWrap.style.display = "block";
+          if (brideSchedWrap) brideSchedWrap.style.display = "none";
+          if (taglineUr.value === "دعاؤں کے سائے میں رخصتی") {
+            taglineUr.value = "دل والے دلہنیا لے جا رہے ہیں";
+          }
+          if (taglineEn.value === "Duaon Kay Saaye Mein Rukhsati") {
+            taglineEn.value = "Dil Walay Dulhania Le Ja Rahay Hain";
+          }
+        }
+      });
+    });
+
+    function syncGroomBaraatTime() {
+      const s = document.getElementById("f_b_sehra") ? document.getElementById("f_b_sehra").value.trim() : "";
+      const d = document.getElementById("f_b_departure") ? document.getElementById("f_b_departure").value.trim() : "";
+      if (s && d) {
+        document.getElementById("f_b_time").value = `Sehra Bandi: ${s} · Departure: ${d}`;
+      } else if (s || d) {
+        document.getElementById("f_b_time").value = s || d;
+      }
+    }
+    const sehraInp = document.getElementById("f_b_sehra");
+    const depInp = document.getElementById("f_b_departure");
+    if (sehraInp) sehraInp.addEventListener("input", syncGroomBaraatTime);
+    if (depInp) depInp.addEventListener("input", syncGroomBaraatTime);
+
     document.getElementById("addHostBtn").addEventListener("click", () => {
-      currentHosts.push({ name: "", nameUrdu: "", phone: "+92 " });
+      currentHosts.push({ name: ", nameUrdu: ", phone: "+92 " });
       renderHostsInputs();
     });
 
+    /* ==============================================================
+       CLIENT ORDERS MANAGEMENT (Pending vs Deployed)
+       ============================================================== */
+    let clientOrders = [];
+    try {
+      clientOrders = JSON.parse(localStorage.getItem("edawatnama_client_orders") || "[]");
+    } catch (e) {
+      clientOrders = [];
+    }
+
+    // Seed default starter client orders if empty so admin can immediately test
+    if (!clientOrders.length) {
+      clientOrders = [
+        {
+          id: "order_sample_bride_1",
+          status: "pending",
+          createdAt: "Today at 02:30 PM",
+          clientName: "Tariq Mahmood (Bride's Father)",
+          clientPhone: "0301 2345678",
+          cardSide: "bride",
+          theme: "optional",
+          bride: "Fatima Zahra",
+          brideUrdu: "فاطمہ زہراء",
+          groom: "Bilal Ahmed",
+          groomUrdu: "بلال احمد",
+          host: "Mr. & Mrs. Tariq Mahmood (Bride's Parents)",
+          hostUrdu: "جناب و محترمہ طارق محمود (والدینِ دلہن)",
+          welcomeHosts: [
+            { name: "Muhammad Hamza", nameUrdu: "محمد حمزہ", phone: "+92 301 2345678" },
+            { name: "Zain Tariq", nameUrdu: "زین طارق", phone: "+92 302 3456789" }
+          ],
+          events: {
+            mehndi: {
+              date: "2026-12-18",
+              time: "7:00 PM / شام ۷:۰۰ بجے",
+              venue: "Royal Palm Golf & Country Club, Lahore",
+              mapUrl: "https://maps.google.com/?q=Royal+Palm+Lahore",
+              rsvpPhone: "+92 301 2345678"
+            },
+            baraat: {
+              date: "2026-12-19",
+              time: "7:00 PM / شام ۷:۰۰ بجے",
+              arrival: "8:00 PM · ۸:۰۰ بجے شب",
+              nikkah: "9:00 PM · ۹:۰۰ بجے شب",
+              dinner: "9:30 PM · ۹:۳۰ بجے شب",
+              rukhsati: "11:00 PM · ۱۱:۰۰ بجے شب",
+              venue: "Grand Ballroom, Pearl Continental, Lahore",
+              mapUrl: "https://maps.google.com/?q=Pearl+Continental+Lahore",
+              rsvpPhone: "+92 301 2345678"
+            },
+            walima: {
+              date: "2026-12-20",
+              time: "7:30 PM / شام ۷:۳۰ بجے",
+              venue: "Crystal Hall, Nishat Banquets, Lahore",
+              mapUrl: "https://maps.google.com/?q=Nishat+Banquets+Lahore",
+              rsvpPhone: "+92 301 2345678"
+            }
+          }
+        },
+        {
+          id: "order_sample_groom_1",
+          status: "pending",
+          createdAt: "Today at 01:15 PM",
+          clientName: "Chaudhry Usman (Groom)",
+          clientPhone: "0321 9876543",
+          cardSide: "groom",
+          theme: "farman",
+          groom: "Usman Tariq",
+          groomUrdu: "عثمان طارق",
+          bride: "Hira Khan",
+          brideUrdu: "حرا خان",
+          host: "Chaudhry & Begum Tariq Jamil",
+          hostUrdu: "چوہدری و بیگم طارق جمیل",
+          welcomeHosts: [
+            { name: "Ali Usman", nameUrdu: "علی عثمان", phone: "+92 321 9876543" },
+            { name: "Omer Tariq", nameUrdu: "عمر طارق", phone: "+92 322 8765432" }
+          ],
+          events: {
+            mehndi: {
+              date: "2026-12-24",
+              time: "7:30 PM / شام ۷:۳۰ بجے",
+              venue: "Mughal Haveli, Gulberg, Lahore",
+              mapUrl: "https://maps.google.com/?q=Mughal+Haveli+Lahore",
+              rsvpPhone: "+92 321 9876543"
+            },
+            baraat: {
+              date: "2026-12-25",
+              time: "Sehra Bandi: 4:30 PM · Departure: 5:30 PM",
+              arrival: "",
+              nikkah: "",
+              dinner: "",
+              rukhsati: "",
+              venue: "Faletti's Grand Hall, Lahore",
+              mapUrl: "https://maps.google.com/?q=Falettis+Hotel+Lahore",
+              rsvpPhone: "+92 321 9876543"
+            },
+            walima: {
+              date: "2026-12-26",
+              time: "7:00 PM / شام ۷:۰۰ بجے",
+              venue: "Maisonette Marquee, Lahore",
+              mapUrl: "https://maps.google.com/?q=Maisonette+Lahore",
+              rsvpPhone: "+92 321 9876543"
+            }
+          }
+        }
+      ];
+      try {
+        localStorage.setItem("edawatnama_client_orders", JSON.stringify(clientOrders));
+      } catch (e) {}
+    }
+
+    let activeClientId = null;
+
+    function renderPendingClientsDropdown() {
+      const select = document.getElementById("pendingClientsSelect");
+      const badge = document.getElementById("pendingCountBadge");
+      const deployedBadge = document.getElementById("deployedCountBadge");
+      if (!select) return;
+
+      // Filter: strictly exclude deployed clients!
+      const pendingOrders = clientOrders.filter(c => c.status !== "deployed");
+      const deployedOrders = clientOrders.filter(c => c.status === "deployed");
+
+      if (badge) badge.textContent = `${pendingOrders.length} Pending`;
+      if (deployedBadge) deployedBadge.textContent = `${deployedOrders.length}`;
+
+      if (!pendingOrders.length) {
+        select.innerHTML = `<option value="">-- No pending clients (All invitations deployed! 🎉) --</option>`;
+        const snippet = document.getElementById("pendingClientDetailsSnippet");
+        if (snippet) snippet.style.display = "none";
+        return;
+      }
+
+      select.innerHTML = `
+        <option value="">-- Select Pending Client (${pendingOrders.length} Available) --</option>
+        ${pendingOrders.map(c => {
+          const sideIcon = c.cardSide === "bride" ? "👰 [Bride Side]" : "🤵 [Groom Side]";
+          const couple = c.cardSide === "bride" ? `${c.bride} with ${c.groom}` : `${c.groom} with ${c.bride}`;
+          const client = c.clientName ? `· Client: ${c.clientName}` : "";
+          const themeNote = c.theme && c.theme !== "optional" ? `[Theme: ${c.theme}]` : `[Theme: Optional]`;
+          return `<option value="${c.id}">${sideIcon} ${couple} ${themeNote} ${client}</option>`;
+        }).join("")}
+      `;
+    }
+
+    function autoFillClient(client) {
+      if (!client) return;
+      activeClientId = client.id;
+
+      // 1. Set Side
+      const side = client.cardSide || "groom";
+      const radioGroom = document.querySelector('input[name="f_cardSide"][value="groom"]');
+      const radioBride = document.querySelector('input[name="f_cardSide"][value="bride"]');
+      if (side === "bride" && radioBride) {
+        radioBride.checked = true;
+        radioBride.dispatchEvent(new Event("change"));
+      } else if (radioGroom) {
+        radioGroom.checked = true;
+        radioGroom.dispatchEvent(new Event("change"));
+      }
+
+      // 2. Set Couple Names
+      document.getElementById("f_groom").value = client.groom || "";
+      document.getElementById("f_groomUrdu").value = client.groomUrdu || "";
+      document.getElementById("f_bride").value = client.bride || "";
+      document.getElementById("f_brideUrdu").value = client.brideUrdu || "";
+
+      // 3. Set Host Lines
+      document.getElementById("f_host").value = client.host || "";
+      document.getElementById("f_hostUrdu").value = client.hostUrdu || "";
+
+      // 4. Set Theme (Theme is optional from client's end)
+      const themeSelect = document.getElementById("f_theme");
+      if (themeSelect) {
+        if (client.theme && client.theme !== "optional" && themeSelect.querySelector(`option[value="${client.theme}"]`)) {
+          themeSelect.value = client.theme;
+        } else {
+          // Client opted for "Let Elitara choose"
+          themeSelect.value = "emerald";
+        }
+      }
+
+      // 5. Welcoming Hosts
+      if (Array.isArray(client.welcomeHosts) && client.welcomeHosts.length > 0) {
+        currentHosts = JSON.parse(JSON.stringify(client.welcomeHosts));
+      } else {
+        currentHosts = [{ name: ", nameUrdu: ", phone: "+92 " }];
+      }
+      renderHostsInputs();
+
+      // 6. Events
+      const ev = client.events || {};
+
+      // Mehndi
+      const m = ev.mehndi || {};
+      const mDate = m.date || "2026-12-10";
+      const mTime = m.time || "7:00 PM / شام ۷:۰۰ بجے";
+      document.getElementById("f_m_dt").value = mDate.includes("T") ? mDate.slice(0, 16) : `${mDate}T19:00`;
+      document.getElementById("f_m_date").value = formatDisplayDate(mDate, "en");
+      document.getElementById("f_m_dateUr").value = formatDisplayDate(mDate, "ur");
+      document.getElementById("f_m_time").value = mTime;
+      document.getElementById("f_m_venue").value = m.venue || "";
+      document.getElementById("f_m_addr").value = m.address || "";
+      document.getElementById("f_m_map").value = m.mapUrl || ""; // Never autofill map if client did not provide it; let admin handle it
+      document.getElementById("f_m_rsvp").value = m.rsvpPhone || client.clientPhone || "+923012345678";
+
+      // Baraat
+      const b = ev.baraat || {};
+      const bDate = b.date || "2026-12-11";
+      let bTime = b.time || "";
+
+      if (side === "groom") {
+        const sTime = b.sehraTime || "";
+        const dTime = b.departureTime || "";
+        if (document.getElementById("f_b_sehra")) document.getElementById("f_b_sehra").value = sTime;
+        if (document.getElementById("f_b_departure")) document.getElementById("f_b_departure").value = dTime;
+
+        if (sTime && dTime) {
+          bTime = `Sehra Bandi: ${sTime} · Departure: ${dTime}`;
+        } else if (!bTime) {
+          bTime = "Sehra Bandi: 4:00 PM · Departure: 5:00 PM";
+        }
+      } else {
+        if (!bTime) bTime = "7:00 PM / شام ۷:۰۰ بجے";
+      }
+
+      document.getElementById("f_b_dt").value = bDate.includes("T") ? bDate.slice(0, 16) : `${bDate}T16:30`;
+      document.getElementById("f_b_date").value = formatDisplayDate(bDate, "en");
+      document.getElementById("f_b_dateUr").value = formatDisplayDate(bDate, "ur");
+      document.getElementById("f_b_time").value = bTime;
+
+      // Milestones
+      if (side === "bride") {
+        document.getElementById("f_b_arrival").value = b.arrival || "8:00 PM · ۸:۰۰ بجے شب";
+        document.getElementById("f_b_nikkah").value = b.nikkah || "9:00 PM · ۹:۰۰ بجے شب";
+        document.getElementById("f_b_dinner").value = b.dinner || "9:30 PM · ۹:۳۰ بجے شب";
+        document.getElementById("f_b_rukhsati").value = b.rukhsati || "11:00 PM · ۱۱:۰۰ بجے شب";
+        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || "دعاؤں کے سائے میں رخصتی";
+        document.getElementById("f_b_tagline_en").value = b.taglineRoman || "Duaon Kay Saaye Mein Rukhsati";
+      } else {
+        document.getElementById("f_b_arrival").value = b.arrival || "";
+        document.getElementById("f_b_nikkah").value = b.nikkah || "";
+        document.getElementById("f_b_dinner").value = b.dinner || "";
+        document.getElementById("f_b_rukhsati").value = b.rukhsati || "";
+        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || "دل والے دلہنیا لے جا رہے ہیں";
+        document.getElementById("f_b_tagline_en").value = b.taglineRoman || "Dil Walay Dulhania Le Ja Rahay Hain";
+      }
+
+      document.getElementById("f_b_venue").value = b.venue || "";
+      document.getElementById("f_b_addr").value = b.address || "";
+      document.getElementById("f_b_map").value = b.mapUrl || ""; // Never autofill map if client did not provide it; let admin handle it
+      document.getElementById("f_b_rsvp").value = b.rsvpPhone || client.clientPhone || "+923012345678";
+
+      // Walima
+      const w = ev.walima || {};
+      if (w.date || w.venue) {
+        const wDate = w.date || "";
+        const wTime = w.time || "7:30 PM / شام ۷:۳۰ بجے";
+        document.getElementById("f_w_dt").value = wDate.includes("T") ? wDate.slice(0, 16) : (wDate ? `${wDate}T19:00` : "");
+        document.getElementById("f_w_date").value = wDate ? formatDisplayDate(wDate, "en") : "";
+        document.getElementById("f_w_dateUr").value = wDate ? formatDisplayDate(wDate, "ur") : "";
+        document.getElementById("f_w_time").value = wTime;
+        document.getElementById("f_w_venue").value = w.venue || "";
+        document.getElementById("f_w_addr").value = w.address || "";
+        document.getElementById("f_w_map").value = w.mapUrl || "";
+        document.getElementById("f_w_rsvp").value = w.rsvpPhone || client.clientPhone || "+923012345678";
+      } else {
+        document.getElementById("f_w_dt").value = "";
+        document.getElementById("f_w_date").value = "";
+        document.getElementById("f_w_dateUr").value = "";
+        document.getElementById("f_w_time").value = "";
+        document.getElementById("f_w_venue").value = "";
+        document.getElementById("f_w_addr").value = "";
+        document.getElementById("f_w_map").value = "";
+        document.getElementById("f_w_rsvp").value = "";
+      }
+
+      // Snippet feedback
+      const snippet = document.getElementById("pendingClientDetailsSnippet");
+      if (snippet) {
+        snippet.style.display = "block";
+        const clientNameDisplay = client.clientName ? `· Client: <strong>${client.clientName}</strong> (${client.clientPhone || ''})` : "";
+        const themeDisplay = client.theme && client.theme !== "optional" ? `Theme: <strong>${client.theme}</strong>` : `Theme: <em>Optional (Defaulted to Emerald)</em>`;
+        snippet.innerHTML = `✓ Form Loaded for: <strong>${client.cardSide === 'bride' ? client.bride : client.groom}</strong> (${client.cardSide === 'bride' ? "Bride Side" : "Groom Side"}) ${clientNameDisplay} · ${themeDisplay}`;
+      }
+
+      showToast(`✓ Auto-filled all form fields for ${client.clientName || client.groom || client.bride}!`);
+    }
+
+    const pendingSelect = document.getElementById("pendingClientsSelect");
+    pendingSelect.addEventListener("change", () => {
+      const selectedId = pendingSelect.value;
+      if (!selectedId) return;
+      const client = clientOrders.find(c => c.id === selectedId);
+      if (client) autoFillClient(client);
+    });
+
+    document.getElementById("autoFillSelectedClientBtn").addEventListener("click", () => {
+      const selectedId = pendingSelect.value;
+      if (!selectedId) {
+        showToast("Please choose a pending client first!");
+        return;
+      }
+      const client = clientOrders.find(c => c.id === selectedId);
+      if (client) autoFillClient(client);
+    });
+
+    renderPendingClientsDropdown();
+
+    /* ==============================================================
+       IMPORT WHATSAPP ORDER MODAL
+       ============================================================== */
+    const importModal = document.getElementById("importModal");
+    const openImportModalBtn = document.getElementById("openImportModalBtn");
+    const closeImportModalBtn = document.getElementById("closeImportModalBtn");
+    const cancelImportBtn = document.getElementById("cancelImportBtn");
+    const parseAndImportBtn = document.getElementById("parseAndImportBtn");
+    const importTextarea = document.getElementById("importTextarea");
+
+    openImportModalBtn.addEventListener("click", () => {
+      importTextarea.value = "";
+      importModal.classList.add("show");
+    });
+    closeImportModalBtn.addEventListener("click", () => importModal.classList.remove("show"));
+    cancelImportBtn.addEventListener("click", () => importModal.classList.remove("show"));
+
+    parseAndImportBtn.addEventListener("click", () => {
+      const rawText = importTextarea.value.trim();
+      if (!rawText) {
+        showToast("Please paste the client's order message!");
+        return;
+      }
+
+      let parsedOrder = null;
+
+      // 1. Look for DATA_PAYLOAD tag
+      const payloadMatch = rawText.match(/\[DATA_PAYLOAD:\s*([A-Za-z0-9+/=]+)\]/);
+      if (payloadMatch && payloadMatch[1]) {
+        parsedOrder = decodeWeddingData(payloadMatch[1]);
+      }
+
+      // 2. Look for ?import= parameter
+      if (!parsedOrder) {
+        const importParamMatch = rawText.match(/[?&]import=([A-Za-z0-9+/=]+)/);
+        if (importParamMatch && importParamMatch[1]) {
+          parsedOrder = decodeWeddingData(importParamMatch[1]);
+        }
+      }
+
+      // 3. Fallback: Parse raw JSON directly if pasted
+      if (!parsedOrder && rawText.startsWith("{") && rawText.endsWith("}")) {
+        try {
+          parsedOrder = JSON.parse(rawText);
+        } catch (e) {}
+      }
+
+      // 4. Human-readable WhatsApp message parser (clean client text without tokens or admin links)
+      if (!parsedOrder) {
+        parsedOrder = parseHumanWhatsAppMessage(rawText);
+      }
+
+      if (parsedOrder && (parsedOrder.groom || parsedOrder.bride)) {
+        if (!parsedOrder.id) parsedOrder.id = "order_" + Date.now();
+        parsedOrder.status = "pending";
+        // Check if order already exists
+        const existingIdx = clientOrders.findIndex(c => c.id === parsedOrder.id);
+        if (existingIdx >= 0) {
+          clientOrders[existingIdx] = parsedOrder;
+        } else {
+          clientOrders.unshift(parsedOrder);
+        }
+
+        try {
+          localStorage.setItem("edawatnama_client_orders", JSON.stringify(clientOrders));
+        } catch (e) {}
+
+        renderPendingClientsDropdown();
+        pendingSelect.value = parsedOrder.id;
+        autoFillClient(parsedOrder);
+        importModal.classList.remove("show");
+        showToast("✓ Client order imported and form filled!");
+      } else {
+        alert("Could not automatically decode order payload. Please ensure you copied the complete WhatsApp message including the [DATA_PAYLOAD] string.");
+      }
+    });
+
+    /* ==============================================================
+       VIEW DEPLOYED CLIENTS MODAL
+       ============================================================== */
+    const deployedModal = document.getElementById("deployedModal");
+    const viewDeployedOrdersBtn = document.getElementById("viewDeployedOrdersBtn");
+    const closeDeployedModalBtn = document.getElementById("closeDeployedModalBtn");
+    const deployedClientsList = document.getElementById("deployedClientsList");
+
+    function renderDeployedClientsList() {
+      const deployed = clientOrders.filter(c => c.status === "deployed");
+      if (!deployed.length) {
+        deployedClientsList.innerHTML = `<p style="font-size:0.86rem; color:var(--cream-muted); font-style:italic;">No invitations deployed yet. When you generate an invitation for a pending client, it will appear here!</p>`;
+        return;
+      }
+
+      deployedClientsList.innerHTML = deployed.map(c => {
+        const couple = c.cardSide === "bride" ? `${c.bride} with ${c.groom}` : `${c.groom} with ${c.bride}`;
+        const sideBadge = c.cardSide === "bride" ? "👰 Bride Side" : "🤵 Groom Side";
+        return `
+          <div style="background:rgba(5, 18, 13, 0.7); border:1px solid rgba(212,175,55,0.25); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div>
+              <strong style="color:var(--gold-light);">${couple}</strong>
+              <div style="font-size:0.75rem; color:var(--cream-muted); margin-top:2px;">
+                <span style="color:var(--gold-primary); font-weight:600;">${sideBadge}</span> · Client: ${c.clientName || 'N/A'} (${c.clientPhone || ''}) · Deployed: ${c.deployedAt || 'Yes'}
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              ${c.liveUrl ? `<a class="outline-btn" style="padding:5px 10px; font-size:0.76rem;" href="${c.liveUrl}" target="_blank">View Live ↗</a>` : ""}
+              <button class="outline-btn" style="padding:5px 10px; font-size:0.76rem;" type="button" data-revert-pending="${c.id}">↩ Move to Pending</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      deployedClientsList.querySelectorAll("[data-revert-pending]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-revert-pending");
+          const target = clientOrders.find(c => c.id === id);
+          if (target) {
+            target.status = "pending";
+            delete target.deployedAt;
+            try {
+              localStorage.setItem("edawatnama_client_orders", JSON.stringify(clientOrders));
+            } catch (e) {}
+            renderPendingClientsDropdown();
+            renderDeployedClientsList();
+            showToast(`↩ ${target.clientName || target.groom} moved back to Pending!`);
+          }
+        });
+      });
+    }
+
+    viewDeployedOrdersBtn.addEventListener("click", () => {
+      renderDeployedClientsList();
+      deployedModal.classList.add("show");
+    });
+    closeDeployedModalBtn.addEventListener("click", () => deployedModal.classList.remove("show"));
+
+    // Check URL parameters for direct ?import=<payload>
+    window.addEventListener("DOMContentLoaded", () => {
+      const p = new URLSearchParams(window.location.search);
+      const importParam = p.get("import");
+      if (importParam) {
+        const decoded = decodeWeddingData(importParam);
+        if (decoded && (decoded.groom || decoded.bride)) {
+          if (!decoded.id) decoded.id = "order_" + Date.now();
+          decoded.status = "pending";
+          const existingIdx = clientOrders.findIndex(c => c.id === decoded.id);
+          if (existingIdx >= 0) clientOrders[existingIdx] = decoded;
+          else clientOrders.unshift(decoded);
+          try {
+            localStorage.setItem("edawatnama_client_orders", JSON.stringify(clientOrders));
+          } catch (e) {}
+          renderPendingClientsDropdown();
+          pendingSelect.value = decoded.id;
+          autoFillClient(decoded);
+          showToast("✓ Client order successfully auto-imported from link!");
+        }
+      }
+    });
+
+    /* ==============================================================
+       SAMPLE DATA LOADER & FORM RESET
+       ============================================================== */
     function fillSampleData() {
+      const side = getSelectedCardSide();
       document.getElementById("f_groom").value = "Ahmed Raza";
       document.getElementById("f_groomUrdu").value = "احمد رضا";
       document.getElementById("f_bride").value = "Ayesha Malik";
       document.getElementById("f_brideUrdu").value = "عائشہ ملک";
-      document.getElementById("f_host").value = "Mr. & Mrs. Tariq Mahmood";
-      document.getElementById("f_hostUrdu").value = "جناب و محترمہ طارق محمود";
+      document.getElementById("f_host").value = side === "bride" ? "Mr. & Mrs. Tariq Mahmood (Bride's Parents)" : "Mr. & Mrs. Tariq Mahmood";
+      document.getElementById("f_hostUrdu").value = side === "bride" ? "جناب و محترمہ طارق محمود (والدینِ دلہن)" : "جناب و محترمہ طارق محمود";
 
       document.getElementById("f_m_dt").value = "2026-12-10T19:00";
       document.getElementById("f_m_date").value = "Thursday, 10th December 2026";
@@ -592,7 +1517,24 @@
       document.getElementById("f_b_dt").value = "2026-12-11T16:30";
       document.getElementById("f_b_date").value = "Friday, 11th December 2026";
       document.getElementById("f_b_dateUr").value = "بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء";
-      document.getElementById("f_b_time").value = "Sehra Bandi: 4:30 PM · Departure: 5:30 PM";
+      document.getElementById("f_b_time").value = side === "bride" ? "7:00 PM / شام ۷:۰۰ بجے" : "Sehra Bandi: 4:30 PM · Departure: 5:30 PM";
+
+      if (side === "bride") {
+        document.getElementById("f_b_arrival").value = "8:00 PM · ۸:۰۰ بجے شب";
+        document.getElementById("f_b_nikkah").value = "9:00 PM · ۹:۰۰ بجے شب";
+        document.getElementById("f_b_dinner").value = "9:30 PM · ۹:۳۰ بجے شب";
+        document.getElementById("f_b_rukhsati").value = "11:00 PM · ۱۱:۰۰ بجے شب";
+        document.getElementById("f_b_tagline_ur").value = "دعاؤں کے سائے میں رخصتی";
+        document.getElementById("f_b_tagline_en").value = "Duaon Kay Saaye Mein Rukhsati";
+      } else {
+        document.getElementById("f_b_arrival").value = "";
+        document.getElementById("f_b_nikkah").value = "";
+        document.getElementById("f_b_dinner").value = "";
+        document.getElementById("f_b_rukhsati").value = "";
+        document.getElementById("f_b_tagline_ur").value = "دل والے دلہنیا لے جا رہے ہیں";
+        document.getElementById("f_b_tagline_en").value = "Dil Walay Dulhania Le Ja Rahay Hain";
+      }
+
       document.getElementById("f_b_venue").value = "Grand Ballroom, Pearl Continental, Lahore";
       document.getElementById("f_b_addr").value = "Shahrah-e-Quaid-e-Azam, Lahore";
       document.getElementById("f_b_map").value = "https://maps.google.com/?q=Pearl+Continental+Hotel+Lahore";
@@ -615,15 +1557,18 @@
         { name: "Zain Ali", nameUrdu: "زین علی", phone: "+92 304 5678901" }
       ];
       renderHostsInputs();
-      showToast("Demo data loaded!");
+      showToast("Sample data loaded!");
     }
 
     document.getElementById("loadDemoBtn").addEventListener("click", fillSampleData);
     document.getElementById("clearFormBtn").addEventListener("click", () => {
       document.getElementById("cardGeneratorForm").reset();
       if (document.getElementById("f_theme")) document.getElementById("f_theme").value = "emerald";
-      currentHosts = [{ name: "", nameUrdu: "", phone: "+92 " }];
+      currentHosts = [{ name: ", nameUrdu: ", phone: "+92 " }];
       renderHostsInputs();
+      activeClientId = null;
+      const snippet = document.getElementById("pendingClientDetailsSnippet");
+      if (snippet) snippet.style.display = "none";
       showToast("Form cleared!");
     });
 
@@ -637,27 +1582,36 @@
     function renderSavedCardsList() {
       const container = document.getElementById("savedCardsContainer");
       if (!savedCards.length) {
-        container.innerHTML = `<p style="font-size:0.86rem; color:var(--cream-muted); font-style:italic;">No saved invitations yet. Generate a card above to see it here!</p>`;
+        container.innerHTML = `<p style="font-size:0.86rem; color:var(--cream-muted); font-style:italic;">No created invitations yet. Generate a card above to see it here!</p>`;
         return;
       }
       const themeBadges = {
         emerald: "👑 Royal Mughal",
         ruby: "🌹 Romantic Rose",
         sapphire: "✨ Celestial Starlight",
-        plum: "🌸 Pastel Blossom"
+        plum: "🌸 Pastel Blossom",
+        obsidian: "🖤 Royal Obsidian",
+        marble: "🏛️ Carrara Marble",
+        lilac: "🪻 Kashmiri Lilac",
+        farman: "📜 Shahi Farman"
       };
       container.innerHTML = `
         <div class="admin-saved-list">
           ${savedCards.map((c, idx) => {
-            const themeParam = c.theme && c.theme !== "emerald" ? `&theme=${c.theme}` : "";
-            const liveUrl = `${window.location.origin}/?invite=${c.encoded}${themeParam}`;
-            const themeBadge = themeBadges[c.theme] || "🌿 Emerald";
+            const themeParam = c.theme ? `&theme=${c.theme}` : "";
+            const sideParam = c.cardSide === "bride" ? `&side=bride` : "";
+            const DOMAIN_ROOT = "https://e-dawatnama.com";
+            const liveUrl = `${DOMAIN_ROOT}/?invite=${c.encoded}${themeParam}${sideParam}`;
+            const themeBadge = themeBadges[c.theme] || "👑 Emerald";
+            const sideBadge = c.cardSide === "bride" ? "👰 Bride's Side" : "🤵 Groom's Side";
+            const coupleDisplay = c.cardSide === "bride" ? `${c.bride} with ${c.groom}` : `${c.groom} with ${c.bride}`;
             return `
               <div class="admin-saved-item">
                 <div>
-                  <strong style="color:var(--gold-light); font-size:1rem;">${c.groom} & ${c.bride}</strong>
+                  <strong style="color:var(--gold-light); font-size:1rem;">${coupleDisplay}</strong>
                   <div style="font-size:0.76rem; color:var(--cream-muted); margin-top:2px;">
                     <span style="display:inline-block; padding:1px 6px; border-radius:4px; background:rgba(212,173,93,0.18); color:var(--gold-primary); font-size:0.7rem; margin-right:6px;">${themeBadge}</span>
+                    <span style="display:inline-block; padding:1px 6px; border-radius:4px; background:rgba(212,173,93,0.12); color:var(--cream-ivory); font-size:0.7rem; margin-right:6px;">${sideBadge}</span>
                     ${c.createdAt || 'Saved Card'}
                   </div>
                 </div>
@@ -701,6 +1655,7 @@
     document.getElementById("cardGeneratorForm").addEventListener("submit", (e) => {
       e.preventDefault();
 
+      const side = getSelectedCardSide();
       const groom = document.getElementById("f_groom").value.trim();
       const groomUrdu = document.getElementById("f_groomUrdu").value.trim();
       const bride = document.getElementById("f_bride").value.trim();
@@ -710,8 +1665,18 @@
 
       const theme = document.getElementById("f_theme") ? document.getElementById("f_theme").value : "emerald";
 
+      const bArrival = document.getElementById("f_b_arrival").value.trim();
+      const bNikkah = document.getElementById("f_b_nikkah").value.trim();
+      const bDinner = document.getElementById("f_b_dinner").value.trim();
+      const bRukhsati = document.getElementById("f_b_rukhsati").value.trim();
+      const bTaglineUr = document.getElementById("f_b_tagline_ur").value.trim();
+      const bTaglineEn = document.getElementById("f_b_tagline_en").value.trim();
+
       const cardData = {
-        slug: `${groom.replace(/[^a-zA-Z0-9]/g, "-")}-&-${bride.replace(/[^a-zA-Z0-9]/g, "-")}-wedding-invitation`,
+        slug: side === "bride"
+          ? `${bride.replace(/[^a-zA-Z0-9]/g, "-")}-with-${groom.replace(/[^a-zA-Z0-9]/g, "-")}-wedding-invitation`
+          : `${groom.replace(/[^a-zA-Z0-9]/g, "-")}-with-${bride.replace(/[^a-zA-Z0-9]/g, "-")}-wedding-invitation`,
+        cardSide: side,
         groom,
         groomUrdu,
         bride,
@@ -740,6 +1705,16 @@
             displayDateUrdu: document.getElementById("f_b_dateUr").value.trim(),
             displayTime: document.getElementById("f_b_time").value.trim(),
             displayTimeUrdu: document.getElementById("f_b_time").value.trim(),
+            arrivalTime: bArrival,
+            arrivalTimeUrdu: bArrival,
+            nikkahTime: bNikkah,
+            nikkahTimeUrdu: bNikkah,
+            dinnerTime: bDinner,
+            dinnerTimeUrdu: bDinner,
+            rukhsatiTime: bRukhsati,
+            rukhsatiTimeUrdu: bRukhsati,
+            taglineUrdu: bTaglineUr,
+            taglineRoman: bTaglineEn,
             venue: document.getElementById("f_b_venue").value.trim(),
             venueUrdu: document.getElementById("f_b_venue").value.trim(),
             address: document.getElementById("f_b_addr").value.trim(),
@@ -747,8 +1722,8 @@
             mapUrl: document.getElementById("f_b_map").value.trim(),
             rsvpPhone: document.getElementById("f_b_rsvp").value.trim()
           },
-          walima: {
-            dateTime: document.getElementById("f_w_dt").value + ":00+05:00",
+          walima: document.getElementById("f_w_date").value.trim() ? {
+            dateTime: document.getElementById("f_w_dt").value ? document.getElementById("f_w_dt").value + ":00+05:00" : "",
             displayDate: document.getElementById("f_w_date").value.trim(),
             displayDateUrdu: document.getElementById("f_w_dateUr").value.trim(),
             displayTime: document.getElementById("f_w_time").value.trim(),
@@ -759,17 +1734,24 @@
             addressUrdu: document.getElementById("f_w_addr").value.trim(),
             mapUrl: document.getElementById("f_w_map").value.trim(),
             rsvpPhone: document.getElementById("f_w_rsvp").value.trim()
-          }
+          } : {}
         }
       };
 
       const encoded = encodeWeddingData(cardData);
-      const themeParam = theme && theme !== "emerald" ? `&theme=${theme}` : "";
-      const liveUrl = `${window.location.origin}/?invite=${encoded}${themeParam}`;
-      const waShareText = `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${groom} & ${bride}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`;
+      const themeParam = theme ? `&theme=${theme}` : "";
+      const sideParam = side === "bride" ? `&side=bride` : "";
+      const DOMAIN_ROOT = "https://e-dawatnama.com";
+      const liveUrl = theme === "burgundy"
+        ? `${DOMAIN_ROOT}/burgundy-romance?invite=${encoded}${sideParam}`
+        : `${DOMAIN_ROOT}/?invite=${encoded}${themeParam}${sideParam}`;
+      const waShareText = side === "bride"
+        ? `With the grace of Allah Almighty, you are cordially invited to celebrate the auspicious wedding ceremonies and Rukhsati of ${bride} with ${groom}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`
+        : `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${groom} with ${bride}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`;
 
-      // Save to localStorage
+      // 1. Save to Created Invitations
       const newRecord = {
+        cardSide: side,
         groom,
         bride,
         theme,
@@ -780,6 +1762,23 @@
       try {
         localStorage.setItem("edawatnama_saved_cards", JSON.stringify(savedCards));
       } catch (e) {}
+
+      // 2. Mark active client as deployed so they are removed from pending dropdown!
+      if (activeClientId) {
+        const target = clientOrders.find(c => c.id === activeClientId);
+        if (target) {
+          target.status = "deployed";
+          target.deployedAt = new Date().toLocaleString("en-PK", { timeZone: "Asia/Karachi" });
+          target.liveUrl = liveUrl;
+          try {
+            localStorage.setItem("edawatnama_client_orders", JSON.stringify(clientOrders));
+          } catch (e) {}
+          // Re-render pending dropdown: client is now removed from pending clients!
+          renderPendingClientsDropdown();
+          showToast(`✦ Deployed! ${target.clientName || target.groom} moved out of pending clients.`);
+          activeClientId = null;
+        }
+      }
 
       const resultArea = document.getElementById("adminResultArea");
       resultArea.style.display = "block";
