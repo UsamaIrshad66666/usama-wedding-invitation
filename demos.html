@@ -3005,8 +3005,28 @@
         return "wedding";
       }
 
-            // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
-      if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
+      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
+      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
+      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
+      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
+      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
+
+      // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
+      if (
+        rSlug.includes("royal-grace") ||
+        rSlug.includes("royalgrace") ||
+        rSlug.includes("grace") ||
+        rSlug.includes("zayan") ||
+        rSlug.includes("rania") ||
+        themeParam === "royal-grace" ||
+        themeParam === "royalgrace" ||
+        themeParam === "grace" ||
+        themeParam.includes("royal") ||
+        templateParam === "royal-grace" ||
+        templateParam === "royalgrace" ||
+        templateParam === "grace" ||
+        templateParam.includes("royal")
+      ) {
         if (!isFileProto && !window.location.pathname.includes("royal-grace")) {
           window.location.replace("/royal-grace" + window.location.search);
         }

@@ -125,13 +125,26 @@ function resolveMetadata(url) {
     };
   }
 
+  const themeNormalized = (url.searchParams.get("theme") || "").toLowerCase().trim().replace(/[_\s]+/g, "-");
+  const templateNormalized = (url.searchParams.get("template") || "").toLowerCase().trim().replace(/[_\s]+/g, "-");
+  const pathNormalized = pathLower.replace(/[_\s]+/g, "-");
+
   // 3a. Royal Grace Theme (Sage Garden Serenity & Pearl Drapes Nikkah)
   if (
-    pathLower.includes("royal-grace") ||
-    pathLower.includes("grace") ||
+    pathNormalized.includes("royal-grace") ||
+    pathNormalized.includes("royalgrace") ||
+    pathNormalized.includes("grace") ||
+    pathNormalized.includes("zayan") ||
+    pathNormalized.includes("rania") ||
     pathLower.includes("royal-grace.html") ||
-    themeParam === "royal-grace" ||
-    themeParam === "grace"
+    themeNormalized === "royal-grace" ||
+    themeNormalized === "royalgrace" ||
+    themeNormalized === "grace" ||
+    themeNormalized.includes("royal") ||
+    templateNormalized === "royal-grace" ||
+    templateNormalized === "royalgrace" ||
+    templateNormalized === "grace" ||
+    templateNormalized.includes("royal")
   ) {
     return {
       title: "Zayan & Rania — Royal Grace Nikkah & Walima Ceremony",
@@ -145,8 +158,8 @@ function resolveMetadata(url) {
     pathLower.includes("noor-e-nikkah") ||
     pathLower.includes("noor-nikkah") ||
     pathLower.includes("ivory") ||
-    pathLower.includes("zayan") ||
-    pathLower.includes("rania") ||
+    themeNormalized === "ivory" ||
+    themeNormalized === "nikkah" ||
     themeParam === "ivory" ||
     themeParam === "nikkah"
   ) {

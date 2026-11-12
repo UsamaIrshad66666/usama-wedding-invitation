@@ -2840,11 +2840,9 @@
     (function() {
       var p = (window.location.pathname || "").toLowerCase();
       var s = (window.location.search || "").toLowerCase();
-      if (p.includes("royal-grace") || s.includes("royal-grace") || s.includes("template=royal-grace") || s.includes("theme=royal-grace")) {
-        if (!p.includes("royal-grace")) {
-          window.location.replace("/royal-grace" + window.location.search);
-        }
-      } else if (p.includes("burgundy-romance") || s.includes("theme=burgundy") || s.includes("template=burgundy")) {
+      // Note: Royal Grace is natively rendered by index.html (renderRoyalGraceScreen)
+      // without needing any location.replace redirect, ensuring instant load across all aliases!
+      if (p.includes("burgundy-romance") || s.includes("theme=burgundy") || s.includes("template=burgundy")) {
         if (!p.includes("burgundy-romance.html")) {
           window.location.replace("/burgundy-romance.html" + window.location.search);
         }
@@ -3091,8 +3089,28 @@
         return "wedding";
       }
 
-      // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
-      if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
+      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
+      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
+      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
+      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
+      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
+
+      // Explicit /royal-grace route, /zayan-and-rania-nikkah, or ?theme=royal-grace / ?theme=royal_grace, or ?template=royal-grace / ?template=royal_grace
+      if (
+        rSlug.includes("royal-grace") ||
+        rSlug.includes("royalgrace") ||
+        rSlug.includes("grace") ||
+        rSlug.includes("zayan") ||
+        rSlug.includes("rania") ||
+        themeParam === "royal-grace" ||
+        themeParam === "royalgrace" ||
+        themeParam === "grace" ||
+        themeParam.includes("royal") ||
+        templateParam === "royal-grace" ||
+        templateParam === "royalgrace" ||
+        templateParam === "grace" ||
+        templateParam.includes("royal")
+      ) {
         return "royal-grace";
       }
 // 0. Explicit /burgundy-romance route, or ?theme=burgundy
@@ -3167,7 +3185,7 @@
 
     function normalizeThemeKey(k) {
       if (!k) return "emerald";
-      const s = String(k).toLowerCase().trim();
+      const s = String(k).toLowerCase().trim().replace(/[_\s]+/g, "-");
       if (s === "ruby" || s === "romantic") return "ruby";
       if (s === "sapphire" || s === "celestial") return "sapphire";
       if (s === "plum" || s === "blossom") return "plum";
@@ -3176,7 +3194,8 @@
       if (s === "lilac" || s === "lavender" || s === "wisteria") return "lilac";
       if (s === "farman" || s === "shahi-farman" || s === "scroll" || s === "parchment") return "farman";
       if (s === "ivory" || s === "nikkah" || s === "noor-e-nikkah" || s === "pearl") return "ivory";
-      if (s === "royal-grace" || s === "grace") return "royal-grace";
+      if (s === "royal-grace" || s === "royalgrace" || s === "grace" || s.includes("royal")) return "royal-grace";
+      if (s === "burgundy" || s === "burgundy-romance" || s === "velvet-romance" || s === "velvet") return "burgundy";
       if (s === "emerald" || s === "mughal") return "emerald";
       return "emerald";
     }
@@ -3423,11 +3442,25 @@
                                 routeSlug === "mehndi-walima" ||
                                 routeSlug === "walima";
 
-        const isRoyalGrace = routeSlug.includes("royal-grace") ||
-                             routeSlug.includes("grace") ||
-                             params.get("theme") === "royal-grace" ||
-                             params.get("theme") === "grace" ||
-                             params.get("template") === "royal-grace";
+        const rawThemeP = (params.get("theme") || "").toLowerCase().trim();
+        const pTheme = rawThemeP.replace(/[_\s]+/g, "-");
+        const rawTplP = (params.get("template") || "").toLowerCase().trim();
+        const pTemplate = rawTplP.replace(/[_\s]+/g, "-");
+        const rSlug = routeSlug.replace(/[_\s]+/g, "-");
+
+        const isRoyalGrace = rSlug.includes("royal-grace") ||
+                             rSlug.includes("royalgrace") ||
+                             rSlug.includes("grace") ||
+                             rSlug.includes("zayan") ||
+                             rSlug.includes("rania") ||
+                             pTheme === "royal-grace" ||
+                             pTheme === "royalgrace" ||
+                             pTheme === "grace" ||
+                             pTheme.includes("royal") ||
+                             pTemplate === "royal-grace" ||
+                             pTemplate === "royalgrace" ||
+                             pTemplate === "grace" ||
+                             pTemplate.includes("royal");
 
         if (isRoyalGrace) {
           cfg = JSON.parse(JSON.stringify(WEDDING_DATA_ROYAL_GRACE));
