@@ -258,42 +258,42 @@ export default {
       if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/royal-grace.html" || lower === "/nikkah-royal-grace") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/royal-grace.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/burgundy-romance.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/burgundy-romance.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory" || lower === "/noor-e-nikkah.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/noor-e-nikkah.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/shahi-farman" || lower === "/farman" || lower === "/shahi-farman.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/shahi-farman.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/demos" || lower === "/samples" || lower === "/templates" || lower === "/demos.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/demos.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/about" || lower === "/about.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/about.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/order" || lower === "/form" || lower === "/order.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/order.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
       if (lower === "/admin" || lower === "/admin.html") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/admin.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        return env.ASSETS.fetch(assetUrl);
       }
 
       // 2. Fetch base response from ASSETS
