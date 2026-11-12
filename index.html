@@ -2841,16 +2841,16 @@
       var p = (window.location.pathname || "").toLowerCase();
       var s = (window.location.search || "").toLowerCase();
       if (p.includes("royal-grace") || s.includes("royal-grace") || s.includes("template=royal-grace") || s.includes("theme=royal-grace")) {
-        if (!p.includes("royal-grace.html")) {
-          window.location.replace("/royal-grace.html" + window.location.search);
+        if (!p.includes("royal-grace")) {
+          window.location.replace("/royal-grace" + window.location.search);
         }
       } else if (p.includes("burgundy-romance") || s.includes("theme=burgundy") || s.includes("template=burgundy")) {
-        if (!p.includes("burgundy-romance.html")) {
-          window.location.replace("/burgundy-romance.html" + window.location.search);
+        if (!p.includes("burgundy-romance")) {
+          window.location.replace("/burgundy-romance" + window.location.search);
         }
       } else if (p.includes("noor-e-nikkah") || s.includes("theme=ivory") || s.includes("template=noor")) {
-        if (!p.includes("noor-e-nikkah.html")) {
-          window.location.replace("/noor-e-nikkah.html" + window.location.search);
+        if (!p.includes("noor-e-nikkah")) {
+          window.location.replace("/noor-e-nikkah" + window.location.search);
         }
       }
     })();
@@ -2912,6 +2912,50 @@
           addressUrdu: "سوک سینٹر، علی روڈ، ٹاؤن شپ، لاہور",
           mapUrl: "https://maps.app.goo.gl/wEFtpzJmmjQiCPPc6?g_st=ac",
           rsvpPhone: "+923238146200"
+        }
+      }
+    };
+
+        const WEDDING_DATA_ROYAL_GRACE = {
+      slug: "zayan-and-rania-nikkah",
+      cardSide: "groom",
+      groom: "Zayan Ahmed",
+      groomUrdu: "زایان احمد",
+      bride: "Rania Malik",
+      brideUrdu: "رانیہ ملک",
+      host: "Mr. & Mrs. Tariq Ahmed",
+      hostUrdu: "جناب و محترمہ طارق احمد",
+      welcomeHosts: [
+        { name: "Tariq Ahmed", nameUrdu: "طارق احمد", phone: "+92 301 2345678" },
+        { name: "Salman Malik", nameUrdu: "سلمان ملک", phone: "+92 302 3456789" },
+        { name: "Hamza Tariq", nameUrdu: "حمزہ طارق", phone: "+92 303 4567890" }
+      ],
+      events: {
+        nikkah: {
+          dateTime: "2026-10-16T17:00:00+05:00",
+          displayDate: "Friday, 16th October 2026",
+          displayDateUrdu: "جمعۃ المبارک، 16 اکتوبر 2026",
+          displayTime: "5:00 PM",
+          displayTimeUrdu: "شام 5:00 بجے",
+          venue: "The Serena Crystal Marquee, Islamabad",
+          venueUrdu: "دی سرینا کرسٹل مارکی، اسلام آباد",
+          address: "Serena Hotel Complex, Khayaban-e-Suhrawardy, Islamabad",
+          addressUrdu: "سرینا ہوٹل کمپلیکس، خیابانِ سہروردی، اسلام آباد",
+          mapUrl: "https://maps.google.com/?q=Serena+Hotel+Islamabad",
+          rsvpPhone: "+923012345678"
+        },
+        walima: {
+          dateTime: "2026-10-18T20:00:00+05:00",
+          displayDate: "Sunday, 18th October 2026",
+          displayDateUrdu: "اتوار، 18 اکتوبر 2026",
+          displayTime: "8:00 PM",
+          displayTimeUrdu: "رات 8:00 بجے",
+          venue: "The Serena Crystal Marquee, Islamabad",
+          venueUrdu: "دی سرینا کرسٹل مارکی، اسلام آباد",
+          address: "Serena Hotel Complex, Khayaban-e-Suhrawardy, Islamabad",
+          addressUrdu: "سرینا ہوٹل کمپلیکس، خیابانِ سہروردی، اسلام آباد",
+          mapUrl: "https://maps.google.com/?q=Serena+Hotel+Islamabad",
+          rsvpPhone: "+923012345678"
         }
       }
     };
@@ -3047,12 +3091,13 @@
         return "wedding";
       }
 
-            // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
+      // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
       if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
-        if (!isFileProto) {
-          window.location.replace("/royal-grace.html" + window.location.search);
+        if (!isFileProto && !window.location.pathname.includes("royal-grace")) {
+          window.location.replace("/royal-grace" + window.location.search);
           return "redirecting";
         }
+        return "royal-grace";
       }
 // 0. Explicit /burgundy-romance route, or ?theme=burgundy
       if (routeSlug.includes("burgundy") || themeParam === "burgundy") {
@@ -3381,7 +3426,16 @@
                                 routeSlug === "mehndi-walima" ||
                                 routeSlug === "walima";
 
-        if (isFarmanTheme || isDemoSlug || (!isExplicitUsama && params.get("theme"))) {
+        const isRoyalGrace = routeSlug.includes("royal-grace") ||
+                             routeSlug.includes("grace") ||
+                             params.get("theme") === "royal-grace" ||
+                             params.get("theme") === "grace" ||
+                             params.get("template") === "royal-grace";
+
+        if (isRoyalGrace) {
+          cfg = JSON.parse(JSON.stringify(WEDDING_DATA_ROYAL_GRACE));
+          cfg.theme = "royal-grace";
+        } else if (isFarmanTheme || isDemoSlug || (!isExplicitUsama && params.get("theme"))) {
           cfg = JSON.parse(JSON.stringify(WEDDING_DATA_DEMO));
           if (isFarmanTheme) {
             cfg.theme = "farman";

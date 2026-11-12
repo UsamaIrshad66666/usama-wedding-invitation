@@ -3008,7 +3008,7 @@
             // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
       if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
         if (!isFileProto) {
-          window.location.replace("/royal-grace.html" + window.location.search);
+          window.location.replace("/royal-grace" + window.location.search);
           return "redirecting";
         }
       }
@@ -5193,7 +5193,7 @@
               <h3 class="about-demo-names">${initNikkahCouple}</h3>
               <p class="about-demo-desc">${t.aboutDemoRoyalGraceDesc}</p>
             </div>
-            <a class="gold-btn" href="/royal-grace.html?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
+            <a class="gold-btn" href="/royal-grace?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
               ${t.aboutOpenThemeBtn}
             </a>
           </div>
@@ -5313,7 +5313,7 @@
               <h3 class="about-demo-names">${initNikkahCouple}</h3>
               <p class="about-demo-desc">${t.aboutDemoRoyalGraceDesc}</p>
             </div>
-            <a class="gold-btn" href="/royal-grace.html?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
+            <a class="gold-btn" href="/royal-grace?side=${initSideParam}" target="_self" style="margin-top:auto; background:linear-gradient(135deg, #4a5540 0%, #3b4432 100%); color:#faf7f0; font-weight:700; border:1px solid rgba(232, 208, 160, 0.5);">
               ${t.aboutOpenThemeBtn}
             </a>
           </div>
@@ -5428,7 +5428,7 @@
             }
             if (btnEl) {
               if (theme === "royal-grace") {
-                btnEl.href = '/royal-grace.html?side=' + (isBride ? 'bride' : 'groom');
+                btnEl.href = '/royal-grace?side=' + (isBride ? 'bride' : 'groom');
               } else {
                 btnEl.href = '/noor-e-nikkah?side=' + (isBride ? 'bride' : 'groom');
               }
