@@ -1,0 +1,24 @@
+# Cloudflare Pages Headers Configuration
+# Ensures HTML and dynamic route fallbacks are always fresh and never locked in edge cache
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/royal-grace
+  Cache-Control: public, max-age=0, must-revalidate
+
+/royal-grace.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/burgundy-romance
+  Cache-Control: public, max-age=0, must-revalidate
+
+/burgundy-romance.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/demos
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
