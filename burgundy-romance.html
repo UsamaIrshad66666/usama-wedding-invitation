@@ -1715,14 +1715,73 @@
       box-sizing: border-box;
     }
 
-    #weiPic, #weiImg {
-      width: 100%;
-      max-width: 440px;
-      height: 100%;
-      max-height: calc(100vh - 54px);
-      max-height: calc(100dvh - 54px);
-      display: block;
-      object-fit: contain;
+    .wei-envelope-stage {
+      position: relative;
+      width: min(440px, 100vw, calc((100vh - 54px) * 941 / 1672));
+      width: min(440px, 100vw, calc((100dvh - 54px) * 941 / 1672));
+      aspect-ratio: 941 / 1672;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .wei-envelope-stage #weiPic,
+    .wei-envelope-stage #weiImg {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      display: block !important;
+      object-fit: fill !important;
+    }
+
+    /* Dynamic Golden Wax Seal Monogram Overlay */
+    #weiSealOverlay {
+      position: absolute;
+      left: 49.2%;
+      top: 50.7%;
+      transform: translate(-50%, -50%);
+      width: 25.5%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #560c18 0%, #420711 55%, #2a0309 100%);
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.75), inset 0 -2px 4px rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    #weiSealLetters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      line-height: 1;
+      user-select: none;
+      font-family: 'Imperial Script', 'Alex Brush', cursive;
+    }
+
+    .wei-seal-letter {
+      font-size: clamp(28px, 9vw, 42px);
+      color: #e5c382;
+      background: linear-gradient(145deg, #fff4db 0%, #e5c382 45%, #b5893e 85%, #845e22 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1.5px 1.5px rgba(0, 0, 0, 0.9)) drop-shadow(0 -0.5px 0.5px rgba(255, 255, 255, 0.35));
+    }
+
+    .wei-seal-amp {
+      font-size: clamp(14px, 4.5vw, 20px);
+      font-family: 'Cinzel', 'Playfair Display', serif;
+      color: #dfba73;
+      background: linear-gradient(145deg, #fff4db 0%, #dfba73 50%, #9e742e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.85));
+      opacity: 0.95;
+      margin: 0 1px;
     }
 
     #weiTapWrap {
@@ -1828,13 +1887,15 @@
     }
 
     #weiVideo {
-      width: 100%;
-      max-width: 440px;
-      height: 100%;
+      width: min(440px, 100vw, calc((100vh - 54px) * 941 / 1672));
+      width: min(440px, 100vw, calc((100dvh - 54px) * 941 / 1672));
+      height: auto;
+      aspect-ratio: 941 / 1672;
+      max-width: 100%;
       max-height: calc(100vh - 54px);
       max-height: calc(100dvh - 54px);
       display: block;
-      object-fit: contain;
+      object-fit: fill;
     }
 
     /* Floating audio button */
@@ -2601,10 +2662,20 @@
 <body>
   <!-- AUTHENTIC SACRED GARDEN COVER & VIDEO SEQUENCE (1:1 Match) -->
   <div id="weiOverlay">
-    <picture id="weiPic">
-      <source srcset="assets/burgundy-cover-envelope.webp" type="image/webp">
-      <img id="weiImg" src="assets/burgundy-cover-envelope.jpg" alt="Royal Velvet Invitation Envelope">
-    </picture>
+    <div class="wei-envelope-stage" id="weiEnvelopeStage">
+      <picture id="weiPic">
+        <source srcset="assets/burgundy-cover-envelope.webp" type="image/webp">
+        <img id="weiImg" src="assets/burgundy-cover-envelope.jpg" alt="Royal Velvet Invitation Envelope">
+      </picture>
+      <!-- Central Dynamic Golden Wax Monogram -->
+      <div id="weiSealOverlay" aria-hidden="true">
+        <div id="weiSealLetters">
+          <span class="wei-seal-letter" style="transform: translateY(-2px);">R</span>
+          <span class="wei-seal-amp">&amp;</span>
+          <span class="wei-seal-letter" style="transform: translateY(2px);">Z</span>
+        </div>
+      </div>
+    </div>
     <div id="weiTapWrap">
       <div class="wei-chevron"></div>
       <div id="weiTapLabel">Tap to open</div>
@@ -3561,6 +3632,25 @@
         const sealEl = document.getElementById("sealInitials");
         if (sealEl && gEn && bEn) {
           sealEl.textContent = `${gEn.charAt(0).toUpperCase()}&${bEn.charAt(0).toUpperCase()}`;
+        }
+
+        const weiSealLetters = document.getElementById("weiSealLetters");
+        if (weiSealLetters) {
+          const gInit = (gEn && gEn.trim()) ? gEn.trim().charAt(0).toUpperCase() : "";
+          const bInit = (bEn && bEn.trim()) ? bEn.trim().charAt(0).toUpperCase() : "";
+          if (gInit && bInit) {
+            const first = isBride ? bInit : gInit;
+            const second = isBride ? gInit : bInit;
+            weiSealLetters.innerHTML = `
+              <span class="wei-seal-letter" style="transform: translateY(-2px);">${first}</span>
+              <span class="wei-seal-amp">&amp;</span>
+              <span class="wei-seal-letter" style="transform: translateY(2px);">${second}</span>
+            `;
+          } else if (gInit || bInit) {
+            weiSealLetters.innerHTML = `
+              <span class="wei-seal-letter">${gInit || bInit}</span>
+            `;
+          }
         }
 
         const evM = dynData.events && dynData.events.mehndi && (dynData.events.mehndi.displayDate || dynData.events.mehndi.dateTime) ? dynData.events.mehndi : null;
