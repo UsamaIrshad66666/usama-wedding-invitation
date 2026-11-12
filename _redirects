@@ -13,6 +13,12 @@
 /form-bride                                  /order.html     200
 /form-groom                                  /order.html     200
 
+/demos                                       /demos.html     200
+/demos.html                                  /demos.html     200
+/samples                                     /demos.html     200
+/sample-cards                                /demos.html     200
+/templates                                   /demos.html     200
+
 /about                                       /about.html     200
 /about.html                                  /about.html     200
 
@@ -78,6 +84,10 @@
 /mehndi                                      /usama-and-bissal 200
 /baraat                                      /usama-and-bissal 200
 
+/ahmed-and-ayesha                           /ahmed-and-ayesha.html 200
+/ahmed-and-ayesha.html                      /ahmed-and-ayesha.html 200
+/Ahmed-and-Ayesha-wedding-invitation         /ahmed-and-ayesha.html 200
+/ahmed-and-ayesha-wedding-invitation         /ahmed-and-ayesha.html 200
 /Ahmed-&-Ayesha-wedding-invitation           /ahmed-and-ayesha 200
 /Ahmed-%26-Ayesha-wedding-invitation         /ahmed-and-ayesha 200
 /ahmed-&-ayesha-wedding-invitation           /ahmed-and-ayesha 200

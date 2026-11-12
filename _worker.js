@@ -125,6 +125,21 @@ function resolveMetadata(url) {
     };
   }
 
+  // 3a. Royal Grace Theme (Sage Garden Serenity & Pearl Drapes Nikkah)
+  if (
+    pathLower.includes("royal-grace") ||
+    pathLower.includes("grace") ||
+    pathLower.includes("royal-grace.html") ||
+    themeParam === "royal-grace" ||
+    themeParam === "grace"
+  ) {
+    return {
+      title: "Zayan & Rania — Royal Grace Nikkah & Walima Ceremony",
+      desc: "With the grace and blessings of Allah Almighty, you are cordially invited to celebrate the sacred Nikkah and Walima ceremonies of Zayan & Rania.",
+      image: THEME_IMAGES["royal-grace"]
+    };
+  }
+
   // 3b. Noor-e-Nikkah (Pearl Ivory & Champagne Gold)
   if (
     pathLower.includes("noor-e-nikkah") ||
@@ -157,20 +172,7 @@ function resolveMetadata(url) {
     };
   }
 
-  // 3d. Royal Grace Theme (Sage Garden Serenity & Pearl Drapes Nikkah)
-  if (
-    pathLower.includes("royal-grace") ||
-    pathLower.includes("grace") ||
-    pathLower.includes("zayan-and-rania-nikkah") ||
-    themeParam === "royal-grace" ||
-    themeParam === "grace"
-  ) {
-    return {
-      title: "Zayan & Rania — Royal Grace Nikkah & Walima Ceremony",
-      desc: "With the grace and blessings of Allah Almighty, you are cordially invited to celebrate the sacred Nikkah and Walima ceremonies of Zayan & Rania.",
-      image: THEME_IMAGES["royal-grace"]
-    };
-  }
+
 
   // 4. Shahi Farman Scroll Invitation
   if (pathLower.includes("shahi-farman") || pathLower.includes("farman") || themeParam === "farman") {
@@ -251,8 +253,45 @@ export default {
         return env.ASSETS.fetch(request);
       }
 
+      // 1b. Map clean extensionless routes to corresponding HTML assets
+      let assetRequest = request;
+      const lower = path.toLowerCase().replace(/\/$/, "");
+      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace") {
+        const u = new URL(request.url);
+        u.pathname = "/royal-grace.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance") {
+        const u = new URL(request.url);
+        u.pathname = "/burgundy-romance.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory" || lower === "/nikkah") {
+        const u = new URL(request.url);
+        u.pathname = "/noor-e-nikkah.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/shahi-farman" || lower === "/farman") {
+        const u = new URL(request.url);
+        u.pathname = "/shahi-farman.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
+        const u = new URL(request.url);
+        u.pathname = "/demos.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/about") {
+        const u = new URL(request.url);
+        u.pathname = "/about.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/order" || lower === "/form") {
+        const u = new URL(request.url);
+        u.pathname = "/order.html";
+        assetRequest = new Request(u.toString(), request);
+      } else if (lower === "/admin") {
+        const u = new URL(request.url);
+        u.pathname = "/admin.html";
+        assetRequest = new Request(u.toString(), request);
+      }
+
       // 2. Fetch base response from ASSETS
-      const response = await env.ASSETS.fetch(request);
+      const response = await env.ASSETS.fetch(assetRequest);
 
       // If not HTML response, return as-is
       const contentType = response.headers.get("content-type") || "";
