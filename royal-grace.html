@@ -420,9 +420,9 @@
       position: relative;
       background-color: rgb(214, 197, 172);
       background-image: 
-        url('assets/royal-grace-welcome-bg.jpg'),
-        url('assets/royal-grace-end-bg.jpg'),
-        url('assets/royal-grace-general-bg.jpg');
+        url('/assets/royal-grace-welcome-bg.jpg'),
+        url('/assets/royal-grace-end-bg.jpg'),
+        url('/assets/royal-grace-general-bg.jpg');
       background-position: 
         top center,
         bottom center,
@@ -1105,7 +1105,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Audio Element -->
-  <audio id="weddingAudio" src="assets/royal-grace-music.mp3" loop preload="auto"></audio>
+  <audio id="weddingAudio" src="/assets/royal-grace-music.mp3" loop preload="auto"></audio>
 
   <!-- Top-Right Audio Mute/Unmute Control (Exact Match to Video) -->
   <button id="topAudioBtn" class="top-audio-toggle" aria-label="Toggle background music">
@@ -1153,8 +1153,8 @@
           webkit-playsinline
           muted 
           preload="auto"
-          poster="assets/royal-grace-welcome-bg.jpg">
-          <source src="assets/royal-grace.mp4" type="video/mp4">
+          poster="/assets/royal-grace-welcome-bg.jpg">
+          <source src="/assets/royal-grace.mp4" type="video/mp4">
         </video>
 
         <!-- Floating Hero Text (Starts fade-in at 6.0s once gates fully open) -->
