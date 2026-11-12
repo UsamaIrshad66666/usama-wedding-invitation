@@ -1717,9 +1717,9 @@
 
     .wei-envelope-stage {
       position: relative;
-      width: min(440px, 100vw, calc((100vh - 54px) * 941 / 1672));
-      width: min(440px, 100vw, calc((100dvh - 54px) * 941 / 1672));
-      aspect-ratio: 941 / 1672;
+      width: min(440px, 100vw, calc((100vh - 54px) * 9 / 16));
+      width: min(440px, 100vw, calc((100dvh - 54px) * 9 / 16));
+      aspect-ratio: 9 / 16;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -1734,116 +1734,6 @@
       max-height: 100% !important;
       display: block !important;
       object-fit: fill !important;
-    }
-
-    /* Dynamic Golden Wax Seal Monogram Overlay (Static Cover & Opening Video) */
-    #weiSealOverlay,
-    #weiVideoSealOverlay {
-      position: absolute;
-      left: 49.5%;
-      top: 50.65%;
-      transform: translate(-50%, -50%);
-      width: 24.8%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(circle at 44% 38%, #6b151d 0%, #4e0a11 58%, #36050a 100%);
-      box-shadow:
-        inset 0 3px 6px rgba(0, 0, 0, 0.82),
-        inset 0 -2px 4px rgba(255, 210, 180, 0.14),
-        0 1px 3px rgba(0, 0, 0, 0.65);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 10;
-      overflow: hidden;
-      will-change: top, left, width, transform, box-shadow, opacity;
-    }
-
-    #weiSealOverlay::before,
-    #weiVideoSealOverlay::before {
-      content: '';
-      position: absolute;
-      inset: 4%;
-      border-radius: 50%;
-      border: 1.5px solid rgba(210, 150, 105, 0.34);
-      box-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.75), 0 1px 1px rgba(255, 215, 180, 0.2);
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    #weiSealOverlay::after,
-    #weiVideoSealOverlay::after {
-      content: '';
-      position: absolute;
-      inset: 8%;
-      border-radius: 50%;
-      border: 1px solid rgba(190, 130, 85, 0.26);
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.65);
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    #weiSealLetters,
-    #weiVideoSealLetters {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: 100%;
-      height: 100%;
-      line-height: 1;
-      user-select: none;
-      font-family: 'Alex Brush', 'Great Vibes', cursive;
-      z-index: 5;
-    }
-
-    .wei-seal-letter {
-      font-size: clamp(32px, 10.8vw, 46px);
-      color: #e8c392;
-      background: linear-gradient(145deg, #fff7e8 0%, #e8c392 42%, #c28e58 78%, #87582c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 1.8px 1.2px rgba(20, 2, 2, 0.95)) drop-shadow(0 -0.5px 0.5px rgba(255, 240, 215, 0.45));
-      display: inline-block;
-      padding: 0 2px;
-    }
-
-    .wei-seal-first {
-      transform: translate(3px, -6px);
-    }
-
-    .wei-seal-second {
-      transform: translate(-3px, 7px);
-    }
-
-    .wei-seal-amp {
-      font-size: clamp(18px, 5.8vw, 25px);
-      font-family: 'Great Vibes', 'Cormorant Garamond', cursive;
-      color: #e2bd8b;
-      background: linear-gradient(145deg, #fff7e8 0%, #e2bd8b 50%, #9e6d3b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 1.2px 1px rgba(20, 2, 2, 0.9));
-      transform: translate(0px, 2px);
-      margin: 0 -2px;
-      z-index: 2;
-    }
-
-    /* Warm Golden Inner Glow & Shimmer on Video Seal */
-    .wei-seal-glow-core {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 45%,
-          rgba(255, 215, 140, 0.28) 0%,
-          rgba(145, 32, 28, 0.55) 52%,
-          rgba(82, 12, 16, 0.92) 85%,
-          rgba(255, 220, 140, 0.45) 100%);
-      opacity: 0;
-      z-index: 2;
-      pointer-events: none;
     }
 
     #weiTapWrap {
@@ -2729,14 +2619,6 @@
         <source srcset="assets/burgundy-cover-envelope.webp" type="image/webp">
         <img id="weiImg" src="assets/burgundy-cover-envelope.jpg" alt="Royal Velvet Invitation Envelope">
       </picture>
-      <!-- Central Dynamic Golden Wax Monogram -->
-      <div id="weiSealOverlay" aria-hidden="true">
-        <div id="weiSealLetters">
-          <span class="wei-seal-letter wei-seal-first">R</span>
-          <span class="wei-seal-amp">&amp;</span>
-          <span class="wei-seal-letter wei-seal-second">Z</span>
-        </div>
-      </div>
     </div>
     <div id="weiTapWrap">
       <div class="wei-chevron"></div>
@@ -2753,16 +2635,7 @@
 
   <div id="weiVideoWrap">
     <div class="wei-envelope-stage" id="weiVideoStage">
-      <video id="weiVideo" playsinline preload="auto" muted src="assets/burgundy-opening-video.mp4"></video>
-      <!-- Dynamic Golden Wax Monogram & Glow synced to opening video -->
-      <div id="weiVideoSealOverlay" aria-hidden="true">
-        <div class="wei-seal-glow-core" id="weiSealGlowCore"></div>
-        <div id="weiVideoSealLetters">
-          <span class="wei-seal-letter wei-seal-first">R</span>
-          <span class="wei-seal-amp">&amp;</span>
-          <span class="wei-seal-letter wei-seal-second">Z</span>
-        </div>
-      </div>
+      <video id="weiVideo" playsinline preload="auto" muted src="assets/gemini_generated_video_dda72e05.mp4"></video>
     </div>
   </div>
 
@@ -3249,80 +3122,6 @@
         }
       }
 
-      const videoSealOverlay = document.getElementById("weiVideoSealOverlay");
-      const videoSealGlow = document.getElementById("weiSealGlowCore");
-      const videoSealLetters = document.getElementById("weiVideoSealLetters");
-      let sealRafId = null;
-
-      const SEAL_KEYFRAMES = [
-        [0.0, 49.5, 50.65, 24.8, 1.00],
-        [1.2, 49.6, 50.55, 25.0, 1.00],
-        [1.6, 49.7, 50.00, 25.5, 0.99],
-        [2.0, 49.8, 48.95, 26.3, 0.98],
-        [2.4, 49.9, 47.35, 27.2, 0.96],
-        [2.8, 50.0, 44.95, 28.2, 0.94],
-        [3.2, 50.1, 41.90, 29.1, 0.92],
-        [3.6, 50.1, 38.45, 29.8, 0.90],
-        [4.0, 50.1, 34.80, 30.2, 0.88],
-        [4.4, 50.1, 31.00, 30.5, 0.86]
-      ];
-
-      function syncVideoSeal() {
-        if (!video || !videoSealOverlay) return;
-        const t = video.currentTime || 0;
-        let cx = 49.5, cy = 50.65, w = 24.8, sy = 1.0;
-        if (t <= SEAL_KEYFRAMES[0][0]) {
-          [, cx, cy, w, sy] = SEAL_KEYFRAMES[0];
-        } else if (t >= SEAL_KEYFRAMES[SEAL_KEYFRAMES.length - 1][0]) {
-          [, cx, cy, w, sy] = SEAL_KEYFRAMES[SEAL_KEYFRAMES.length - 1];
-        } else {
-          for (let i = 0; i < SEAL_KEYFRAMES.length - 1; i++) {
-            const [t0, cx0, cy0, w0, sy0] = SEAL_KEYFRAMES[i];
-            const [t1, cx1, cy1, w1, sy1] = SEAL_KEYFRAMES[i + 1];
-            if (t >= t0 && t <= t1) {
-              const u = (t - t0) / (t1 - t0);
-              cx = cx0 + u * (cx1 - cx0);
-              cy = cy0 + u * (cy1 - cy0);
-              w = w0 + u * (w1 - w0);
-              sy = sy0 + u * (sy1 - sy0);
-              break;
-            }
-          }
-        }
-
-        videoSealOverlay.style.left = cx + "%";
-        videoSealOverlay.style.top = cy + "%";
-        videoSealOverlay.style.width = w + "%";
-        videoSealOverlay.style.transform = `translate(-50%, -50%) scaleY(${sy})`;
-
-        const glowIn = Math.min(1, Math.max(0, (t - 0.15) / 0.55));
-        const glowOut = t > 2.6 ? Math.max(0.25, 1 - (t - 2.6) / 1.2) : 1;
-        const glow = glowIn * glowOut;
-
-        videoSealOverlay.style.boxShadow = `
-          0 0 ${(10 * glow).toFixed(1)}px ${(2 * glow).toFixed(1)}px rgba(255, 225, 145, ${(0.85 * glow).toFixed(2)}),
-          inset 0 0 ${(12 * glow).toFixed(1)}px rgba(255, 195, 110, ${(0.55 * glow).toFixed(2)}),
-          inset 0 3px 6px rgba(0, 0, 0, 0.78)
-        `;
-        if (videoSealGlow) {
-          videoSealGlow.style.opacity = glow.toFixed(2);
-        }
-        if (videoSealLetters) {
-          videoSealLetters.style.filter = `drop-shadow(0 0 ${(7 * glow).toFixed(1)}px rgba(255, 232, 170, ${(0.65 * glow).toFixed(2)}))`;
-        }
-
-        if (t > 3.85) {
-          const sealFade = Math.max(0, 1 - (t - 3.85) / 0.5);
-          videoSealOverlay.style.opacity = sealFade.toFixed(2);
-        } else {
-          videoSealOverlay.style.opacity = "1";
-        }
-
-        if (!video.paused && !video.ended) {
-          sealRafId = requestAnimationFrame(syncVideoSeal);
-        }
-      }
-
       function startSequence() {
         if (sequenceDone) return;
         sequenceDone = true;
@@ -3330,11 +3129,9 @@
         playAudio();
 
         if (videoWrap && video) {
-          syncVideoSeal();
           videoWrap.classList.add("wei-video-in");
           const vp = video.play();
           if (vp && vp.catch) vp.catch(() => {});
-          sealRafId = requestAnimationFrame(syncVideoSeal);
           if (overlay) {
             overlay.style.opacity = "0";
             overlay.style.pointerEvents = "none";
@@ -3346,10 +3143,6 @@
       }
 
       function endSequence() {
-        if (sealRafId) {
-          cancelAnimationFrame(sealRafId);
-          sealRafId = null;
-        }
         if (videoWrap) {
           videoWrap.classList.remove("wei-video-in");
           videoWrap.classList.add("wei-video-out");
@@ -3380,9 +3173,7 @@
       }
 
       if (video) {
-        video.addEventListener("play", syncVideoSeal);
         video.addEventListener("timeupdate", function () {
-          syncVideoSeal();
           if (video.duration && video.currentTime >= video.duration - 0.95 && !video.dataset.fading) {
             video.dataset.fading = "1";
             endSequence();
@@ -3788,27 +3579,6 @@
         if (sealEl && gEn && bEn) {
           sealEl.textContent = `${gEn.charAt(0).toUpperCase()}&${bEn.charAt(0).toUpperCase()}`;
         }
-
-        const updateSealMonogram = (el, gInit, bInit, isBrideSide) => {
-          if (!el) return;
-          if (gInit && bInit) {
-            const first = isBrideSide ? bInit : gInit;
-            const second = isBrideSide ? gInit : bInit;
-            el.innerHTML = `
-              <span class="wei-seal-letter wei-seal-first">${first}</span>
-              <span class="wei-seal-amp">&amp;</span>
-              <span class="wei-seal-letter wei-seal-second">${second}</span>
-            `;
-          } else if (gInit || bInit) {
-            el.innerHTML = `
-              <span class="wei-seal-letter">${gInit || bInit}</span>
-            `;
-          }
-        };
-        const gInit = (gEn && gEn.trim()) ? gEn.trim().charAt(0).toUpperCase() : "";
-        const bInit = (bEn && bEn.trim()) ? bEn.trim().charAt(0).toUpperCase() : "";
-        updateSealMonogram(document.getElementById("weiSealLetters"), gInit, bInit, isBride);
-        updateSealMonogram(document.getElementById("weiVideoSealLetters"), gInit, bInit, isBride);
 
         const evM = dynData.events && dynData.events.mehndi && (dynData.events.mehndi.displayDate || dynData.events.mehndi.dateTime) ? dynData.events.mehndi : null;
         const evB = dynData.events && dynData.events.baraat && (dynData.events.baraat.displayDate || dynData.events.baraat.dateTime) ? dynData.events.baraat : null;
