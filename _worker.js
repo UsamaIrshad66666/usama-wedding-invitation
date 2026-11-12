@@ -260,7 +260,7 @@ export default {
         assetUrl.pathname = "/royal-grace.html";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/burgundy-romance.html") {
+      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/burgundy-romance.html" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
         const assetUrl = new URL(request.url);
         assetUrl.pathname = "/burgundy-romance.html";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
