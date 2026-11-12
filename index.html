@@ -2836,6 +2836,25 @@
   <div class="toast-msg" id="toastMsg" role="alert">Link copied to clipboard!</div>
 
   <script>
+    // Immediate early redirect for standalone themes
+    (function() {
+      var p = (window.location.pathname || "").toLowerCase();
+      var s = (window.location.search || "").toLowerCase();
+      if (p.includes("royal-grace") || s.includes("royal-grace") || s.includes("template=royal-grace") || s.includes("theme=royal-grace")) {
+        if (!p.includes("royal-grace.html")) {
+          window.location.replace("/royal-grace.html" + window.location.search);
+        }
+      } else if (p.includes("burgundy-romance") || s.includes("theme=burgundy") || s.includes("template=burgundy")) {
+        if (!p.includes("burgundy-romance.html")) {
+          window.location.replace("/burgundy-romance.html" + window.location.search);
+        }
+      } else if (p.includes("noor-e-nikkah") || s.includes("theme=ivory") || s.includes("template=noor")) {
+        if (!p.includes("noor-e-nikkah.html")) {
+          window.location.replace("/noor-e-nikkah.html" + window.location.search);
+        }
+      }
+    })();
+
     /* ==============================================================
        WEDDING CONFIGURATIONS (ACTIVE + DEMO TEMPLATE)
        ============================================================== */

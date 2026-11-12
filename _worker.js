@@ -246,6 +246,7 @@ export default {
     try {
       const url = new URL(request.url);
       const path = url.pathname;
+      const lower = path.toLowerCase().replace(/\/$/, "");
 
       // 1. Bypass static media and code assets directly to edge storage
       const isStaticAsset = /\.(jpg|jpeg|png|gif|svg|ico|webp|css|js|woff2?|ttf|eot|json|map|txt|xml|mp4|mp3)$/i.test(path);
@@ -253,45 +254,50 @@ export default {
         return env.ASSETS.fetch(request);
       }
 
-      // 1b. Map clean extensionless routes to corresponding HTML assets
-      let assetRequest = request;
-      const lower = path.toLowerCase().replace(/\/$/, "");
-      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace") {
-        const u = new URL(request.url);
-        u.pathname = "/royal-grace.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance") {
-        const u = new URL(request.url);
-        u.pathname = "/burgundy-romance.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory" || lower === "/nikkah") {
-        const u = new URL(request.url);
-        u.pathname = "/noor-e-nikkah.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/shahi-farman" || lower === "/farman") {
-        const u = new URL(request.url);
-        u.pathname = "/shahi-farman.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
-        const u = new URL(request.url);
-        u.pathname = "/demos.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/about") {
-        const u = new URL(request.url);
-        u.pathname = "/about.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/order" || lower === "/form") {
-        const u = new URL(request.url);
-        u.pathname = "/order.html";
-        assetRequest = new Request(u.toString(), request);
-      } else if (lower === "/admin") {
-        const u = new URL(request.url);
-        u.pathname = "/admin.html";
-        assetRequest = new Request(u.toString(), request);
+      // 1b. Direct asset fetch for standalone themes
+      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/royal-grace.html" || lower === "/nikkah-royal-grace") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/royal-grace.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/burgundy-romance.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/burgundy-romance.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory" || lower === "/noor-e-nikkah.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/noor-e-nikkah.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/shahi-farman" || lower === "/farman" || lower === "/shahi-farman.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/shahi-farman.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/demos" || lower === "/samples" || lower === "/templates" || lower === "/demos.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/demos.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/about" || lower === "/about.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/about.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/order" || lower === "/form" || lower === "/order.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/order.html";
+        return env.ASSETS.fetch(assetUrl);
+      }
+      if (lower === "/admin" || lower === "/admin.html") {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = "/admin.html";
+        return env.ASSETS.fetch(assetUrl);
       }
 
       // 2. Fetch base response from ASSETS
-      const response = await env.ASSETS.fetch(assetRequest);
+      const response = await env.ASSETS.fetch(request);
 
       // If not HTML response, return as-is
       const contentType = response.headers.get("content-type") || "";
@@ -299,7 +305,7 @@ export default {
         return response;
       }
 
-      // 3. Resolve dynamic metadata for this specific request
+      // 3. Resolve dynamic metadata for social crawlers
       const meta = resolveMetadata(url) || DEFAULT_BRAND;
       const title = meta.title || DEFAULT_BRAND.title;
       const desc = meta.desc || DEFAULT_BRAND.desc;
