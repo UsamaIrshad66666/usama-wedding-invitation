@@ -3007,10 +3007,10 @@
 
       // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
       if (routeSlug.includes("royal-grace") || routeSlug.includes("grace") || themeParam === "royal-grace" || themeParam === "grace" || templateParam === "royal-grace") {
-        if (!isFileProto) {
+        if (!isFileProto && !window.location.pathname.includes("royal-grace")) {
           window.location.replace("/royal-grace" + window.location.search);
-          return "redirecting";
         }
+        return "wedding";
       }
 // 0. Explicit /burgundy-romance route, or ?theme=burgundy
       if (routeSlug.includes("burgundy") || themeParam === "burgundy") {
