@@ -2988,9 +2988,12 @@
 
       const hasInviteParam = !!(params.get("invite") || params.get("d"));
       const hasWeddingParam = !!(params.get("card") || params.get("event") || params.get("view") || params.get("side"));
-      const themeParam = (params.get("theme") || "").toLowerCase().trim();
-      const templateParam = (params.get("template") || "").toLowerCase().trim();
+      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
+      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
+      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
+      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
       const hasWeddingTheme = themeParam && themeParam !== "about";
+      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
 
       // Immediate check for demos route or demos file
       if (rawPath.includes("demos") || routeSlug === "demos" || routeSlug === "samples" || routeSlug === "templates") {
@@ -3004,12 +3007,6 @@
         }
         return "wedding";
       }
-
-      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
-      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
-      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
-      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
-      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
 
       // Explicit /royal-grace route, or ?theme=royal-grace or ?template=royal-grace
       if (

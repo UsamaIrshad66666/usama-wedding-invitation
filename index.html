@@ -3072,9 +3072,12 @@
 
       const hasInviteParam = !!(params.get("invite") || params.get("d"));
       const hasWeddingParam = !!(params.get("card") || params.get("event") || params.get("view") || params.get("side"));
-      const themeParam = (params.get("theme") || "").toLowerCase().trim();
-      const templateParam = (params.get("template") || "").toLowerCase().trim();
+      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
+      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
+      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
+      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
       const hasWeddingTheme = themeParam && themeParam !== "about";
+      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
 
       // Immediate check for demos route or demos file
       if (rawPath.includes("demos") || routeSlug === "demos" || routeSlug === "samples" || routeSlug === "templates") {
@@ -3088,12 +3091,6 @@
         }
         return "wedding";
       }
-
-      const rawThemeParam = (params.get("theme") || "").toLowerCase().trim();
-      const themeParam = rawThemeParam.replace(/[_\s]+/g, "-");
-      const rawTemplateParam = (params.get("template") || "").toLowerCase().trim();
-      const templateParam = rawTemplateParam.replace(/[_\s]+/g, "-");
-      const rSlug = routeSlug.replace(/[_\s]+/g, "-");
 
       // Explicit /royal-grace route, /zayan-and-rania-nikkah, or ?theme=royal-grace / ?theme=royal_grace, or ?template=royal-grace / ?template=royal_grace
       if (
@@ -4732,6 +4729,7 @@ function renderRoyalGraceScreen(isPopState) {
       if (scrollTutorialPill) scrollTutorialPill.classList.remove("visible");
       if (homeNavBtn) homeNavBtn.style.display = "none";
       if (langToggleBtn) langToggleBtn.style.display = "none";
+      document.body.classList.add("royal-grace-screen-active");
 
       document.title = "Zayan & Rania | Royal Grace — Sacred Nikkah & Walima Ceremony";
 
@@ -4740,6 +4738,22 @@ function renderRoyalGraceScreen(isPopState) {
         const st = document.createElement("style");
         st.id = "royalGraceStyles";
         st.textContent = `
+    body.royal-grace-screen-active .outer-border,
+    body.royal-grace-screen-active .corner-ornament,
+    body.royal-grace-screen-active .top-controls,
+    body.royal-grace-screen-active .scroll-tutorial-pill {
+      display: none !important;
+    }
+    body.royal-grace-screen-active .page-frame {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    body.royal-grace-screen-active {
+      background: #0f0f0f !important;
+    }
+
     /* ==========================================================================
        RESET & ROOT VARIABLES — ROYAL GRACE (SAGE GARDEN & PEARL DRAPES NIKKAH)
        ========================================================================== */
@@ -6825,6 +6839,7 @@ function renderRoyalGraceScreen(isPopState) {
     let farmanCountdownInterval = null;
 
     function renderShahiFarmanScreen(animateGlide = false) {
+      document.body.classList.remove('royal-grace-screen-active');
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       if (farmanCountdownInterval) clearInterval(farmanCountdownInterval);
       updateNavigationControls("farman");
@@ -7135,7 +7150,8 @@ function renderRoyalGraceScreen(isPopState) {
         /* ==============================================================
        DEMOS SHOWCASE PAGE (/demos)
        ============================================================== */
-    function renderDemosPage(animateGlide = false) {
+    function renderDemosPage(isPopState = false) {
+      document.body.classList.remove('royal-grace-screen-active');
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       applyCurrentTheme("emerald");
       updateNavigationControls("demos");
@@ -7720,6 +7736,7 @@ function renderRoyalGraceScreen(isPopState) {
     }
 
 function renderAboutPage(animateGlide = false) {
+      document.body.classList.remove('royal-grace-screen-active');
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       applyCurrentTheme("emerald");
       updateNavigationControls("about");
@@ -7860,6 +7877,7 @@ function renderAboutPage(animateGlide = false) {
     }
 
     function renderEnvelopeScreen(animateGlide = false) {
+      document.body.classList.remove('royal-grace-screen-active');
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("cover");
       const isBrideCard = (WEDDING && WEDDING.cardSide === "bride");
@@ -8512,6 +8530,10 @@ function renderAboutPage(animateGlide = false) {
       if (langLabel) langLabel.textContent = I18N[currentLang].langBtn;
 
       const pageMode = resolveCurrentPageMode();
+      if (pageMode === "royal-grace" || (WEDDING && normalizeThemeKey(WEDDING.theme) === "royal-grace")) {
+        renderRoyalGraceScreen(false);
+        return;
+      }
       if (pageMode === "demos") {
         renderDemosPage(false);
         return;
@@ -8585,6 +8607,11 @@ function renderAboutPage(animateGlide = false) {
     function initAppHistoryAndRoute() {
       WEDDING = resolveCurrentWeddingConfig();
       const pageMode = resolveCurrentPageMode();
+
+      if (pageMode === "royal-grace" || (WEDDING && normalizeThemeKey(WEDDING.theme) === "royal-grace")) {
+        renderRoyalGraceScreen(false);
+        return;
+      }
 
       if (pageMode === "demos") {
         applyCurrentTheme("emerald");
