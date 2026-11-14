@@ -267,45 +267,45 @@ export default {
         return env.ASSETS.fetch(request);
       }
 
-      // 1b. Direct asset fetch for standalone themes
-      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/royal-grace.html" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
+      // 1b. Direct asset fetch for standalone themes (clean URLs without .html to prevent 308 canonical loops)
+      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/royal-grace.html";
+        assetUrl.pathname = "/royal-grace";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/burgundy-romance.html" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
+      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/burgundy-romance.html";
+        assetUrl.pathname = "/burgundy-romance";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory" || lower === "/noor-e-nikkah.html") {
+      if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/noor-e-nikkah.html";
+        assetUrl.pathname = "/noor-e-nikkah";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/shahi-farman" || lower === "/farman" || lower === "/shahi-farman.html") {
+      if (lower === "/shahi-farman" || lower === "/farman") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/shahi-farman.html";
+        assetUrl.pathname = "/shahi-farman";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/demos" || lower === "/samples" || lower === "/templates" || lower === "/demos.html") {
+      if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/demos.html";
+        assetUrl.pathname = "/demos";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/about" || lower === "/about.html") {
+      if (lower === "/about") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/about.html";
+        assetUrl.pathname = "/about";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/order" || lower === "/form" || lower === "/order.html") {
+      if (lower === "/order" || lower === "/form") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/order.html";
+        assetUrl.pathname = "/order";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
-      if (lower === "/admin" || lower === "/admin.html") {
+      if (lower === "/admin") {
         const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/admin.html";
+        assetUrl.pathname = "/admin";
         return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
       }
 
