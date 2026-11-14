@@ -1018,6 +1018,36 @@
 
     }
 
+    #toast.error {
+      background: linear-gradient(135deg, #681220, #3d0811);
+      border: 1.5px solid #ff6b7a;
+      color: #ffe8eb;
+      box-shadow: 0 6px 24px rgba(220, 53, 69, 0.5);
+    }
+    .duplicate-event-error {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(180, 28, 45, 0.28);
+      border: 1px solid #ff6b7a;
+      border-radius: 8px;
+      color: #ffd6db;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      animation: shakeError 0.35s ease;
+    }
+    .duplicate-event-error.show {
+      display: flex;
+    }
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
     #toast.show {
 
       transform: translateX(-50%) translateY(0);
@@ -1258,6 +1288,10 @@
               <span style="font-family:var(--urdu); font-size:0.95rem;">(+ نیا ایونٹ شامل کریں)</span>
             </button>
           </div>
+          <div id="duplicateEventError" class="duplicate-event-error" role="alert">
+            <span id="duplicateEventErrorEn">⚠️ This event is already added to your invitation!</span>
+            <span id="duplicateEventErrorUr" style="font-family:var(--urdu); font-size:0.95rem; direction:rtl;">یہ تقریب پہلے سے آپ کے کارڈ میں شامل ہے!</span>
+          </div>
         </div>
       </div>
 
@@ -1495,11 +1529,19 @@
 
 
   <script>
-    function showToast(msg) {
+    let toastTimer = null;
+    function showToast(msg, isError = false) {
       const t = document.getElementById("toast");
+      if (!t) return;
       t.textContent = msg;
+      if (isError) t.classList.add("error");
+      else t.classList.remove("error");
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 3200);
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove("show");
+        t.classList.remove("error");
+      }, 3600);
     }
 
     // =========================================================================
@@ -1993,11 +2035,63 @@
       });
     });
 
+    const dupErrorBox = document.getElementById("duplicateEventError");
+    const dupErrorEn = document.getElementById("duplicateEventErrorEn");
+    const dupErrorUr = document.getElementById("duplicateEventErrorUr");
+    let dupErrorTimer = null;
+
+    function showDuplicateEventError(titleEn, titleUr, existingCard) {
+      showToast(`⚠️ ${titleEn} is already added! (یہ تقریب پہلے سے شامل ہے)`, true);
+      if (dupErrorBox && dupErrorEn && dupErrorUr) {
+        dupErrorEn.textContent = `⚠️ "${titleEn}" is already added! Please edit it above or remove it first.`;
+        dupErrorUr.textContent = `"${titleUr}" پہلے سے شامل ہے!`;
+        dupErrorBox.classList.remove("show");
+        void dupErrorBox.offsetWidth; // trigger reflow for shake animation
+        dupErrorBox.classList.add("show");
+        if (dupErrorTimer) clearTimeout(dupErrorTimer);
+        dupErrorTimer = setTimeout(() => dupErrorBox.classList.remove("show"), 5000);
+      }
+      if (existingCard) {
+        const prevBorder = existingCard.style.border;
+        const prevShadow = existingCard.style.boxShadow;
+        existingCard.style.border = "1.5px solid #ff6b7a";
+        existingCard.style.boxShadow = "0 0 18px rgba(255, 107, 122, 0.45)";
+        setTimeout(() => {
+          existingCard.style.border = prevBorder;
+          existingCard.style.boxShadow = prevShadow;
+        }, 2200);
+      }
+    }
+
+    eventSelectorDropdown.addEventListener("change", () => {
+      if (dupErrorBox) dupErrorBox.classList.remove("show");
+    });
+
     addEventBtn.addEventListener("click", () => {
       const selectedType = eventSelectorDropdown.value || "mehndi";
+      const meta = EVENT_META[selectedType] || EVENT_META.custom;
+
+      // Check if this event type is already added
+      const existingCard = eventsContainer.querySelector(`.event-section[data-event-type="${selectedType}"]`);
+      if (existingCard) {
+        if (selectedType !== "custom") {
+          showDuplicateEventError(meta.titleEn, meta.titleUr, existingCard);
+          return;
+        } else {
+          // For custom events, block if there is already an unnamed custom event card
+          const unnamedCustom = Array.from(eventsContainer.querySelectorAll('.event-section[data-event-type="custom"]'))
+            .find(c => !c.querySelector(".evt-custom-name")?.value.trim());
+          if (unnamedCustom) {
+            showDuplicateEventError(meta.titleEn, meta.titleUr, unnamedCustom);
+            return;
+          }
+        }
+      }
+
+      if (dupErrorBox) dupErrorBox.classList.remove("show");
       const newCard = createEventCard(selectedType);
       syncPresetHighlight();
-      showToast(`+ Added ${EVENT_META[selectedType].titleEn}!`);
+      showToast(`+ Added ${meta.titleEn}!`);
       newCard.scrollIntoView({ behavior: "smooth", block: "center" });
 
       if (selectedType === "custom") {
