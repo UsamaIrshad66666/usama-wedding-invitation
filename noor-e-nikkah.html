@@ -1810,7 +1810,7 @@
       const rsvpForm = document.getElementById("rsvpForm");
       const btnAddToCalendar = document.getElementById("btnAddToCalendar");
 
-      // 1. Initial State from URL Parameters
+      // 1. Initial State & Universal ?invite= / ?d= Payload from URL Parameters
       const urlParams = new URLSearchParams(window.location.search);
       const sideParam = (urlParams.get("side") || "").toLowerCase();
       if (sideParam === "bride" || sideParam === "baraat") {
@@ -1819,6 +1819,125 @@
       const langParam = (urlParams.get("lang") || "").toLowerCase();
       if (langParam === "ur" || langParam === "urdu") {
         currentLang = "ur";
+      }
+
+      function decodeInvitePayload(encoded) {
+        if (!encoded) return null;
+        try {
+          let b64 = encoded.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+          while (b64.length % 4) b64 += "=";
+          const binary = atob(b64);
+          try {
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            const text = new TextDecoder().decode(bytes);
+            if (text.trim().startsWith("{")) return JSON.parse(text);
+          } catch (e1) {}
+          const uriDecoded = decodeURIComponent(binary);
+          if (uriDecoded.trim().startsWith("{")) return JSON.parse(uriDecoded);
+          return null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const rawInvite = urlParams.get("invite") || urlParams.get("d");
+      const customInvite = decodeInvitePayload(rawInvite);
+      if (customInvite) {
+        if (customInvite.groom) WEDDING_DATA.groom = customInvite.groom;
+        if (customInvite.groomUrdu) WEDDING_DATA.groomUrdu = customInvite.groomUrdu;
+        else if (customInvite.groom) WEDDING_DATA.groomUrdu = customInvite.groom;
+        if (customInvite.bride) WEDDING_DATA.bride = customInvite.bride;
+        if (customInvite.brideUrdu) WEDDING_DATA.brideUrdu = customInvite.brideUrdu;
+        else if (customInvite.bride) WEDDING_DATA.brideUrdu = customInvite.bride;
+        if (customInvite.host) {
+          WEDDING_DATA.groomHost = customInvite.host;
+          WEDDING_DATA.brideHost = customInvite.host;
+        }
+        if (customInvite.hostUrdu) {
+          WEDDING_DATA.groomHostUrdu = customInvite.hostUrdu;
+          WEDDING_DATA.brideHostUrdu = customInvite.hostUrdu;
+        }
+        if (customInvite.cardSide === "bride") currentSide = "bride";
+        if (customInvite.rsvpPhone) WEDDING_DATA.rsvpPhone = customInvite.rsvpPhone;
+
+        const gInit = (WEDDING_DATA.groom || "Z").trim().charAt(0).toUpperCase();
+        const bInit = (WEDDING_DATA.bride || "R").trim().charAt(0).toUpperCase();
+        const monoEl = document.querySelector(".wax-seal-monogram");
+        if (monoEl) monoEl.textContent = currentSide === "bride" ? `${bInit} & ${gInit}` : `${gInit} & ${bInit}`;
+
+        I18N.en.modalSub = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride}'s Celebration`;
+        I18N.ur.modalSub = `${WEDDING_DATA.groomUrdu} اور ${WEDDING_DATA.brideUrdu} کی مبارک شادی`;
+        document.title = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride} — Noor-e-Nikkah Wedding Invitation`;
+
+        const evs = customInvite.events || {};
+        const orderKeys = ["mehndi", "baraat", "walima"];
+        const activeEvents = [];
+        orderKeys.forEach(k => {
+          const ev = evs[k];
+          if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time)) {
+            activeEvents.push({ key: k, ...ev });
+          }
+        });
+
+        if (activeEvents.length > 0) {
+          const primary = activeEvents.find(e => e.key === "baraat") || activeEvents[0];
+          if (primary.dateTime) WEDDING_DATA.eventDateISO = primary.dateTime;
+          const pDateEn = primary.displayDate || primary.date || I18N.en.heroDate;
+          const pDateUr = primary.displayDateUrdu || pDateEn;
+          I18N.en.heroDate = pDateEn;
+          I18N.ur.heroDate = pDateUr;
+          if (primary.venue) {
+            I18N.en.venueName = primary.venue;
+            I18N.ur.venueName = primary.venueUrdu || primary.venue;
+          }
+          if (primary.address) {
+            I18N.en.venueAddress = primary.address;
+            I18N.ur.venueAddress = primary.addressUrdu || primary.address;
+          }
+          const mapBtn = document.getElementById("tBtnMap");
+          if (mapBtn && primary.mapUrl) mapBtn.href = primary.mapUrl;
+
+          // Render custom ceremony cards for all ordered events & sub-schedules
+          const timelineWrap = document.querySelector(".ceremonies-stack");
+          if (timelineWrap) {
+            let itemsHtml = "";
+            activeEvents.forEach(ev => {
+              const evIcon = ev.key === "mehndi" ? "🌸" : (ev.key === "baraat" ? "👑" : "✨");
+              const evTitle = ev.title || (ev.key === "mehndi" ? "Mehndi Ceremony (Rasm-e-Hina)" : (ev.key === "baraat" ? "Baraat & Nikkah Ceremony" : "Dawat-e-Walima Reception"));
+              const evTime = ev.displayTime || ev.time || ev.arrivalTime || ev.arrival || "7:00 PM";
+              const evDate = ev.displayDate || ev.date || "";
+              const mealType = (ev.mealType || "dinner").toLowerCase();
+              const mealTime = ev.mealTime || ev.dinnerTime || "";
+              const mealLbl = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");
+              let subLines = [];
+              if (ev.rasmTime) subLines.push(`Rasm-e-Hina: ${ev.rasmTime}`);
+              if (ev.sehraTime) subLines.push(`Sehra Bandi: ${ev.sehraTime}`);
+              if (ev.departureTime) subLines.push(`Departure: ${ev.departureTime}`);
+              if (ev.arrivalTime || ev.arrival) subLines.push(`Arrival: ${ev.arrivalTime || ev.arrival}`);
+              if (ev.nikkahTime || ev.nikkah) subLines.push(`Nikkah: ${ev.nikkahTime || ev.nikkah}`);
+              if (mealTime && mealType !== "none") subLines.push(`${mealLbl}: ${mealTime}`);
+              if (ev.rukhsatiTime || ev.rukhsati) subLines.push(`Rukhsati: ${ev.rukhsatiTime || ev.rukhsati}`);
+              if (ev.duaTime) subLines.push(`Dua: ${ev.duaTime}`);
+              if (Array.isArray(ev.subSchedule)) {
+                ev.subSchedule.forEach(s => {
+                  if (s && (s.title || s.time)) subLines.push(`${s.title}: ${s.time}`);
+                });
+              }
+              itemsHtml += `
+                <div class="ceremony-card">
+                  <div class="ceremony-icon-badge">${evIcon}</div>
+                  <div class="ceremony-details">
+                    <div class="ceremony-time">${evDate ? evDate + " • " : ""}${evTime}</div>
+                    <h3 class="ceremony-title">${evTitle}</h3>
+                    <p class="ceremony-desc">📍 ${ev.venue || ""}${ev.address ? " — " + ev.address : ""}${subLines.length ? "<br><strong>" + subLines.join(" &nbsp;|&nbsp; ") + "</strong>" : ""}</p>
+                  </div>
+                </div>
+              `;
+            });
+            timelineWrap.innerHTML = itemsHtml;
+          }
+        }
       }
 
       // 2. Envelope Unsealing Sequence
@@ -1939,16 +2058,16 @@
 
         document.getElementById("tTimelineTag").textContent = t.timelineTag;
         document.getElementById("tTimelineTitle").textContent = t.timelineTitle;
-        document.getElementById("tEv1Title").textContent = t.ev1Title;
-        document.getElementById("tEv1Desc").textContent = t.ev1Desc;
-        document.getElementById("tEv2Title").textContent = t.ev2Title;
-        document.getElementById("tEv2Desc").textContent = t.ev2Desc;
-        document.getElementById("tEv3Title").textContent = t.ev3Title;
-        document.getElementById("tEv3Desc").textContent = t.ev3Desc;
-        document.getElementById("tEv4Title").textContent = t.ev4Title;
-        document.getElementById("tEv4Desc").textContent = t.ev4Desc;
-        document.getElementById("tEv5Title").textContent = t.ev5Title;
-        document.getElementById("tEv5Desc").textContent = t.ev5Desc;
+        if (document.getElementById("tEv1Title")) document.getElementById("tEv1Title").textContent = t.ev1Title;
+        if (document.getElementById("tEv1Desc")) document.getElementById("tEv1Desc").textContent = t.ev1Desc;
+        if (document.getElementById("tEv2Title")) document.getElementById("tEv2Title").textContent = t.ev2Title;
+        if (document.getElementById("tEv2Desc")) document.getElementById("tEv2Desc").textContent = t.ev2Desc;
+        if (document.getElementById("tEv3Title")) document.getElementById("tEv3Title").textContent = t.ev3Title;
+        if (document.getElementById("tEv3Desc")) document.getElementById("tEv3Desc").textContent = t.ev3Desc;
+        if (document.getElementById("tEv4Title")) document.getElementById("tEv4Title").textContent = t.ev4Title;
+        if (document.getElementById("tEv4Desc")) document.getElementById("tEv4Desc").textContent = t.ev4Desc;
+        if (document.getElementById("tEv5Title")) document.getElementById("tEv5Title").textContent = t.ev5Title;
+        if (document.getElementById("tEv5Desc")) document.getElementById("tEv5Desc").textContent = t.ev5Desc;
 
         document.getElementById("tVenueTag").textContent = t.venueTag;
         document.getElementById("tVenueTitle").textContent = t.venueTitle;

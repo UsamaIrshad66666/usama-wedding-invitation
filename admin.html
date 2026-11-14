@@ -447,8 +447,9 @@
             <option value="marble">🏛️ Italian Carrara Marble & Botanical Sage Green (Serene & Aristocratic)</option>
             <option value="lilac">🪻 Kashmiri Lilac & Lavender Wisteria (Dreamy & Regal Springtime)</option>
             <option value="burgundy">🌹 Royal Burgundy Romance (Velvet Envelope · Golden Swans & Black-Tie)</option>
-                        <option value="royal-grace">🌿 Royal Grace (Sage Garden Serenity · Pearl Drapes & Nikkah Reveal)</option>
-<option value="farman">📜 Royal Mughal Shahi Farman (Imperial Unrolling Scroll Decree)</option>
+            <option value="royal-grace">🌿 Royal Grace (Sage Garden Serenity · Pearl Drapes & Nikkah Reveal)</option>
+            <option value="ivory">🕊️ Noor-e-Nikkah (Pearl Ivory & 24K Champagne Gold)</option>
+            <option value="farman">📜 Royal Mughal Shahi Farman (Imperial Unrolling Scroll Decree)</option>
           </select>
         </div>
       </div>
@@ -497,7 +498,7 @@
           </div>
           <div>
             <label class="admin-field-label">Main Event / Arrival Time</label>
-            <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM">
+            <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM" value="7:00 PM">
           </div>
         </div>
         <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
@@ -505,7 +506,7 @@
           <div class="admin-grid-2" style="margin-bottom:0;">
             <div>
               <label class="admin-field-label">Rasm-e-Hina Time (رسمِ حنا کا وقت)</label>
-              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 8:30 PM">
+              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 8:30 PM" value="8:30 PM">
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
               <div>
@@ -518,7 +519,7 @@
               </div>
               <div>
                 <label class="admin-field-label">Meal Time</label>
-                <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 9:30 PM">
+                <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 9:30 PM" value="9:30 PM">
               </div>
             </div>
           </div>
@@ -568,7 +569,7 @@
           </div>
           <div>
             <label class="admin-field-label">General Event Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. 7:00 PM or Sehra Bandi: 4:30 PM">
+            <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. 7:00 PM or Sehra Bandi: 4:30 PM" value="Sehra Bandi: 4:30 PM · Departure: 5:30 PM">
           </div>
         </div>
 
@@ -578,11 +579,11 @@
           <div class="admin-grid-2" style="margin-bottom:0;">
             <div>
               <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
-              <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 4:00 PM">
+              <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 4:30 PM" value="4:30 PM">
             </div>
             <div>
               <label class="admin-field-label">Departure of Baraat Time (روانگیِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 5:00 PM">
+              <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 5:30 PM" value="5:30 PM">
             </div>
           </div>
         </div>
@@ -593,11 +594,11 @@
           <div class="admin-grid-2">
             <div>
               <label class="admin-field-label">Arrival of Baraat (آمدِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 8:00 PM">
+              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 7:30 PM" value="7:30 PM">
             </div>
             <div>
               <label class="admin-field-label">Nikkah Ceremony (عقدِ نکاح)</label>
-              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 8:45 PM">
+              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 8:30 PM" value="8:30 PM">
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
@@ -612,12 +613,12 @@
               </div>
               <div>
                 <label class="admin-field-label">Lunch / Dinner Time (طعام)</label>
-                <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM or 2:30 PM">
+                <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM or 2:30 PM" value="9:30 PM">
               </div>
             </div>
             <div>
               <label class="admin-field-label">Rukhsati Time (رخصتی)</label>
-              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 11:00 PM">
+              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 10:30 PM" value="10:30 PM">
             </div>
           </div>
         </div>
@@ -679,7 +680,7 @@
           </div>
           <div>
             <label class="admin-field-label">Main Event Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM or 1:30 PM">
+            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:30 PM or 1:30 PM" value="7:30 PM">
           </div>
         </div>
 
@@ -688,7 +689,7 @@
           <div class="admin-grid-2">
             <div>
               <label class="admin-field-label">Guest Arrival / Reception Time</label>
-              <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM">
+              <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
               <div>
@@ -701,14 +702,14 @@
               </div>
               <div>
                 <label class="admin-field-label">Lunch / Dinner Time</label>
-                <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:45 PM">
+                <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:45 PM" value="8:45 PM">
               </div>
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
             <div>
               <label class="admin-field-label">Dua / Farewell Time (دعائے خیر و الوداع)</label>
-              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:30 PM">
+              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:30 PM" value="10:30 PM">
             </div>
             <div></div>
           </div>
@@ -845,9 +846,9 @@
         theme: "optional",
         welcomeHosts: [],
         events: {
-          mehndi: { date: ", time: ", venue: ", address: ", mapUrl: ", rsvpPhone: " },
-          baraat: { date: ", sehraTime: ", departureTime: ", time: ", arrival: ", nikkah: ", dinner: ", rukhsati: ", venue: ", address: ", mapUrl: ", rsvpPhone: " },
-          walima: { date: ", time: ", venue: ", address: ", mapUrl: ", rsvpPhone: " }
+          mehndi: { date: "", time: "", venue: "", address: "", mapUrl: "", rsvpPhone: "" },
+          baraat: { date: "", sehraTime: "", departureTime: "", time: "", arrival: "", nikkah: "", dinner: "", rukhsati: "", venue: "", address: "", mapUrl: "", rsvpPhone: "" },
+          walima: { date: "", time: "", venue: "", address: "", mapUrl: "", rsvpPhone: "" }
         }
       };
 
@@ -1045,6 +1046,243 @@
       return dateStr;
     }
 
+    /* ==============================================================
+       AUTOMATIC ENGLISH-TO-URDU NAME & HOST TRANSLITERATION ENGINE
+       ============================================================== */
+    const URDU_WORD_DICT = {
+      // Honorifics, Titles & Connecting Words
+      "mr": "جناب", "mr.": "جناب", "mrs": "محترمہ", "mrs.": "محترمہ",
+      "ms": "محترمہ", "ms.": "محترمہ", "miss": "محترمہ",
+      "dr": "ڈاکٹر", "dr.": "ڈاکٹر", "engr": "انجینئر", "engr.": "انجینئر",
+      "alhaj": "الحاج", "al-haj": "الحاج", "haji": "حاجی",
+      "hafiz": "حافظ", "qari": "قاری", "maulana": "مولانا", "allama": "علامہ",
+      "prof": "پروفیسر", "prof.": "پروفیسر", "capt": "کیپٹن", "capt.": "کیپٹن",
+      "maj": "میجر", "maj.": "میجر", "col": "کرنل", "col.": "کرنل",
+      "brig": "بریگیڈیئر", "brig.": "بریگیڈیئر", "gen": "جنرل", "gen.": "جنرل",
+      "ch": "چوہدری", "ch.": "چوہدری", "chaudhry": "چوہدری", "chaudhary": "چوہدری", "chowdhry": "چوہدری",
+      "mian": "میاں", "syed": "سید", "syeda": "سیدہ", "sayed": "سید",
+      "sardar": "سردار", "nawab": "نواب", "mir": "میر", "mirza": "مرزا",
+      "malik": "ملک", "sheikh": "شیخ", "shaikh": "شیخ", "khawaja": "خواجہ", "khwaja": "خواجہ",
+      "raja": "راجہ", "rana": "رانا", "rao": "راؤ", "makhdoom": "مخدوم",
+      "pir": "پیر", "peer": "پیر", "begum": "بیگم", "bano": "بانو", "bibi": "بی بی",
+      "and": "و", "&": "و", "with": "ہمراہ", "weds": "ہمراہ",
+      "family": "فیملی", "parents": "والدین", "groom's": "دولہا کے", "bride's": "دلہن کے",
+      "groom": "دولہا", "bride": "دلہن", "son": "فرزند", "daughter": "دختر", "of": "آف",
+      "late": "مرحوم", "(late)": "(مرحوم)",
+
+      // Common Male & Female Pakistani Names & Surnames
+      "muhammad": "محمد", "mohammad": "محمد", "mohammed": "محمد", "md": "محمد", "m.": "محمد",
+      "ahmed": "احمد", "ahmad": "احمد", "ali": "علی", "hassan": "حسن", "hasan": "حسن",
+      "hussain": "حسین", "husain": "حسین", "usama": "اسامہ", "osama": "اسامہ",
+      "usman": "عثمان", "umer": "عمر", "umar": "عمر", "omer": "عمر", "farooq": "فاروق", "faruk": "فاروق",
+      "abubakar": "ابوبکر", "abu": "ابو", "bakar": "بکر", "bakr": "بکر",
+      "hamza": "حمزہ", "bilal": "بلال", "zain": "زین", "zainab": "زینب", "zaynab": "زینب",
+      "fatima": "فاطمہ", "fatimah": "فاطمہ", "zahra": "زہراء", "zehra": "زہرا", "zohra": "زہرہ",
+      "ayesha": "عائشہ", "aisha": "عائشہ", "ashba": "عشبہ", "khadija": "خدیجہ", "khadijah": "خدیجہ",
+      "maryam": "مریم", "mariam": "مریم", "maria": "ماریہ", "amna": "آمنہ", "amina": "آمنہ",
+      "haleema": "حلیمہ", "halima": "حلیمہ", "sadia": "سعدیہ", "saadia": "سعدیہ",
+      "sana": "ثناء", "sara": "سارہ", "sarah": "سارہ", "zara": "زارا", "zoya": "زویا",
+      "hira": "حرا", "iqra": "اقراء", "noor": "نور", "nur": "نور", "iman": "ایمان", "emaan": "ایمان",
+      "maham": "ماہم", "maheen": "ماہین", "mahreen": "مہرین", "mehreen": "مہرین",
+      "momina": "مومنہ", "muniba": "منیبہ", "madiha": "مدیحہ", "maleeha": "ملیحہ", "maliha": "ملیحہ",
+      "nimra": "نمرہ", "namra": "نمرہ", "kinza": "کنزہ", "kanza": "کنزہ",
+      "areeba": "عریبہ", "ariba": "عریبہ", "aliza": "علیزہ", "alizeh": "علیزے",
+      "anaya": "عنایہ", "inaya": "عنایہ", "inayat": "عنایت", "hania": "ہانیہ", "haniya": "ہانیہ",
+      "dua": "دعا", "duaa": "دعا", "fiza": "فضا", "fizza": "فضہ", "rabia": "رابعہ",
+      "bushra": "بشریٰ", "uzma": "عظمیٰ", "asma": "اسماء", "salma": "سلمیٰ", "lubna": "لبنیٰ",
+      "aqsa": "اقصیٰ", "sidra": "سدرہ", "hajra": "ہاجرہ", "humaira": "حمیرا", "sumaira": "سمیرا",
+      "samina": "ثمینہ", "robina": "روبینہ", "rubina": "روبینہ", "shabana": "شبانہ", "farzana": "فرزانہ",
+      "rukhshanda": "رخشندہ", "rukhsana": "رخسانہ", "shazia": "شازیہ", "nazia": "نازیہ", "fouzia": "فوزیہ",
+      "faiza": "فائزہ", "farah": "فرح", "farhana": "فرحانہ", "naila": "نائلہ", "nabila": "نبیلہ",
+      "tahira": "طاہرہ", "tayyaba": "طیبہ", "tooba": "طوبیٰ", "tuba": "طوبیٰ",
+      "javeria": "جویریہ", "juwairiya": "جویریہ", "hafsa": "حفصہ", "ruqayya": "رقیہ", "sumayya": "سمیہ",
+      "kiran": "کرن", "komal": "کومل", "neha": "نیہا", "nida": "ندا", "rida": "ردا", "huda": "ہدیٰ",
+      "laiba": "لائبہ", "layba": "لائبہ", "minahil": "مناہل", "manahil": "مناہل",
+      "eman": "ایمان", " Jannat": "جنت", "jannat": "جنت", "aylin": "آئلن", "ayla": "آئلہ",
+      "mahnoor": "ماہ نور", "gul": "گل", "parveen": "پروین", "nasreen": "نسرین", "yasmeen": "یاسمین", "yasmin": "یاسمین",
+      "armeen": "ارمین", "afsheen": "افشین", "ambreen": "عنبرین", "samreen": "ثمرین", "shireen": "شیریں",
+      "sehar": "سحر", "sahar": "سحر", "mehwish": "مہوش", "beenish": "بینش", "danish": "دانش",
+      "komal": "کومل", "sanam": "صنم", "sadaf": "صدف", "shafaq": "شفق", "shanza": "شانزے", "shanzay": "شانزے",
+      "urooj": "عروج", "areej": "اریج", "anwsha": "انوشہ", "anosha": "انوشہ", "anousha": "انوشہ",
+
+      // More Male Names & Surnames
+      "tariq": "طارق", "mahmood": "محمود", "mehmood": "محمود", "masood": "مسعود", "maqsud": "مقصود", "maqsood": "مقصود",
+      "raza": "رضا", "riaz": "ریاض", "fayyaz": "فیاض", "imtiaz": "امتیاز", "mumtaz": "ممتاز", "aijaz": "اعجاز", "ejaz": "اعجاز",
+      "ijaz": "اعجاز", "sarfaraz": "سرفراز", "sarfraz": "سرفراز", "faraz": "فراز", "sheraz": "شیراز", "shiraz": "شیراز",
+      "shahbaz": "شہباز", "nawaz": "نواز", "shahid": "شاہد", "zahid": "زاہد", "rashid": "راشد", "arshad": "ارشاد",
+      "khalid": "خالد", "walid": "ولید", "waleed": "ولید", "majid": "ماجد", "sajid": "ساجد", "wajid": "واجد", "abid": "عابد", "hamid": "حامد",
+      "asif": "آصف", "atif": "عاطف", "kashif": "کاشف", "wasif": "واصف", "saqib": "ثاقب", "aqib": "عاقب", "talib": "طالب",
+      "amir": "عامر", "aamir": "عامر", "yasir": "یاسر", "nasir": "ناصر", "tahir": "طاہر", "zahir": "ظاہر", "qadir": "قادر",
+      "qadeer": "قدیر", "bashir": "بشیر", "munir": "منیر", "muneer": "منیر", "kabir": "کبیر", "shabbir": "شبیر", "saghir": "صغیر",
+      "tanveer": "تنویر", "tanvir": "تنویر", "tauqeer": "توقیر", "zaheer": "ظہیر", "sameer": "سمیر", "samir": "سمیر",
+      "salman": "سلمان", "suleman": "سلیمان", "sulaiman": "سلیمان", "imran": "عمران", "kamran": "کامران", "adnan": "عدنان",
+      "irfan": "عرفان", "rizwan": "رضوان", "furqan": "فرقان", "burhan": "برہان", "subhan": "سبحان", "rehan": "ریحان",
+      "faizan": "فیضان", "zeeshan": "ذیشان", "zishan": "ذیشان", "awais": "اویس", "owais": "اویس", "zubair": "زبیر", "umair": "عمیر", "uzair": "عزیر",
+      "junaid": "جنید", "ubaid": "عبید", "suhaib": "صہیب", "sohaib": "صہیب", "zohaib": "زوہیب", "zuhaib": "زوہیب", "shoaib": "شعیب",
+      "fahad": "فہد", "saad": "سعد", "asad": "اسد", "ahad": "احد", "samad": "صمد", "jawad": "جواد", "fawad": "فواد", "fuad": "فواد",
+      "haider": "حیدر", "hayder": "حیدر", "qaiser": "قیصر", "azhar": "اظہر", "mazhar": "مظہر", "athar": "اطہر", "fakhar": "فخر", "zafar": "ظفر",
+      "akbar": "اکبر", "asghar": "اصغر", "anwar": "انور", "sarwar": "سرور", "munawar": "منور", "dilawar": "دلاور", "khawar": "خاور",
+      "babar": "بابر", "babur": "بابر", "sikandar": "سکندر", "qalandar": "قلندر", "safdar": "صفدر",
+      "haris": "حارث", "waris": "وارث", "faris": "فارس", "moiz": "معیز", "muiz": "معیز", "ramiz": "رمیز", "rameez": "رمیز", "hafeez": "حفیظ", "aziz": "عزیز",
+      "rafiq": "رفیق", "shafiq": "شفیق", "tauseef": "توصیف", "hanif": "حنیف", "latif": "لطیف", "sharif": "شریف", "arif": "عارف",
+      "saleem": "سلیم", "salim": "سلیم", "kaleem": "کلیم", "nadeem": "ندیم", "naeem": "نعیم", "waseem": "وسیم", "wasim": "وسیم", "azeem": "عظیم", "hakim": "حکیم",
+      "rahim": "رحیم", "raheem": "رحیم", "karim": "کریم", "kareem": "کریم", "faheem": "فہیم", "fahim": "فہیم", "shamim": "شمیم",
+      "ibrahim": "ابراہیم", "ismail": "اسماعیل", "ishaq": "اسحاق", "yaqoob": "یعقوب", "yousaf": "یوسف", "yousuf": "یوسف", "yusuf": "یوسف",
+      "yunus": "یونس", "younis": "یونس", "dawood": "داؤد", "daud": "داؤد", "haroon": "ہارون", "harun": "ہارون", "musa": "موسیٰ", "moosa": "موسیٰ", "isa": "عیسیٰ", "eesa": "عیسیٰ",
+      "yahya": "یحییٰ", "zakariya": "زکریا", "idrees": "ادریس", "ayub": "ایوب", "ayyub": "ایوب", "luqman": "لقمان",
+      "talha": "طلحہ", "huzaifa": "حذیفہ", "khuzaima": "خزیمہ", "usman": "عثمان", "affan": "عفان", "sufyan": "سفیان", "marwan": "مروان",
+      "numan": "نعمان", "noman": "نعمان", "salman": "سلمان", "arham": "ارحم", "arhaan": "ارحان", "arhan": "ارحان", "ayan": "عیان", "ayaan": "عیان",
+      "rayyan": "ریان", "rayan": "ریان", "shayan": "شایان", "azlan": "ازلان", "arsalan": "ارسلان", "arslan": "ارسلان", "armaghan": "ارمغان",
+      "rohan": "روہن", "ruhan": "روحان", "rohaan": "روحان", "daniyal": "دانیال", "danial": "دانیال", "mikail": "میکائیل", "jibrail": "جبرائیل",
+      "abdullah": "عبداللہ", "abdul": "عبد", "rehman": "الرحمٰن", "rahman": "الرحمٰن", "raheem": "الرحیم", "qadir": "القادر", "razzaq": "الرزاق",
+      "ghaffar": "الغفار", "sattar": "الستار", "wahab": "الوہاب", "wahid": "الواحد", "majid": "المجید", "hamid": "الحمید", "hadi": "الہادی",
+      "bari": "الباری", "mannan": "المنان", "subhan": "سبحان", "mustafa": "مصطفیٰ", "murtaza": "مرتضیٰ", "mujtaba": "مجتبیٰ",
+      "waqas": "وقاص", "waqar": "وقار", "abrar": "ابرار", "israr": "اسرار", "iftikhar": "افتخار", "zulfiqar": "ذوالفقار", "intizar": "انتظار",
+      "iqbal": "اقبال", "afzal": "افضل", "ajmal": "اجمل", "akmal": "اکمل", "jamal": "جمال", "kamal": "کمال", "jalal": "جلال", "hilal": "ہلال",
+      "faisal": "فیصل", "sohail": "سہیل", "suhail": "سہیل", "shakeel": "شکیل", "adeel": "عدیل", "aqeel": "عقیل", "nabeel": "نبیل", "jamil": "جمیل", "jameel": "جمیل",
+      "khalil": "خلیل", "jalil": "جلیل", "wakil": "وکیل", "sharjeel": "شرجیل", "raheel": "راحیل",
+      "shehzad": "شہزاد", "shahzad": "شہزاد", "behzad": "بہزاد", "faryad": "فریاد", " sajad": "سجاد", "sajjad": "سجاد", "amjad": "امجد", "asjad": "اسجد",
+      "sarmad": "سرمد", "murad": "مراد", "ziyad": "زیاد", "ashfaq": "اشفاق", "ishtiaq": "اشتیاق", "mushtaq": "مشتاق", "altaf": "الطاف", "ausaf": "اوصاف",
+      "azam": "اعظم", "moazzam": "معظم", "akram": "اکرم", "aslam": "اسلم", "arzam": "ارزم", "hashim": "ہاشم", "qasim": "قاسم", "asim": "عاصم", "hatim": "حاتم",
+      "kazim": "کاظم", "nazim": "ناظم", "azim": "عظیم", "basim": "باسم", "jasim": "جاسم",
+      "mansoor": "منصور", "manzoor": "منظور", "mashkoor": "مشکور", "shakoor": "شکور", "saboor": "صبور", "ghafoor": "غفور", "zahoor": "ظہور", "taimoor": "تیمور", "taimur": "تیمور",
+      "jahangir": "جہانگیر", "alamgir": "عالمگیر", "dastgir": "دستگیر", "tauqir": "توقیر",
+      "ehsan": "احسان", "ihsan": "احسان", "ahsan": "احسن", "mohsin": "محسن", "tahsin": "تحسین", "yasin": "یٰسین", "yaseen": "یٰسین", "amin": "امین", "ameen": "امین",
+      "matin": "متین", "mateen": "متین", "mubeen": "مبین", "mobin": "مبین",
+      "saeed": "سعید", "rasheed": "رشید", "waheed": "وحید", "hameed": "حمید", "majeed": "مجید", "naveed": "نوید", "navid": "نوید", "javed": "جاوید", "javaid": "جاوید",
+      "fareed": "فرید", "farid": "فرید", "waleed": "ولید", "shahid": "شاہد", "khurshid": "خورشید", "jamshaid": "جمشید", "jamshed": "جمشید", "tauheed": "توحید",
+      "sikander": "سکندر", "haider": "حیدر", "babar": "بابر", "ashar": "عشر", "ammar": "عمار", "yasir": "یاسر",
+
+      // Surnames / Castes / Tribes
+      "khan": "خان", "qureshi": "قریشی", "siddiqui": "صدیقی", "siddiqi": "صدیقی", "farooqi": "فاروقی", "usmani": "عثمانی",
+      "ansari": "انصاری", "hashmi": "ہاشمی", "gilani": "گیلانی", "geelani": "گیلانی", "jeelani": "جیلانی", "bukhari": "بخاری",
+      "naqvi": "نقوی", "rizvi": "رضوی", "zaidi": "زیدی", "kazmi": "کاظمی", "jafri": "جعفری", "askari": "عسکری", "chishti": "چشتی",
+      "nizami": "نظامی", "qadri": "قادری", "attari": "عطاری", "madani": "مدنی", "makki": "مکی", "nomani": "نعمانی",
+      "abbasi": "عباسی", "leghari": "لغاری", "mazari": "مزاری", "zardari": "زرداری", "bhutto": "بھٹو", "talpur": "تالپور",
+      "soomro": "سومرو", "memon": "میمن", "khatri": "کھتری", "dawoodi": "داؤدی", "bohra": "بوہرا",
+      "butt": "بٹ", "bhatti": "بھٹی", "dar": "ڈار", "lone": "لون", "wain": "وئیں", "wani": "وانی", "mir": "میر",
+      "cheema": "چیمہ", "chattha": "چٹھہ", "bajwa": "باجوہ", "warraich": "وڑائچ", "tarar": "تارڑ", "virk": "ورک",
+      "sandhu": "سندھو", "sidhu": "سدھو", "gill": "گل", "dillon": "ڈھلوں", "dhillon": "ڈھلوں", "randhawa": "رندھاوا",
+      "goraya": "گورایہ", "kahloon": "کاہلوں", "sahi": "ساہی", "gondal": "گونڈل", "ranjha": "رانجھا", "haral": "ہرل",
+      "sial": "سیال", "tiwana": "ٹوانہ", "noon": "نون", "wana": "وانہ", "dasti": "دستی", "khosa": "کھوسہ",
+      "bugti": "بگٹی", "marri": "مری", "mengal": "مینگل", "bizenjo": "بزنجو", "raisani": "رئیسانی", "jamali": "جمالی",
+      "afridi": "آفریدی", "shinwari": "شنواری", "yousafzai": "یوسفزئی", "khattak": "خٹک", "bangash": "بنگش",
+      "marwat": "مروت", "wazir": "وزیر", "mehsud": "محسود", "tareen": "ترین", "kakakhel": "کاکاخیل", "durrani": "درانی", "niazi": "نیازی",
+      "lodhi": "لودھی", "sur": "سوری", "ghauri": "غوری", "ghaznavi": "غزنوی", "mughal": "مغل", "beg": "بیگ", "baig": "بیگ",
+      "pasha": "پاشا", "awan": "اعوان", "khokhar": "کھوکھر", "gujjar": "گجر", "gorsi": "گورسی", "kamboh": "کمبوہ",
+      "arain": "آرائیں", "rajput": "راجپوت", "jutt": "جٹ", "jat": "جٹ", "janjua": "جنجوعہ", "minhas": "منہاس", "ghakhar": "گکھڑ",
+      "abbasi": "عباسی", "tanoli": "تنولی", "swati": "سواتی", "jadun": "جدون", "jadoon": "جدون",
+      "sehgal": "سہگل", "saigol": "سہگل", "chawla": "چاولہ", "vohra": "وہرہ", "kapoor": "کپور", "sethi": "سیٹھی", "puri": "پوری"
+    };
+
+    function phoneticWordToUrdu(word) {
+      if (!word) return "";
+      const clean = word.replace(/[^a-zA-Z']/g, "");
+      if (!clean) return word;
+      const lower = clean.toLowerCase();
+      if (URDU_WORD_DICT[lower]) return URDU_WORD_DICT[lower];
+
+      // Handle possessive 's (e.g. "Daniyal's" -> "دانیال کے")
+      if (lower.endsWith("'s")) {
+        const base = lower.slice(0, -2);
+        const baseUr = URDU_WORD_DICT[base] || phoneticWordToUrdu(base);
+        return baseUr + " کے";
+      }
+
+      let s = lower;
+      let out = "";
+      let i = 0;
+
+      // Initial vowel handling
+      if (s.startsWith("aa") || s.startsWith("a")) {
+        if (s.startsWith("aa")) { out += "آ"; i = 2; }
+        else if (s.startsWith("ai") || s.startsWith("ay")) { out += "اے"; i = 2; }
+        else if (s.startsWith("au") || s.startsWith("aw")) { out += "او"; i = 2; }
+        else { out += "ا"; i = 1; }
+      } else if (s.startsWith("ee") || s.startsWith("i") || s.startsWith("e")) {
+        out += "ا";
+        i = s.startsWith("ee") ? 2 : 1;
+      } else if (s.startsWith("oo") || s.startsWith("u") || s.startsWith("o")) {
+        out += "او";
+        i = s.startsWith("oo") ? 2 : 1;
+      }
+
+      const digraphs = {
+        "kh": "خ", "gh": "غ", "sh": "ش", "ch": "چ", "ph": "پھ",
+        "th": "تھ", "dh": "دھ", "bh": "بھ", "jh": "جھ", "rh": "ڑھ",
+        "qu": "ق", "ck": "ک", "aa": "ا", "ee": "ی", "oo": "و",
+        "ai": "ے", "ay": "ے", "au": "و", "ou": "و"
+      };
+      const singles = {
+        "b": "ب", "p": "پ", "t": "ت", "j": "ج", "d": "د", "r": "ر",
+        "z": "ز", "s": "س", "f": "ف", "q": "ق", "k": "ک", "g": "گ",
+        "l": "ل", "m": "م", "n": "ن", "w": "و", "v": "و", "h": "ہ",
+        "y": "ی", "c": "ک", "x": "کس",
+        "a": "ا", "e": "ی", "i": "ی", "o": "و", "u": ""
+      };
+
+      while (i < s.length) {
+        const rem = s.slice(i);
+        // End of word special cases
+        if (rem === "ah" || rem === "a") {
+          out += "ہ";
+          break;
+        }
+        if (rem === "ia" || rem === "iya") {
+          out += "یہ";
+          break;
+        }
+        const two = s.slice(i, i + 2);
+        if (digraphs[two] !== undefined) {
+          out += digraphs[two];
+          i += 2;
+          continue;
+        }
+        const one = s[i];
+        // Skip duplicate consecutive consonants
+        if (i + 1 < s.length && s[i + 1] === one && !"aeiou".includes(one)) {
+          i += 1;
+          continue;
+        }
+        // Short medial vowels 'i'/'e'/'u' inside consonant clusters
+        if ((one === "i" || one === "e") && i > 0 && i < s.length - 1) {
+          i += 1;
+          continue;
+        }
+        out += singles[one] !== undefined ? singles[one] : "";
+        i += 1;
+      }
+      return out || word;
+    }
+
+    function transliterateToUrdu(text) {
+      if (!text || !text.trim()) return "";
+      const raw = text.trim();
+      // If text already contains Urdu/Arabic script characters, return as-is
+      if (/[\u0600-\u06FF]/.test(raw)) return raw;
+
+      // Phrase-level replacements first
+      let normalized = raw
+        .replace(/Mr\.\s*&\s*Mrs\./gi, "جناب و محترمہ")
+        .replace(/Mr\s*&\s*Mrs/gi, "جناب و محترمہ")
+        .replace(/Chaudhry\s*&\s*Begum/gi, "چوہدری و بیگم")
+        .replace(/\(Bride's Parents\)/gi, "(والدینِ دلہن)")
+        .replace(/\(Groom's Parents\)/gi, "(والدینِ دولہا)")
+        .replace(/Bride's Parents/gi, "والدینِ دلہن")
+        .replace(/Groom's Parents/gi, "والدینِ دولہا");
+
+      const tokens = normalized.split(/(\s+|[(),./&-])/);
+      return tokens.map(tok => {
+        if (!tok || /^\s+$/.test(tok)) return tok;
+        if (/^[\u0600-\u06FF]+$/.test(tok)) return tok;
+        if (tok === "&") return "و";
+        if (/^[(),./-]$/.test(tok)) return tok;
+        const lower = tok.toLowerCase();
+        if (URDU_WORD_DICT[lower]) return URDU_WORD_DICT[lower];
+        return phoneticWordToUrdu(tok);
+      }).join("").replace(/\s+/g, " ").trim();
+    }
+
     let currentHosts = [
       { name: "Tariq Mahmood", nameUrdu: "طارق محمود", phone: "+92 301 2345678" },
       { name: "Muhammad Bilal", nameUrdu: "محمد بلال", phone: "+92 302 3456789" },
@@ -1064,11 +1302,19 @@
         </div>
       `).join("");
 
+
+
       c.querySelectorAll("input").forEach(inp => {
         inp.addEventListener("input", (e) => {
           const idx = parseInt(e.target.getAttribute("data-host-idx"));
           const prop = e.target.getAttribute("data-host-prop");
           currentHosts[idx][prop] = e.target.value;
+          if (prop === "name") {
+            const autoUr = transliterateToUrdu(e.target.value);
+            currentHosts[idx].nameUrdu = autoUr;
+            const urInp = c.querySelector(`input[data-host-idx="${idx}"][data-host-prop="nameUrdu"]`);
+            if (urInp) urInp.value = autoUr;
+          }
         });
       });
 
@@ -1082,6 +1328,19 @@
     }
 
     renderHostsInputs();
+
+    // Auto-write Urdu translations when typing English Groom, Bride, or Host names
+    function bindAutoUrduInput(enId, urId) {
+      const enEl = document.getElementById(enId);
+      const urEl = document.getElementById(urId);
+      if (!enEl || !urEl) return;
+      enEl.addEventListener("input", () => {
+        urEl.value = transliterateToUrdu(enEl.value);
+      });
+    }
+    bindAutoUrduInput("f_groom", "f_groomUrdu");
+    bindAutoUrduInput("f_bride", "f_brideUrdu");
+    bindAutoUrduInput("f_host", "f_hostUrdu");
 
     function getSelectedCardSide() {
       const el = document.querySelector('input[name="f_cardSide"]:checked');
@@ -1151,7 +1410,7 @@
     if (depInp) depInp.addEventListener("input", syncGroomBaraatTime);
 
     document.getElementById("addHostBtn").addEventListener("click", () => {
-      currentHosts.push({ name: ", nameUrdu: ", phone: "+92 " });
+      currentHosts.push({ name: "", nameUrdu: "", phone: "+92 " });
       renderHostsInputs();
     });
 
@@ -1316,15 +1575,18 @@
         radioGroom.dispatchEvent(new Event("change"));
       }
 
-      // 2. Set Couple Names
-      document.getElementById("f_groom").value = client.groom || "";
-      document.getElementById("f_groomUrdu").value = client.groomUrdu || "";
-      document.getElementById("f_bride").value = client.bride || "";
-      document.getElementById("f_brideUrdu").value = client.brideUrdu || "";
+      // 2. Set Couple Names (with automatic Urdu translation if empty)
+      const groomEn = client.groom || "";
+      const brideEn = client.bride || "";
+      const hostEn = client.host || "";
+      document.getElementById("f_groom").value = groomEn;
+      document.getElementById("f_groomUrdu").value = client.groomUrdu || transliterateToUrdu(groomEn);
+      document.getElementById("f_bride").value = brideEn;
+      document.getElementById("f_brideUrdu").value = client.brideUrdu || transliterateToUrdu(brideEn);
 
-      // 3. Set Host Lines
-      document.getElementById("f_host").value = client.host || "";
-      document.getElementById("f_hostUrdu").value = client.hostUrdu || "";
+      // 3. Set Host Lines (with automatic Urdu translation if empty)
+      document.getElementById("f_host").value = hostEn;
+      document.getElementById("f_hostUrdu").value = client.hostUrdu || transliterateToUrdu(hostEn);
 
       // 4. Set Theme (Theme is optional from client's end)
       const themeSelect = document.getElementById("f_theme");
@@ -1337,114 +1599,115 @@
         }
       }
 
-      // 5. Welcoming Hosts
+      // 5. Welcoming Hosts (with automatic Urdu translation for each host name)
       if (Array.isArray(client.welcomeHosts) && client.welcomeHosts.length > 0) {
-        currentHosts = JSON.parse(JSON.stringify(client.welcomeHosts));
+        currentHosts = client.welcomeHosts.map(h => ({
+          name: h.name || "",
+          nameUrdu: h.nameUrdu || transliterateToUrdu(h.name || ""),
+          phone: h.phone || "+92 "
+        }));
       } else {
-        currentHosts = [{ name: ", nameUrdu: ", phone: "+92 " }];
+        currentHosts = [{ name: "", nameUrdu: "", phone: "+92 " }];
       }
       renderHostsInputs();
 
-      // 6. Events
+      // 6. Events (Strictly populate only the events ordered by the client!)
       const ev = client.events || {};
-
-      // Mehndi
       const m = ev.mehndi || {};
-      const mDate = m.date || "2026-12-10";
-      const mTime = m.time || "7:00 PM / شام ۷:۰۰ بجے";
-      document.getElementById("f_m_dt").value = mDate.includes("T") ? mDate.slice(0, 16) : `${mDate}T19:00`;
-      document.getElementById("f_m_date").value = formatDisplayDate(mDate, "en");
-      document.getElementById("f_m_dateUr").value = formatDisplayDate(mDate, "ur");
-      document.getElementById("f_m_time").value = mTime;
-      document.getElementById("f_m_venue").value = m.venue || "";
-      document.getElementById("f_m_addr").value = m.address || "";
-      document.getElementById("f_m_map").value = m.mapUrl || ""; // Never autofill map if client did not provide it; let admin handle it
-      document.getElementById("f_m_rsvp").value = m.rsvpPhone || client.clientPhone || "+923012345678";
+      const b = ev.baraat || ev.barat || {};
+      const w = ev.walima || {};
 
-      // Baraat
-      const b = ev.baraat || {};
-      const bDate = b.date || "2026-12-11";
-      let bTime = b.time || "";
+      const hasM = Boolean(m.date || m.venue || m.time || m.rasmTime || m.mealTime);
+      const hasB = Boolean(b.date || b.venue || b.time || b.sehraTime || b.arrival || b.nikkah || b.dinner || b.mealTime);
+      const hasW = Boolean(w.date || w.venue || w.time || w.arrival || w.mealTime || w.lunch || w.dinner);
 
-      if (side === "groom") {
-        const sTime = b.sehraTime || "";
-        const dTime = b.departureTime || "";
-        if (document.getElementById("f_b_sehra")) document.getElementById("f_b_sehra").value = sTime;
-        if (document.getElementById("f_b_departure")) document.getElementById("f_b_departure").value = dTime;
-
-        if (sTime && dTime) {
-          bTime = `Sehra Bandi: ${sTime} · Departure: ${dTime}`;
-        } else if (!bTime) {
-          bTime = "Sehra Bandi: 4:00 PM · Departure: 5:00 PM";
-        }
-      } else {
-        if (!bTime) bTime = "7:00 PM / شام ۷:۰۰ بجے";
-      }
-
-      document.getElementById("f_b_dt").value = bDate.includes("T") ? bDate.slice(0, 16) : `${bDate}T16:30`;
-      document.getElementById("f_b_date").value = formatDisplayDate(bDate, "en");
-      document.getElementById("f_b_dateUr").value = formatDisplayDate(bDate, "ur");
-      document.getElementById("f_b_time").value = bTime;
-
-      // Milestones
-      if (side === "bride") {
-        document.getElementById("f_b_arrival").value = b.arrival || "8:00 PM · ۸:۰۰ بجے شب";
-        document.getElementById("f_b_nikkah").value = b.nikkah || "9:00 PM · ۹:۰۰ بجے شب";
-        document.getElementById("f_b_dinner").value = b.dinner || "9:30 PM · ۹:۳۰ بجے شب";
-        document.getElementById("f_b_rukhsati").value = b.rukhsati || "11:00 PM · ۱۱:۰۰ بجے شب";
-        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || "دعاؤں کے سائے میں رخصتی";
-        document.getElementById("f_b_tagline_en").value = b.taglineRoman || "Duaon Kay Saaye Mein Rukhsati";
-      } else {
-        document.getElementById("f_b_arrival").value = b.arrival || "";
-        document.getElementById("f_b_nikkah").value = b.nikkah || "";
-        document.getElementById("f_b_dinner").value = b.dinner || "";
-        document.getElementById("f_b_rukhsati").value = b.rukhsati || "";
-        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || "دل والے دلہنیا لے جا رہے ہیں";
-        document.getElementById("f_b_tagline_en").value = b.taglineRoman || "Dil Walay Dulhania Le Ja Rahay Hain";
-      }
-
-      document.getElementById("f_b_venue").value = b.venue || "";
-      document.getElementById("f_b_addr").value = b.address || "";
-      document.getElementById("f_b_map").value = b.mapUrl || ""; // Never autofill map if client did not provide it; let admin handle it
-      document.getElementById("f_b_rsvp").value = b.rsvpPhone || client.clientPhone || "+923012345678";
-
-      // Extra Mehndi & Baraat sub-fields
-      if (document.getElementById("f_m_rasm")) document.getElementById("f_m_rasm").value = m.rasmTime || "";
-      if (document.getElementById("f_m_meal_type")) document.getElementById("f_m_meal_type").value = m.mealType || "dinner";
-      if (document.getElementById("f_m_meal_time")) document.getElementById("f_m_meal_time").value = m.mealTime || m.dinner || m.lunch || "";
-      if (document.getElementById("f_b_meal_type")) document.getElementById("f_b_meal_type").value = b.mealType || "dinner";
       window.activeClientCustomSubSchedules = {
         mehndi: m.subSchedule || [],
         baraat: b.subSchedule || [],
-        walima: (ev.walima && ev.walima.subSchedule) || []
+        walima: w.subSchedule || []
       };
 
+      // Mehndi
+      if (hasM) {
+        const mDate = m.date || "";
+        const mTime = m.time || "7:00 PM";
+        document.getElementById("f_m_dt").value = mDate.includes("T") ? mDate.slice(0, 16) : (mDate ? `${mDate}T19:00` : "");
+        document.getElementById("f_m_date").value = mDate ? formatDisplayDate(mDate, "en") : "";
+        document.getElementById("f_m_dateUr").value = mDate ? formatDisplayDate(mDate, "ur") : "";
+        document.getElementById("f_m_time").value = mTime;
+        if (document.getElementById("f_m_rasm")) document.getElementById("f_m_rasm").value = m.rasmTime || "8:30 PM";
+        if (document.getElementById("f_m_meal_type")) document.getElementById("f_m_meal_type").value = m.mealType || "dinner";
+        if (document.getElementById("f_m_meal_time")) document.getElementById("f_m_meal_time").value = m.mealTime || m.dinner || m.lunch || "9:30 PM";
+        document.getElementById("f_m_venue").value = m.venue || "";
+        document.getElementById("f_m_addr").value = m.address || "";
+        document.getElementById("f_m_map").value = m.mapUrl || "";
+        document.getElementById("f_m_rsvp").value = m.rsvpPhone || client.clientPhone || "+923012345678";
+      } else {
+        ["f_m_dt","f_m_date","f_m_dateUr","f_m_time","f_m_rasm","f_m_meal_time","f_m_venue","f_m_addr","f_m_map","f_m_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+      }
+
+      // Baraat
+      if (hasB) {
+        const bDate = b.date || "";
+        let bTime = b.time || "";
+        if (side === "groom") {
+          const sTime = b.sehraTime || "4:30 PM";
+          const dTime = b.departureTime || "5:30 PM";
+          if (document.getElementById("f_b_sehra")) document.getElementById("f_b_sehra").value = sTime;
+          if (document.getElementById("f_b_departure")) document.getElementById("f_b_departure").value = dTime;
+          if (sTime && dTime && !bTime) {
+            bTime = `Sehra Bandi: ${sTime} · Departure: ${dTime}`;
+          }
+        } else {
+          if (!bTime) bTime = "7:30 PM";
+        }
+        document.getElementById("f_b_dt").value = bDate.includes("T") ? bDate.slice(0, 16) : (bDate ? `${bDate}T19:00` : "");
+        document.getElementById("f_b_date").value = bDate ? formatDisplayDate(bDate, "en") : "";
+        document.getElementById("f_b_dateUr").value = bDate ? formatDisplayDate(bDate, "ur") : "";
+        document.getElementById("f_b_time").value = bTime;
+        document.getElementById("f_b_arrival").value = b.arrival || "7:30 PM";
+        document.getElementById("f_b_nikkah").value = b.nikkah || "8:30 PM";
+        if (document.getElementById("f_b_meal_type")) document.getElementById("f_b_meal_type").value = b.mealType || "dinner";
+        document.getElementById("f_b_dinner").value = b.mealTime || b.dinner || b.lunch || "9:30 PM";
+        document.getElementById("f_b_rukhsati").value = b.rukhsati || "10:30 PM";
+        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || (side === "bride" ? "دعاؤں کے سائے میں رخصتی" : "دل والے دلہنیا لے جا رہے ہیں");
+        document.getElementById("f_b_tagline_en").value = b.taglineRoman || (side === "bride" ? "Duaon Kay Saaye Mein Rukhsati" : "Dil Walay Dulhania Le Ja Rahay Hain");
+        document.getElementById("f_b_venue").value = b.venue || "";
+        document.getElementById("f_b_addr").value = b.address || "";
+        document.getElementById("f_b_map").value = b.mapUrl || "";
+        document.getElementById("f_b_rsvp").value = b.rsvpPhone || client.clientPhone || "+923012345678";
+      } else {
+        ["f_b_dt","f_b_date","f_b_dateUr","f_b_time","f_b_sehra","f_b_departure","f_b_arrival","f_b_nikkah","f_b_dinner","f_b_rukhsati","f_b_venue","f_b_addr","f_b_map","f_b_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+      }
+
       // Walima
-      const w = ev.walima || {};
-      if (document.getElementById("f_w_arrival")) document.getElementById("f_w_arrival").value = w.arrival || "";
-      if (document.getElementById("f_w_meal_type")) document.getElementById("f_w_meal_type").value = w.mealType || "dinner";
-      if (document.getElementById("f_w_meal_time")) document.getElementById("f_w_meal_time").value = w.mealTime || w.lunch || w.dinner || "";
-      if (document.getElementById("f_w_dua")) document.getElementById("f_w_dua").value = w.duaTime || "";
-      if (w.date || w.venue) {
+      if (hasW) {
         const wDate = w.date || "";
-        const wTime = w.time || "7:30 PM / شام ۷:۳۰ بجے";
+        const wMealType = w.mealType || "dinner";
+        const wTime = w.time || (wMealType === "lunch" ? "1:30 PM" : "7:30 PM");
         document.getElementById("f_w_dt").value = wDate.includes("T") ? wDate.slice(0, 16) : (wDate ? `${wDate}T19:00` : "");
         document.getElementById("f_w_date").value = wDate ? formatDisplayDate(wDate, "en") : "";
         document.getElementById("f_w_dateUr").value = wDate ? formatDisplayDate(wDate, "ur") : "";
         document.getElementById("f_w_time").value = wTime;
+        if (document.getElementById("f_w_arrival")) document.getElementById("f_w_arrival").value = w.arrival || (wMealType === "lunch" ? "1:30 PM" : "7:00 PM");
+        if (document.getElementById("f_w_meal_type")) document.getElementById("f_w_meal_type").value = wMealType;
+        if (document.getElementById("f_w_meal_time")) document.getElementById("f_w_meal_time").value = w.mealTime || w.lunch || w.dinner || (wMealType === "lunch" ? "2:30 PM" : "8:45 PM");
+        if (document.getElementById("f_w_dua")) document.getElementById("f_w_dua").value = w.duaTime || (wMealType === "lunch" ? "4:00 PM" : "10:30 PM");
         document.getElementById("f_w_venue").value = w.venue || "";
         document.getElementById("f_w_addr").value = w.address || "";
         document.getElementById("f_w_map").value = w.mapUrl || "";
         document.getElementById("f_w_rsvp").value = w.rsvpPhone || client.clientPhone || "+923012345678";
       } else {
-        document.getElementById("f_w_dt").value = "";
-        document.getElementById("f_w_date").value = "";
-        document.getElementById("f_w_dateUr").value = "";
-        document.getElementById("f_w_time").value = "";
-        document.getElementById("f_w_venue").value = "";
-        document.getElementById("f_w_addr").value = "";
-        document.getElementById("f_w_map").value = "";
-        document.getElementById("f_w_rsvp").value = "";
+        ["f_w_dt","f_w_date","f_w_dateUr","f_w_time","f_w_arrival","f_w_meal_time","f_w_dua","f_w_venue","f_w_addr","f_w_map","f_w_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
       }
 
       // Snippet feedback
@@ -1708,7 +1971,7 @@
     document.getElementById("clearFormBtn").addEventListener("click", () => {
       document.getElementById("cardGeneratorForm").reset();
       if (document.getElementById("f_theme")) document.getElementById("f_theme").value = "emerald";
-      currentHosts = [{ name: ", nameUrdu: ", phone: "+92 " }];
+      currentHosts = [{ name: "", nameUrdu: "", phone: "+92 " }];
       renderHostsInputs();
       activeClientId = null;
       const snippet = document.getElementById("pendingClientDetailsSnippet");
@@ -1722,6 +1985,17 @@
     } catch (e) {
       savedCards = [];
     }
+
+    function buildThemeLiveUrl(domainRoot, themeKey, encodedPayload, sideKey) {
+      const sideParam = sideKey === "bride" ? `&side=bride` : "";
+      if (themeKey === "burgundy") return `${domainRoot}/burgundy-romance?invite=${encodedPayload}${sideParam}`;
+      if (themeKey === "royal-grace") return `${domainRoot}/royal-grace?invite=${encodedPayload}${sideParam}`;
+      if (themeKey === "ivory" || themeKey === "noor-e-nikkah") return `${domainRoot}/noor-e-nikkah?invite=${encodedPayload}${sideParam}`;
+      if (themeKey === "farman") return `${domainRoot}/shahi-farman?invite=${encodedPayload}${sideParam}`;
+      const themeParam = themeKey ? `&theme=${themeKey}` : "";
+      return `${domainRoot}/?invite=${encodedPayload}${themeParam}${sideParam}`;
+    }
+    window.buildThemeLiveUrl = buildThemeLiveUrl;
 
     function renderSavedCardsList() {
       const container = document.getElementById("savedCardsContainer");
@@ -1737,15 +2011,17 @@
         obsidian: "🖤 Royal Obsidian",
         marble: "🏛️ Carrara Marble",
         lilac: "🪻 Kashmiri Lilac",
+        burgundy: "🌹 Burgundy Romance",
+        "royal-grace": "🌿 Royal Grace",
+        ivory: "🕊️ Noor-e-Nikkah",
         farman: "📜 Shahi Farman"
       };
+
       container.innerHTML = `
         <div class="admin-saved-list">
           ${savedCards.map((c, idx) => {
-            const themeParam = c.theme ? `&theme=${c.theme}` : "";
-            const sideParam = c.cardSide === "bride" ? `&side=bride` : "";
             const DOMAIN_ROOT = "https://e-dawatnama.com";
-            const liveUrl = `${DOMAIN_ROOT}/?invite=${c.encoded}${themeParam}${sideParam}`;
+            const liveUrl = buildThemeLiveUrl(DOMAIN_ROOT, c.theme, c.encoded, c.cardSide);
             const themeBadge = themeBadges[c.theme] || "👑 Emerald";
             const sideBadge = c.cardSide === "bride" ? "👰 Bride's Side" : "🤵 Groom's Side";
             const coupleDisplay = c.cardSide === "bride" ? `${c.bride} with ${c.groom}` : `${c.groom} with ${c.bride}`;
@@ -1979,12 +2255,10 @@
       };
 
       const encoded = encodeWeddingData(cardData);
-      const themeParam = theme ? `&theme=${theme}` : "";
-      const sideParam = side === "bride" ? `&side=bride` : "";
       const DOMAIN_ROOT = "https://e-dawatnama.com";
-      const liveUrl = theme === "burgundy"
-        ? `${DOMAIN_ROOT}/burgundy-romance?invite=${encoded}${sideParam}`
-        : `${DOMAIN_ROOT}/?invite=${encoded}${themeParam}${sideParam}`;
+      const liveUrl = window.buildThemeLiveUrl
+        ? window.buildThemeLiveUrl(DOMAIN_ROOT, theme, encoded, side)
+        : `${DOMAIN_ROOT}/?invite=${encoded}&theme=${theme}${side === "bride" ? "&side=bride" : ""}`;
       const waShareText = side === "bride"
         ? `With the grace of Allah Almighty, you are cordially invited to celebrate the auspicious wedding ceremonies and Rukhsati of ${bride} with ${groom}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`
         : `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${groom} with ${bride}.\n\nExplore our royal digital wedding invitation here:\n${liveUrl}`;

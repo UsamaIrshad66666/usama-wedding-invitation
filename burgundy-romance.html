@@ -1026,20 +1026,33 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 12px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(212, 175, 55, 0.28);
-      border-radius: 6px;
+      padding: 11px 14px;
+      background: #faf6f2;
+      border: 1px solid rgba(184, 137, 110, 0.45);
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 14px;
-      color: #f9f0e0;
+      font-family: var(--font-serif-body);
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--color-text-dark, #2c1810);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .rsvp-event-check-item:hover {
+      border-color: var(--color-burgundy-rich, #661222);
+      background: #fff;
+    }
+
+    .rsvp-event-check-item span {
+      color: var(--color-text-dark, #2c1810);
     }
 
     .rsvp-event-check-item input[type="checkbox"] {
-      accent-color: #d4af37;
-      width: 16px;
-      height: 16px;
+      accent-color: var(--color-burgundy-rich, #661222);
+      width: 17px;
+      height: 17px;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .deckle-bg-top {
@@ -2044,6 +2057,18 @@
       flex-direction: column;
       align-items: center;
       margin-top: 24px;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #tHeroSubTitle,
+    .hero-sub-title,
+    #tHeroDate,
+    .hero-date-badge {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
     }
 
     .hero-sub-title {
@@ -4159,7 +4184,7 @@
           labelEventsEl.textContent = isUr ? translations.ur.labelEventsAttending : translations.en.labelEventsAttending;
         }
         if (rsvpEventsGroup && rsvpEventsCheckList) {
-          if (total > 1) {
+          if (total >= 1) {
             rsvpEventsGroup.style.display = "block";
             rsvpEventsCheckList.innerHTML = activeNormalizedEvents.map(ev => {
               const labelText = isUr
@@ -4378,6 +4403,21 @@
           const ev4 = document.getElementById("tEvent4"); if(ev4) ev4.textContent = t.event4;
           const tm5 = document.getElementById("tTime5"); if(tm5) tm5.textContent = t.time5;
           const ev5 = document.getElementById("tEvent5"); if(ev5) ev5.textContent = t.event5;
+          const rsvpEventsGroup = document.getElementById("rsvpEventsGroup");
+          const rsvpEventsCheckList = document.getElementById("rsvpEventsCheckList");
+          const labelEventsEl = document.getElementById("tLabelEventsAttending");
+          if (labelEventsEl && t.labelEventsAttending) labelEventsEl.textContent = t.labelEventsAttending;
+          if (rsvpEventsGroup && rsvpEventsCheckList) {
+            rsvpEventsGroup.style.display = "block";
+            const defTitle = t.heroSubtitle || "Baraat Ceremony";
+            const defDate = t.heroDate || "Sunday, 15th November 2026";
+            rsvpEventsCheckList.innerHTML = `
+              <label class="rsvp-event-check-item">
+                <input type="checkbox" name="rsvpEventDay" value="${defTitle}" checked>
+                <span>${defTitle} (${defDate})</span>
+              </label>
+            `;
+          }
         }
 
         // Location
@@ -4434,9 +4474,7 @@
         document.title = `${t.heroGroom} & ${t.heroBride} | ${t.heroSubtitle}`;
       }
 
-      if (isBrideMode || dynData) {
-        applyBilingualTexts();
-      }
+      applyBilingualTexts();
 
       langToggleBtn.addEventListener("click", () => {
         currentLang = currentLang === "en" ? "ur" : "en";

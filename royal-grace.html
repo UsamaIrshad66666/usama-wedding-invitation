@@ -8,7 +8,7 @@
   <meta name="description" content="With the grace and blessings of Allah Almighty, you are cordially invited to celebrate the sacred Nikkah and Walima ceremonies of Zayan &amp; Rania. Tap to open your interactive Royal Grace digital invitation.">
   <meta property="og:title" content="Zayan &amp; Rania — Royal Grace Nikkah &amp; Walima Ceremony">
   <meta property="og:description" content="Tap to open the serene sage garden &amp; pearl drapes digital wedding invitation for the Nikkah of Zayan &amp; Rania.">
-  <meta property="og:image" content="https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg">
+  <meta property="og:image" content="https://e-dawatnama.com/assets/royal-grace-gate-poster.jpg">
   <meta property="og:url" content="https://e-dawatnama.com/royal-grace">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#2d4432">
@@ -1162,7 +1162,7 @@
           webkit-playsinline
           muted 
           preload="auto"
-          poster="/assets/royal-grace-welcome-bg.jpg">
+          poster="/assets/royal-grace-gate-poster.jpg">
           <source src="/assets/royal-grace.mp4" type="video/mp4">
         </video>
 
@@ -1767,6 +1767,12 @@
         video.addEventListener("click", startVideoExperience);
         video.addEventListener("touchstart", startVideoExperience, { passive: true });
       }
+      window.addEventListener("click", function() {
+        if (!videoTriggered) startVideoExperience();
+      });
+      window.addEventListener("touchstart", function() {
+        if (!videoTriggered) startVideoExperience();
+      }, { passive: true });
 
       scrollBadge.addEventListener("click", function(e) {
         e.stopPropagation();
@@ -2095,9 +2101,154 @@
           document.getElementById("rsvpLblMsg").textContent = "Your Message & Prayers";
           document.getElementById("rsvpBtnText").textContent = "Send via WhatsApp RSVP";
           document.getElementById("closingMsg").textContent = "We can't wait to celebrate with you!";
-          document.getElementById("closingNames").textContent = "Zayan & Rania";
+          document.getElementById("closingNames").textContent = dynamicCoupleEn;
+        }
+        if (isUrduMode) {
+          document.getElementById("closingNames").textContent = dynamicCoupleUr;
+          document.getElementById("welcomeProseText").textContent = dynamicProseUr;
+        } else {
+          document.getElementById("welcomeProseText").textContent = dynamicProseEn;
         }
       });
+
+      // 12. Universal ?invite= / ?d= Payload Hydration for Royal Grace
+      let dynamicCoupleEn = "Zayan & Rania";
+      let dynamicCoupleUr = "زیان اور رانیہ";
+      let dynamicProseEn = "We are honored to welcome you to the Sacred Nikkah and Walima ceremonies of Zayan & Rania. As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤";
+      let dynamicProseUr = "ہم آپ کو دل کی اتھاہ گہرائیوں سے زیان اور رانیہ کے نکاح و ولیمہ کی تقریب میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤";
+
+      function decodeInvitePayload(encoded) {
+        if (!encoded) return null;
+        try {
+          let b64 = encoded.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+          while (b64.length % 4) b64 += "=";
+          const binary = atob(b64);
+          try {
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            const text = new TextDecoder().decode(bytes);
+            if (text.trim().startsWith("{")) return JSON.parse(text);
+          } catch (e1) {}
+          const uriDecoded = decodeURIComponent(binary);
+          if (uriDecoded.trim().startsWith("{")) return JSON.parse(uriDecoded);
+          return null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawInvite = urlParams.get("invite") || urlParams.get("d");
+      const customData = decodeInvitePayload(rawInvite);
+      if (customData) {
+        const groomEn = customData.groom || "Zayan";
+        const brideEn = customData.bride || "Rania";
+        const groomUr = customData.groomUrdu || groomEn;
+        const brideUr = customData.brideUrdu || brideEn;
+        const isBrideSide = customData.cardSide === "bride";
+        const firstEn = isBrideSide ? brideEn : groomEn;
+        const secondEn = isBrideSide ? groomEn : brideEn;
+        const firstUr = isBrideSide ? brideUr : groomUr;
+        const secondUr = isBrideSide ? groomUr : brideUr;
+
+        dynamicCoupleEn = `${firstEn} & ${secondEn}`;
+        dynamicCoupleUr = `${firstUr} اور ${secondUr}`;
+        dynamicProseEn = `We are honored to welcome you to the wedding celebrations of ${dynamicCoupleEn}. ${customData.host ? "Hosted by " + customData.host + ". " : ""}As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤`;
+        dynamicProseUr = `ہم آپ کو دل کی اتھاہ گہرائیوں سے ${dynamicCoupleUr} کی شادی کی تقریبات میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤`;
+
+        document.title = `${dynamicCoupleEn} — Royal Grace Wedding Invitation`;
+        const hGroom = document.getElementById("heroGroomName");
+        const hBride = document.getElementById("heroBrideName");
+        if (hGroom) hGroom.textContent = firstEn;
+        if (hBride) hBride.textContent = secondEn;
+
+        const hGroomSub = document.getElementById("heroGroomSub");
+        const hBrideSub = document.getElementById("heroBrideSub");
+        if (hGroomSub && customData.host) hGroomSub.textContent = customData.host;
+        if (hBrideSub) hBrideSub.textContent = "";
+
+        const proseEl = document.getElementById("welcomeProseText");
+        if (proseEl) proseEl.textContent = dynamicProseEn;
+        const closingEl = document.getElementById("closingNames");
+        if (closingEl) closingEl.textContent = dynamicCoupleEn;
+
+        // Collect active events
+        const evs = customData.events || {};
+        const orderKeys = ["mehndi", "baraat", "walima"];
+        const activeList = [];
+        orderKeys.forEach(k => {
+          const ev = evs[k];
+          if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time)) {
+            activeList.push({ key: k, ...ev });
+          }
+        });
+
+        if (activeList.length > 0) {
+          const primaryEv = activeList.find(e => e.key === "baraat") || activeList[0];
+          const pDateStr = primaryEv.displayDate || primaryEv.date || "Wedding Day";
+          const pTimeStr = primaryEv.displayTime || primaryEv.time || primaryEv.arrivalTime || primaryEv.arrival || "7:00 PM";
+          const revDate = document.getElementById("revDate");
+          const revDay = document.getElementById("revDay");
+          const revTime = document.getElementById("revTime");
+          if (revDate) revDate.textContent = pDateStr;
+          if (revDay) revDay.textContent = primaryEv.title || (primaryEv.key.charAt(0).toUpperCase() + primaryEv.key.slice(1));
+          if (revTime) revTime.textContent = pTimeStr;
+
+          const vName = document.getElementById("venueNameText");
+          const vAddr = document.getElementById("venueAddrText");
+          const vMap = document.getElementById("venueMapBtn");
+          if (vName && primaryEv.venue) vName.textContent = primaryEv.venue;
+          if (vAddr) vAddr.textContent = primaryEv.address || primaryEv.venue || "";
+          if (vMap && primaryEv.mapUrl) vMap.href = primaryEv.mapUrl;
+
+          // Build Timeline cards for all ordered events
+          const timelineGrid = document.querySelector(".timeline-schedule-grid");
+          const day1Header = document.getElementById("day1Header");
+          if (day1Header) {
+            day1Header.textContent = activeList.length === 1
+              ? `${activeList[0].title || activeList[0].key.toUpperCase()} — ${activeList[0].displayDate || activeList[0].date || ""}`
+              : `${activeList.length}-Day Wedding Schedule`;
+          }
+          if (timelineGrid) {
+            timelineGrid.innerHTML = activeList.map(ev => {
+              const title = ev.title || (ev.key === "mehndi" ? "Mehndi Ceremony" : (ev.key === "baraat" ? "Baraat & Nikkah" : "Dawat-e-Walima"));
+              const tVal = ev.displayTime || ev.time || ev.arrivalTime || ev.arrival || "7:00 PM";
+              const dVal = ev.displayDate || ev.date || "";
+              const mealType = (ev.mealType || "dinner").toLowerCase();
+              const mealTime = ev.mealTime || ev.dinnerTime || "";
+              const mealLbl = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");
+              let subDetails = [];
+              if (ev.sehraTime) subDetails.push(`Sehra Bandi: ${ev.sehraTime}`);
+              if (ev.departureTime) subDetails.push(`Departure: ${ev.departureTime}`);
+              if (ev.arrivalTime || ev.arrival) subDetails.push(`Arrival: ${ev.arrivalTime || ev.arrival}`);
+              if (ev.nikkahTime || ev.nikkah) subDetails.push(`Nikkah: ${ev.nikkahTime || ev.nikkah}`);
+              if (mealTime && mealType !== "none") subDetails.push(`${mealLbl}: ${mealTime}`);
+              if (ev.rukhsatiTime || ev.rukhsati) subDetails.push(`Rukhsati: ${ev.rukhsatiTime || ev.rukhsati}`);
+              if (ev.duaTime) subDetails.push(`Dua: ${ev.duaTime}`);
+              if (Array.isArray(ev.subSchedule)) {
+                ev.subSchedule.forEach(s => {
+                  if (s && (s.title || s.time)) subDetails.push(`${s.title}: ${s.time}`);
+                });
+              }
+              return `
+                <div class="timeline-step-card">
+                  <div class="step-time-pill">${dVal ? dVal + " • " : ""}${tVal}</div>
+                  <div class="step-info-box">
+                    <h4>${title}</h4>
+                    <p>${ev.venue || ""}${ev.address ? " — " + ev.address : ""}</p>
+                    ${subDetails.length ? `<p style="margin-top:4px;font-size:0.85em;opacity:0.9;">${subDetails.join(" | ")}</p>` : ""}
+                  </div>
+                </div>
+              `;
+            }).join("");
+          }
+          // Hide static Pre-Wedding Events section when dynamic schedule is rendered
+          const preWedTitle = document.getElementById("preWeddingTitle");
+          if (preWedTitle && preWedTitle.closest("section")) {
+            preWedTitle.closest("section").style.display = "none";
+          }
+        }
+      }
     });
   </script>
 </body>

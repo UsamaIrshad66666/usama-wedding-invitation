@@ -1402,6 +1402,11 @@
           </label>
 
           <label class="theme-card-option">
+            <input type="radio" name="c_theme" value="ivory">
+            <div class="theme-title-text">🕊️ Noor-e-Nikkah (Pearl Ivory & 24K Champagne Gold)</div>
+          </label>
+
+          <label class="theme-card-option">
             <input type="radio" name="c_theme" value="farman">
 
             <div class="theme-title-text">📜 Royal Mughal Shahi Farman</div>
@@ -1482,17 +1487,23 @@
 
     <div class="modal-card">
 
-      <h2>✦ Details Submitted! ✦</h2>
+      <h2 id="modalTitleHeading">✦ Order Placed Successfully! ✦</h2>
 
       <div style="font-family:var(--urdu); font-size:1.2rem; color:var(--gold-primary); margin-bottom:12px; direction:rtl;">
 
-        آپ کی شادی کارڈ کی تفصیلات کامیابی سے درج ہو چکی ہیں!
+        آپ کا آرڈر کامیابی سے درج ہو چکا ہے اور تفصیلات کاپی ہو چکی ہیں!
 
       </div>
 
-      <p id="modalOrderSummary">
+      <div style="background:rgba(37, 211, 102, 0.14); border:1px solid rgba(72, 230, 132, 0.5); border-radius:10px; padding:12px 14px; margin-bottom:14px; color:#d7ffe4; font-size:0.88rem; line-height:1.55;">
+        ✅ <strong>Order Placed Successfully!</strong><br>
+        • Sent directly to <strong>Admin Panel</strong> &amp; <strong>WhatsApp</strong><br>
+        • 📋 <strong>Order summary is copied in your clipboard!</strong>
+      </div>
 
-        Click below to send your details directly to our design team on WhatsApp. We will start preparing your royal invitation immediately!
+      <p id="modalOrderSummary" style="margin-bottom:1.1rem;">
+
+        Your order has been saved to our Admin Studio and your complete order summary is copied in your clipboard. If WhatsApp did not open automatically, tap below:
 
       </p>
 
@@ -1675,7 +1686,12 @@
     function buildMealAndSubScheduleHtml(type, side, initData = {}) {
       const isBride = side === "bride";
       const mealType = initData.mealType || "dinner";
-      const mealTime = initData.mealTime || initData.lunch || initData.dinner || "";
+      const defaultMealTimeByType = mealType === "lunch"
+        ? "2:30 PM"
+        : (mealType === "hitea"
+          ? "5:30 PM"
+          : (type === "walima" ? "8:45 PM" : (type === "nikkah" ? "5:30 PM" : (type === "engagement" ? "8:00 PM" : "9:30 PM"))));
+      const mealTime = initData.mealTime || initData.lunch || initData.dinner || defaultMealTimeByType;
 
       let specificMilestonesHtml = "";
       if (type === "barat") {
@@ -1684,12 +1700,12 @@
           <div class="groom-barat-times-wrap" style="display:${isBride ? 'none' : 'block'}; margin-bottom:10px;">
             <div class="form-grid-2">
               <div class="form-field-group" style="margin-bottom:8px;">
-                <label class="form-field-label"><span>Sehra Bandi Time <span class="optional-pill">Optional</span></span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
-                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:30 PM" value="${initData.sehraTime || ''}">
+                <label class="form-field-label"><span>Sehra Bandi Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
+                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:30 PM" value="${initData.sehraTime || '4:30 PM'}">
               </div>
               <div class="form-field-group" style="margin-bottom:8px;">
-                <label class="form-field-label"><span>Departure of Baraat <span class="optional-pill">Optional</span></span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
-                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:30 PM" value="${initData.departureTime || ''}">
+                <label class="form-field-label"><span>Departure of Baraat <span class="optional-pill">Suggested</span></span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
+                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:30 PM" value="${initData.departureTime || '5:30 PM'}">
               </div>
             </div>
           </div>
@@ -1697,29 +1713,31 @@
           <!-- Shared / Bride & Groom Ceremony Milestones -->
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Baraat Arrival Time <span class="optional-pill">Optional</span></span><span class="urdu-label">آمدِ بارات کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:30 PM" value="${initData.arrival || ''}">
+              <label class="form-field-label"><span>Baraat Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">آمدِ بارات کا وقت</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:30 PM" value="${initData.arrival || '7:30 PM'}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Nikkah Time <span class="optional-pill">Optional</span></span><span class="urdu-label">عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 8:30 PM" value="${initData.nikkah || ''}">
+              <label class="form-field-label"><span>Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">عقدِ نکاح کا وقت</span></label>
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 8:30 PM" value="${initData.nikkah || '8:30 PM'}">
             </div>
           </div>
           <div class="form-field-group" style="margin-bottom:10px;">
-            <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Optional</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
-            <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 10:30 PM" value="${initData.rukhsati || ''}">
+            <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
+            <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 10:30 PM" value="${initData.rukhsati || '10:30 PM'}">
           </div>
         `;
       } else if (type === "walima") {
+        const defWalimaArrival = mealType === "lunch" ? "1:30 PM" : "7:00 PM";
+        const defWalimaDua = mealType === "lunch" ? "4:00 PM" : "10:30 PM";
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Guest Arrival / Reception <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی آمد کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || ''}">
+              <label class="form-field-label"><span>Guest Arrival / Reception <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد کا وقت</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || defWalimaArrival}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Optional</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
-              <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:30 PM" value="${initData.duaTime || ''}">
+              <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
+              <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:30 PM" value="${initData.duaTime || defWalimaDua}">
             </div>
           </div>
         `;
@@ -1727,12 +1745,12 @@
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Guest Arrival Time <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی آمد</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:00 PM" value="${initData.arrival || ''}">
+              <label class="form-field-label"><span>Guest Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:00 PM" value="${initData.arrival || '7:00 PM'}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Rasm-e-Hina Time <span class="optional-pill">Optional</span></span><span class="urdu-label">رسمِ حنا کا وقت</span></label>
-              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 8:30 PM" value="${initData.rasmTime || ''}">
+              <label class="form-field-label"><span>Rasm-e-Hina Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رسمِ حنا کا وقت</span></label>
+              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 8:30 PM" value="${initData.rasmTime || '8:30 PM'}">
             </div>
           </div>
         `;
@@ -1740,12 +1758,12 @@
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Guest Gathering Time <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی تشریف آوری</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 4:00 PM" value="${initData.arrival || ''}">
+              <label class="form-field-label"><span>Guest Gathering Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی تشریف آوری</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 4:00 PM" value="${initData.arrival || '4:00 PM'}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Khutbah & Nikkah Time <span class="optional-pill">Optional</span></span><span class="urdu-label">خطبہ و عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 4:45 PM" value="${initData.nikkah || ''}">
+              <label class="form-field-label"><span>Khutbah & Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">خطبہ و عقدِ نکاح کا وقت</span></label>
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 4:45 PM" value="${initData.nikkah || '4:45 PM'}">
             </div>
           </div>
         `;
@@ -1836,8 +1854,8 @@
               <input class="form-input evt-date" type="date" value="${initData.date || ''}">
             </div>
             <div class="form-field-group">
-              <label class="form-field-label"><span>Main Event Time <span class="optional-pill">Optional</span></span><span class="urdu-label">وقت (اختیاری)</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 8:00 PM" value="${initData.time || ''}">
+              <label class="form-field-label"><span>Main Event Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">تقریب کا وقت</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 8:00 PM" value="${initData.time || meta.defaultTime}">
             </div>
           </div>
 
@@ -1856,8 +1874,8 @@
 
           <div class="form-grid-2" style="margin-bottom:0;">
             <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+              <label class="form-field-label"><span>Google Maps Link *</span><span class="urdu-label">گوگل میپس لنک (لازمی)</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." required value="${initData.mapUrl || ''}">
             </div>
             <div class="form-field-group">
               <label class="form-field-label"><span>WhatsApp RSVP Number <span class="optional-pill">Optional</span></span><span class="urdu-label">واٹس ایپ نمبر</span></label>
@@ -1903,8 +1921,8 @@
 
           <div class="form-grid-2" style="margin-bottom:0;">
             <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+              <label class="form-field-label"><span>Google Maps Link *</span><span class="urdu-label">گوگل میپس لنک (لازمی)</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." required value="${initData.mapUrl || ''}">
             </div>
             <div class="form-field-group">
               <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
@@ -1942,17 +1960,49 @@
       // Hook up "+ Add Custom Sub-Schedule Time" button
       const addSubBtn = card.querySelector(".add-sub-row-btn");
       const subRowsList = card.querySelector(".custom-sub-rows-list");
-      function appendCustomSubRow(timeVal = "", labelVal = "") {
+      function appendCustomSubRow(timeVal = "8:00 PM", labelVal = "") {
         if (!subRowsList) return;
         const row = document.createElement("div");
         row.className = "custom-sub-row";
         row.innerHTML = `
-          <input type="text" class="form-input sub-time-inp" placeholder="Time (e.g. 2:00 PM)" value="${timeVal}">
+          <input type="text" class="form-input sub-time-inp" placeholder="Time (e.g. 8:00 PM)" value="${timeVal}">
           <input type="text" class="form-input sub-label-inp" placeholder="Detail (e.g. Lunch, Arrival, Dua, Qawwali)" value="${labelVal}">
           <button type="button" class="remove-sub-row-btn" title="Remove row">✕</button>
         `;
         row.querySelector(".remove-sub-row-btn").addEventListener("click", () => row.remove());
         subRowsList.appendChild(row);
+      }
+
+      // Auto-adjust suggested meal & Walima times when switching between Dinner, Lunch, and Hi-Tea
+      const mealTypeSel = card.querySelector(".evt-meal-type");
+      const mealTimeInp = card.querySelector(".evt-meal-time");
+      if (mealTypeSel && mealTimeInp) {
+        mealTypeSel.addEventListener("change", () => {
+          const mt = mealTypeSel.value;
+          if (mt === "lunch") {
+            mealTimeInp.value = "2:30 PM";
+            if (type === "walima") {
+              const mainT = card.querySelector(".evt-time");
+              const arrT = card.querySelector(".evt-b-arrival");
+              const duaT = card.querySelector(".evt-dua-time");
+              if (mainT && (mainT.value === "7:30 PM" || !mainT.value)) mainT.value = "1:30 PM";
+              if (arrT && (arrT.value === "7:00 PM" || !arrT.value)) arrT.value = "1:30 PM";
+              if (duaT && (duaT.value === "10:30 PM" || !duaT.value)) duaT.value = "4:00 PM";
+            }
+          } else if (mt === "hitea") {
+            mealTimeInp.value = "5:30 PM";
+          } else {
+            mealTimeInp.value = type === "walima" ? "8:45 PM" : "9:30 PM";
+            if (type === "walima") {
+              const mainT = card.querySelector(".evt-time");
+              const arrT = card.querySelector(".evt-b-arrival");
+              const duaT = card.querySelector(".evt-dua-time");
+              if (mainT && (mainT.value === "1:30 PM" || !mainT.value)) mainT.value = "7:30 PM";
+              if (arrT && (arrT.value === "1:30 PM" || !arrT.value)) arrT.value = "7:00 PM";
+              if (duaT && (duaT.value === "4:00 PM" || !duaT.value)) duaT.value = "10:30 PM";
+            }
+          }
+        });
       }
 
       if (addSubBtn) {
@@ -2337,6 +2387,244 @@
         if (notes) eventsWaText += `\n• Special Notes: ${notes}`;
       });
 
+
+    /* ==============================================================
+       AUTOMATIC ENGLISH-TO-URDU NAME & HOST TRANSLITERATION ENGINE
+       ============================================================== */
+    const URDU_WORD_DICT = {
+      // Honorifics, Titles & Connecting Words
+      "mr": "جناب", "mr.": "جناب", "mrs": "محترمہ", "mrs.": "محترمہ",
+      "ms": "محترمہ", "ms.": "محترمہ", "miss": "محترمہ",
+      "dr": "ڈاکٹر", "dr.": "ڈاکٹر", "engr": "انجینئر", "engr.": "انجینئر",
+      "alhaj": "الحاج", "al-haj": "الحاج", "haji": "حاجی",
+      "hafiz": "حافظ", "qari": "قاری", "maulana": "مولانا", "allama": "علامہ",
+      "prof": "پروفیسر", "prof.": "پروفیسر", "capt": "کیپٹن", "capt.": "کیپٹن",
+      "maj": "میجر", "maj.": "میجر", "col": "کرنل", "col.": "کرنل",
+      "brig": "بریگیڈیئر", "brig.": "بریگیڈیئر", "gen": "جنرل", "gen.": "جنرل",
+      "ch": "چوہدری", "ch.": "چوہدری", "chaudhry": "چوہدری", "chaudhary": "چوہدری", "chowdhry": "چوہدری",
+      "mian": "میاں", "syed": "سید", "syeda": "سیدہ", "sayed": "سید",
+      "sardar": "سردار", "nawab": "نواب", "mir": "میر", "mirza": "مرزا",
+      "malik": "ملک", "sheikh": "شیخ", "shaikh": "شیخ", "khawaja": "خواجہ", "khwaja": "خواجہ",
+      "raja": "راجہ", "rana": "رانا", "rao": "راؤ", "makhdoom": "مخدوم",
+      "pir": "پیر", "peer": "پیر", "begum": "بیگم", "bano": "بانو", "bibi": "بی بی",
+      "and": "و", "&": "و", "with": "ہمراہ", "weds": "ہمراہ",
+      "family": "فیملی", "parents": "والدین", "groom's": "دولہا کے", "bride's": "دلہن کے",
+      "groom": "دولہا", "bride": "دلہن", "son": "فرزند", "daughter": "دختر", "of": "آف",
+      "late": "مرحوم", "(late)": "(مرحوم)",
+
+      // Common Male & Female Pakistani Names & Surnames
+      "muhammad": "محمد", "mohammad": "محمد", "mohammed": "محمد", "md": "محمد", "m.": "محمد",
+      "ahmed": "احمد", "ahmad": "احمد", "ali": "علی", "hassan": "حسن", "hasan": "حسن",
+      "hussain": "حسین", "husain": "حسین", "usama": "اسامہ", "osama": "اسامہ",
+      "usman": "عثمان", "umer": "عمر", "umar": "عمر", "omer": "عمر", "farooq": "فاروق", "faruk": "فاروق",
+      "abubakar": "ابوبکر", "abu": "ابو", "bakar": "بکر", "bakr": "بکر",
+      "hamza": "حمزہ", "bilal": "بلال", "zain": "زین", "zainab": "زینب", "zaynab": "زینب",
+      "fatima": "فاطمہ", "fatimah": "فاطمہ", "zahra": "زہراء", "zehra": "زہرا", "zohra": "زہرہ",
+      "ayesha": "عائشہ", "aisha": "عائشہ", "ashba": "عشبہ", "khadija": "خدیجہ", "khadijah": "خدیجہ",
+      "maryam": "مریم", "mariam": "مریم", "maria": "ماریہ", "amna": "آمنہ", "amina": "آمنہ",
+      "haleema": "حلیمہ", "halima": "حلیمہ", "sadia": "سعدیہ", "saadia": "سعدیہ",
+      "sana": "ثناء", "sara": "سارہ", "sarah": "سارہ", "zara": "زارا", "zoya": "زویا",
+      "hira": "حرا", "iqra": "اقراء", "noor": "نور", "nur": "نور", "iman": "ایمان", "emaan": "ایمان",
+      "maham": "ماہم", "maheen": "ماہین", "mahreen": "مہرین", "mehreen": "مہرین",
+      "momina": "مومنہ", "muniba": "منیبہ", "madiha": "مدیحہ", "maleeha": "ملیحہ", "maliha": "ملیحہ",
+      "nimra": "نمرہ", "namra": "نمرہ", "kinza": "کنزہ", "kanza": "کنزہ",
+      "areeba": "عریبہ", "ariba": "عریبہ", "aliza": "علیزہ", "alizeh": "علیزے",
+      "anaya": "عنایہ", "inaya": "عنایہ", "inayat": "عنایت", "hania": "ہانیہ", "haniya": "ہانیہ",
+      "dua": "دعا", "duaa": "دعا", "fiza": "فضا", "fizza": "فضہ", "rabia": "رابعہ",
+      "bushra": "بشریٰ", "uzma": "عظمیٰ", "asma": "اسماء", "salma": "سلمیٰ", "lubna": "لبنیٰ",
+      "aqsa": "اقصیٰ", "sidra": "سدرہ", "hajra": "ہاجرہ", "humaira": "حمیرا", "sumaira": "سمیرا",
+      "samina": "ثمینہ", "robina": "روبینہ", "rubina": "روبینہ", "shabana": "شبانہ", "farzana": "فرزانہ",
+      "rukhshanda": "رخشندہ", "rukhsana": "رخسانہ", "shazia": "شازیہ", "nazia": "نازیہ", "fouzia": "فوزیہ",
+      "faiza": "فائزہ", "farah": "فرح", "farhana": "فرحانہ", "naila": "نائلہ", "nabila": "نبیلہ",
+      "tahira": "طاہرہ", "tayyaba": "طیبہ", "tooba": "طوبیٰ", "tuba": "طوبیٰ",
+      "javeria": "جویریہ", "juwairiya": "جویریہ", "hafsa": "حفصہ", "ruqayya": "رقیہ", "sumayya": "سمیہ",
+      "kiran": "کرن", "komal": "کومل", "neha": "نیہا", "nida": "ندا", "rida": "ردا", "huda": "ہدیٰ",
+      "laiba": "لائبہ", "layba": "لائبہ", "minahil": "مناہل", "manahil": "مناہل",
+      "eman": "ایمان", " Jannat": "جنت", "jannat": "جنت", "aylin": "آئلن", "ayla": "آئلہ",
+      "mahnoor": "ماہ نور", "gul": "گل", "parveen": "پروین", "nasreen": "نسرین", "yasmeen": "یاسمین", "yasmin": "یاسمین",
+      "armeen": "ارمین", "afsheen": "افشین", "ambreen": "عنبرین", "samreen": "ثمرین", "shireen": "شیریں",
+      "sehar": "سحر", "sahar": "سحر", "mehwish": "مہوش", "beenish": "بینش", "danish": "دانش",
+      "komal": "کومل", "sanam": "صنم", "sadaf": "صدف", "shafaq": "شفق", "shanza": "شانزے", "shanzay": "شانزے",
+      "urooj": "عروج", "areej": "اریج", "anwsha": "انوشہ", "anosha": "انوشہ", "anousha": "انوشہ",
+
+      // More Male Names & Surnames
+      "tariq": "طارق", "mahmood": "محمود", "mehmood": "محمود", "masood": "مسعود", "maqsud": "مقصود", "maqsood": "مقصود",
+      "raza": "رضا", "riaz": "ریاض", "fayyaz": "فیاض", "imtiaz": "امتیاز", "mumtaz": "ممتاز", "aijaz": "اعجاز", "ejaz": "اعجاز",
+      "ijaz": "اعجاز", "sarfaraz": "سرفراز", "sarfraz": "سرفراز", "faraz": "فراز", "sheraz": "شیراز", "shiraz": "شیراز",
+      "shahbaz": "شہباز", "nawaz": "نواز", "shahid": "شاہد", "zahid": "زاہد", "rashid": "راشد", "arshad": "ارشاد",
+      "khalid": "خالد", "walid": "ولید", "waleed": "ولید", "majid": "ماجد", "sajid": "ساجد", "wajid": "واجد", "abid": "عابد", "hamid": "حامد",
+      "asif": "آصف", "atif": "عاطف", "kashif": "کاشف", "wasif": "واصف", "saqib": "ثاقب", "aqib": "عاقب", "talib": "طالب",
+      "amir": "عامر", "aamir": "عامر", "yasir": "یاسر", "nasir": "ناصر", "tahir": "طاہر", "zahir": "ظاہر", "qadir": "قادر",
+      "qadeer": "قدیر", "bashir": "بشیر", "munir": "منیر", "muneer": "منیر", "kabir": "کبیر", "shabbir": "شبیر", "saghir": "صغیر",
+      "tanveer": "تنویر", "tanvir": "تنویر", "tauqeer": "توقیر", "zaheer": "ظہیر", "sameer": "سمیر", "samir": "سمیر",
+      "salman": "سلمان", "suleman": "سلیمان", "sulaiman": "سلیمان", "imran": "عمران", "kamran": "کامران", "adnan": "عدنان",
+      "irfan": "عرفان", "rizwan": "رضوان", "furqan": "فرقان", "burhan": "برہان", "subhan": "سبحان", "rehan": "ریحان",
+      "faizan": "فیضان", "zeeshan": "ذیشان", "zishan": "ذیشان", "awais": "اویس", "owais": "اویس", "zubair": "زبیر", "umair": "عمیر", "uzair": "عزیر",
+      "junaid": "جنید", "ubaid": "عبید", "suhaib": "صہیب", "sohaib": "صہیب", "zohaib": "زوہیب", "zuhaib": "زوہیب", "shoaib": "شعیب",
+      "fahad": "فہد", "saad": "سعد", "asad": "اسد", "ahad": "احد", "samad": "صمد", "jawad": "جواد", "fawad": "فواد", "fuad": "فواد",
+      "haider": "حیدر", "hayder": "حیدر", "qaiser": "قیصر", "azhar": "اظہر", "mazhar": "مظہر", "athar": "اطہر", "fakhar": "فخر", "zafar": "ظفر",
+      "akbar": "اکبر", "asghar": "اصغر", "anwar": "انور", "sarwar": "سرور", "munawar": "منور", "dilawar": "دلاور", "khawar": "خاور",
+      "babar": "بابر", "babur": "بابر", "sikandar": "سکندر", "qalandar": "قلندر", "safdar": "صفدر",
+      "haris": "حارث", "waris": "وارث", "faris": "فارس", "moiz": "معیز", "muiz": "معیز", "ramiz": "رمیز", "rameez": "رمیز", "hafeez": "حفیظ", "aziz": "عزیز",
+      "rafiq": "رفیق", "shafiq": "شفیق", "tauseef": "توصیف", "hanif": "حنیف", "latif": "لطیف", "sharif": "شریف", "arif": "عارف",
+      "saleem": "سلیم", "salim": "سلیم", "kaleem": "کلیم", "nadeem": "ندیم", "naeem": "نعیم", "waseem": "وسیم", "wasim": "وسیم", "azeem": "عظیم", "hakim": "حکیم",
+      "rahim": "رحیم", "raheem": "رحیم", "karim": "کریم", "kareem": "کریم", "faheem": "فہیم", "fahim": "فہیم", "shamim": "شمیم",
+      "ibrahim": "ابراہیم", "ismail": "اسماعیل", "ishaq": "اسحاق", "yaqoob": "یعقوب", "yousaf": "یوسف", "yousuf": "یوسف", "yusuf": "یوسف",
+      "yunus": "یونس", "younis": "یونس", "dawood": "داؤد", "daud": "داؤد", "haroon": "ہارون", "harun": "ہارون", "musa": "موسیٰ", "moosa": "موسیٰ", "isa": "عیسیٰ", "eesa": "عیسیٰ",
+      "yahya": "یحییٰ", "zakariya": "زکریا", "idrees": "ادریس", "ayub": "ایوب", "ayyub": "ایوب", "luqman": "لقمان",
+      "talha": "طلحہ", "huzaifa": "حذیفہ", "khuzaima": "خزیمہ", "usman": "عثمان", "affan": "عفان", "sufyan": "سفیان", "marwan": "مروان",
+      "numan": "نعمان", "noman": "نعمان", "salman": "سلمان", "arham": "ارحم", "arhaan": "ارحان", "arhan": "ارحان", "ayan": "عیان", "ayaan": "عیان",
+      "rayyan": "ریان", "rayan": "ریان", "shayan": "شایان", "azlan": "ازلان", "arsalan": "ارسلان", "arslan": "ارسلان", "armaghan": "ارمغان",
+      "rohan": "روہن", "ruhan": "روحان", "rohaan": "روحان", "daniyal": "دانیال", "danial": "دانیال", "mikail": "میکائیل", "jibrail": "جبرائیل",
+      "abdullah": "عبداللہ", "abdul": "عبد", "rehman": "الرحمٰن", "rahman": "الرحمٰن", "raheem": "الرحیم", "qadir": "القادر", "razzaq": "الرزاق",
+      "ghaffar": "الغفار", "sattar": "الستار", "wahab": "الوہاب", "wahid": "الواحد", "majid": "المجید", "hamid": "الحمید", "hadi": "الہادی",
+      "bari": "الباری", "mannan": "المنان", "subhan": "سبحان", "mustafa": "مصطفیٰ", "murtaza": "مرتضیٰ", "mujtaba": "مجتبیٰ",
+      "waqas": "وقاص", "waqar": "وقار", "abrar": "ابرار", "israr": "اسرار", "iftikhar": "افتخار", "zulfiqar": "ذوالفقار", "intizar": "انتظار",
+      "iqbal": "اقبال", "afzal": "افضل", "ajmal": "اجمل", "akmal": "اکمل", "jamal": "جمال", "kamal": "کمال", "jalal": "جلال", "hilal": "ہلال",
+      "faisal": "فیصل", "sohail": "سہیل", "suhail": "سہیل", "shakeel": "شکیل", "adeel": "عدیل", "aqeel": "عقیل", "nabeel": "نبیل", "jamil": "جمیل", "jameel": "جمیل",
+      "khalil": "خلیل", "jalil": "جلیل", "wakil": "وکیل", "sharjeel": "شرجیل", "raheel": "راحیل",
+      "shehzad": "شہزاد", "shahzad": "شہزاد", "behzad": "بہزاد", "faryad": "فریاد", " sajad": "سجاد", "sajjad": "سجاد", "amjad": "امجد", "asjad": "اسجد",
+      "sarmad": "سرمد", "murad": "مراد", "ziyad": "زیاد", "ashfaq": "اشفاق", "ishtiaq": "اشتیاق", "mushtaq": "مشتاق", "altaf": "الطاف", "ausaf": "اوصاف",
+      "azam": "اعظم", "moazzam": "معظم", "akram": "اکرم", "aslam": "اسلم", "arzam": "ارزم", "hashim": "ہاشم", "qasim": "قاسم", "asim": "عاصم", "hatim": "حاتم",
+      "kazim": "کاظم", "nazim": "ناظم", "azim": "عظیم", "basim": "باسم", "jasim": "جاسم",
+      "mansoor": "منصور", "manzoor": "منظور", "mashkoor": "مشکور", "shakoor": "شکور", "saboor": "صبور", "ghafoor": "غفور", "zahoor": "ظہور", "taimoor": "تیمور", "taimur": "تیمور",
+      "jahangir": "جہانگیر", "alamgir": "عالمگیر", "dastgir": "دستگیر", "tauqir": "توقیر",
+      "ehsan": "احسان", "ihsan": "احسان", "ahsan": "احسن", "mohsin": "محسن", "tahsin": "تحسین", "yasin": "یٰسین", "yaseen": "یٰسین", "amin": "امین", "ameen": "امین",
+      "matin": "متین", "mateen": "متین", "mubeen": "مبین", "mobin": "مبین",
+      "saeed": "سعید", "rasheed": "رشید", "waheed": "وحید", "hameed": "حمید", "majeed": "مجید", "naveed": "نوید", "navid": "نوید", "javed": "جاوید", "javaid": "جاوید",
+      "fareed": "فرید", "farid": "فرید", "waleed": "ولید", "shahid": "شاہد", "khurshid": "خورشید", "jamshaid": "جمشید", "jamshed": "جمشید", "tauheed": "توحید",
+      "sikander": "سکندر", "haider": "حیدر", "babar": "بابر", "ashar": "عشر", "ammar": "عمار", "yasir": "یاسر",
+
+      // Surnames / Castes / Tribes
+      "khan": "خان", "qureshi": "قریشی", "siddiqui": "صدیقی", "siddiqi": "صدیقی", "farooqi": "فاروقی", "usmani": "عثمانی",
+      "ansari": "انصاری", "hashmi": "ہاشمی", "gilani": "گیلانی", "geelani": "گیلانی", "jeelani": "جیلانی", "bukhari": "بخاری",
+      "naqvi": "نقوی", "rizvi": "رضوی", "zaidi": "زیدی", "kazmi": "کاظمی", "jafri": "جعفری", "askari": "عسکری", "chishti": "چشتی",
+      "nizami": "نظامی", "qadri": "قادری", "attari": "عطاری", "madani": "مدنی", "makki": "مکی", "nomani": "نعمانی",
+      "abbasi": "عباسی", "leghari": "لغاری", "mazari": "مزاری", "zardari": "زرداری", "bhutto": "بھٹو", "talpur": "تالپور",
+      "soomro": "سومرو", "memon": "میمن", "khatri": "کھتری", "dawoodi": "داؤدی", "bohra": "بوہرا",
+      "butt": "بٹ", "bhatti": "بھٹی", "dar": "ڈار", "lone": "لون", "wain": "وئیں", "wani": "وانی", "mir": "میر",
+      "cheema": "چیمہ", "chattha": "چٹھہ", "bajwa": "باجوہ", "warraich": "وڑائچ", "tarar": "تارڑ", "virk": "ورک",
+      "sandhu": "سندھو", "sidhu": "سدھو", "gill": "گل", "dillon": "ڈھلوں", "dhillon": "ڈھلوں", "randhawa": "رندھاوا",
+      "goraya": "گورایہ", "kahloon": "کاہلوں", "sahi": "ساہی", "gondal": "گونڈل", "ranjha": "رانجھا", "haral": "ہرل",
+      "sial": "سیال", "tiwana": "ٹوانہ", "noon": "نون", "wana": "وانہ", "dasti": "دستی", "khosa": "کھوسہ",
+      "bugti": "بگٹی", "marri": "مری", "mengal": "مینگل", "bizenjo": "بزنجو", "raisani": "رئیسانی", "jamali": "جمالی",
+      "afridi": "آفریدی", "shinwari": "شنواری", "yousafzai": "یوسفزئی", "khattak": "خٹک", "bangash": "بنگش",
+      "marwat": "مروت", "wazir": "وزیر", "mehsud": "محسود", "tareen": "ترین", "kakakhel": "کاکاخیل", "durrani": "درانی", "niazi": "نیازی",
+      "lodhi": "لودھی", "sur": "سوری", "ghauri": "غوری", "ghaznavi": "غزنوی", "mughal": "مغل", "beg": "بیگ", "baig": "بیگ",
+      "pasha": "پاشا", "awan": "اعوان", "khokhar": "کھوکھر", "gujjar": "گجر", "gorsi": "گورسی", "kamboh": "کمبوہ",
+      "arain": "آرائیں", "rajput": "راجپوت", "jutt": "جٹ", "jat": "جٹ", "janjua": "جنجوعہ", "minhas": "منہاس", "ghakhar": "گکھڑ",
+      "abbasi": "عباسی", "tanoli": "تنولی", "swati": "سواتی", "jadun": "جدون", "jadoon": "جدون",
+      "sehgal": "سہگل", "saigol": "سہگل", "chawla": "چاولہ", "vohra": "وہرہ", "kapoor": "کپور", "sethi": "سیٹھی", "puri": "پوری"
+    };
+
+    function phoneticWordToUrdu(word) {
+      if (!word) return "";
+      const clean = word.replace(/[^a-zA-Z']/g, "");
+      if (!clean) return word;
+      const lower = clean.toLowerCase();
+      if (URDU_WORD_DICT[lower]) return URDU_WORD_DICT[lower];
+
+      // Handle possessive 's (e.g. "Daniyal's" -> "دانیال کے")
+      if (lower.endsWith("'s")) {
+        const base = lower.slice(0, -2);
+        const baseUr = URDU_WORD_DICT[base] || phoneticWordToUrdu(base);
+        return baseUr + " کے";
+      }
+
+      let s = lower;
+      let out = "";
+      let i = 0;
+
+      // Initial vowel handling
+      if (s.startsWith("aa") || s.startsWith("a")) {
+        if (s.startsWith("aa")) { out += "آ"; i = 2; }
+        else if (s.startsWith("ai") || s.startsWith("ay")) { out += "اے"; i = 2; }
+        else if (s.startsWith("au") || s.startsWith("aw")) { out += "او"; i = 2; }
+        else { out += "ا"; i = 1; }
+      } else if (s.startsWith("ee") || s.startsWith("i") || s.startsWith("e")) {
+        out += "ا";
+        i = s.startsWith("ee") ? 2 : 1;
+      } else if (s.startsWith("oo") || s.startsWith("u") || s.startsWith("o")) {
+        out += "او";
+        i = s.startsWith("oo") ? 2 : 1;
+      }
+
+      const digraphs = {
+        "kh": "خ", "gh": "غ", "sh": "ش", "ch": "چ", "ph": "پھ",
+        "th": "تھ", "dh": "دھ", "bh": "بھ", "jh": "جھ", "rh": "ڑھ",
+        "qu": "ق", "ck": "ک", "aa": "ا", "ee": "ی", "oo": "و",
+        "ai": "ے", "ay": "ے", "au": "و", "ou": "و"
+      };
+      const singles = {
+        "b": "ب", "p": "پ", "t": "ت", "j": "ج", "d": "د", "r": "ر",
+        "z": "ز", "s": "س", "f": "ف", "q": "ق", "k": "ک", "g": "گ",
+        "l": "ل", "m": "م", "n": "ن", "w": "و", "v": "و", "h": "ہ",
+        "y": "ی", "c": "ک", "x": "کس",
+        "a": "ا", "e": "ی", "i": "ی", "o": "و", "u": ""
+      };
+
+      while (i < s.length) {
+        const rem = s.slice(i);
+        // End of word special cases
+        if (rem === "ah" || rem === "a") {
+          out += "ہ";
+          break;
+        }
+        if (rem === "ia" || rem === "iya") {
+          out += "یہ";
+          break;
+        }
+        const two = s.slice(i, i + 2);
+        if (digraphs[two] !== undefined) {
+          out += digraphs[two];
+          i += 2;
+          continue;
+        }
+        const one = s[i];
+        // Skip duplicate consecutive consonants
+        if (i + 1 < s.length && s[i + 1] === one && !"aeiou".includes(one)) {
+          i += 1;
+          continue;
+        }
+        // Short medial vowels 'i'/'e'/'u' inside consonant clusters
+        if ((one === "i" || one === "e") && i > 0 && i < s.length - 1) {
+          i += 1;
+          continue;
+        }
+        out += singles[one] !== undefined ? singles[one] : "";
+        i += 1;
+      }
+      return out || word;
+    }
+
+    function transliterateToUrdu(text) {
+      if (!text || !text.trim()) return "";
+      const raw = text.trim();
+      // If text already contains Urdu/Arabic script characters, return as-is
+      if (/[\u0600-\u06FF]/.test(raw)) return raw;
+
+      // Phrase-level replacements first
+      let normalized = raw
+        .replace(/Mr\.\s*&\s*Mrs\./gi, "جناب و محترمہ")
+        .replace(/Mr\s*&\s*Mrs/gi, "جناب و محترمہ")
+        .replace(/Chaudhry\s*&\s*Begum/gi, "چوہدری و بیگم")
+        .replace(/\(Bride's Parents\)/gi, "(والدینِ دلہن)")
+        .replace(/\(Groom's Parents\)/gi, "(والدینِ دولہا)")
+        .replace(/Bride's Parents/gi, "والدینِ دلہن")
+        .replace(/Groom's Parents/gi, "والدینِ دولہا");
+
+      const tokens = normalized.split(/(\s+|[(),./&-])/);
+      return tokens.map(tok => {
+        if (!tok || /^\s+$/.test(tok)) return tok;
+        if (/^[\u0600-\u06FF]+$/.test(tok)) return tok;
+        if (tok === "&") return "و";
+        if (/^[(),./-]$/.test(tok)) return tok;
+        const lower = tok.toLowerCase();
+        if (URDU_WORD_DICT[lower]) return URDU_WORD_DICT[lower];
+        return phoneticWordToUrdu(tok);
+      }).join("").replace(/\s+/g, " ").trim();
+    }
+
       const orderData = {
         id: "order_" + Date.now(),
         status: "pending",
@@ -2346,12 +2634,16 @@
         cardSide: side,
         theme: themeValue,
         groom,
-        groomUrdu: "",
+        groomUrdu: transliterateToUrdu(groom),
         bride,
-        brideUrdu: "",
+        brideUrdu: transliterateToUrdu(bride),
         host,
-        hostUrdu: "",
-        welcomeHosts: clientHosts.filter(h => h.name && h.phone),
+        hostUrdu: transliterateToUrdu(host),
+        welcomeHosts: clientHosts.filter(h => h.name && h.phone).map(h => ({
+          name: h.name,
+          nameUrdu: h.nameUrdu || transliterateToUrdu(h.name),
+          phone: h.phone
+        })),
         eventsList: eventsList,
         // Backward-compatibility for admin studio
         events: {
@@ -2394,14 +2686,44 @@ ${eventsWaText}${welcomingWa}`;
 
       const waUrl = `https://wa.me/923298120981?text=${encodeURIComponent(waText)}`;
 
-      // Update Modal
+      // 1. Copy Order Summary to Clipboard automatically
+      function copyTextToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+      function fallbackCopy(text) {
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch (err) {}
+      }
+      copyTextToClipboard(waText);
+
+      // 2. Update Modal & Show Confirmation
       modalWaBtn.href = waUrl;
       modalCopyBtn.onclick = () => {
-        navigator.clipboard.writeText(waText);
+        copyTextToClipboard(waText);
         showToast("Order summary copied to clipboard!");
       };
 
       modal.classList.add("show");
+      showToast("✅ Order placed! Sent to Admin Panel & copied to clipboard.");
+
+      // 3. Proceed directly to WhatsApp
+      setTimeout(() => {
+        try {
+          window.open(waUrl, "_blank");
+        } catch (err) {}
+      }, 350);
     });
 
     modalCloseBtn.addEventListener("click", () => {

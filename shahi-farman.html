@@ -4352,35 +4352,33 @@
 
               <!-- Ceremonies as Wax Stamped Chapters -->
               <div class="farman-chapters-wrap">
-                <!-- Mehndi -->
-                <div class="farman-chapter-card">
-                  <div class="farman-chapter-badge">
-                    <span>🌸</span>
-                    <span>${currentLang === "ur" ? "رسمِ حنا (مہندی)" : "Mehndi (Rasm-e-Hina)"}</span>
-                  </div>
-                  <div class="farman-chapter-date-row">📅 ${mehndiDateStr} | ${mehndiTimeStr}</div>
-                  <div class="farman-chapter-venue-row">📍 ${mehndiVenueStr}</div>
-                </div>
-
-                <!-- Baraat -->
-                <div class="farman-chapter-card">
-                  <div class="farman-chapter-badge">
-                    <span>👑</span>
-                    <span>${currentLang === "ur" ? (isBrideCard ? "تقریبِ بارات و رخصتی" : "تقریبِ بارات") : (isBrideCard ? "Baraat & Rukhsati" : "Baraat Ceremony")}</span>
-                  </div>
-                  <div class="farman-chapter-date-row">📅 ${baraatDateStr} | ${baraatTimeStr}</div>
-                  <div class="farman-chapter-venue-row">📍 ${baraatVenueStr}</div>
-                </div>
-
-                <!-- Walima -->
-                <div class="farman-chapter-card">
-                  <div class="farman-chapter-badge">
-                    <span>✨</span>
-                    <span>${currentLang === "ur" ? "دعوتِ ولیمہ" : "Dawat-e-Walima Reception"}</span>
-                  </div>
-                  <div class="farman-chapter-date-row">📅 ${walimaDateStr} | ${walimaTimeStr}</div>
-                  <div class="farman-chapter-venue-row">📍 ${walimaVenueStr}</div>
-                </div>
+                ${getActiveEventKeys(getUrlState().card).map(evKey => {
+                  const evObj = (WEDDING && WEDDING.events && WEDDING.events[evKey]) || {};
+                  const badgeIcon = evKey === "mehndi" ? "🌸" : (evKey === "baraat" ? "👑" : "✨");
+                  const badgeTitle = evKey === "mehndi"
+                    ? (currentLang === "ur" ? "رسمِ حنا (مہندی)" : "Mehndi (Rasm-e-Hina)")
+                    : (evKey === "baraat"
+                      ? (currentLang === "ur" ? (isBrideCard ? "تقریبِ بارات و رخصتی" : "تقریبِ بارات") : (isBrideCard ? "Baraat & Rukhsati" : "Baraat Ceremony"))
+                      : (currentLang === "ur" ? "دعوتِ ولیمہ" : "Dawat-e-Walima Reception"));
+                  const dStr = evKey === "mehndi" ? mehndiDateStr : (evKey === "baraat" ? baraatDateStr : walimaDateStr);
+                  const tStr = evKey === "mehndi" ? mehndiTimeStr : (evKey === "baraat" ? baraatTimeStr : walimaTimeStr);
+                  const vStr = evKey === "mehndi" ? mehndiVenueStr : (evKey === "baraat" ? baraatVenueStr : walimaVenueStr);
+                  const mealType = (evObj.mealType || "dinner").toLowerCase();
+                  const mealTime = evObj.mealTime || evObj.dinnerTime || "";
+                  const mealLabel = mealType === "lunch" ? (currentLang === "ur" ? "ظہرانہ" : "Lunch") : (mealType === "hitea" ? "Hi-Tea" : (currentLang === "ur" ? "طعام" : "Dinner"));
+                  const extraSub = mealTime && mealType !== "none" ? `<div class="farman-chapter-venue-row" style="font-size:0.86rem;opacity:0.9;">🍽️ ${mealLabel}: ${mealTime}</div>` : "";
+                  return `
+                    <div class="farman-chapter-card">
+                      <div class="farman-chapter-badge">
+                        <span>${badgeIcon}</span>
+                        <span>${badgeTitle}</span>
+                      </div>
+                      <div class="farman-chapter-date-row">📅 ${dStr} | ${tStr}</div>
+                      <div class="farman-chapter-venue-row">📍 ${vStr}</div>
+                      ${extraSub}
+                    </div>
+                  `;
+                }).join("")}
               </div>
 
               <!-- Astrolabe Countdown Clock -->
@@ -4894,12 +4892,209 @@
       performEnvelopeEntryScroll();
     }
 
+
+    function getActiveEventKeys(card) {
+      const baseKeys = CARD_VARIANTS[card] || CARD_VARIANTS.all;
+      if (!WEDDING || !WEDDING.events) return baseKeys;
+      const populated = baseKeys.filter(k => {
+        const ev = WEDDING.events[k];
+        if (!ev) return false;
+        return Boolean(
+          ev.displayDate || ev.dateTime || ev.date ||
+          ev.venue || ev.displayTime || ev.time ||
+          ev.arrivalTime || ev.arrival || ev.sehraTime || ev.mealTime
+        );
+      });
+      return populated.length > 0 ? populated : baseKeys;
+    }
+
+    function buildEventTimeCellsHtml(eventKey, eventConf, timeVal, t) {
+      if (!eventConf) {
+        return `
+          <div class="info-cell">
+            <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+            <div class="info-cell-value">${timeVal}</div>
+          </div>
+        `;
+      }
+      let html = "";
+      const isUr = currentLang === "ur";
+      const mealType = (eventConf.mealType || "dinner").toLowerCase();
+      const mealIcon = mealType === "lunch" ? "☀️" : (mealType === "hitea" ? "☕" : "🍽️");
+      const mealLabelEn = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : (t.dinnerLabel || "Dinner"));
+      const mealLabelUr = mealType === "lunch" ? "ظہرانہ (دوپہر کا کھانا)" : (mealType === "hitea" ? "ہائی ٹی" : (t.dinnerLabel || "طعام (کھانا)"));
+      const mealLabel = isUr ? mealLabelUr : mealLabelEn;
+
+      if (eventKey === "mehndi") {
+        html += `
+          <div class="info-cell">
+            <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+            <div class="info-cell-value">${timeVal}</div>
+          </div>
+        `;
+        if (eventConf.rasmTime) {
+          html += `
+            <div class="info-cell">
+              <div class="info-cell-label">🌸 ${isUr ? "رسمِ حنا" : "Rasm-e-Hina"}</div>
+              <div class="info-cell-value">${eventConf.rasmTime}</div>
+            </div>
+          `;
+        }
+        const mTime = eventConf.mealTime || eventConf.dinnerTime;
+        if (mTime && mealType !== "none") {
+          html += `
+            <div class="info-cell">
+              <div class="info-cell-label">${mealIcon} ${mealLabel}</div>
+              <div class="info-cell-value">${mTime}</div>
+            </div>
+          `;
+        }
+      } else if (eventKey === "baraat") {
+        const arrVal = eventConf.arrivalTime || eventConf.arrival;
+        const nikVal = eventConf.nikkahTime || eventConf.nikkah;
+        const dinVal = eventConf.dinnerTime || eventConf.mealTime;
+        const rukVal = eventConf.rukhsatiTime || eventConf.rukhsati;
+        const sehVal = eventConf.sehraTime;
+        const depVal = eventConf.departureTime;
+
+        if (sehVal || depVal || arrVal || nikVal || dinVal || rukVal) {
+          if (sehVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">👑 ${isUr ? "سہرہ بندی" : "Sehra Bandi"}</div>
+                <div class="info-cell-value">${sehVal}</div>
+              </div>
+            `;
+          }
+          if (depVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">🐎 ${isUr ? "روانگیِ بارات" : "Departure of Baraat"}</div>
+                <div class="info-cell-value">${depVal}</div>
+              </div>
+            `;
+          }
+          if (arrVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">🎺 ${t.arrivalLabel}</div>
+                <div class="info-cell-value">${isUr ? (eventConf.arrivalTimeUrdu || arrVal) : arrVal}</div>
+              </div>
+            `;
+          }
+          if (nikVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">💍 ${t.nikkahLabel}</div>
+                <div class="info-cell-value">${isUr ? (eventConf.nikkahTimeUrdu || nikVal) : nikVal}</div>
+              </div>
+            `;
+          }
+          if (dinVal && mealType !== "none") {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">${mealIcon} ${mealLabel}</div>
+                <div class="info-cell-value">${isUr ? (eventConf.dinnerTimeUrdu || dinVal) : dinVal}</div>
+              </div>
+            `;
+          } else if (!arrVal && !nikVal && !sehVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+                <div class="info-cell-value">${timeVal}</div>
+              </div>
+            `;
+          }
+          if (rukVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">🤲 ${t.rukhsatiLabel}</div>
+                <div class="info-cell-value">${isUr ? (eventConf.rukhsatiTimeUrdu || rukVal) : rukVal}</div>
+              </div>
+            `;
+          }
+        } else {
+          html += `
+            <div class="info-cell">
+              <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+              <div class="info-cell-value">${timeVal}</div>
+            </div>
+          `;
+        }
+      } else if (eventKey === "walima") {
+        const arrVal = eventConf.arrival || eventConf.arrivalTime;
+        const mTime = eventConf.mealTime || eventConf.dinnerTime;
+        const duaVal = eventConf.duaTime;
+        if (arrVal || mTime || duaVal) {
+          if (arrVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">🤝 ${isUr ? "آمدِ مہمانان" : "Guest Arrival"}</div>
+                <div class="info-cell-value">${arrVal}</div>
+              </div>
+            `;
+          } else {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+                <div class="info-cell-value">${timeVal}</div>
+              </div>
+            `;
+          }
+          if (mTime && mealType !== "none") {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">${mealIcon} ${mealLabel}</div>
+                <div class="info-cell-value">${mTime}</div>
+              </div>
+            `;
+          }
+          if (duaVal) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">🤲 ${isUr ? "دعائے خیر" : "Dua & Farewell"}</div>
+                <div class="info-cell-value">${duaVal}</div>
+              </div>
+            `;
+          }
+        } else {
+          html += `
+            <div class="info-cell">
+              <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+              <div class="info-cell-value">${timeVal}</div>
+            </div>
+          `;
+        }
+      } else {
+        html += `
+          <div class="info-cell">
+            <div class="info-cell-label">⏰ ${t.timeLabel}</div>
+            <div class="info-cell-value">${timeVal}</div>
+          </div>
+        `;
+      }
+
+      if (Array.isArray(eventConf.subSchedule)) {
+        eventConf.subSchedule.forEach(item => {
+          if (item && (item.title || item.time)) {
+            html += `
+              <div class="info-cell">
+                <div class="info-cell-label">✦ ${item.title || (isUr ? "شیڈول" : "Schedule")}</div>
+                <div class="info-cell-value">${item.time || ""}</div>
+              </div>
+            `;
+          }
+        });
+      }
+      return html;
+    }
+
     function renderEventListScreen(animateGlide = true) {
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("events");
       const isBrideCard = (WEDDING && WEDDING.cardSide === "bride");
       const { card } = getUrlState();
-      const validEventKeys = CARD_VARIANTS[card] || CARD_VARIANTS.all;
+      const validEventKeys = getActiveEventKeys(card);
       const t = I18N[currentLang];
       const groom = currentLang === "ur" ? WEDDING.groomUrdu : WEDDING.groom;
       const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
@@ -4994,7 +5189,7 @@
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("detail");
       const { card } = getUrlState();
-      const validEventKeys = CARD_VARIANTS[card] || CARD_VARIANTS.all;
+      const validEventKeys = getActiveEventKeys(card);
       const t = I18N[currentLang];
       const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
 
@@ -5043,55 +5238,7 @@
         illustrationHtml = buildWalimaStage();
       }
 
-      let timeCellsHtml = "";
-      if (eventKey === "baraat" && (eventConf.arrivalTime || eventConf.nikkahTime || eventConf.rukhsatiTime || eventConf.dinnerTime)) {
-        if (eventConf.arrivalTime) {
-          timeCellsHtml += `
-            <div class="info-cell">
-              <div class="info-cell-label">🎺 ${t.arrivalLabel}</div>
-              <div class="info-cell-value">${currentLang === 'ur' ? (eventConf.arrivalTimeUrdu || eventConf.arrivalTime) : eventConf.arrivalTime}</div>
-            </div>
-          `;
-        }
-        if (eventConf.nikkahTime) {
-          timeCellsHtml += `
-            <div class="info-cell">
-              <div class="info-cell-label">💍 ${t.nikkahLabel}</div>
-              <div class="info-cell-value">${currentLang === 'ur' ? (eventConf.nikkahTimeUrdu || eventConf.nikkahTime) : eventConf.nikkahTime}</div>
-            </div>
-          `;
-        }
-        if (eventConf.dinnerTime) {
-          timeCellsHtml += `
-            <div class="info-cell">
-              <div class="info-cell-label">🍽️ ${t.dinnerLabel}</div>
-              <div class="info-cell-value">${currentLang === 'ur' ? (eventConf.dinnerTimeUrdu || eventConf.dinnerTime) : eventConf.dinnerTime}</div>
-            </div>
-          `;
-        } else if (!eventConf.arrivalTime && !eventConf.nikkahTime) {
-          timeCellsHtml += `
-            <div class="info-cell">
-              <div class="info-cell-label">⏰ ${t.timeLabel}</div>
-              <div class="info-cell-value">${timeVal}</div>
-            </div>
-          `;
-        }
-        if (eventConf.rukhsatiTime) {
-          timeCellsHtml += `
-            <div class="info-cell">
-              <div class="info-cell-label">🤲 ${t.rukhsatiLabel}</div>
-              <div class="info-cell-value">${currentLang === 'ur' ? (eventConf.rukhsatiTimeUrdu || eventConf.rukhsatiTime) : eventConf.rukhsatiTime}</div>
-            </div>
-          `;
-        }
-      } else {
-        timeCellsHtml = `
-          <div class="info-cell">
-            <div class="info-cell-label">⏰ ${t.timeLabel}</div>
-            <div class="info-cell-value">${timeVal}</div>
-          </div>
-        `;
-      }
+      const timeCellsHtml = buildEventTimeCellsHtml(eventKey, eventConf, timeVal, t);
 
       app.innerHTML = `
         <div class="detail-container">
