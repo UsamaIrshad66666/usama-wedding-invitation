@@ -357,6 +357,121 @@
     .event-section {
       animation: fadeIn 0.35s ease;
     }
+    .preset-packages-bar {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .preset-packages-title {
+      font-size: 0.88rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preset-pills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preset-pkg-btn {
+      background: rgba(12, 38, 28, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--cream);
+      padding: 8px 13px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .preset-pkg-btn:hover {
+      border-color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.16);
+      transform: translateY(-1px);
+    }
+    .preset-pkg-btn.active {
+      background: linear-gradient(135deg, #d4af37, #aa8220);
+      color: #071912;
+      border-color: #f3e5ab;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+    }
+    .sub-schedule-box {
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px dashed rgba(212, 175, 55, 0.32);
+      border-radius: 10px;
+      padding: 13px 14px;
+      margin-bottom: 14px;
+    }
+    .sub-schedule-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    .custom-sub-rows-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .custom-sub-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .custom-sub-row .sub-time-inp {
+      width: 36%;
+      min-width: 110px;
+    }
+    .custom-sub-row .sub-label-inp {
+      flex: 1;
+    }
+    .remove-sub-row-btn {
+      background: rgba(220, 53, 69, 0.18);
+      border: 1px solid rgba(220, 53, 69, 0.45);
+      color: #ff99a2;
+      border-radius: 6px;
+      width: 34px;
+      height: 38px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .add-sub-row-btn {
+      margin-top: 8px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-light);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .add-sub-row-btn:hover {
+      background: rgba(212, 175, 55, 0.24);
+    }
     .custom-event-badge {
       background: rgba(212, 175, 55, 0.15);
       border: 1px solid rgba(212, 175, 55, 0.4);
@@ -1095,6 +1210,23 @@
           </span>
         </div>
 
+        <!-- 1-Tap Event Combination Presets -->
+        <div class="preset-packages-bar">
+          <div class="preset-packages-title">
+            <span>⚡ Quick Event Combinations (1-Day, 2-Day, or 3-Day Presets)</span>
+            <span style="font-family:var(--urdu); font-size:0.92rem; color:var(--gold-primary); font-weight:400;">اپنی تقاریب کا پیکیج منتخب کریں یا نیچے سے خود شامل کریں</span>
+          </div>
+          <div class="preset-pills-wrap" id="presetPackagesBar">
+            <button type="button" class="preset-pkg-btn" data-preset="walima">✨ 1-Day: Walima Only</button>
+            <button type="button" class="preset-pkg-btn" data-preset="barat">👑 1-Day: Barat Only</button>
+            <button type="button" class="preset-pkg-btn" data-preset="nikkah">📜 1-Day: Nikah Only</button>
+            <button type="button" class="preset-pkg-btn" data-preset="mehndi,barat">🌸👑 2-Day: Mehndi + Barat</button>
+            <button type="button" class="preset-pkg-btn" data-preset="mehndi,walima">🌸✨ 2-Day: Mehndi + Walima</button>
+            <button type="button" class="preset-pkg-btn" data-preset="barat,walima">👑✨ 2-Day: Barat + Walima</button>
+            <button type="button" class="preset-pkg-btn active" data-preset="mehndi,barat,walima">🌟 3-Day: Mehndi + Barat + Walima</button>
+          </div>
+        </div>
+
         <!-- Dynamic Events Container -->
         <div id="eventsContainer"></div>
 
@@ -1498,6 +1630,118 @@
       });
     }
 
+    function buildMealAndSubScheduleHtml(type, side, initData = {}) {
+      const isBride = side === "bride";
+      const mealType = initData.mealType || "dinner";
+      const mealTime = initData.mealTime || initData.lunch || initData.dinner || "";
+
+      let specificMilestonesHtml = "";
+      if (type === "barat") {
+        specificMilestonesHtml = `
+          <!-- Groom Side Timings Wrap -->
+          <div class="groom-barat-times-wrap" style="display:${isBride ? 'none' : 'block'}; margin-bottom:10px;">
+            <div class="form-grid-2">
+              <div class="form-field-group" style="margin-bottom:8px;">
+                <label class="form-field-label"><span>Sehra Bandi Time <span class="optional-pill">Optional</span></span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
+                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:30 PM" value="${initData.sehraTime || ''}">
+              </div>
+              <div class="form-field-group" style="margin-bottom:8px;">
+                <label class="form-field-label"><span>Departure of Baraat <span class="optional-pill">Optional</span></span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
+                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:30 PM" value="${initData.departureTime || ''}">
+              </div>
+            </div>
+          </div>
+
+          <!-- Shared / Bride & Groom Ceremony Milestones -->
+          <div class="form-grid-2" style="margin-bottom:10px;">
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Baraat Arrival Time <span class="optional-pill">Optional</span></span><span class="urdu-label">آمدِ بارات کا وقت</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:30 PM" value="${initData.arrival || ''}">
+            </div>
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Nikkah Time <span class="optional-pill">Optional</span></span><span class="urdu-label">عقدِ نکاح کا وقت</span></label>
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 8:30 PM" value="${initData.nikkah || ''}">
+            </div>
+          </div>
+          <div class="form-field-group" style="margin-bottom:10px;">
+            <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Optional</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
+            <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 10:30 PM" value="${initData.rukhsati || ''}">
+          </div>
+        `;
+      } else if (type === "walima") {
+        specificMilestonesHtml = `
+          <div class="form-grid-2" style="margin-bottom:10px;">
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Guest Arrival / Reception <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی آمد کا وقت</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || ''}">
+            </div>
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Optional</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
+              <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:30 PM" value="${initData.duaTime || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "mehndi") {
+        specificMilestonesHtml = `
+          <div class="form-grid-2" style="margin-bottom:10px;">
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Guest Arrival Time <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی آمد</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:00 PM" value="${initData.arrival || ''}">
+            </div>
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Rasm-e-Hina Time <span class="optional-pill">Optional</span></span><span class="urdu-label">رسمِ حنا کا وقت</span></label>
+              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 8:30 PM" value="${initData.rasmTime || ''}">
+            </div>
+          </div>
+        `;
+      } else if (type === "nikkah") {
+        specificMilestonesHtml = `
+          <div class="form-grid-2" style="margin-bottom:10px;">
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Guest Gathering Time <span class="optional-pill">Optional</span></span><span class="urdu-label">مہمانوں کی تشریف آوری</span></label>
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 4:00 PM" value="${initData.arrival || ''}">
+            </div>
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Khutbah & Nikkah Time <span class="optional-pill">Optional</span></span><span class="urdu-label">خطبہ و عقدِ نکاح کا وقت</span></label>
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 4:45 PM" value="${initData.nikkah || ''}">
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="sub-schedule-box">
+          <div class="sub-schedule-header">
+            <span>⏰ Sub-Schedule & Meal Timings (Optional — Lunch / Dinner / Custom)</span>
+            <span style="font-family:var(--urdu); color:var(--gold-primary); font-weight:400;">کھانے کا وقت (دوپہر / رات) اور ذیلی شیڈول</span>
+          </div>
+
+          ${specificMilestonesHtml}
+
+          <div class="form-grid-2" style="margin-bottom:6px;">
+            <div class="form-field-group" style="margin-bottom:6px;">
+              <label class="form-field-label"><span>Meal Type (Lunch / Dinner)</span><span class="urdu-label">ضیافت کی قسم</span></label>
+              <select class="form-input evt-meal-type" style="background:rgba(6,22,16,0.95); color:#fff; cursor:pointer;">
+                <option value="dinner" ${mealType === 'dinner' ? 'selected' : ''}>🍽️ Dinner (رات کا کھانا / عشائیہ)</option>
+                <option value="lunch" ${mealType === 'lunch' ? 'selected' : ''}>☀️ Lunch (دوپہر کا کھانا / ظہرانہ)</option>
+                <option value="hitea" ${mealType === 'hitea' ? 'selected' : ''}>☕ Hi-Tea & Refreshments (ہائی ٹی / تواضع)</option>
+              </select>
+            </div>
+            <div class="form-field-group" style="margin-bottom:6px;">
+              <label class="form-field-label"><span>Lunch / Dinner Time <span class="optional-pill">Optional</span></span><span class="urdu-label">کھانے کا وقت</span></label>
+              <input class="form-input evt-meal-time" type="text" placeholder="e.g. 2:30 PM (Lunch) or 9:00 PM (Dinner)" value="${mealTime}">
+            </div>
+          </div>
+
+          <div class="custom-sub-rows-list"></div>
+          <button type="button" class="add-sub-row-btn">
+            <span>+ Add Custom Sub-Schedule Time (e.g. Entrance, Cake Cutting, Qawwali)</span>
+            <span style="font-family:var(--urdu);">(+ ذیلی وقت شامل کریں)</span>
+          </button>
+        </div>
+      `;
+    }
+
     function createEventCard(type, initData = {}) {
       eventCounter++;
       const id = `event_card_${eventCounter}`;
@@ -1505,285 +1749,125 @@
       const side = sideEl ? sideEl.value : "groom";
       const meta = EVENT_META[type] || EVENT_META.custom;
 
+      // Auto-prefill RSVP phone from an existing card if not provided
+      if (!initData.rsvpPhone) {
+        const existingRsvp = eventsContainer.querySelector(".evt-rsvp");
+        if (existingRsvp && existingRsvp.value.trim()) {
+          initData.rsvpPhone = existingRsvp.value.trim();
+        }
+      }
+
       const card = document.createElement("div");
       card.className = "form-section event-section";
       card.id = id;
       card.dataset.eventId = id;
       card.dataset.eventType = type;
 
+      const subScheduleHtml = buildMealAndSubScheduleHtml(type, side, initData);
       let bodyHtml = "";
 
-      if (type === "mehndi") {
-        bodyHtml = `
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Mehndi Date</span><span class="urdu-label">تاریخِ مہندی</span></label>
-              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">مہندی کا وقت</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 7:00 PM" required value="${initData.time || meta.defaultTime}">
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا فارم ہاؤس کا نام</span></label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. 52 Canal Bank Road, Lahore" value="${initData.address || ''}">
-            </div>
-          </div>
-          <div class="form-grid-2" style="margin-bottom:0;">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
-            </div>
-          </div>
-        `;
-      } else if (type === "barat") {
-        const isBride = side === "bride";
-        bodyHtml = `
-          <div class="form-field-group" style="margin-bottom:14px;">
-            <label class="form-field-label"><span>Baraat Date</span><span class="urdu-label">تاریخِ بارات</span></label>
-            <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
-          </div>
-
-          <!-- Groom Side Timings Wrap -->
-          <div class="groom-barat-times-wrap form-grid-2" style="display:${isBride ? 'none' : 'grid'};">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Sehra Bandi Time</span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
-              <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:00 PM" value="${initData.sehraTime || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Departure of Baraat Time</span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
-              <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:00 PM" value="${initData.departureTime || ''}">
-            </div>
-          </div>
-
-          <!-- Bride Side Timings Wrap -->
-          <div class="bride-barat-times-wrap" style="display:${isBride ? 'block' : 'none'};">
-            <div class="form-field-group" style="margin-bottom:14px;">
-              <label class="form-field-label"><span>Baraat Arrival / Reception Time</span><span class="urdu-label">آمدِ بارات / استقبال کا وقت</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 7:00 PM" value="${initData.time || meta.defaultTime}">
-            </div>
-            <div class="form-field-group" style="margin-bottom:14px;">
-              <label class="form-field-label"><span>Ceremony Milestones <span class="optional-pill">Optional — اختیاری</span></span><span class="urdu-label">پروگرام شیڈول</span></label>
-              <div class="form-grid-2">
-                <input class="form-input evt-b-arrival" type="text" placeholder="Arrival (آمد): e.g. 8:00 PM" value="${initData.arrival || ''}" style="margin-bottom:8px;">
-                <input class="form-input evt-b-nikkah" type="text" placeholder="Nikkah (نکاح): e.g. 9:00 PM" value="${initData.nikkah || ''}" style="margin-bottom:8px;">
-                <input class="form-input evt-b-dinner" type="text" placeholder="Dinner (طعام): e.g. 9:30 PM" value="${initData.dinner || ''}">
-                <input class="form-input evt-b-rukhsati" type="text" placeholder="Rukhsati (رخصتی): e.g. 11:00 PM" value="${initData.rukhsati || ''}">
-              </div>
-            </div>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا میرج کلب کا نام</span></label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. Shahrah-e-Quaid-e-Azam, Lahore" value="${initData.address || ''}">
-            </div>
-          </div>
-          <div class="form-grid-2" style="margin-bottom:0;">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
-            </div>
-          </div>
-        `;
-      } else if (type === "walima") {
-        bodyHtml = `
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Walima Date</span><span class="urdu-label">تاریخِ ولیمہ</span></label>
-              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">ولیمہ کا وقت</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 7:30 PM" required value="${initData.time || meta.defaultTime}">
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال کا نام</span></label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Home Address <span class="optional-pill">Optional</span></span><span class="urdu-label">گھر کا پتہ (اختیاری)</span></label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. Abdul Haque Road, Johar Town, Lahore" value="${initData.address || ''}">
-            </div>
-          </div>
-          <div class="form-grid-2" style="margin-bottom:0;">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
-            </div>
-          </div>
-        `;
-      } else if (type === "engagement") {
-        bodyHtml = `
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Engagement Date</span><span class="urdu-label">تاریخِ منگنی</span></label>
-              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Event Time</span><span class="urdu-label">منگنی کا وقت</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 6:00 PM" required value="${initData.time || meta.defaultTime}">
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Venue</span><span class="urdu-label">شادی ہال یا رہائش گاہ کا نام</span></label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Address <span class="optional-pill">Optional</span></span><span class="urdu-label">پتہ (اختیاری)</span></label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. Sector F-7/2, Islamabad" value="${initData.address || ''}">
-            </div>
-          </div>
-          <div class="form-grid-2" style="margin-bottom:0;">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
-            </div>
-          </div>
-        `;
-      } else if (type === "nikkah") {
-        bodyHtml = `
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Nikah Date</span><span class="urdu-label">تاریخِ نکاح</span></label>
-              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Nikah Time</span><span class="urdu-label">نکاح کا وقت</span></label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 4:00 PM (بعد نمازِ عصر)" required value="${initData.time || meta.defaultTime}">
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Mosque / Venue Name</span><span class="urdu-label">مسجد یا وینیو کا نام</span></label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Address <span class="optional-pill">Optional</span></span><span class="urdu-label">پتہ (اختیاری)</span></label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. Walled City, Lahore" value="${initData.address || ''}">
-            </div>
-          </div>
-          <div class="form-grid-2" style="margin-bottom:0;">
-            <div class="form-field-group">
-              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
-            </div>
-            <div class="form-field-group">
-              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
-            </div>
-          </div>
-        `;
-      } else if (type === "custom") {
+      if (type === "custom") {
         card.style.border = "1.5px solid var(--gold-primary)";
         card.style.background = "linear-gradient(135deg, rgba(20,55,42,0.9), rgba(8,26,19,0.95))";
 
         bodyHtml = `
-          <!-- Custom Event Name Inputs -->
           <div class="form-grid-2" style="background:rgba(0,0,0,0.25); padding:12px; border-radius:8px; border:1px solid rgba(212,175,55,0.25); margin-bottom:14px;">
             <div class="form-field-group">
               <label class="form-field-label">
                 <span style="color:var(--gold-light); font-weight:600;">Custom Event Name (English) *</span>
                 <span class="urdu-label">ایونٹ کا نام (انگریزی)</span>
               </label>
-              <input class="form-input evt-custom-name" type="text" placeholder="e.g. Qawwali Night, Dholki, Bridal Shower, Milad, Reception..." required value="${initData.customName || ''}">
+              <input class="form-input evt-custom-name" type="text" placeholder="e.g. Qawwali Night, Dholki, Mayun, Bridal Shower..." required value="${initData.customName || initData.name || ''}">
             </div>
             <div class="form-field-group">
               <label class="form-field-label">
                 <span>Custom Event Name (Urdu) <span class="optional-pill">Optional</span></span>
                 <span class="urdu-label">ایونٹ کا نام (اردو میں)</span>
               </label>
-              <input class="form-input evt-custom-name-ur" type="text" placeholder="مثلاً: محفلِ قوالی، محفلِ میلاد، ڈھولکی" dir="rtl" value="${initData.customNameUr || ''}">
+              <input class="form-input evt-custom-name-ur" type="text" placeholder="مثلاً: محفلِ قوالی، محفلِ میلاد، ڈھولکی" dir="rtl" value="${initData.customNameUr || initData.nameUrdu || ''}">
             </div>
           </div>
 
-          <!-- All other fields in Custom Event can be skipped (NO required attributes) -->
           <div class="form-grid-2">
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>Event Date <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">تاریخ (اختیاری)</span>
-              </label>
+              <label class="form-field-label"><span>Event Date <span class="optional-pill">Optional</span></span><span class="urdu-label">تاریخ (اختیاری)</span></label>
               <input class="form-input evt-date" type="date" value="${initData.date || ''}">
             </div>
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>Event Time <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">وقت (اختیاری)</span>
-              </label>
-              <input class="form-input evt-time" type="text" placeholder="e.g. 8:00 PM (Optional / اختیاری)" value="${initData.time || ''}">
+              <label class="form-field-label"><span>Main Event Time <span class="optional-pill">Optional</span></span><span class="urdu-label">وقت (اختیاری)</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 8:00 PM" value="${initData.time || ''}">
             </div>
           </div>
 
+          ${subScheduleHtml}
+
           <div class="form-grid-2">
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>Venue / Location <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">مقام یا وینیو (اختیاری)</span>
-              </label>
-              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder} (Optional)" value="${initData.venue || ''}">
+              <label class="form-field-label"><span>Venue / Location <span class="optional-pill">Optional</span></span><span class="urdu-label">مقام یا وینیو (اختیاری)</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" value="${initData.venue || ''}">
             </div>
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>Address <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">پتہ (اختیاری)</span>
-              </label>
-              <input class="form-input evt-addr" type="text" placeholder="e.g. Complete Address or Area (Optional)" value="${initData.address || ''}">
+              <label class="form-field-label"><span>Address <span class="optional-pill">Optional</span></span><span class="urdu-label">پتہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Complete Address or Area" value="${initData.address || ''}">
             </div>
           </div>
 
           <div class="form-grid-2" style="margin-bottom:0;">
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>Google Maps Link <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">گوگل میپس لنک (اختیاری)</span>
-              </label>
-              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/... (Optional)" value="${initData.mapUrl || ''}">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
             </div>
             <div class="form-field-group">
-              <label class="form-field-label">
-                <span>WhatsApp RSVP Number <span class="optional-pill">Optional</span></span>
-                <span class="urdu-label">واٹس ایپ نمبر (اختیاری)</span>
-              </label>
-              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678 (Optional)" value="${initData.rsvpPhone || ''}">
+              <label class="form-field-label"><span>WhatsApp RSVP Number <span class="optional-pill">Optional</span></span><span class="urdu-label">واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" value="${initData.rsvpPhone || ''}">
             </div>
           </div>
 
           <div class="form-field-group" style="margin-top:14px; margin-bottom:0;">
-            <label class="form-field-label">
-              <span>Special Instructions / Dress Code <span class="optional-pill">Optional</span></span>
-              <span class="urdu-label">خصوصی ہدایات یا لباس (اختیاری)</span>
-            </label>
-            <input class="form-input evt-notes" type="text" placeholder="e.g. Traditional attire, family gathering only (Optional)" value="${initData.notes || ''}">
+            <label class="form-field-label"><span>Special Instructions / Dress Code <span class="optional-pill">Optional</span></span><span class="urdu-label">خصوصی ہدایات یا لباس</span></label>
+            <input class="form-input evt-notes" type="text" placeholder="e.g. Traditional attire, family gathering only" value="${initData.notes || ''}">
+          </div>
+        `;
+      } else {
+        const dateLabelEn = type === "mehndi" ? "Mehndi Date" : (type === "barat" ? "Baraat Date" : (type === "walima" ? "Walima Date" : (type === "nikkah" ? "Nikah Date" : "Engagement Date")));
+        const dateLabelUr = type === "mehndi" ? "تاریخِ مہندی" : (type === "barat" ? "تاریخِ بارات" : (type === "walima" ? "تاریخِ ولیمہ" : (type === "nikkah" ? "تاریخِ نکاح" : "تاریخِ منگنی")));
+        const timeLabelEn = type === "barat" ? "Main Event / Reception Time" : "Main Event Time";
+        const timeLabelUr = type === "barat" ? "تقریب کا مرکزی وقت" : "تقریب کا وقت";
+
+        bodyHtml = `
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>${dateLabelEn}</span><span class="urdu-label">${dateLabelUr}</span></label>
+              <input class="form-input evt-date" type="date" required value="${initData.date || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>${timeLabelEn}</span><span class="urdu-label">${timeLabelUr}</span></label>
+              <input class="form-input evt-time" type="text" placeholder="e.g. 7:30 PM or 1:30 PM" required value="${initData.time || meta.defaultTime}">
+            </div>
+          </div>
+
+          ${subScheduleHtml}
+
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Venue Name</span><span class="urdu-label">شادی ہال، فارم ہاؤس یا وینیو کا نام</span></label>
+              <input class="form-input evt-venue" type="text" placeholder="${meta.venuePlaceholder}" required value="${initData.venue || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Address / Area <span class="optional-pill">Optional</span></span><span class="urdu-label">مکمل پتہ یا علاقہ (اختیاری)</span></label>
+              <input class="form-input evt-addr" type="text" placeholder="e.g. Main Boulevard, Gulberg / Canal Bank Road" value="${initData.address || ''}">
+            </div>
+          </div>
+
+          <div class="form-grid-2" style="margin-bottom:0;">
+            <div class="form-field-group">
+              <label class="form-field-label"><span>Google Maps Link <span class="optional-pill">Optional</span></span><span class="urdu-label">گوگل میپس لنک</span></label>
+              <input class="form-input evt-map" type="url" placeholder="https://maps.google.com/..." value="${initData.mapUrl || ''}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label"><span>WhatsApp RSVP Number</span><span class="urdu-label">شرکت کی تصدیق کیلئے واٹس ایپ نمبر</span></label>
+              <input class="form-input evt-rsvp" type="text" placeholder="e.g. +92 301 2345678" required value="${initData.rsvpPhone || ''}">
+            </div>
           </div>
         `;
       }
@@ -1813,12 +1897,36 @@
       eventsContainer.appendChild(card);
       updateEventNumbers();
 
+      // Hook up "+ Add Custom Sub-Schedule Time" button
+      const addSubBtn = card.querySelector(".add-sub-row-btn");
+      const subRowsList = card.querySelector(".custom-sub-rows-list");
+      function appendCustomSubRow(timeVal = "", labelVal = "") {
+        if (!subRowsList) return;
+        const row = document.createElement("div");
+        row.className = "custom-sub-row";
+        row.innerHTML = `
+          <input type="text" class="form-input sub-time-inp" placeholder="Time (e.g. 2:00 PM)" value="${timeVal}">
+          <input type="text" class="form-input sub-label-inp" placeholder="Detail (e.g. Lunch, Arrival, Dua, Qawwali)" value="${labelVal}">
+          <button type="button" class="remove-sub-row-btn" title="Remove row">✕</button>
+        `;
+        row.querySelector(".remove-sub-row-btn").addEventListener("click", () => row.remove());
+        subRowsList.appendChild(row);
+      }
+
+      if (addSubBtn) {
+        addSubBtn.addEventListener("click", () => appendCustomSubRow());
+      }
+      if (Array.isArray(initData.subSchedule)) {
+        initData.subSchedule.forEach(item => appendCustomSubRow(item.time || "", item.label || ""));
+      }
+
       // Hook up remove button
       const removeBtn = card.querySelector(".remove-event-btn");
       if (removeBtn) {
         removeBtn.addEventListener("click", () => {
           card.remove();
           updateEventNumbers();
+          syncPresetHighlight();
           showToast("Event removed from invitation.");
         });
       }
@@ -1838,9 +1946,57 @@
       return card;
     }
 
+    function syncPresetHighlight() {
+      const currentTypes = Array.from(eventsContainer.querySelectorAll(".event-section"))
+        .map(c => c.dataset.eventType)
+        .join(",");
+      document.querySelectorAll(".preset-pkg-btn").forEach(btn => {
+        if (btn.dataset.preset === currentTypes) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+
+    // Hook up Quick Package Preset Buttons
+    document.querySelectorAll(".preset-pkg-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const types = (btn.dataset.preset || "").split(",").filter(Boolean);
+        // Save any existing user input per event type so switching presets never loses typed data
+        const savedByType = {};
+        eventsContainer.querySelectorAll(".event-section").forEach(card => {
+          const t = card.dataset.eventType;
+          savedByType[t] = {
+            date: card.querySelector(".evt-date")?.value || "",
+            time: card.querySelector(".evt-time")?.value || "",
+            venue: card.querySelector(".evt-venue")?.value || "",
+            address: card.querySelector(".evt-addr")?.value || "",
+            mapUrl: card.querySelector(".evt-map")?.value || "",
+            rsvpPhone: card.querySelector(".evt-rsvp")?.value || "",
+            mealType: card.querySelector(".evt-meal-type")?.value || "dinner",
+            mealTime: card.querySelector(".evt-meal-time")?.value || "",
+            sehraTime: card.querySelector(".evt-b-sehra")?.value || "",
+            departureTime: card.querySelector(".evt-b-departure")?.value || "",
+            arrival: card.querySelector(".evt-b-arrival")?.value || "",
+            nikkah: card.querySelector(".evt-b-nikkah")?.value || "",
+            rukhsati: card.querySelector(".evt-b-rukhsati")?.value || "",
+            rasmTime: card.querySelector(".evt-rasm-time")?.value || "",
+            duaTime: card.querySelector(".evt-dua-time")?.value || ""
+          };
+        });
+
+        eventsContainer.innerHTML = "";
+        types.forEach(t => createEventCard(t, savedByType[t] || {}));
+        syncPresetHighlight();
+        showToast(`Selected ${btn.textContent.trim()}!`);
+      });
+    });
+
     addEventBtn.addEventListener("click", () => {
       const selectedType = eventSelectorDropdown.value || "mehndi";
       const newCard = createEventCard(selectedType);
+      syncPresetHighlight();
       showToast(`+ Added ${EVENT_META[selectedType].titleEn}!`);
       newCard.scrollIntoView({ behavior: "smooth", block: "center" });
 
@@ -1854,6 +2010,7 @@
     createEventCard("mehndi");
     createEventCard("barat");
     createEventCard("walima");
+    syncPresetHighlight();
 
     // =========================================================================
     // SIDE SELECTOR (Bride vs Groom)
@@ -1893,11 +2050,9 @@
           const titleText = card.querySelector(".event-title-text");
           const urduText = card.querySelector(".event-urdu-text");
           const groomWrap = card.querySelector(".groom-barat-times-wrap");
-          const brideWrap = card.querySelector(".bride-barat-times-wrap");
           if (titleText) titleText.textContent = "Baraat & Rukhsati Ceremony";
           if (urduText) urduText.textContent = "تقریبِ بارات و رخصتی";
           if (groomWrap) groomWrap.style.display = "none";
-          if (brideWrap) brideWrap.style.display = "block";
         });
 
       } else {
@@ -1919,11 +2074,9 @@
           const titleText = card.querySelector(".event-title-text");
           const urduText = card.querySelector(".event-urdu-text");
           const groomWrap = card.querySelector(".groom-barat-times-wrap");
-          const brideWrap = card.querySelector(".bride-barat-times-wrap");
           if (titleText) titleText.textContent = "Baraat Ceremony";
           if (urduText) urduText.textContent = "تقریبِ بارات";
-          if (groomWrap) groomWrap.style.display = "grid";
-          if (brideWrap) brideWrap.style.display = "none";
+          if (groomWrap) groomWrap.style.display = "block";
         });
       }
     }
@@ -1983,134 +2136,111 @@
         const type = card.dataset.eventType;
         const num = idx + 1;
         const date = card.querySelector(".evt-date") ? card.querySelector(".evt-date").value : "";
+        const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
         const venue = card.querySelector(".evt-venue") ? card.querySelector(".evt-venue").value.trim() : "";
         const addr = card.querySelector(".evt-addr") ? card.querySelector(".evt-addr").value.trim() : "";
         const mapUrl = card.querySelector(".evt-map") ? card.querySelector(".evt-map").value.trim() : "";
         const rsvp = card.querySelector(".evt-rsvp") ? card.querySelector(".evt-rsvp").value.trim() : "";
 
-        if (type === "mehndi") {
-          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-          eventsList.push({
-            type: "mehndi",
-            name: "Mehndi Ceremony",
-            nameUrdu: "رسمِ حنا (مہندی)",
-            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
-          });
-          eventsWaText += "\n\n🌸 " + num + ". MEHNDI (رسمِ حنا):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
-          if (addr) eventsWaText += "\n• Home Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+        // Sub-schedule & Meal fields
+        const mealType = card.querySelector(".evt-meal-type") ? card.querySelector(".evt-meal-type").value : "dinner";
+        const mealTime = card.querySelector(".evt-meal-time") ? card.querySelector(".evt-meal-time").value.trim() : "";
+        const sehraTime = (side === "groom" && card.querySelector(".evt-b-sehra")) ? card.querySelector(".evt-b-sehra").value.trim() : "";
+        const departureTime = (side === "groom" && card.querySelector(".evt-b-departure")) ? card.querySelector(".evt-b-departure").value.trim() : "";
+        const arrival = card.querySelector(".evt-b-arrival") ? card.querySelector(".evt-b-arrival").value.trim() : "";
+        const nikkah = card.querySelector(".evt-b-nikkah") ? card.querySelector(".evt-b-nikkah").value.trim() : "";
+        const rukhsati = card.querySelector(".evt-b-rukhsati") ? card.querySelector(".evt-b-rukhsati").value.trim() : "";
+        const rasmTime = card.querySelector(".evt-rasm-time") ? card.querySelector(".evt-rasm-time").value.trim() : "";
+        const duaTime = card.querySelector(".evt-dua-time") ? card.querySelector(".evt-dua-time").value.trim() : "";
+        const notes = card.querySelector(".evt-notes") ? card.querySelector(".evt-notes").value.trim() : "";
 
-        } else if (type === "barat") {
-          let sehraTime = "";
-          let departureTime = "";
-          let generalTime = "";
-          let formattedTime = "";
-          let arrival = "";
-          let nikkah = "";
-          let dinner = "";
-          let rukhsati = "";
+        const subSchedule = [];
+        card.querySelectorAll(".custom-sub-row").forEach(r => {
+          const st = r.querySelector(".sub-time-inp")?.value.trim() || "";
+          const sl = r.querySelector(".sub-label-inp")?.value.trim() || "";
+          if (st || sl) subSchedule.push({ time: st, label: sl });
+        });
 
-          if (side === "groom") {
-            sehraTime = card.querySelector(".evt-b-sehra") ? card.querySelector(".evt-b-sehra").value.trim() : "";
-            departureTime = card.querySelector(".evt-b-departure") ? card.querySelector(".evt-b-departure").value.trim() : "";
-            if (sehraTime && departureTime) {
-              formattedTime = `Sehra Bandi: ${sehraTime} · Departure: ${departureTime}`;
-            } else {
-              formattedTime = sehraTime || departureTime || "5:00 PM";
-            }
-          } else {
-            generalTime = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-            formattedTime = generalTime || "7:00 PM";
-            arrival = card.querySelector(".evt-b-arrival") ? card.querySelector(".evt-b-arrival").value.trim() : "";
-            nikkah = card.querySelector(".evt-b-nikkah") ? card.querySelector(".evt-b-nikkah").value.trim() : "";
-            dinner = card.querySelector(".evt-b-dinner") ? card.querySelector(".evt-b-dinner").value.trim() : "";
-            rukhsati = card.querySelector(".evt-b-rukhsati") ? card.querySelector(".evt-b-rukhsati").value.trim() : "";
-          }
+        const mealLabelWa = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");
 
-          eventsList.push({
-            type: "barat",
-            name: side === "bride" ? "Baraat & Rukhsati" : "Baraat Ceremony",
-            nameUrdu: side === "bride" ? "تقریبِ بارات و رخصتی" : "تقریبِ بارات",
-            date, sehraTime, departureTime, time: formattedTime, arrival, nikkah, dinner, rukhsati,
-            venue, address: addr, mapUrl, rsvpPhone: rsvp
-          });
+        const customName = card.querySelector(".evt-custom-name") ? card.querySelector(".evt-custom-name").value.trim() : "";
+        const customNameUr = card.querySelector(".evt-custom-name-ur") ? card.querySelector(".evt-custom-name-ur").value.trim() : "";
 
-          eventsWaText += "\n\n👑 " + num + ". BARAAT " + (side === "bride" ? "& RUKHSATI (بارات و رخصتی)" : "(بارات)") + ":\n• Date: " + date;
-          if (side === "groom") {
-            eventsWaText += "\n• Sehra Bandi: " + (sehraTime || "N/A") + "\n• Departure of Baraat: " + (departureTime || "N/A");
-          } else {
-            eventsWaText += "\n• Event / Arrival Time: " + (generalTime || "N/A");
-            if (nikkah) eventsWaText += "\n• Nikkah: " + nikkah;
-            if (dinner) eventsWaText += "\n• Dinner: " + dinner;
-            if (rukhsati) eventsWaText += "\n• Rukhsati: " + rukhsati;
-          }
-          eventsWaText += "\n• Venue: " + venue;
-          if (addr) eventsWaText += "\n• Home Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
+        const eventNameEn = type === "custom"
+          ? (customName || "Custom Event")
+          : (type === "barat" && side === "bride" ? "Baraat & Rukhsati" : (EVENT_META[type]?.titleEn || "Wedding Event"));
+        const eventNameUr = type === "custom"
+          ? (customNameUr || "")
+          : (type === "barat" && side === "bride" ? "تقریبِ بارات و رخصتی" : (EVENT_META[type]?.titleUr || ""));
 
-        } else if (type === "walima") {
-          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-          eventsList.push({
-            type: "walima",
-            name: "Walima Reception",
-            nameUrdu: "دعوتِ ولیمہ",
-            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
-          });
-          eventsWaText += "\n\n✨ " + num + ". WALIMA (دعوتِ ولیمہ):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
-          if (addr) eventsWaText += "\n• Home Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
-
-        } else if (type === "engagement") {
-          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-          eventsList.push({
-            type: "engagement",
-            name: "Engagement Ceremony",
-            nameUrdu: "تقریبِ منگنی",
-            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
-          });
-          eventsWaText += "\n\n💍 " + num + ". ENGAGEMENT (تقریبِ منگنی):\n• Date: " + date + "\n• Time: " + time + "\n• Venue: " + venue;
-          if (addr) eventsWaText += "\n• Home Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
-
-        } else if (type === "nikkah") {
-          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-          eventsList.push({
-            type: "nikkah",
-            name: "Nikah Ceremony",
-            nameUrdu: "تقریبِ نکاح",
-            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp
-          });
-          eventsWaText += "\n\n📜 " + num + ". NIKAH CEREMONY (تقریبِ نکاح):\n• Date: " + date + "\n• Time: " + time + "\n• Mosque / Venue: " + venue;
-          if (addr) eventsWaText += "\n• Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
-
-        } else if (type === "custom") {
-          const customName = card.querySelector(".evt-custom-name") ? card.querySelector(".evt-custom-name").value.trim() : "Custom Event";
-          const customNameUr = card.querySelector(".evt-custom-name-ur") ? card.querySelector(".evt-custom-name-ur").value.trim() : "";
-          const time = card.querySelector(".evt-time") ? card.querySelector(".evt-time").value.trim() : "";
-          const notes = card.querySelector(".evt-notes") ? card.querySelector(".evt-notes").value.trim() : "";
-
-          eventsList.push({
-            type: "custom",
-            name: customName,
-            nameUrdu: customNameUr,
-            date, time, venue, address: addr, mapUrl, rsvpPhone: rsvp, notes
-          });
-
-          eventsWaText += "\n\n✨ " + num + ". " + customName.toUpperCase() + (customNameUr ? ` (${customNameUr})` : "") + ":";
-          if (date) eventsWaText += "\n• Date: " + date;
-          if (time) eventsWaText += "\n• Time: " + time;
-          if (venue) eventsWaText += "\n• Venue: " + venue;
-          if (addr) eventsWaText += "\n• Address: " + addr;
-          if (mapUrl) eventsWaText += "\n• Google Maps: " + mapUrl;
-          if (rsvp) eventsWaText += "\n• RSVP: " + rsvp;
-          if (notes) eventsWaText += "\n• Special Notes: " + notes;
+        let formattedTime = time;
+        if (type === "barat" && side === "groom" && (sehraTime || departureTime) && !time) {
+          formattedTime = (sehraTime && departureTime)
+            ? `Sehra Bandi: ${sehraTime} · Departure: ${departureTime}`
+            : (sehraTime || departureTime);
         }
+
+        const evObj = {
+          type,
+          name: eventNameEn,
+          nameUrdu: eventNameUr,
+          customName,
+          customNameUr,
+          date,
+          displayDate: date,
+          time: formattedTime,
+          displayTime: formattedTime,
+          mealType,
+          mealTime,
+          dinner: mealType === "dinner" ? mealTime : "",
+          lunch: mealType === "lunch" ? mealTime : "",
+          sehraTime,
+          departureTime,
+          arrival,
+          nikkah,
+          rukhsati,
+          rasmTime,
+          duaTime,
+          subSchedule,
+          venue,
+          address: addr,
+          mapUrl,
+          rsvpPhone: rsvp,
+          notes
+        };
+
+        eventsList.push(evObj);
+
+        const iconMap = { mehndi: "🌸", barat: "👑", walima: "✨", engagement: "💍", nikkah: "📜", custom: "✨" };
+        const headerTag = type === "mehndi" ? "MEHNDI (رسمِ حنا)"
+          : (type === "barat" ? "BARAAT" + (side === "bride" ? " & RUKHSATI (بارات و رخصتی)" : " (بارات)")
+          : (type === "walima" ? "WALIMA (دعوتِ ولیمہ)"
+          : (type === "engagement" ? "ENGAGEMENT (تقریبِ منگنی)"
+          : (type === "nikkah" ? "NIKAH CEREMONY (تقریبِ نکاح)"
+          : (customName.toUpperCase() + (customNameUr ? ` (${customNameUr})` : ""))))));
+
+        eventsWaText += `\n\n${iconMap[type] || "✨"} ${num}. ${headerTag}:`;
+        if (date) eventsWaText += `\n• Date: ${date}`;
+        if (time) eventsWaText += `\n• Time: ${time}`;
+        if (sehraTime) eventsWaText += `\n• Sehra Bandi: ${sehraTime}`;
+        if (departureTime) eventsWaText += `\n• Departure of Baraat: ${departureTime}`;
+        if (arrival) eventsWaText += `\n• Arrival Time: ${arrival}`;
+        if (rasmTime) eventsWaText += `\n• Rasm-e-Hina Time: ${rasmTime}`;
+        if (nikkah) eventsWaText += `\n• Nikkah: ${nikkah}`;
+        if (mealTime) eventsWaText += `\n• ${mealLabelWa}: ${mealTime}`;
+        else if (mealType === "lunch") eventsWaText += `\n• Meal Type: Lunch (دوپہر کا کھانا)`;
+        if (rukhsati) eventsWaText += `\n• Rukhsati: ${rukhsati}`;
+        if (duaTime) eventsWaText += `\n• Dua / Farewell: ${duaTime}`;
+        if (subSchedule.length > 0) {
+          subSchedule.forEach(s => {
+            eventsWaText += `\n• Sub-Schedule: ${s.time ? s.time + " - " : ""}${s.label}`;
+          });
+        }
+        if (venue) eventsWaText += `\n• Venue: ${venue}`;
+        if (addr) eventsWaText += `\n• Address: ${addr}`;
+        if (mapUrl) eventsWaText += `\n• Google Maps: ${mapUrl}`;
+        if (rsvp) eventsWaText += `\n• RSVP: ${rsvp}`;
+        if (notes) eventsWaText += `\n• Special Notes: ${notes}`;
       });
 
       const orderData = {
@@ -2133,7 +2263,10 @@
         events: {
           mehndi: eventsList.find(e => e.type === "mehndi") || {},
           baraat: eventsList.find(e => e.type === "barat") || {},
-          walima: eventsList.find(e => e.type === "walima") || {}
+          walima: eventsList.find(e => e.type === "walima") || {},
+          nikkah: eventsList.find(e => e.type === "nikkah") || {},
+          engagement: eventsList.find(e => e.type === "engagement") || {},
+          custom: eventsList.find(e => e.type === "custom") || {}
         }
       };
 

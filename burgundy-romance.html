@@ -934,7 +934,112 @@
       max-width: 480px;
       margin: 0 auto;
       overflow: hidden;
-      min-height: 570px;
+      min-height: 440px;
+    }
+
+    .schedule-deckle-card + .schedule-deckle-card {
+      margin-top: 18px;
+    }
+
+    .schedule-day-badge {
+      display: inline-block;
+      font-family: 'Ovo', Georgia, serif;
+      font-size: 11.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #7a1c2e;
+      background: rgba(180, 140, 61, 0.15);
+      border: 1px solid rgba(180, 140, 61, 0.38);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .schedule-date-sub {
+      font-family: 'Ovo', Georgia, serif;
+      font-size: 14.5px;
+      color: #6a5140;
+      letter-spacing: 0.05em;
+      margin-top: -14px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .schedule-card-venue-pill {
+      margin: 14px auto 0;
+      max-width: 330px;
+      padding: 10px 14px 2px;
+      border-top: 1px solid rgba(180, 140, 61, 0.3);
+      font-family: 'Ovo', Georgia, serif;
+      font-size: 13.5px;
+      color: #5C4535;
+      line-height: 1.45;
+    }
+
+    .schedule-card-venue-pill strong {
+      color: #7a1c2e;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .multi-venue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 380px;
+      margin: 18px auto 0;
+    }
+
+    .multi-venue-card {
+      background: rgba(239, 227, 209, 0.72);
+      border: 1px solid rgba(180, 140, 61, 0.38);
+      border-radius: 8px;
+      padding: 16px 16px 18px;
+      box-shadow: 0 4px 14px rgba(90, 15, 27, 0.08);
+    }
+
+    .multi-venue-badge {
+      display: inline-block;
+      font-family: 'Ovo', Georgia, serif;
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a1c2e;
+      background: rgba(180, 140, 61, 0.18);
+      border: 1px solid rgba(180, 140, 61, 0.32);
+      padding: 3px 12px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .rsvp-events-check-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .rsvp-event-check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #f9f0e0;
+    }
+
+    .rsvp-event-check-item input[type="checkbox"] {
+      accent-color: #d4af37;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
 
     .deckle-bg-top {
@@ -956,8 +1061,8 @@
 
     .deckle-bg-fill {
       position: absolute;
-      top: 300px;
-      bottom: 220px;
+      top: 160px;
+      bottom: 160px;
       left: 50%;
       transform: translateX(-50%);
       width: 744px;
@@ -2928,25 +3033,29 @@
             <img src="assets/location-flourish.png" class="location-flourish-img" alt="" />
           </picture>
 
-          <h4 class="location-venue-name" id="tVenueName">Islamic Center of Melville</h4>
-          <p class="location-venue-address" id="tVenueAddress">Address: 118 Old East Neck Road Melville, NY 11747</p>
+          <div id="singleVenueInfo">
+            <h4 class="location-venue-name" id="tVenueName">Islamic Center of Melville</h4>
+            <p class="location-venue-address" id="tVenueAddress">Address: 118 Old East Neck Road Melville, NY 11747</p>
+          </div>
 
           <div class="location-sketch-wrap">
             <picture>
               <source srcset="assets/venue-sketch.webp" type="image/webp">
-              <img src="assets/venue-sketch.png" class="venue-sketch-img" alt="Islamic Center of Melville Sketch" />
+              <img src="assets/venue-sketch.png" class="venue-sketch-img" alt="Venue Architectural Sketch" />
             </picture>
           </div>
 
-          <div class="location-actions">
-            <a href="https://maps.google.com/?q=Islamic+Center+of+Melville+118+Old+East+Neck+Road+Melville+NY+11747" target="_blank" rel="noopener noreferrer" class="location-btn-pill">
+          <div class="location-actions" id="singleVenueActions">
+            <a href="https://maps.google.com/?q=Islamic+Center+of+Melville+118+Old+East+Neck+Road+Melville+NY+11747" id="tVenueMapBtn" target="_blank" rel="noopener noreferrer" class="location-btn-pill">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
-              <span>Open in Google Maps</span>
+              <span id="tOpenMapsLabel">Open in Google Maps</span>
             </a>
           </div>
+
+          <div class="multi-venue-list" id="multiVenueList" style="display:none;"></div>
         </section>
 
         <!-- SECTION 6: DRESS CODE & GIFT PREFERENCE (EXACT 1:1 REFERENCE DECKLE CARD) -->
@@ -3044,6 +3153,11 @@
               <span class="rsvp-radio-label" id="tOptionDecline">Declines with regret</span>
             </label>
           </div>
+        </div>
+
+        <div class="rsvp-form-group" id="rsvpEventsGroup" style="display:none;">
+          <label class="rsvp-label" id="tLabelEventsAttending">Events Attending</label>
+          <div class="rsvp-events-check-list" id="rsvpEventsCheckList"></div>
         </div>
 
         <div class="rsvp-form-group">
@@ -3275,43 +3389,52 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // 4B. TRAVELING PINK ROSE SCROLL ANIMATION
-        const timelineTrack = document.getElementById('timelineContainer') || document.getElementById('timelineTrackCentered');
-        const timelineRose = document.getElementById('timelineFloatingRose');
-        const timelineRows = document.querySelectorAll('.timeline-row');
-
+        // 4B. TRAVELING PINK ROSE SCROLL ANIMATION (SUPPORTS 1 OR MULTIPLE DECKLE CARDS)
         function updateRosePosition() {
-          if (!timelineTrack || !timelineRose || timelineRows.length === 0) return;
-          const trackRect = timelineTrack.getBoundingClientRect();
+          const containers = document.querySelectorAll('.timeline-container');
           const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-          
-          // Focal line in viewport where the active row aligns (middle-lower screen)
           const focalY = viewportHeight * 0.52;
-          
-          // Row centers relative to timelineTrack
-          const rowTops = Array.from(timelineRows).map(r => {
-            const rect = r.getBoundingClientRect();
-            return rect.top + rect.height / 2 - trackRect.top;
+
+          containers.forEach(track => {
+            const rose = track.querySelector('.timeline-rose-floating');
+            const rows = track.querySelectorAll('.timeline-row');
+            if (!rose || rows.length === 0) return;
+
+            const trackRect = track.getBoundingClientRect();
+            const rowTops = Array.from(rows).map(r => {
+              const rect = r.getBoundingClientRect();
+              return rect.top + rect.height / 2 - trackRect.top;
+            });
+
+            const minY = rowTops[0];
+            const maxY = rowTops[rowTops.length - 1];
+            let targetY = minY;
+
+            if (maxY > minY) {
+              const currentPos = focalY - trackRect.top;
+              const progress = Math.max(0, Math.min(1, (currentPos - minY) / (maxY - minY)));
+              targetY = minY + progress * (maxY - minY);
+            }
+
+            rose.style.top = targetY + 'px';
+
+            // Highlight active diamond node closest to rose
+            rows.forEach((r, idx) => {
+              const node = r.querySelector('.timeline-diamond-node');
+              if (node) {
+                if (Math.abs(rowTops[idx] - targetY) < 28) {
+                  node.classList.add('active');
+                } else {
+                  node.classList.remove('active');
+                }
+              }
+            });
           });
-
-          const minY = rowTops[0];
-          const maxY = rowTops[rowTops.length - 1];
-
-          // Compute scroll progress through the track
-          // When track top reaches focalY, progress = 0 (at row 0, 5 PM)
-          // When track bottom reaches focalY, progress = 1 (at row 4, 9 PM)
-          const totalTravel = trackRect.height;
-          const currentPos = focalY - trackRect.top;
-          const progress = Math.max(0, Math.min(1, (currentPos - minY) / (maxY - minY)));
-
-          // Smooth target Y along the vertical stem
-          const targetY = minY + progress * (maxY - minY);
-          timelineRose.style.top = targetY + 'px';
         }
 
+        window.updateRosePosition = updateRosePosition;
         window.addEventListener('scroll', updateRosePosition, { passive: true });
         window.addEventListener('resize', updateRosePosition);
-        // Initial positioning
         setTimeout(updateRosePosition, 300);
 
         // 5. RSVP MODAL POPUP & WHATSAPP SUBMISSION (Video Frame 24s)
@@ -3336,10 +3459,14 @@
         const count = document.getElementById("guestCount").value;
         const notes = document.getElementById("guestNotes").value.trim();
 
+        const checkedEvents = Array.from(document.querySelectorAll('input[name="rsvpEventDay"]:checked')).map(cb => cb.value);
+        const coupleTitle = `${translations.en.heroGroom || "Rohan"} & ${translations.en.heroBride || "Zara"}`;
+
         // Build WhatsApp Message
-        const waText = `*Wedding RSVP Response - Rohan & Zara*%0A%0A` +
+        const waText = `*Wedding RSVP Response - ${encodeURIComponent(coupleTitle)}*%0A%0A` +
           `• *Guest Name:* ${encodeURIComponent(name)}%0A` +
           `• *Attendance:* ${encodeURIComponent(status)}%0A` +
+          (checkedEvents.length > 0 ? `• *Events Attending:* ${encodeURIComponent(checkedEvents.join(", "))}%0A` : "") +
           `• *Number of Guests:* ${encodeURIComponent(count)}` +
           (notes ? `%0A• *Note:* ${encodeURIComponent(notes)}` : "");
 
@@ -3422,11 +3549,12 @@
         drawPetals();
       }
 
-      // 8. BILINGUAL URDU / ENGLISH TRANSLATIONS
+      // 8. BILINGUAL URDU / ENGLISH TRANSLATIONS & MULTI-DAY EVENT ENGINE
       const translations = {
         en: {
           langBtn: "اردو",
           heroSubtitle: "Walima Reception",
+          heroDate: "27 . 09 . 2026",
           heroGroom: "Rohan",
           heroBride: "Zara",
           scrollPrompt: "Scroll down",
@@ -3447,18 +3575,20 @@
           locationHeading: "Location",
           venueName: "Islamic Center of Melville",
           venueAddress: "Address: 118 Old East Neck Road, Melville, NY 11747",
-          dressCodeHeading: "Dress Code",
-          dressCodeText: "Traditional Formal / Black Tie Elegance. We kindly request our guests to grace the evening in formal or festive traditional attire.",
-          giftPrefHeading: "Gift Preference",
-          giftPrefText: "Your presence and prayers (Duas) are our greatest blessing.<br><span style=\"font-size: 13.5px; opacity: 0.85;\">(Kindly, no boxed gifts please)</span>",
+          openMapsBtn: "Open in Google Maps",
+          punctualityHeading: "Punctuality",
+          punctualityText: "To ensure a seamless flow of events and banquet, guests are kindly requested to arrive on time.",
+          complimentsHeading: "With Best Compliments",
+          complimentsText: "All Relatives, Friends &amp; The Mehmood Family<br><span style=\"font-size: 13.5px; opacity: 0.85; margin-top: 6px; display: inline-block;\">(Kindly, no boxed gifts please)</span>",
           rsvpHeading: "Confirm Your Attendance",
-          rsvpSub: "To help us prepare for a joyful Walima celebration, kindly let us know if you will be attending.",
+          rsvpSub: "To help us prepare for a joyful celebration, kindly let us know if you will be attending.",
           clickToOpen: "Click to open",
           farewellHeading: "Looking forward to celebrating with you!",
           farewellNames: "Rohan and Zara",
           modalTitle: "Confirm Your Attendance",
           labelName: "Your Name",
           labelAttendance: "Will you be attending?",
+          labelEventsAttending: "Which events will you be attending?",
           optionAccept: "Accepts with pleasure",
           optionDecline: "Declines with regret",
           labelCount: "Number of Guests Attending",
@@ -3472,6 +3602,7 @@
         ur: {
           langBtn: "English",
           heroSubtitle: "دعوتِ ولیمہ",
+          heroDate: "۲۷ . ۰۹ . ۲۰۲۶",
           heroGroom: "روہن",
           heroBride: "زارا",
           scrollPrompt: "تفصیلات کے لیے نیچے جائیں",
@@ -3492,6 +3623,7 @@
           locationHeading: "مقام و پتا",
           venueName: "اسلامک سینٹر آف میلول — گرینڈ ہال",
           venueAddress: "پتہ: 118 اولڈ ایسٹ نیک روڈ، میلول، نیویارک",
+          openMapsBtn: "گوگل میپس میں کھولیں",
           punctualityHeading: "پابندیِ وقت",
           punctualityText: "تقریب اور طعام کے بروقت اور پُروقار آغاز کیلئے، تمام معزز مہمانوں سے وقت کی پابندی کی پُرخلوص التماس ہے۔",
           complimentsHeading: "نیازمندان",
@@ -3504,6 +3636,7 @@
           modalTitle: "شرکت کی تصدیق فرمائیں",
           labelName: "آپ کا نامِ گرامی",
           labelAttendance: "کیا آپ تشریف لا رہے ہیں؟",
+          labelEventsAttending: "آپ کن تقریبات میں شرکت فرمائیں گے؟",
           optionAccept: "خوشی سے شرکت کی تصدیق ہے",
           optionDecline: "معذرت خواہ ہیں، بوجوہ شرکت سے قاصر ہیں",
           labelCount: "تشریف لانے والے مہمانوں کی تعداد",
@@ -3534,14 +3667,12 @@
         try {
           if (!str) return null;
           const bin = atob(str);
-          // 1. If raw UTF-8 bytes directly
           try {
             const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
             const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
             if (text.trim().startsWith("{")) return JSON.parse(text);
           } catch (e) {}
 
-          // 2. If URI encoded JSON
           const decoded = safeDecodeURI(bin);
           if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
 
@@ -3549,6 +3680,505 @@
         } catch (err) {
           console.error("Failed to decode wedding data", err);
           return null;
+        }
+      }
+
+      const URDU_DIGITS = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      function toUrduDigits(str) {
+        return String(str || '').replace(/[0-9]/g, d => URDU_DIGITS[+d]);
+      }
+
+      function formatTimeUrdu(timeStr) {
+        if (!timeStr) return "";
+        const s = String(timeStr).trim();
+        // If already has Urdu characters, return as is
+        if (/[\u0600-\u06FF]/.test(s)) return s;
+        const m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?$/);
+        if (!m) return toUrduDigits(s);
+        let hr = parseInt(m[1], 10);
+        const min = m[2] || "00";
+        const ampm = (m[3] || "PM").toUpperCase();
+        let periodUr = "شام";
+        if (ampm === "AM") {
+          periodUr = hr === 12 ? "شب" : (hr < 6 ? "شب" : "صبح");
+        } else {
+          if (hr === 12 || (hr >= 1 && hr <= 4)) periodUr = "دوپہر";
+          else if (hr >= 5 && hr <= 8) periodUr = "شام";
+          else periodUr = "شب";
+        }
+        return `${toUrduDigits(hr)}:${toUrduDigits(min)} ${periodUr}`;
+      }
+
+      function addMinutesToTimeStr(timeStr, minsToAdd) {
+        if (!timeStr) return "";
+        const s = String(timeStr).trim();
+        const m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/);
+        if (!m) return s;
+        let hr = parseInt(m[1], 10);
+        let min = parseInt(m[2] || "0", 10);
+        let ampm = (m[3] || "PM").toUpperCase();
+        let total24 = (hr % 12) + (ampm === "PM" ? 12 : 0);
+        let totalMins = total24 * 60 + min + minsToAdd;
+        totalMins = ((totalMins % 1440) + 1440) % 1440;
+        const new24 = Math.floor(totalMins / 60);
+        const newMin = totalMins % 60;
+        const newAmPm = new24 >= 12 ? "PM" : "AM";
+        const new12 = (new24 % 12) || 12;
+        return `${new12}:${String(newMin).padStart(2, "0")} ${newAmPm}`;
+      }
+
+      function detectIsLunchTime(timeStr, explicitMealType) {
+        if (explicitMealType === "lunch") return true;
+        if (explicitMealType === "dinner" || explicitMealType === "hitea") return false;
+        const m = String(timeStr || "").match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/);
+        if (!m) return false;
+        const hr = parseInt(m[1], 10);
+        const ampm = (m[3] || "PM").toUpperCase();
+        if (ampm === "AM" && hr >= 11 && hr !== 12) return true;
+        if (ampm === "PM" && (hr === 12 || (hr >= 1 && hr <= 4))) return true;
+        return false;
+      }
+
+      function formatHumanDate(rawDateStr, fallbackDisplay) {
+        if (fallbackDisplay && !/^\d{4}-\d{2}-\d{2}$/.test(fallbackDisplay)) return fallbackDisplay;
+        const src = rawDateStr || fallbackDisplay || "";
+        if (!src) return "";
+        const m = String(src).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (m) {
+          const dt = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10));
+          if (!isNaN(dt.getTime())) {
+            return dt.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "long", year: "numeric" });
+          }
+          return `${m[3]} . ${m[2]} . ${m[1]}`;
+        }
+        return src;
+      }
+
+      function formatDotDate(rawDateStr, fallbackDisplay) {
+        const src = rawDateStr || fallbackDisplay || "";
+        const m = String(src).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (m) return `${m[3]} . ${m[2]} . ${m[1]}`;
+        return fallbackDisplay || rawDateStr || "";
+      }
+
+      const EVENT_TYPE_META = {
+        mehndi: {
+          titleEn: "Mehndi Ceremony",
+          titleUr: "رسمِ حنا (مہندی)",
+          shortEn: "Mehndi",
+          shortUr: "مہندی"
+        },
+        barat: {
+          titleEn: "Baraat Ceremony",
+          titleEnBride: "Baraat & Rukhsati",
+          titleUr: "تقریبِ بارات",
+          titleUrBride: "تقریبِ بارات و رخصتی",
+          shortEn: "Baraat",
+          shortUr: "بارات"
+        },
+        walima: {
+          titleEn: "Walima Reception",
+          titleUr: "دعوتِ ولیمہ",
+          shortEn: "Walima",
+          shortUr: "ولیمہ"
+        },
+        nikkah: {
+          titleEn: "Sacred Nikkah Ceremony",
+          titleUr: "تقریبِ عقدِ نکاح",
+          shortEn: "Nikkah",
+          shortUr: "نکاح"
+        },
+        engagement: {
+          titleEn: "Engagement Ceremony",
+          titleUr: "تقریبِ منگنی",
+          shortEn: "Engagement",
+          shortUr: "منگنی"
+        },
+        custom: {
+          titleEn: "Special Celebration",
+          titleUr: "خصوصی تقریب",
+          shortEn: "Celebration",
+          shortUr: "تقریب"
+        }
+      };
+
+      const DAY_LABELS_UR = ["پہلا دن", "دوسرا دن", "تیسرا دن", "چوتھا دن", "پانچواں دن", "چھٹا دن"];
+
+      function buildSubScheduleRows(ev, type, isBride) {
+        const rows = [];
+        const addRow = (tEn, lEn, lUr, tUrOpt) => {
+          if (!tEn && !lEn) return;
+          const cleanTime = (tEn || "").trim();
+          rows.push({
+            timeEn: cleanTime || "—",
+            timeUr: tUrOpt || formatTimeUrdu(cleanTime) || "—",
+            descEn: lEn,
+            descUr: lUr || lEn
+          });
+        };
+
+        // 1. Check explicit subSchedule array if provided
+        if (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0) {
+          ev.subSchedule.forEach(item => {
+            if (item && (item.time || item.label)) {
+              addRow(
+                item.time || "",
+                item.label || item.title || "Ceremony Milestone",
+                item.labelUr || item.titleUr || item.label || "تقریب",
+                item.timeUr || ""
+              );
+            }
+          });
+        }
+
+        // 2. Check named milestone fields if subSchedule wasn't exhaustive
+        if (rows.length === 0) {
+          const mealType = (ev.mealType || "").toLowerCase();
+          const mealTimeVal = ev.mealTime || ev.lunch || ev.dinner || ev.dinnerTime || "";
+          const isLunch = detectIsLunchTime(mealTimeVal || ev.time || ev.displayTime, ev.lunch ? "lunch" : mealType);
+          const mealLabelEn = mealType === "hitea"
+            ? "Hi-Tea & Royal Refreshments"
+            : (isLunch ? "Royal Lunch Banquet" : "Royal Dinner Banquet");
+          const mealLabelUr = mealType === "hitea"
+            ? "شاہی ہائی ٹی و تواضع"
+            : (isLunch ? "پُرتکلف شاہی ظہرانہ (دوپہر کا کھانا)" : "پُرتکلف شاہی طعام و عشائیہ");
+
+          if (ev.sehraTime) {
+            addRow(ev.sehraTime, "Sehra Bandi & Gathering", "سہرہ بندی اور معزز مہمانوں کا استقبال", ev.sehraTimeUrdu);
+          }
+          if (ev.departureTime) {
+            addRow(ev.departureTime, "Departure of Baraat", "روانگیِ بارات", ev.departureTimeUrdu);
+          }
+          const arrVal = ev.arrival || ev.arrivalTime || "";
+          if (arrVal) {
+            addRow(
+              arrVal,
+              type === "barat" ? "Arrival of Baraat & Welcome" : "Guest Arrival & Reception",
+              type === "barat" ? "آمدِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم",
+              ev.arrivalUrdu
+            );
+          }
+          if (ev.rasmTime) {
+            addRow(
+              ev.rasmTime,
+              type === "mehndi" ? "Rasm-e-Hina & Festive Ceremonies" : "Main Ceremony & Celebrations",
+              type === "mehndi" ? "رسمِ حنا کی دلکش تقریب" : "مرکزی تقریب",
+              ev.rasmTimeUrdu
+            );
+          }
+          if (ev.nikkah || ev.nikkahTime) {
+            const nk = ev.nikkah || ev.nikkahTime;
+            addRow(nk, "Sacred Nikkah Ceremony", "عقدِ نکاح کی مبارک تقریب", ev.nikkahTimeUrdu);
+          }
+          if (mealTimeVal) {
+            addRow(mealTimeVal, mealLabelEn, mealLabelUr, ev.mealTimeUrdu);
+          }
+          const rukhVal = ev.rukhsati || ev.rukhsatiTime || "";
+          if (rukhVal) {
+            addRow(rukhVal, "Rukhsati & Emotional Farewell", "رخصتی اور دعاؤں کی چھاؤں", ev.rukhsatiUrdu);
+          }
+          if (ev.duaTime || ev.farewellTime) {
+            addRow(ev.duaTime || ev.farewellTime, "Dua & Warm Farewell", "دعائے خیر اور الوداع");
+          }
+
+          // If user provided a main event time (e.g. 7:00 PM) plus e.g. only Lunch/Dinner time, prepend main time as Guest Arrival
+          const rawMainTime = (ev.displayTime || ev.time || "").trim();
+          const isCompositeTime = rawMainTime.toLowerCase().includes("sehra") || rawMainTime.toLowerCase().includes("departure");
+          if (rows.length > 0 && rawMainTime && !isCompositeTime && !ev.arrival && !ev.sehraTime) {
+            const alreadyUsed = rows.some(r => r.timeEn.toLowerCase() === rawMainTime.toLowerCase());
+            if (!alreadyUsed) {
+              rows.unshift({
+                timeEn: rawMainTime,
+                timeUr: ev.displayTimeUrdu || formatTimeUrdu(rawMainTime),
+                descEn: type === "barat" ? "Baraat Reception & Welcome" : "Guest Arrival & Welcome",
+                descUr: type === "barat" ? "استقبالِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم"
+              });
+            }
+          }
+        }
+
+        // 3. If no sub-schedule fields were filled (only main time given), generate a rich, authentic sub-schedule from main time
+        if (rows.length === 0) {
+          const baseTime = (ev.displayTime || ev.time || (type === "nikkah" ? "4:30 PM" : "7:00 PM")).trim();
+          const mealType = (ev.mealType || "").toLowerCase();
+          const isLunch = detectIsLunchTime(baseTime, mealType);
+          const mealLabelEn = mealType === "hitea"
+            ? "Hi-Tea & Royal Refreshments"
+            : (isLunch ? "Royal Lunch Banquet" : "Royal Dinner Banquet");
+          const mealLabelUr = mealType === "hitea"
+            ? "شاہی ہائی ٹی و تواضع"
+            : (isLunch ? "پُرتکلف شاہی ظہرانہ (دوپہر کا کھانا)" : "پُرتکلف شاہی طعام و عشائیہ");
+
+          if (type === "walima") {
+            addRow(baseTime, "Guest Arrival & Reception", "مہمانوں کی تشریف آوری و خیر مقدم", ev.displayTimeUrdu);
+            addRow(addMinutesToTimeStr(baseTime, 45), "Grand Entrance of Couple", "دولہا اور دلہن کا شاندار استقبال");
+            addRow(addMinutesToTimeStr(baseTime, 90), mealLabelEn, mealLabelUr);
+            addRow(addMinutesToTimeStr(baseTime, 150), "Family Greetings & Dua", "مبارکباد اور دعائے خیر");
+          } else if (type === "mehndi") {
+            addRow(baseTime, "Guest Arrival & Festive Welcome", "مہمانوں کی تشریف آوری و استقبال", ev.displayTimeUrdu);
+            addRow(addMinutesToTimeStr(baseTime, 45), "Rasm-e-Hina & Celebrations", "رسمِ حنا و محفلِ خوشی");
+            addRow(addMinutesToTimeStr(baseTime, 90), mealLabelEn, mealLabelUr);
+            addRow(addMinutesToTimeStr(baseTime, 150), "Festive Music & Family Greetings", "خاندانی تصاویر اور دعائے خیر");
+          } else if (type === "barat") {
+            if (isBride) {
+              addRow(baseTime, "Arrival of Baraat & Welcome", "آمدِ بارات و خیر مقدم", ev.displayTimeUrdu);
+              addRow(addMinutesToTimeStr(baseTime, 45), "Sacred Nikkah Ceremony", "عقدِ نکاح کی مبارک تقریب");
+              addRow(addMinutesToTimeStr(baseTime, 90), mealLabelEn, mealLabelUr);
+              addRow(addMinutesToTimeStr(baseTime, 150), "Rukhsati & Warm Duas", "رخصتی اور دعاؤں کی چھاؤں");
+            } else {
+              addRow(baseTime, "Sehra Bandi & Gathering", "سہرہ بندی اور معزز مہمانوں کا استقبال", ev.displayTimeUrdu);
+              addRow(addMinutesToTimeStr(baseTime, 45), "Departure of Baraat", "روانگیِ بارات");
+              addRow(addMinutesToTimeStr(baseTime, 90), "Arrival of Baraat & Nikkah", "آمدِ بارات و عقدِ نکاح");
+              addRow(addMinutesToTimeStr(baseTime, 135), mealLabelEn + " & Rukhsati", mealLabelUr + " و رخصتی");
+            }
+          } else if (type === "nikkah") {
+            addRow(baseTime, "Guest Gathering & Welcome", "مہمانوں کی تشریف آوری و خیر مقدم", ev.displayTimeUrdu);
+            addRow(addMinutesToTimeStr(baseTime, 30), "Sacred Khutbah & Nikkah", "خطبہ مسنونہ و عقدِ نکاح");
+            addRow(addMinutesToTimeStr(baseTime, 75), mealLabelEn + " & Mubarakbad", mealLabelUr + " و دعائے خیر");
+          } else {
+            const cNameEn = ev.customName || ev.name || "Main Ceremony";
+            const cNameUr = ev.customNameUr || ev.nameUr || "مرکزی تقریب";
+            addRow(baseTime, "Guest Arrival & Welcome", "مہمانوں کی تشریف آوری و خیر مقدم", ev.displayTimeUrdu);
+            addRow(addMinutesToTimeStr(baseTime, 45), cNameEn, cNameUr);
+            addRow(addMinutesToTimeStr(baseTime, 90), mealLabelEn, mealLabelUr);
+          }
+        }
+
+        return rows;
+      }
+
+      function extractNormalizedEvents(data, isBride) {
+        if (!data) return [];
+        const rawList = [];
+
+        if (Array.isArray(data.eventsList) && data.eventsList.length > 0) {
+          data.eventsList.forEach(item => {
+            if (!item) return;
+            const normType = (item.type === "baraat" ? "barat" : (item.type || "custom")).toLowerCase();
+            // Merge any extra fields from data.events[type] if present
+            const fallbackObj = (data.events && (data.events[normType] || (normType === "barat" && data.events.baraat))) || {};
+            rawList.push(Object.assign({}, fallbackObj, item, { type: normType }));
+          });
+        } else if (data.events && typeof data.events === "object") {
+          const orderKeys = ["engagement", "nikkah", "mehndi", "baraat", "barat", "walima", "custom"];
+          const seenBarat = { val: false };
+          orderKeys.forEach(k => {
+            const ev = data.events[k];
+            if (!ev || typeof ev !== "object") return;
+            const normType = k === "baraat" ? "barat" : k;
+            if (normType === "barat" && seenBarat.val) return;
+            const hasContent = Boolean(
+              ev.date || ev.displayDate || ev.dateTime || ev.time || ev.displayTime ||
+              ev.venue || ev.sehraTime || ev.arrival || ev.nikkah || ev.dinner || ev.lunch ||
+              (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0)
+            );
+            if (hasContent) {
+              if (normType === "barat") seenBarat.val = true;
+              rawList.push(Object.assign({}, ev, { type: normType }));
+            }
+          });
+        }
+
+        return rawList.map((ev, idx) => {
+          const type = ev.type || "custom";
+          const meta = EVENT_TYPE_META[type] || EVENT_TYPE_META.custom;
+          const titleEn = ev.customName || ev.titleEn || (type === "barat" && isBride ? meta.titleEnBride : meta.titleEn) || ev.name || "Wedding Ceremony";
+          const titleUr = ev.customNameUr || ev.titleUr || (type === "barat" && isBride ? meta.titleUrBride : meta.titleUr) || ev.nameUr || titleEn;
+          const shortEn = ev.customName || meta.shortEn || titleEn;
+          const shortUr = ev.customNameUr || meta.shortUr || titleUr;
+          const humanDateEn = formatHumanDate(ev.date, ev.displayDate);
+          const dotDateEn = formatDotDate(ev.date, ev.displayDate);
+          const humanDateUr = ev.displayDateUrdu || toUrduDigits(humanDateEn);
+          const rows = buildSubScheduleRows(ev, type, isBride);
+
+          return {
+            index: idx,
+            type,
+            titleEn,
+            titleUr,
+            shortEn,
+            shortUr,
+            dateRaw: ev.date || "",
+            dateTime: ev.dateTime || (ev.date ? `${ev.date}T19:00:00` : ""),
+            humanDateEn,
+            humanDateUr,
+            dotDateEn,
+            venueEn: ev.venue || "",
+            venueUr: ev.venueUrdu || ev.venue || "",
+            addressEn: ev.address || "",
+            addressUr: ev.addressUrdu || ev.address || "",
+            mapUrl: ev.mapUrl || "",
+            rsvpPhone: ev.rsvpPhone || "",
+            notes: ev.notes || "",
+            rows
+          };
+        });
+      }
+
+      let activeNormalizedEvents = [];
+
+      function renderDynamicScheduleAndVenues(lang) {
+        if (!activeNormalizedEvents || activeNormalizedEvents.length === 0) return;
+        const isUr = lang === "ur";
+        const total = activeNormalizedEvents.length;
+
+        // 1. Render Separate Deckle-Paper Card for Each Event Day
+        const wrapper = document.getElementById("sectionTimelineWrapper");
+        if (wrapper) {
+          wrapper.innerHTML = activeNormalizedEvents.map((ev, idx) => {
+            const dayBadgeText = total > 1
+              ? (isUr ? `✦ ${DAY_LABELS_UR[idx] || `دن ${toUrduDigits(idx + 1)}`} · پروگرام و تقاریب ✦` : `✦ Day 0${idx + 1} · Schedule of Events ✦`)
+              : (isUr ? `✦ ${ev.titleUr} ✦` : `✦ ${ev.titleEn} ✦`);
+
+            const cardHeading = total > 1
+              ? (isUr ? ev.titleUr : ev.titleEn)
+              : (isUr ? (translations.ur.timelineHeading || "پروگرام و تقاریب") : (translations.en.timelineHeading || "Schedule of Events"));
+
+            const dateSubText = isUr ? ev.humanDateUr : ev.humanDateEn;
+
+            const rowsHtml = ev.rows.map((r, rIdx) => `
+              <div class="timeline-row" data-index="${rIdx}">
+                <div class="timeline-time-col">${isUr ? r.timeUr : r.timeEn}</div>
+                <div class="timeline-center-col"><div class="timeline-diamond-node"></div></div>
+                <div class="timeline-desc-col">${isUr ? r.descUr : r.descEn}</div>
+              </div>
+            `).join("");
+
+            const venueName = isUr ? ev.venueUr : ev.venueEn;
+            const venueAddr = isUr ? ev.addressUr : ev.addressEn;
+            const venuePillHtml = venueName ? `
+              <div class="schedule-card-venue-pill">
+                <strong>📍 ${venueName}</strong>
+                ${venueAddr ? `<span>${venueAddr}</span>` : ""}
+              </div>
+            ` : "";
+
+            return `
+              <div class="schedule-deckle-card" data-event-day="${idx + 1}">
+                <div class="deckle-bg-top">
+                  <picture>
+                    <source srcset="assets/deckle-top-edge.webp" type="image/webp">
+                    <img src="assets/deckle-top-edge.png" alt="" />
+                  </picture>
+                </div>
+                <div class="deckle-bg-fill"></div>
+                <div class="deckle-bg-bottom">
+                  <picture>
+                    <source srcset="assets/deckle-bottom-edge.webp" type="image/webp">
+                    <img src="assets/deckle-bottom-edge.png" alt="" />
+                  </picture>
+                </div>
+
+                <div class="schedule-content">
+                  <div class="schedule-day-badge">${dayBadgeText}</div>
+                  <div class="schedule-header">
+                    <picture>
+                      <source srcset="assets/flourish-left.webp" type="image/webp">
+                      <img src="assets/flourish-left.png" class="schedule-flourish flourish-left" alt="" />
+                    </picture>
+                    <h3 class="schedule-title">${cardHeading}</h3>
+                    <picture>
+                      <source srcset="assets/flourish-right.webp" type="image/webp">
+                      <img src="assets/flourish-right.png" class="schedule-flourish flourish-right" alt="" />
+                    </picture>
+                  </div>
+                  ${dateSubText ? `<div class="schedule-date-sub">${dateSubText}</div>` : ""}
+
+                  <div class="timeline-container">
+                    <img src="assets/timeline-rose-full.webp" class="timeline-rose-floating" alt="Rose" />
+                    <div class="timeline-vertical-stem"></div>
+                    ${rowsHtml}
+                  </div>
+                  ${venuePillHtml}
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        // 2. Render Venue Section (Single vs Multi-Venue)
+        const eventsWithVenue = activeNormalizedEvents.filter(e => e.venueEn || e.addressEn || e.mapUrl);
+        const singleInfo = document.getElementById("singleVenueInfo");
+        const singleActions = document.getElementById("singleVenueActions");
+        const multiList = document.getElementById("multiVenueList");
+        const mapBtn = document.getElementById("tVenueMapBtn");
+        const openMapsLabel = document.getElementById("tOpenMapsLabel");
+        if (openMapsLabel) openMapsLabel.textContent = isUr ? translations.ur.openMapsBtn : translations.en.openMapsBtn;
+
+        const uniqueVenues = new Set(eventsWithVenue.map(e => (e.venueEn || "").toLowerCase().trim()));
+        if (eventsWithVenue.length <= 1 || uniqueVenues.size === 1) {
+          if (singleInfo) singleInfo.style.display = "block";
+          if (singleActions) singleActions.style.display = "flex";
+          if (multiList) multiList.style.display = "none";
+
+          const primaryEv = eventsWithVenue[0] || activeNormalizedEvents[0];
+          if (primaryEv && mapBtn) {
+            const q = encodeURIComponent(`${primaryEv.venueEn || ""} ${primaryEv.addressEn || ""}`.trim());
+            mapBtn.href = primaryEv.mapUrl || (q ? `https://maps.google.com/?q=${q}` : "https://maps.google.com");
+          }
+        } else {
+          if (singleInfo) singleInfo.style.display = "none";
+          if (singleActions) singleActions.style.display = "none";
+          if (multiList) {
+            multiList.style.display = "flex";
+            multiList.innerHTML = eventsWithVenue.map(ev => {
+              const vName = isUr ? ev.venueUr : ev.venueEn;
+              const vAddr = isUr ? ev.addressUr : ev.addressEn;
+              const evBadge = isUr
+                ? `✦ ${ev.titleUr}${ev.humanDateUr ? " · " + ev.humanDateUr : ""} ✦`
+                : `✦ ${ev.titleEn}${ev.humanDateEn ? " · " + ev.humanDateEn : ""} ✦`;
+              const q = encodeURIComponent(`${ev.venueEn || ""} ${ev.addressEn || ""}`.trim());
+              const href = ev.mapUrl || (q ? `https://maps.google.com/?q=${q}` : "https://maps.google.com");
+              const btnLabel = isUr ? translations.ur.openMapsBtn : translations.en.openMapsBtn;
+
+              return `
+                <div class="multi-venue-card">
+                  <div class="multi-venue-badge">${evBadge}</div>
+                  <h4 class="location-venue-name" style="margin-bottom:4px;">${vName || "Grand Wedding Venue"}</h4>
+                  ${vAddr ? `<p class="location-venue-address" style="margin-bottom:14px;">${vAddr}</p>` : ""}
+                  <div class="location-actions" style="margin-top:8px;">
+                    <a href="${href}" target="_blank" rel="noopener noreferrer" class="location-btn-pill">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span>${btnLabel}</span>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join("");
+          }
+        }
+
+        // 3. Render Multi-Event Checkboxes in RSVP Modal when 2+ events exist
+        const rsvpEventsGroup = document.getElementById("rsvpEventsGroup");
+        const rsvpEventsCheckList = document.getElementById("rsvpEventsCheckList");
+        const labelEventsEl = document.getElementById("tLabelEventsAttending");
+        if (labelEventsEl) {
+          labelEventsEl.textContent = isUr ? translations.ur.labelEventsAttending : translations.en.labelEventsAttending;
+        }
+        if (rsvpEventsGroup && rsvpEventsCheckList) {
+          if (total > 1) {
+            rsvpEventsGroup.style.display = "block";
+            rsvpEventsCheckList.innerHTML = activeNormalizedEvents.map(ev => {
+              const labelText = isUr
+                ? `${ev.titleUr}${ev.humanDateUr ? " (" + ev.humanDateUr + ")" : ""}`
+                : `${ev.titleEn}${ev.humanDateEn ? " (" + ev.humanDateEn + ")" : ""}`;
+              return `
+                <label class="rsvp-event-check-item">
+                  <input type="checkbox" name="rsvpEventDay" value="${ev.titleEn}" checked>
+                  <span>${labelText}</span>
+                </label>
+              `;
+            }).join("");
+          } else {
+            rsvpEventsGroup.style.display = "none";
+          }
+        }
+
+        if (typeof window.updateRosePosition === "function") {
+          setTimeout(window.updateRosePosition, 60);
         }
       }
 
@@ -3575,77 +4205,109 @@
         translations.en.farewellNames = isBride ? `${bEn} and ${gEn}` : `${gEn} and ${bEn}`;
         translations.ur.farewellNames = isBride ? `${bUr} اور ${gUr}` : `${gUr} اور ${bUr}`;
 
+        if (dynData.welcoming || dynData.rsvpName) {
+          const welc = dynData.welcoming || dynData.rsvpName;
+          const welcUr = dynData.welcomingUrdu || dynData.rsvpNameUrdu || welc;
+          translations.en.complimentsText = `${welc}<br><span style="font-size: 13.5px; opacity: 0.85; margin-top: 6px; display: inline-block;">(Kindly, no boxed gifts please)</span>`;
+          translations.ur.complimentsText = `${welcUr}<br><span style="font-size: 13.5px; opacity: 0.85; margin-top: 6px; display: inline-block;">(فقط دعاؤں کے طالب — ازراہِ کرم ڈبے والے تحائف سے اجتناب فرمائیں)</span>`;
+        }
+
         const sealEl = document.getElementById("sealInitials");
         if (sealEl && gEn && bEn) {
           sealEl.textContent = `${gEn.charAt(0).toUpperCase()}&${bEn.charAt(0).toUpperCase()}`;
         }
 
-        const evM = dynData.events && dynData.events.mehndi && (dynData.events.mehndi.displayDate || dynData.events.mehndi.dateTime) ? dynData.events.mehndi : null;
-        const evB = dynData.events && dynData.events.baraat && (dynData.events.baraat.displayDate || dynData.events.baraat.dateTime) ? dynData.events.baraat : null;
-        const evW = dynData.events && dynData.events.walima && (dynData.events.walima.displayDate || dynData.events.walima.dateTime) ? dynData.events.walima : null;
+        activeNormalizedEvents = extractNormalizedEvents(dynData, isBride);
 
-        // Customization when Mehndi & Barat are selected (without Walima or with Walima)
-        if (evM && evB && (!evW || !evW.displayDate)) {
-          translations.en.heroSubtitle = isBride ? "Baraat & Mehndi" : "Mehndi & Baraat";
-          translations.ur.heroSubtitle = isBride ? "تقریبِ بارات و رسمِ حنا" : "رسمِ حنا و تقریبِ بارات";
-          translations.en.poetrySacred = isBride ? "Baraat & Mehndi Celebrations" : "Mehndi & Baraat Celebrations";
-          translations.ur.poetrySacred = isBride ? "تقریبِ بارات و رسمِ حنا" : "رسمِ حنا و تقریبِ بارات";
+        if (activeNormalizedEvents.length === 1) {
+          const ev0 = activeNormalizedEvents[0];
+          translations.en.heroSubtitle = ev0.titleEn;
+          translations.ur.heroSubtitle = ev0.titleUr;
+          translations.en.poetrySacred = ev0.titleEn;
+          translations.ur.poetrySacred = ev0.titleUr;
+          translations.en.countdownHeading = `The ${ev0.titleEn} Begins In`;
+          translations.ur.countdownHeading = `${ev0.titleUr} کے آغاز میں باقی وقت`;
+          translations.en.heroDate = ev0.dotDateEn || ev0.humanDateEn || "2026";
+          translations.ur.heroDate = toUrduDigits(translations.en.heroDate);
+          translations.en.venueName = ev0.venueEn || "Grand Wedding Ballroom";
+          translations.en.venueAddress = ev0.addressEn || "";
+          translations.ur.venueName = ev0.venueUr || "گرینڈ بال روم";
+          translations.ur.venueAddress = ev0.addressUr || "";
+          translations.en.rsvpSub = `To help us prepare for a joyful ${ev0.shortEn} celebration, kindly let us know if you will be attending.`;
+          translations.en.familyInviteDesc = isBride
+            ? `Cordially invite you to celebrate the blessed ${ev0.titleEn} of their beloved daughter ${bEn} with ${gEn}`
+            : `Cordially invite you to celebrate the blessed ${ev0.titleEn} of their beloved son ${gEn} with ${bEn}`;
+          translations.ur.familyInviteDesc = isBride
+            ? `اپنی پیاری لختِ جگر ${bUr} اور ${gUr} کی ${ev0.titleUr} کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`
+            : `اپنے پیارے فرزند ${gUr} اور ${bUr} کی ${ev0.titleUr} کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`;
+        } else if (activeNormalizedEvents.length === 2) {
+          const [ev1, ev2] = activeNormalizedEvents;
+          translations.en.heroSubtitle = `${ev1.shortEn} & ${ev2.shortEn}`;
+          translations.ur.heroSubtitle = `${ev1.shortUr} و ${ev2.shortUr}`;
+          translations.en.poetrySacred = `${ev1.shortEn} & ${ev2.shortEn} Celebrations`;
+          translations.ur.poetrySacred = `تقریباتِ ${ev1.shortUr} و ${ev2.shortUr}`;
           translations.en.countdownHeading = "The Wedding Celebrations Begin In";
           translations.ur.countdownHeading = "شادی کی تقریبات کے آغاز میں باقی وقت";
+
+          const d1 = ev1.dotDateEn || ev1.humanDateEn;
+          const d2 = ev2.dotDateEn || ev2.humanDateEn;
+          translations.en.heroDate = (d1 && d2 && d1 !== d2) ? `${d1}  —  ${d2}` : (d1 || d2 || "2026");
+          translations.ur.heroDate = toUrduDigits(translations.en.heroDate);
+
+          const primaryVenueEv = activeNormalizedEvents.find(e => e.venueEn) || ev1;
+          translations.en.venueName = primaryVenueEv.venueEn || "Grand Wedding Ballroom";
+          translations.en.venueAddress = primaryVenueEv.addressEn || "";
+          translations.ur.venueName = primaryVenueEv.venueUr || "گرینڈ بال روم";
+          translations.ur.venueAddress = primaryVenueEv.addressUr || "";
+          translations.en.rsvpSub = `To help us prepare for our ${ev1.shortEn} & ${ev2.shortEn} celebrations, kindly confirm your attendance.`;
           translations.en.familyInviteDesc = isBride
-            ? `Cordially invite you to celebrate the blessed wedding and Baraat of their beloved daughter ${bEn} with ${gEn}`
-            : `Cordially invite you to celebrate the blessed wedding ceremonies and Baraat of their beloved son ${gEn} with ${bEn}`;
+            ? `Cordially invite you to grace the ${ev1.shortEn} & ${ev2.shortEn} celebrations of their beloved daughter ${bEn} with ${gEn}`
+            : `Cordially invite you to grace the ${ev1.shortEn} & ${ev2.shortEn} celebrations of their beloved son ${gEn} with ${bEn}`;
           translations.ur.familyInviteDesc = isBride
-            ? `اپنی پیاری لختِ جگر ${bUr} کی شادی اور بارات کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`
-            : `اپنے پیارے فرزند ${gUr} کی شادی اور بارات کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`;
+            ? `اپنی پیاری لختِ جگر ${bUr} کی شادی (${ev1.shortUr} و ${ev2.shortUr}) کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`
+            : `اپنے پیارے فرزند ${gUr} کی شادی (${ev1.shortUr} و ${ev2.shortUr}) کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`;
+        } else if (activeNormalizedEvents.length >= 3) {
+          const firstEv = activeNormalizedEvents[0];
+          const lastEv = activeNormalizedEvents[activeNormalizedEvents.length - 1];
+          const namesJoinedEn = activeNormalizedEvents.map(e => e.shortEn).join(" · ");
+          const namesJoinedUr = activeNormalizedEvents.map(e => e.shortUr).join(" ، ");
 
-          translations.en.time1 = evM.displayTime || "7:00 PM";
-          translations.en.event1 = `Mehndi Ceremony (رسمِ حنا) · ${evM.displayDate || ""}`;
-          translations.ur.time1 = evM.displayTimeUrdu || evM.displayTime || "۷:۰۰ شام";
-          translations.ur.event1 = `رسمِ حنا (مہندی) · ${evM.displayDateUrdu || evM.displayDate || ""}`;
+          translations.en.heroSubtitle = "Wedding Celebrations";
+          translations.ur.heroSubtitle = "تقریباتِ شادی";
+          translations.en.poetrySacred = namesJoinedEn;
+          translations.ur.poetrySacred = namesJoinedUr;
+          translations.en.countdownHeading = "The Wedding Celebrations Begin In";
+          translations.ur.countdownHeading = "شادی کی تقریبات کے آغاز میں باقی وقت";
 
-          translations.en.time2 = isBride ? (evB.arrival || "8:00 PM") : (evB.sehraTime || "4:30 PM");
-          translations.en.event2 = isBride ? "Arrival of Baraat & Welcome" : "Sehra Bandi & Welcoming Guests";
-          translations.ur.time2 = isBride ? (evB.arrival || "۸:۰۰ شام") : (evB.sehraTime || "۴:۳۰ شام");
-          translations.ur.event2 = isBride ? "آمدِ بارات و خیر مقدم" : "سہرہ بندی اور معزز مہمانوں کا استقبال";
+          const dFirst = firstEv.dotDateEn || firstEv.humanDateEn;
+          const dLast = lastEv.dotDateEn || lastEv.humanDateEn;
+          translations.en.heroDate = (dFirst && dLast && dFirst !== dLast) ? `${dFirst}  —  ${dLast}` : (dFirst || "2026");
+          translations.ur.heroDate = toUrduDigits(translations.en.heroDate);
 
-          translations.en.time3 = isBride ? (evB.nikkah || "9:00 PM") : (evB.departureTime || "5:30 PM");
-          translations.en.event3 = isBride ? "Sacred Nikkah Ceremony" : "Departure of Baraat (روانگیِ بارات)";
-          translations.ur.time3 = isBride ? (evB.nikkah || "۹:۰۰ شام") : (evB.departureTime || "۵:۳۰ شام");
-          translations.ur.event3 = isBride ? "عقدِ نکاح کی مبارک تقریب" : "روانگیِ بارات";
-
-          translations.en.time4 = evB.dinner || evB.displayTime || "9:30 PM";
-          translations.en.event4 = "Baraat Reception & Royal Banquet";
-          translations.ur.time4 = evB.dinner || evB.displayTime || "۹:۳۰ شام";
-          translations.ur.event4 = "پُرتکلف شاہی طعام و ضیافت";
-
-          translations.en.time5 = evB.rukhsati || "11:00 PM";
-          translations.en.event5 = "Rukhsati & Emotional Farewell";
-          translations.ur.time5 = evB.rukhsati || "۱۱:۰۰ شب";
-          translations.ur.event5 = "رخصتی اور دعاؤں کی چھاؤں";
-
-          translations.en.venueName = evB.venue || evM.venue || "Grand Ballroom";
-          translations.en.venueAddress = evB.address || evM.address || "";
-          translations.ur.venueName = evB.venueUrdu || evB.venue || evM.venue || "گرینڈ بال روم";
-          translations.ur.venueAddress = evB.addressUrdu || evB.address || evM.address || "";
-          translations.en.heroDate = evB.displayDate || evM.displayDate || "2026";
-        } else if (evB && !evM && !evW) {
-          translations.en.heroSubtitle = "Baraat & Rukhsati";
-          translations.ur.heroSubtitle = "تقریبِ بارات و رخصتی";
-          translations.en.poetrySacred = "Baraat & Rukhsati";
-          translations.ur.poetrySacred = "دعاؤں کے سائے میں رخصتی";
-          translations.en.heroDate = evB.displayDate || "2026";
-          translations.en.venueName = evB.venue || "Grand Ballroom";
-          translations.en.venueAddress = evB.address || "";
+          const primaryVenueEv = activeNormalizedEvents.find(e => e.venueEn) || firstEv;
+          translations.en.venueName = primaryVenueEv.venueEn || "Grand Wedding Ballroom";
+          translations.en.venueAddress = primaryVenueEv.addressEn || "";
+          translations.ur.venueName = primaryVenueEv.venueUr || "گرینڈ بال روم";
+          translations.ur.venueAddress = primaryVenueEv.addressUr || "";
+          translations.en.rsvpSub = "To help us prepare for the upcoming wedding celebrations, kindly confirm your attendance.";
+          translations.en.familyInviteDesc = isBride
+            ? `Cordially invite you to celebrate the auspicious wedding ceremonies (${namesJoinedEn}) of their beloved daughter ${bEn} with ${gEn}`
+            : `Cordially invite you to celebrate the auspicious wedding ceremonies (${namesJoinedEn}) of their beloved son ${gEn} with ${bEn}`;
+          translations.ur.familyInviteDesc = isBride
+            ? `اپنی پیاری لختِ جگر ${bUr} کی شادی کی تقریبات (${namesJoinedUr}) کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`
+            : `اپنے پیارے فرزند ${gUr} کی شادی کی تقریبات (${namesJoinedUr}) کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔`;
         }
 
-        const targetDateStr = (evM && evM.dateTime) ? evM.dateTime : ((evB && evB.dateTime) ? evB.dateTime : null);
-        if (targetDateStr) {
-          const parsed = new Date(targetDateStr).getTime();
+        // Countdown targets the first upcoming event with a valid dateTime
+        const firstDatedEv = activeNormalizedEvents.find(e => e.dateTime || e.dateRaw);
+        if (firstDatedEv) {
+          const dtStr = firstDatedEv.dateTime || `${firstDatedEv.dateRaw}T19:00:00`;
+          const parsed = new Date(dtStr).getTime();
           if (!isNaN(parsed)) targetWeddingDate = parsed;
         }
 
-        window.activeRsvpPhone = (evB && evB.rsvpPhone) ? evB.rsvpPhone : ((evM && evM.rsvpPhone) ? evM.rsvpPhone : "+923298120981");
+        const firstRsvpEv = activeNormalizedEvents.find(e => e.rsvpPhone);
+        window.activeRsvpPhone = (firstRsvpEv && firstRsvpEv.rsvpPhone) || dynData.rsvpPhone || "+923298120981";
       } else if (isBrideMode) {
         // EN Bride customizations
         translations.en.heroSubtitle = "Baraat & Rukhsati";
@@ -3701,29 +4363,34 @@
         const cdm = document.getElementById("cdMinsLabel"); if(cdm) cdm.textContent = t.mins;
         const cds = document.getElementById("cdSecsLabel"); if(cds) cds.textContent = t.secs;
 
-        // Timeline
-        const tlh = document.getElementById("tTimelineHeading"); if(tlh) tlh.textContent = t.timelineHeading;
-        const tm1 = document.getElementById("tTime1"); if(tm1) tm1.textContent = t.time1;
-        const ev1 = document.getElementById("tEvent1"); if(ev1) ev1.textContent = t.event1;
-        const tm2 = document.getElementById("tTime2"); if(tm2) tm2.textContent = t.time2;
-        const ev2 = document.getElementById("tEvent2"); if(ev2) ev2.textContent = t.event2;
-        const tm3 = document.getElementById("tTime3"); if(tm3) tm3.textContent = t.time3;
-        const ev3 = document.getElementById("tEvent3"); if(ev3) ev3.textContent = t.event3;
-        const tm4 = document.getElementById("tTime4"); if(tm4) tm4.textContent = t.time4;
-        const ev4 = document.getElementById("tEvent4"); if(ev4) ev4.textContent = t.event4;
-        const tm5 = document.getElementById("tTime5"); if(tm5) tm5.textContent = t.time5;
-        const ev5 = document.getElementById("tEvent5"); if(ev5) ev5.textContent = t.event5;
+        // Timeline & Venues
+        if (activeNormalizedEvents && activeNormalizedEvents.length > 0) {
+          renderDynamicScheduleAndVenues(currentLang);
+        } else {
+          const tlh = document.getElementById("tTimelineHeading"); if(tlh) tlh.textContent = t.timelineHeading;
+          const tm1 = document.getElementById("tTime1"); if(tm1) tm1.textContent = t.time1;
+          const ev1 = document.getElementById("tEvent1"); if(ev1) ev1.textContent = t.event1;
+          const tm2 = document.getElementById("tTime2"); if(tm2) tm2.textContent = t.time2;
+          const ev2 = document.getElementById("tEvent2"); if(ev2) ev2.textContent = t.event2;
+          const tm3 = document.getElementById("tTime3"); if(tm3) tm3.textContent = t.time3;
+          const ev3 = document.getElementById("tEvent3"); if(ev3) ev3.textContent = t.event3;
+          const tm4 = document.getElementById("tTime4"); if(tm4) tm4.textContent = t.time4;
+          const ev4 = document.getElementById("tEvent4"); if(ev4) ev4.textContent = t.event4;
+          const tm5 = document.getElementById("tTime5"); if(tm5) tm5.textContent = t.time5;
+          const ev5 = document.getElementById("tEvent5"); if(ev5) ev5.textContent = t.event5;
+        }
 
         // Location
         const loch = document.getElementById("tLocationHeading"); if(loch) loch.textContent = t.locationHeading;
         const vn = document.getElementById("tVenueName"); if(vn) vn.textContent = t.venueName;
         const va = document.getElementById("tVenueAddress"); if(va) va.textContent = t.venueAddress;
+        const oml = document.getElementById("tOpenMapsLabel"); if(oml && t.openMapsBtn) oml.textContent = t.openMapsBtn;
 
         // Dress Code & Gifts
-        const pch = document.getElementById("tPunctualityHeading"); if(pch) pch.textContent = t.punctualityHeading;
-        const pct = document.getElementById("tPunctualityText"); if(pct) pct.innerHTML = t.punctualityText;
-        const cmh = document.getElementById("tComplimentsHeading"); if(cmh) cmh.textContent = t.complimentsHeading;
-        const cmt = document.getElementById("tComplimentsText"); if(cmt) cmt.innerHTML = t.complimentsText;
+        const pch = document.getElementById("tPunctualityHeading"); if(pch && t.punctualityHeading) pch.textContent = t.punctualityHeading;
+        const pct = document.getElementById("tPunctualityText"); if(pct && t.punctualityText) pct.innerHTML = t.punctualityText;
+        const cmh = document.getElementById("tComplimentsHeading"); if(cmh && t.complimentsHeading) cmh.textContent = t.complimentsHeading;
+        const cmt = document.getElementById("tComplimentsText"); if(cmt && t.complimentsText) cmt.innerHTML = t.complimentsText;
 
         // RSVP
         const rh = document.getElementById("tRsvpHeading"); if(rh) rh.textContent = t.rsvpHeading;

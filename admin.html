@@ -476,31 +476,57 @@
 
       <!-- Mehndi Ceremony -->
       <div class="admin-section">
-        <div class="admin-section-header">🌸 3. Mehndi Ceremony (Rasm-e-Hina)</div>
+        <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+          <span>🌸 3. Mehndi Ceremony (Rasm-e-Hina) <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_m_dt','f_m_date','f_m_dateUr','f_m_time','f_m_venue','f_m_addr','f_m_map','f_m_rsvp','f_m_rasm','f_m_meal_time'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Mehndi</button>
+        </div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Date & Time</label>
-            <input class="admin-input" type="datetime-local" id="f_m_dt" required>
+            <label class="admin-field-label">Date & Time (Optional if no Mehndi)</label>
+            <input class="admin-input" type="datetime-local" id="f_m_dt">
           </div>
           <div>
             <label class="admin-field-label">Display Date (English)</label>
-            <input class="admin-input" type="text" id="f_m_date" placeholder="e.g. Thursday, 10th December 2026" required>
+            <input class="admin-input" type="text" id="f_m_date" placeholder="e.g. Thursday, 10th December 2026">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Display Date (Urdu)</label>
-            <input class="admin-input" type="text" id="f_m_dateUr" placeholder="e.g. بروز جمعرات، ۱۰ دسمبر ۲۰۲۶ء" dir="rtl" required>
+            <input class="admin-input" type="text" id="f_m_dateUr" placeholder="e.g. بروز جمعرات، ۱۰ دسمبر ۲۰۲۶ء" dir="rtl">
           </div>
           <div>
-            <label class="admin-field-label">Display Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM / شام ۷:۰۰ بجے" required>
+            <label class="admin-field-label">Main Event / Arrival Time</label>
+            <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM">
+          </div>
+        </div>
+        <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
+          <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Mehndi Sub-Schedule & Meal (Optional)</div>
+          <div class="admin-grid-2" style="margin-bottom:0;">
+            <div>
+              <label class="admin-field-label">Rasm-e-Hina Time (رسمِ حنا کا وقت)</label>
+              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 8:30 PM">
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
+              <div>
+                <label class="admin-field-label">Meal Type</label>
+                <select class="admin-input" id="f_m_meal_type">
+                  <option value="dinner">Dinner (عشائیہ)</option>
+                  <option value="lunch">Lunch (ظہرانہ)</option>
+                  <option value="hitea">Hi-Tea</option>
+                </select>
+              </div>
+              <div>
+                <label class="admin-field-label">Meal Time</label>
+                <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 9:30 PM">
+              </div>
+            </div>
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Venue (English)</label>
-            <input class="admin-input" type="text" id="f_m_venue" placeholder="e.g. Royal Palm Golf & Country Club, Lahore" required>
+            <input class="admin-input" type="text" id="f_m_venue" placeholder="e.g. Royal Palm Golf & Country Club, Lahore">
           </div>
           <div>
             <label class="admin-field-label">Home Address (Optional)</label>
@@ -514,39 +540,42 @@
           </div>
           <div>
             <label class="admin-field-label">RSVP WhatsApp Number</label>
-            <input class="admin-input" type="text" id="f_m_rsvp" placeholder="+923012345678" required>
+            <input class="admin-input" type="text" id="f_m_rsvp" placeholder="+923012345678">
           </div>
         </div>
       </div>
 
       <!-- Baraat Ceremony -->
       <div class="admin-section">
-        <div class="admin-section-header" id="baraatSectionHeader">🎺 4. Baraat Ceremony</div>
+        <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+          <span id="baraatSectionHeader">🎺 4. Baraat Ceremony <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_b_dt','f_b_date','f_b_dateUr','f_b_time','f_b_sehra','f_b_departure','f_b_arrival','f_b_nikkah','f_b_dinner','f_b_rukhsati','f_b_venue','f_b_addr','f_b_map','f_b_rsvp'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Baraat</button>
+        </div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Date & Time</label>
-            <input class="admin-input" type="datetime-local" id="f_b_dt" required>
+            <label class="admin-field-label">Date & Time (Optional if no Baraat)</label>
+            <input class="admin-input" type="datetime-local" id="f_b_dt">
           </div>
           <div>
             <label class="admin-field-label">Display Date (English)</label>
-            <input class="admin-input" type="text" id="f_b_date" placeholder="e.g. Friday, 11th December 2026" required>
+            <input class="admin-input" type="text" id="f_b_date" placeholder="e.g. Friday, 11th December 2026">
           </div>
         </div>
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Display Date (Urdu)</label>
-            <input class="admin-input" type="text" id="f_b_dateUr" placeholder="e.g. بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء" dir="rtl" required>
+            <input class="admin-input" type="text" id="f_b_dateUr" placeholder="e.g. بروز جمعۃ المبارک، ۱۱ دسمبر ۲۰۲۶ء" dir="rtl">
           </div>
           <div>
             <label class="admin-field-label">General Event Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. Sehra Bandi: 4:30 PM · Departure: 5:30 PM" required>
+            <input class="admin-input" type="text" id="f_b_time" placeholder="e.g. 7:00 PM or Sehra Bandi: 4:30 PM">
           </div>
         </div>
 
         <!-- Groom Side: Separate Sehra Bandi & Departure of Baraat Schedule -->
         <div id="adminGroomScheduleWrap" style="margin-top:14px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
           <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">🤵 Groom Side Schedule (سہرہ بندی و روانگی بارات)</div>
-          <div class="admin-grid-2">
+          <div class="admin-grid-2" style="margin-bottom:0;">
             <div>
               <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
               <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 4:00 PM">
@@ -558,27 +587,37 @@
           </div>
         </div>
 
-        <!-- Bride Side: Detailed Milestones / Schedule (Essential for Bride's Card: Nikkah, Rukhsati) -->
-        <div id="adminBrideScheduleWrap" style="display:none; margin-top:14px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
-          <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏱️ Bride Side Schedule (عقدِ نکاح، آمدِ بارات، رخصتی)</div>
+        <!-- Ceremony Milestones & Meal Schedule (Available for both Groom & Bride cards) -->
+        <div id="adminBrideScheduleWrap" style="margin-top:12px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+          <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏱️ Baraat Sub-Schedule & Meal Timings (آمدِ بارات، نکاح، طعام، رخصتی)</div>
           <div class="admin-grid-2">
             <div>
               <label class="admin-field-label">Arrival of Baraat (آمدِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 8:00 PM · ۸:۰۰ بجے شب">
+              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 8:00 PM">
             </div>
             <div>
               <label class="admin-field-label">Nikkah Ceremony (عقدِ نکاح)</label>
-              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 9:00 PM · ۹:۰۰ بجے شب">
+              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 8:45 PM">
             </div>
           </div>
-          <div class="admin-grid-2" style="margin-top:8px;">
-            <div>
-              <label class="admin-field-label">Dinner Time (طعام)</label>
-              <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM · ۹:۳۰ بجے شب">
+          <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
+              <div>
+                <label class="admin-field-label">Meal Type</label>
+                <select class="admin-input" id="f_b_meal_type">
+                  <option value="dinner">Dinner (عشائیہ)</option>
+                  <option value="lunch">Lunch (ظہرانہ)</option>
+                  <option value="hitea">Hi-Tea</option>
+                </select>
+              </div>
+              <div>
+                <label class="admin-field-label">Lunch / Dinner Time (طعام)</label>
+                <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM or 2:30 PM">
+              </div>
             </div>
             <div>
               <label class="admin-field-label">Rukhsati Time (رخصتی)</label>
-              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 11:00 PM · ۱۱:۰۰ بجے شب">
+              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 11:00 PM">
             </div>
           </div>
         </div>
@@ -587,7 +626,7 @@
         <div class="admin-grid-2" style="margin-top:14px;">
           <div>
             <label class="admin-field-label">Baraat Tagline Badge (Urdu)</label>
-            <input class="admin-input" type="text" id="f_b_tagline_ur" placeholder=""دل والے دلہنیا لے جا رہے ہیں" یا "دعاؤں کے سائے میں رخصتی"" dir="rtl">
+            <input class="admin-input" type="text" id="f_b_tagline_ur" placeholder='"دل والے دلہنیا لے جا رہے ہیں" یا "دعاؤں کے سائے میں رخصتی"' dir="rtl">
           </div>
           <div>
             <label class="admin-field-label">Baraat Tagline Badge (English/Roman)</label>
@@ -598,7 +637,7 @@
         <div class="admin-grid-2" style="margin-top:14px;">
           <div>
             <label class="admin-field-label">Venue (English)</label>
-            <input class="admin-input" type="text" id="f_b_venue" placeholder="e.g. Grand Ballroom, Pearl Continental, Lahore" required>
+            <input class="admin-input" type="text" id="f_b_venue" placeholder="e.g. Grand Ballroom, Pearl Continental, Lahore">
           </div>
           <div>
             <label class="admin-field-label">Home Address (Optional)</label>
@@ -612,17 +651,20 @@
           </div>
           <div>
             <label class="admin-field-label">RSVP WhatsApp Number</label>
-            <input class="admin-input" type="text" id="f_b_rsvp" placeholder="+923012345678" required>
+            <input class="admin-input" type="text" id="f_b_rsvp" placeholder="+923012345678">
           </div>
         </div>
       </div>
 
       <!-- Walima Ceremony -->
       <div class="admin-section">
-        <div class="admin-section-header">✨ 5. Walima Reception</div>
+        <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+          <span>✨ 5. Walima Reception <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_w_dt','f_w_date','f_w_dateUr','f_w_time','f_w_arrival','f_w_meal_time','f_w_dua','f_w_venue','f_w_addr','f_w_map','f_w_rsvp'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Walima</button>
+        </div>
         <div class="admin-grid-2">
           <div>
-            <label class="admin-field-label">Date & Time</label>
+            <label class="admin-field-label">Date & Time (Optional if no Walima)</label>
             <input class="admin-input" type="datetime-local" id="f_w_dt">
           </div>
           <div>
@@ -636,10 +678,42 @@
             <input class="admin-input" type="text" id="f_w_dateUr" placeholder="e.g. بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶ء" dir="rtl">
           </div>
           <div>
-            <label class="admin-field-label">Display Time (English & Urdu)</label>
-            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM / شام ۷:۰۰ بجے">
+            <label class="admin-field-label">Main Event Time (English & Urdu)</label>
+            <input class="admin-input" type="text" id="f_w_time" placeholder="e.g. 7:00 PM or 1:30 PM">
           </div>
         </div>
+
+        <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
+          <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Walima Sub-Schedule & Lunch / Dinner Timings (Optional)</div>
+          <div class="admin-grid-2">
+            <div>
+              <label class="admin-field-label">Guest Arrival / Reception Time</label>
+              <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM">
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
+              <div>
+                <label class="admin-field-label">Meal Type</label>
+                <select class="admin-input" id="f_w_meal_type">
+                  <option value="dinner">Dinner (عشائیہ)</option>
+                  <option value="lunch">Lunch (ظہرانہ)</option>
+                  <option value="hitea">Hi-Tea</option>
+                </select>
+              </div>
+              <div>
+                <label class="admin-field-label">Lunch / Dinner Time</label>
+                <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:45 PM">
+              </div>
+            </div>
+          </div>
+          <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
+            <div>
+              <label class="admin-field-label">Dua / Farewell Time (دعائے خیر و الوداع)</label>
+              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:30 PM">
+            </div>
+            <div></div>
+          </div>
+        </div>
+
         <div class="admin-grid-2">
           <div>
             <label class="admin-field-label">Venue (English)</label>
@@ -662,7 +736,7 @@
         </div>
       </div>
 
-      <button class="gold-btn" type="submit" style="width:100%; font-size:1.05rem; padding:15px;">
+      <button class="gold-btn" type="submit"  style="width:100%; font-size:1.05rem; padding:15px;">
         ✦ Generate & Deploy Digital Invitation Card ✦
       </button>
     </form>
@@ -810,30 +884,61 @@
         } else if (currentSection === "mehndi") {
           let v = extractVal(line, "Date"); if (v) data.events.mehndi.date = v;
           v = extractVal(line, "Time"); if (v) data.events.mehndi.time = v;
+          v = extractVal(line, "Arrival Time") || extractVal(line, "Arrival"); if (v) data.events.mehndi.arrival = v;
+          v = extractVal(line, "Rasm-e-Hina Time") || extractVal(line, "Rasm-e-Hina"); if (v) data.events.mehndi.rasmTime = v;
+          v = extractVal(line, "Lunch"); if (v) { data.events.mehndi.mealType = "lunch"; data.events.mehndi.mealTime = v; }
+          v = extractVal(line, "Dinner"); if (v) { data.events.mehndi.mealType = "dinner"; data.events.mehndi.mealTime = v; }
+          v = extractVal(line, "Hi-Tea"); if (v) { data.events.mehndi.mealType = "hitea"; data.events.mehndi.mealTime = v; }
           v = extractVal(line, "Venue"); if (v) data.events.mehndi.venue = v;
           v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.mehndi.address = v;
           v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.mehndi.mapUrl = v;
           v = extractVal(line, "RSVP"); if (v) data.events.mehndi.rsvpPhone = v;
+          v = extractVal(line, "Sub-Schedule");
+          if (v) {
+            if (!data.events.mehndi.subSchedule) data.events.mehndi.subSchedule = [];
+            const parts = v.split(/\s+-\s+/);
+            data.events.mehndi.subSchedule.push({ time: parts.length > 1 ? parts[0].trim() : "", label: parts.length > 1 ? parts.slice(1).join(" - ").trim() : v });
+          }
         } else if (currentSection === "baraat") {
           let v = extractVal(line, "Date"); if (v) data.events.baraat.date = v;
           v = extractVal(line, "Sehra Bandi"); if (v && v !== "N/A") data.events.baraat.sehraTime = v;
           v = extractVal(line, "Departure of Baraat") || extractVal(line, "Departure"); if (v && v !== "N/A") data.events.baraat.departureTime = v;
-          v = extractVal(line, "Event / Arrival Time") || extractVal(line, "Arrival of Baraat") || extractVal(line, "Arrival") || extractVal(line, "Time");
+          v = extractVal(line, "Event / Arrival Time") || extractVal(line, "Arrival of Baraat") || extractVal(line, "Arrival Time") || extractVal(line, "Arrival") || extractVal(line, "Time");
           if (v && v !== "N/A") data.events.baraat.arrival = v;
           v = extractVal(line, "Nikkah"); if (v) data.events.baraat.nikkah = v;
-          v = extractVal(line, "Dinner"); if (v) data.events.baraat.dinner = v;
+          v = extractVal(line, "Lunch"); if (v) { data.events.baraat.mealType = "lunch"; data.events.baraat.dinner = v; data.events.baraat.mealTime = v; }
+          v = extractVal(line, "Dinner"); if (v) { data.events.baraat.mealType = "dinner"; data.events.baraat.dinner = v; data.events.baraat.mealTime = v; }
+          v = extractVal(line, "Hi-Tea"); if (v) { data.events.baraat.mealType = "hitea"; data.events.baraat.dinner = v; data.events.baraat.mealTime = v; }
           v = extractVal(line, "Rukhsati"); if (v) data.events.baraat.rukhsati = v;
           v = extractVal(line, "Venue"); if (v) data.events.baraat.venue = v;
           v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.baraat.address = v;
           v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.baraat.mapUrl = v;
           v = extractVal(line, "RSVP"); if (v) data.events.baraat.rsvpPhone = v;
+          v = extractVal(line, "Sub-Schedule");
+          if (v) {
+            if (!data.events.baraat.subSchedule) data.events.baraat.subSchedule = [];
+            const parts = v.split(/\s+-\s+/);
+            data.events.baraat.subSchedule.push({ time: parts.length > 1 ? parts[0].trim() : "", label: parts.length > 1 ? parts.slice(1).join(" - ").trim() : v });
+          }
         } else if (currentSection === "walima") {
           let v = extractVal(line, "Date"); if (v) data.events.walima.date = v;
           v = extractVal(line, "Time"); if (v) data.events.walima.time = v;
+          v = extractVal(line, "Arrival Time") || extractVal(line, "Arrival"); if (v) data.events.walima.arrival = v;
+          v = extractVal(line, "Lunch"); if (v) { data.events.walima.mealType = "lunch"; data.events.walima.mealTime = v; data.events.walima.lunch = v; }
+          v = extractVal(line, "Dinner"); if (v) { data.events.walima.mealType = "dinner"; data.events.walima.mealTime = v; data.events.walima.dinner = v; }
+          v = extractVal(line, "Hi-Tea"); if (v) { data.events.walima.mealType = "hitea"; data.events.walima.mealTime = v; }
+          v = extractVal(line, "Meal Type"); if (v && v.toLowerCase().includes("lunch")) data.events.walima.mealType = "lunch";
+          v = extractVal(line, "Dua / Farewell") || extractVal(line, "Dua"); if (v) data.events.walima.duaTime = v;
           v = extractVal(line, "Venue"); if (v) data.events.walima.venue = v;
           v = extractVal(line, "Home Address") || extractVal(line, "Address"); if (v) data.events.walima.address = v;
           v = extractVal(line, "Google Maps"); if (v && !v.toLowerCase().includes("not provided")) data.events.walima.mapUrl = v;
           v = extractVal(line, "RSVP"); if (v) data.events.walima.rsvpPhone = v;
+          v = extractVal(line, "Sub-Schedule");
+          if (v) {
+            if (!data.events.walima.subSchedule) data.events.walima.subSchedule = [];
+            const parts = v.split(/\s+-\s+/);
+            data.events.walima.subSchedule.push({ time: parts.length > 1 ? parts[0].trim() : "", label: parts.length > 1 ? parts.slice(1).join(" - ").trim() : v });
+          }
         } else if (currentSection === "welcoming") {
           const hostM = line.match(/^[•\-\*	 ]*(.+?)\s*\((.*?)\)/);
           if (hostM) {
@@ -1020,7 +1125,7 @@
           if (labelHostEn) labelHostEn.textContent = "Main Host Line (English)";
           if (labelHostUr) labelHostUr.textContent = "Main Host Line (Urdu)";
           if (groomSchedWrap) groomSchedWrap.style.display = "block";
-          if (brideSchedWrap) brideSchedWrap.style.display = "none";
+          if (brideSchedWrap) brideSchedWrap.style.display = "block";
           if (taglineUr.value === "دعاؤں کے سائے میں رخصتی") {
             taglineUr.value = "دل والے دلہنیا لے جا رہے ہیں";
           }
@@ -1303,8 +1408,23 @@
       document.getElementById("f_b_map").value = b.mapUrl || ""; // Never autofill map if client did not provide it; let admin handle it
       document.getElementById("f_b_rsvp").value = b.rsvpPhone || client.clientPhone || "+923012345678";
 
+      // Extra Mehndi & Baraat sub-fields
+      if (document.getElementById("f_m_rasm")) document.getElementById("f_m_rasm").value = m.rasmTime || "";
+      if (document.getElementById("f_m_meal_type")) document.getElementById("f_m_meal_type").value = m.mealType || "dinner";
+      if (document.getElementById("f_m_meal_time")) document.getElementById("f_m_meal_time").value = m.mealTime || m.dinner || m.lunch || "";
+      if (document.getElementById("f_b_meal_type")) document.getElementById("f_b_meal_type").value = b.mealType || "dinner";
+      window.activeClientCustomSubSchedules = {
+        mehndi: m.subSchedule || [],
+        baraat: b.subSchedule || [],
+        walima: (ev.walima && ev.walima.subSchedule) || []
+      };
+
       // Walima
       const w = ev.walima || {};
+      if (document.getElementById("f_w_arrival")) document.getElementById("f_w_arrival").value = w.arrival || "";
+      if (document.getElementById("f_w_meal_type")) document.getElementById("f_w_meal_type").value = w.mealType || "dinner";
+      if (document.getElementById("f_w_meal_time")) document.getElementById("f_w_meal_time").value = w.mealTime || w.lunch || w.dinner || "";
+      if (document.getElementById("f_w_dua")) document.getElementById("f_w_dua").value = w.duaTime || "";
       if (w.date || w.venue) {
         const wDate = w.date || "";
         const wTime = w.time || "7:30 PM / شام ۷:۳۰ بجے";
@@ -1689,12 +1809,153 @@
 
       const theme = document.getElementById("f_theme") ? document.getElementById("f_theme").value : "emerald";
 
+      // Mehndi fields
+      const mDt = document.getElementById("f_m_dt").value.trim();
+      const mDate = document.getElementById("f_m_date").value.trim();
+      const mDateUr = document.getElementById("f_m_dateUr").value.trim();
+      const mTime = document.getElementById("f_m_time").value.trim();
+      const mVenue = document.getElementById("f_m_venue").value.trim();
+      const mAddr = document.getElementById("f_m_addr").value.trim();
+      const mMap = document.getElementById("f_m_map").value.trim();
+      const mRsvp = document.getElementById("f_m_rsvp").value.trim();
+      const mRasm = document.getElementById("f_m_rasm") ? document.getElementById("f_m_rasm").value.trim() : "";
+      const mMealType = document.getElementById("f_m_meal_type") ? document.getElementById("f_m_meal_type").value : "dinner";
+      const mMealTime = document.getElementById("f_m_meal_time") ? document.getElementById("f_m_meal_time").value.trim() : "";
+      const hasMehndi = Boolean(mDate || mDt || mVenue || mTime);
+
+      // Baraat fields
+      const bDt = document.getElementById("f_b_dt").value.trim();
+      const bDate = document.getElementById("f_b_date").value.trim();
+      const bDateUr = document.getElementById("f_b_dateUr").value.trim();
+      const bTime = document.getElementById("f_b_time").value.trim();
+      const bSehra = document.getElementById("f_b_sehra") ? document.getElementById("f_b_sehra").value.trim() : "";
+      const bDeparture = document.getElementById("f_b_departure") ? document.getElementById("f_b_departure").value.trim() : "";
       const bArrival = document.getElementById("f_b_arrival").value.trim();
       const bNikkah = document.getElementById("f_b_nikkah").value.trim();
+      const bMealType = document.getElementById("f_b_meal_type") ? document.getElementById("f_b_meal_type").value : "dinner";
       const bDinner = document.getElementById("f_b_dinner").value.trim();
       const bRukhsati = document.getElementById("f_b_rukhsati").value.trim();
       const bTaglineUr = document.getElementById("f_b_tagline_ur").value.trim();
       const bTaglineEn = document.getElementById("f_b_tagline_en").value.trim();
+      const bVenue = document.getElementById("f_b_venue").value.trim();
+      const bAddr = document.getElementById("f_b_addr").value.trim();
+      const bMap = document.getElementById("f_b_map").value.trim();
+      const bRsvp = document.getElementById("f_b_rsvp").value.trim();
+      const hasBaraat = Boolean(bDate || bDt || bVenue || bTime || bSehra || bArrival);
+
+      // Walima fields
+      const wDt = document.getElementById("f_w_dt").value.trim();
+      const wDate = document.getElementById("f_w_date").value.trim();
+      const wDateUr = document.getElementById("f_w_dateUr").value.trim();
+      const wTime = document.getElementById("f_w_time").value.trim();
+      const wArrival = document.getElementById("f_w_arrival") ? document.getElementById("f_w_arrival").value.trim() : "";
+      const wMealType = document.getElementById("f_w_meal_type") ? document.getElementById("f_w_meal_type").value : "dinner";
+      const wMealTime = document.getElementById("f_w_meal_time") ? document.getElementById("f_w_meal_time").value.trim() : "";
+      const wDua = document.getElementById("f_w_dua") ? document.getElementById("f_w_dua").value.trim() : "";
+      const wVenue = document.getElementById("f_w_venue").value.trim();
+      const wAddr = document.getElementById("f_w_addr").value.trim();
+      const wMap = document.getElementById("f_w_map").value.trim();
+      const wRsvp = document.getElementById("f_w_rsvp").value.trim();
+      const hasWalima = Boolean(wDate || wDt || wVenue || wTime || wArrival || wMealTime);
+
+      if (!hasMehndi && !hasBaraat && !hasWalima) {
+        showToast("Please fill in at least 1 event (Mehndi, Baraat, or Walima)!");
+        return;
+      }
+
+      const customSubs = window.activeClientCustomSubSchedules || {};
+
+      const mehndiObj = hasMehndi ? {
+        type: "mehndi",
+        name: "Mehndi Ceremony",
+        nameUrdu: "رسمِ حنا (مہندی)",
+        dateTime: mDt ? mDt + ":00+05:00" : "",
+        displayDate: mDate,
+        displayDateUrdu: mDateUr || mDate,
+        displayTime: mTime,
+        displayTimeUrdu: mTime,
+        time: mTime,
+        rasmTime: mRasm,
+        mealType: mMealType,
+        mealTime: mMealTime,
+        dinner: mMealType === "dinner" ? mMealTime : "",
+        lunch: mMealType === "lunch" ? mMealTime : "",
+        subSchedule: customSubs.mehndi || [],
+        venue: mVenue,
+        venueUrdu: mVenue,
+        address: mAddr,
+        addressUrdu: mAddr,
+        mapUrl: mMap,
+        rsvpPhone: mRsvp
+      } : {};
+
+      const baraatObj = hasBaraat ? {
+        type: "barat",
+        name: side === "bride" ? "Baraat & Rukhsati" : "Baraat Ceremony",
+        nameUrdu: side === "bride" ? "تقریبِ بارات و رخصتی" : "تقریبِ بارات",
+        dateTime: bDt ? bDt + ":00+05:00" : "",
+        displayDate: bDate,
+        displayDateUrdu: bDateUr || bDate,
+        displayTime: bTime,
+        displayTimeUrdu: bTime,
+        time: bTime,
+        sehraTime: bSehra,
+        departureTime: bDeparture,
+        arrival: bArrival,
+        arrivalTime: bArrival,
+        arrivalTimeUrdu: bArrival,
+        nikkah: bNikkah,
+        nikkahTime: bNikkah,
+        nikkahTimeUrdu: bNikkah,
+        mealType: bMealType,
+        mealTime: bDinner,
+        dinner: bMealType === "dinner" ? bDinner : "",
+        lunch: bMealType === "lunch" ? bDinner : "",
+        dinnerTime: bDinner,
+        dinnerTimeUrdu: bDinner,
+        rukhsati: bRukhsati,
+        rukhsatiTime: bRukhsati,
+        rukhsatiTimeUrdu: bRukhsati,
+        subSchedule: customSubs.baraat || [],
+        taglineUrdu: bTaglineUr,
+        taglineRoman: bTaglineEn,
+        venue: bVenue,
+        venueUrdu: bVenue,
+        address: bAddr,
+        addressUrdu: bAddr,
+        mapUrl: bMap,
+        rsvpPhone: bRsvp
+      } : {};
+
+      const walimaObj = hasWalima ? {
+        type: "walima",
+        name: "Walima Reception",
+        nameUrdu: "دعوتِ ولیمہ",
+        dateTime: wDt ? wDt + ":00+05:00" : "",
+        displayDate: wDate,
+        displayDateUrdu: wDateUr || wDate,
+        displayTime: wTime,
+        displayTimeUrdu: wTime,
+        time: wTime,
+        arrival: wArrival,
+        mealType: wMealType,
+        mealTime: wMealTime,
+        dinner: wMealType === "dinner" ? wMealTime : "",
+        lunch: wMealType === "lunch" ? wMealTime : "",
+        duaTime: wDua,
+        subSchedule: customSubs.walima || [],
+        venue: wVenue,
+        venueUrdu: wVenue,
+        address: wAddr,
+        addressUrdu: wAddr,
+        mapUrl: wMap,
+        rsvpPhone: wRsvp
+      } : {};
+
+      const eventsList = [];
+      if (hasMehndi) eventsList.push(mehndiObj);
+      if (hasBaraat) eventsList.push(baraatObj);
+      if (hasWalima) eventsList.push(walimaObj);
 
       const cardData = {
         slug: side === "bride"
@@ -1709,56 +1970,11 @@
         hostUrdu,
         theme,
         welcomeHosts: currentHosts.filter(h => h.name && h.phone),
+        eventsList,
         events: {
-          mehndi: {
-            dateTime: document.getElementById("f_m_dt").value + ":00+05:00",
-            displayDate: document.getElementById("f_m_date").value.trim(),
-            displayDateUrdu: document.getElementById("f_m_dateUr").value.trim(),
-            displayTime: document.getElementById("f_m_time").value.trim(),
-            displayTimeUrdu: document.getElementById("f_m_time").value.trim(),
-            venue: document.getElementById("f_m_venue").value.trim(),
-            venueUrdu: document.getElementById("f_m_venue").value.trim(),
-            address: document.getElementById("f_m_addr").value.trim(),
-            addressUrdu: document.getElementById("f_m_addr").value.trim(),
-            mapUrl: document.getElementById("f_m_map").value.trim(),
-            rsvpPhone: document.getElementById("f_m_rsvp").value.trim()
-          },
-          baraat: {
-            dateTime: document.getElementById("f_b_dt").value + ":00+05:00",
-            displayDate: document.getElementById("f_b_date").value.trim(),
-            displayDateUrdu: document.getElementById("f_b_dateUr").value.trim(),
-            displayTime: document.getElementById("f_b_time").value.trim(),
-            displayTimeUrdu: document.getElementById("f_b_time").value.trim(),
-            arrivalTime: bArrival,
-            arrivalTimeUrdu: bArrival,
-            nikkahTime: bNikkah,
-            nikkahTimeUrdu: bNikkah,
-            dinnerTime: bDinner,
-            dinnerTimeUrdu: bDinner,
-            rukhsatiTime: bRukhsati,
-            rukhsatiTimeUrdu: bRukhsati,
-            taglineUrdu: bTaglineUr,
-            taglineRoman: bTaglineEn,
-            venue: document.getElementById("f_b_venue").value.trim(),
-            venueUrdu: document.getElementById("f_b_venue").value.trim(),
-            address: document.getElementById("f_b_addr").value.trim(),
-            addressUrdu: document.getElementById("f_b_addr").value.trim(),
-            mapUrl: document.getElementById("f_b_map").value.trim(),
-            rsvpPhone: document.getElementById("f_b_rsvp").value.trim()
-          },
-          walima: document.getElementById("f_w_date").value.trim() ? {
-            dateTime: document.getElementById("f_w_dt").value ? document.getElementById("f_w_dt").value + ":00+05:00" : "",
-            displayDate: document.getElementById("f_w_date").value.trim(),
-            displayDateUrdu: document.getElementById("f_w_dateUr").value.trim(),
-            displayTime: document.getElementById("f_w_time").value.trim(),
-            displayTimeUrdu: document.getElementById("f_w_time").value.trim(),
-            venue: document.getElementById("f_w_venue").value.trim(),
-            venueUrdu: document.getElementById("f_w_venue").value.trim(),
-            address: document.getElementById("f_w_addr").value.trim(),
-            addressUrdu: document.getElementById("f_w_addr").value.trim(),
-            mapUrl: document.getElementById("f_w_map").value.trim(),
-            rsvpPhone: document.getElementById("f_w_rsvp").value.trim()
-          } : {}
+          mehndi: mehndiObj,
+          baraat: baraatObj,
+          walima: walimaObj
         }
       };
 
