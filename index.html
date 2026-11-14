@@ -5353,8 +5353,13 @@ function renderRoyalGraceScreen(isPopState) {
       margin: 16px auto 14px;
       user-select: none;
       -webkit-user-select: none;
-      touch-action: none;
+      touch-action: auto;
       filter: drop-shadow(0 12px 28px rgba(59, 68, 50, 0.16));
+    }
+
+    .heart-canvas-stage.cleared,
+    .heart-canvas-stage.cleared * {
+      touch-action: auto !important;
     }
 
     /* Heart Silhouette Container */
@@ -5419,13 +5424,15 @@ function renderRoyalGraceScreen(isPopState) {
       width: 100%;
       height: 100%;
       cursor: crosshair;
+      touch-action: none;
       transition: opacity 0.6s ease;
       z-index: 5;
     }
 
     .heart-scratch-canvas.cleared {
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      display: none !important;
     }
 
     /* Save The Date Pill Button */
@@ -6570,7 +6577,15 @@ function renderRoyalGraceScreen(isPopState) {
 
       function revealHeartCompletely() {
         isCleared = true;
-        scratchCanvas.classList.add("cleared");
+        if (scratchCanvas) {
+          scratchCanvas.classList.add("cleared");
+          scratchCanvas.style.pointerEvents = "none";
+          scratchCanvas.style.display = "none";
+        }
+        if (scratchStage) {
+          scratchStage.classList.add("cleared");
+          scratchStage.style.touchAction = "auto";
+        }
 
         // Smoothly transform title to "Our forever begins" (Exact Match to Video)
         scratchTitle.style.opacity = '0';
@@ -6592,7 +6607,10 @@ function renderRoyalGraceScreen(isPopState) {
         };
       }
 
-      scratchCanvas.addEventListener("mousedown", (e) => { isScratching = true; const p = getPointerCoords(e); scratchAt(p.x, p.y); });
+      scratchCanvas.addEventListener("click", () => {
+        if (!isCleared) revealHeartCompletely();
+      });
+      scratchCanvas.addEventListener("mousedown",  (e) => { isScratching = true; const p = getPointerCoords(e); scratchAt(p.x, p.y); });
       scratchCanvas.addEventListener("mousemove", (e) => { if (isScratching) { const p = getPointerCoords(e); scratchAt(p.x, p.y); } });
       window.addEventListener("mouseup", () => { isScratching = false; });
 
