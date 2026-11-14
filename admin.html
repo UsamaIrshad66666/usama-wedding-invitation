@@ -503,24 +503,22 @@
         </div>
         <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
           <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Mehndi Sub-Schedule & Meal (Optional)</div>
+          <div style="margin-bottom:8px;">
+            <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
+            <select class="admin-input" id="f_m_meal_type">
+              <option value="dinner">🍽️ Dinner (عشائیہ)</option>
+              <option value="lunch">☀️ Lunch (ظہرانہ)</option>
+              <option value="hitea">☕ Hi-Tea</option>
+            </select>
+          </div>
           <div class="admin-grid-2" style="margin-bottom:0;">
             <div>
               <label class="admin-field-label">Rasm-e-Hina Time (رسمِ حنا کا وقت)</label>
-              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 8:30 PM" value="8:30 PM">
+              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 2:30 PM or 8:00 PM" value="8:00 PM">
             </div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
-              <div>
-                <label class="admin-field-label">Meal Type</label>
-                <select class="admin-input" id="f_m_meal_type">
-                  <option value="dinner">Dinner (عشائیہ)</option>
-                  <option value="lunch">Lunch (ظہرانہ)</option>
-                  <option value="hitea">Hi-Tea</option>
-                </select>
-              </div>
-              <div>
-                <label class="admin-field-label">Meal Time</label>
-                <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 9:30 PM" value="9:30 PM">
-              </div>
+            <div>
+              <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
+              <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 3:30 PM or 9:00 PM" value="9:00 PM">
             </div>
           </div>
         </div>
@@ -573,52 +571,48 @@
           </div>
         </div>
 
-        <!-- Groom Side: Separate Sehra Bandi & Departure of Baraat Schedule -->
-        <div id="adminGroomScheduleWrap" style="margin-top:14px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
-          <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">🤵 Groom Side Schedule (سہرہ بندی و روانگی بارات)</div>
-          <div class="admin-grid-2" style="margin-bottom:0;">
-            <div>
-              <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
-              <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 4:30 PM" value="4:30 PM">
-            </div>
-            <div>
-              <label class="admin-field-label">Departure of Baraat Time (روانگیِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 5:30 PM" value="5:30 PM">
-            </div>
-          </div>
-        </div>
-
         <!-- Ceremony Milestones & Meal Schedule (Available for both Groom & Bride cards) -->
         <div id="adminBrideScheduleWrap" style="margin-top:12px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
           <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏱️ Baraat Sub-Schedule & Meal Timings (آمدِ بارات، نکاح، طعام، رخصتی)</div>
+          <div style="margin-bottom:10px;">
+            <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
+            <select class="admin-input" id="f_b_meal_type">
+              <option value="dinner">🍽️ Dinner (عشائیہ)</option>
+              <option value="lunch">☀️ Lunch (ظہرانہ)</option>
+              <option value="hitea">☕ Hi-Tea</option>
+            </select>
+          </div>
+          <!-- Groom Side: Separate Sehra Bandi & Departure of Baraat Schedule -->
+          <div id="adminGroomScheduleWrap" style="margin-bottom:10px;">
+            <div class="admin-grid-2" style="margin-bottom:0;">
+              <div>
+                <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
+                <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 1:00 PM or 6:00 PM" value="6:00 PM">
+              </div>
+              <div>
+                <label class="admin-field-label">Departure of Baraat Time (روانگیِ بارات)</label>
+                <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 1:30 PM or 6:30 PM" value="6:30 PM">
+              </div>
+            </div>
+          </div>
           <div class="admin-grid-2">
             <div>
               <label class="admin-field-label">Arrival of Baraat (آمدِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 7:30 PM" value="7:30 PM">
+              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
             </div>
             <div>
               <label class="admin-field-label">Nikkah Ceremony (عقدِ نکاح)</label>
-              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 8:30 PM" value="8:30 PM">
+              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 2:00 PM or 8:00 PM" value="8:00 PM">
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
-              <div>
-                <label class="admin-field-label">Meal Type</label>
-                <select class="admin-input" id="f_b_meal_type">
-                  <option value="dinner">Dinner (عشائیہ)</option>
-                  <option value="lunch">Lunch (ظہرانہ)</option>
-                  <option value="hitea">Hi-Tea</option>
-                </select>
-              </div>
-              <div>
-                <label class="admin-field-label">Lunch / Dinner Time (طعام)</label>
-                <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 9:30 PM or 2:30 PM" value="9:30 PM">
-              </div>
+            <div>
+              <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
+              <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 2:45 PM or 9:00 PM" value="9:00 PM">
             </div>
             <div>
-              <label class="admin-field-label">Rukhsati Time (رخصتی)</label>
-              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 10:30 PM" value="10:30 PM">
+              <label class="admin-field-label">Rukhsati Time (رخصتی کا وقت)</label>
+              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
             </div>
           </div>
         </div>
@@ -686,30 +680,28 @@
 
         <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
           <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Walima Sub-Schedule & Lunch / Dinner Timings (Optional)</div>
+          <div style="margin-bottom:8px;">
+            <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
+            <select class="admin-input" id="f_w_meal_type">
+              <option value="dinner">🍽️ Dinner (عشائیہ)</option>
+              <option value="lunch">☀️ Lunch (ظہرانہ)</option>
+              <option value="hitea">☕ Hi-Tea</option>
+            </select>
+          </div>
           <div class="admin-grid-2">
             <div>
               <label class="admin-field-label">Guest Arrival / Reception Time</label>
               <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
             </div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
-              <div>
-                <label class="admin-field-label">Meal Type</label>
-                <select class="admin-input" id="f_w_meal_type">
-                  <option value="dinner">Dinner (عشائیہ)</option>
-                  <option value="lunch">Lunch (ظہرانہ)</option>
-                  <option value="hitea">Hi-Tea</option>
-                </select>
-              </div>
-              <div>
-                <label class="admin-field-label">Lunch / Dinner Time</label>
-                <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:45 PM" value="8:45 PM">
-              </div>
+            <div>
+              <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
+              <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:30 PM" value="8:30 PM">
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
             <div>
               <label class="admin-field-label">Dua / Farewell Time (دعائے خیر و الوداع)</label>
-              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:30 PM" value="10:30 PM">
+              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
             </div>
             <div></div>
           </div>
@@ -1408,6 +1400,83 @@
     const depInp = document.getElementById("f_b_departure");
     if (sehraInp) sehraInp.addEventListener("input", syncGroomBaraatTime);
     if (depInp) depInp.addEventListener("input", syncGroomBaraatTime);
+
+    // Auto-fill Admin event time fields when switching Meal Type between Lunch (1-4 PM) and Dinner (6-10 PM)
+    const mMealSel = document.getElementById("f_m_meal_type");
+    if (mMealSel) {
+      mMealSel.addEventListener("change", () => {
+        const mt = mMealSel.value;
+        if (mt === "lunch") {
+          document.getElementById("f_m_time").value = "1:30 PM";
+          document.getElementById("f_m_rasm").value = "2:30 PM";
+          document.getElementById("f_m_meal_time").value = "3:30 PM";
+        } else if (mt === "hitea") {
+          document.getElementById("f_m_time").value = "4:30 PM";
+          document.getElementById("f_m_rasm").value = "5:00 PM";
+          document.getElementById("f_m_meal_time").value = "5:30 PM";
+        } else {
+          document.getElementById("f_m_time").value = "7:00 PM";
+          document.getElementById("f_m_rasm").value = "8:00 PM";
+          document.getElementById("f_m_meal_time").value = "9:00 PM";
+        }
+      });
+    }
+
+    const bMealSel = document.getElementById("f_b_meal_type");
+    if (bMealSel) {
+      bMealSel.addEventListener("change", () => {
+        const mt = bMealSel.value;
+        const side = getSelectedCardSide();
+        if (mt === "lunch") {
+          document.getElementById("f_b_sehra").value = "1:00 PM";
+          document.getElementById("f_b_departure").value = "1:30 PM";
+          document.getElementById("f_b_time").value = side === "bride" ? "1:30 PM" : "Sehra Bandi: 1:00 PM · Departure: 1:30 PM";
+          document.getElementById("f_b_arrival").value = "1:30 PM";
+          document.getElementById("f_b_nikkah").value = "2:00 PM";
+          document.getElementById("f_b_dinner").value = "2:45 PM";
+          document.getElementById("f_b_rukhsati").value = "4:00 PM";
+        } else if (mt === "hitea") {
+          document.getElementById("f_b_sehra").value = "3:30 PM";
+          document.getElementById("f_b_departure").value = "4:00 PM";
+          document.getElementById("f_b_time").value = side === "bride" ? "4:30 PM" : "Sehra Bandi: 3:30 PM · Departure: 4:00 PM";
+          document.getElementById("f_b_arrival").value = "4:30 PM";
+          document.getElementById("f_b_nikkah").value = "5:00 PM";
+          document.getElementById("f_b_dinner").value = "5:30 PM";
+          document.getElementById("f_b_rukhsati").value = "6:30 PM";
+        } else {
+          document.getElementById("f_b_sehra").value = "6:00 PM";
+          document.getElementById("f_b_departure").value = "6:30 PM";
+          document.getElementById("f_b_time").value = side === "bride" ? "7:00 PM" : "Sehra Bandi: 6:00 PM · Departure: 6:30 PM";
+          document.getElementById("f_b_arrival").value = "7:00 PM";
+          document.getElementById("f_b_nikkah").value = "8:00 PM";
+          document.getElementById("f_b_dinner").value = "9:00 PM";
+          document.getElementById("f_b_rukhsati").value = "10:00 PM";
+        }
+      });
+    }
+
+    const wMealSel = document.getElementById("f_w_meal_type");
+    if (wMealSel) {
+      wMealSel.addEventListener("change", () => {
+        const mt = wMealSel.value;
+        if (mt === "lunch") {
+          document.getElementById("f_w_time").value = "1:30 PM";
+          document.getElementById("f_w_arrival").value = "1:30 PM";
+          document.getElementById("f_w_meal_time").value = "2:30 PM";
+          document.getElementById("f_w_dua").value = "4:00 PM";
+        } else if (mt === "hitea") {
+          document.getElementById("f_w_time").value = "4:30 PM";
+          document.getElementById("f_w_arrival").value = "4:30 PM";
+          document.getElementById("f_w_meal_time").value = "5:30 PM";
+          document.getElementById("f_w_dua").value = "6:30 PM";
+        } else {
+          document.getElementById("f_w_time").value = "7:00 PM";
+          document.getElementById("f_w_arrival").value = "7:00 PM";
+          document.getElementById("f_w_meal_time").value = "8:30 PM";
+          document.getElementById("f_w_dua").value = "10:00 PM";
+        }
+      });
+    }
 
     document.getElementById("addHostBtn").addEventListener("click", () => {
       currentHosts.push({ name: "", nameUrdu: "", phone: "+92 " });

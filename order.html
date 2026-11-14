@@ -1625,38 +1625,131 @@
         titleUr: "تقریبِ بارات",
         titleEnBride: "Baraat & Rukhsati Ceremony",
         titleUrBride: "تقریبِ بارات و رخصتی",
-        defaultTime: "8:00 PM",
+        defaultTime: "7:00 PM",
         venuePlaceholder: "e.g. Grand Ballroom, Pearl Continental"
       },
       walima: {
         icon: "✨",
         titleEn: "Walima Reception",
         titleUr: "دعوتِ ولیمہ",
-        defaultTime: "7:30 PM",
+        defaultTime: "7:00 PM",
         venuePlaceholder: "e.g. Crystal Hall, Nishat Banquets"
       },
       engagement: {
         icon: "💍",
         titleEn: "Engagement Ceremony",
         titleUr: "تقریبِ منگنی",
-        defaultTime: "6:00 PM",
+        defaultTime: "6:30 PM",
         venuePlaceholder: "e.g. Heritage Hall / Family Residence"
       },
       nikkah: {
         icon: "📜",
         titleEn: "Nikah Ceremony",
         titleUr: "تقریبِ نکاح",
-        defaultTime: "4:00 PM",
+        defaultTime: "6:30 PM",
         venuePlaceholder: "e.g. Badshahi Mosque, Lahore / Marquee"
       },
       custom: {
         icon: "✨",
         titleEn: "Custom Event",
         titleUr: "کسٹم ایونٹ",
-        defaultTime: "8:00 PM",
+        defaultTime: "7:00 PM",
         venuePlaceholder: "e.g. Farmhouse, Banquet Hall or Residence"
       }
     };
+
+    function getSuggestedTimingsForMeal(type, mealType) {
+      if (mealType === "lunch") {
+        // Strictly between 1:00 PM and 4:00 PM
+        if (type === "barat") {
+          return {
+            mainTime: "1:30 PM",
+            sehra: "1:00 PM",
+            departure: "1:30 PM",
+            arrival: "1:30 PM",
+            nikkah: "2:00 PM",
+            meal: "2:45 PM",
+            rukhsati: "4:00 PM",
+            subRow: "2:00 PM"
+          };
+        } else if (type === "walima") {
+          return {
+            mainTime: "1:30 PM",
+            arrival: "1:30 PM",
+            meal: "2:30 PM",
+            dua: "4:00 PM",
+            subRow: "2:00 PM"
+          };
+        } else if (type === "mehndi") {
+          return {
+            mainTime: "1:30 PM",
+            arrival: "1:30 PM",
+            rasm: "2:30 PM",
+            meal: "3:30 PM",
+            subRow: "2:00 PM"
+          };
+        } else {
+          return {
+            mainTime: "1:30 PM",
+            arrival: "1:30 PM",
+            nikkah: "2:15 PM",
+            meal: "3:00 PM",
+            subRow: "2:00 PM"
+          };
+        }
+      } else if (mealType === "hitea") {
+        return {
+          mainTime: "4:30 PM",
+          sehra: "3:30 PM",
+          departure: "4:00 PM",
+          arrival: "4:30 PM",
+          nikkah: "5:00 PM",
+          rasm: "5:00 PM",
+          meal: "5:30 PM",
+          rukhsati: "6:30 PM",
+          dua: "6:30 PM",
+          subRow: "5:00 PM"
+        };
+      } else {
+        // Dinner: Strictly between 6:00 PM and 10:00 PM
+        if (type === "barat") {
+          return {
+            mainTime: "7:00 PM",
+            sehra: "6:00 PM",
+            departure: "6:30 PM",
+            arrival: "7:00 PM",
+            nikkah: "8:00 PM",
+            meal: "9:00 PM",
+            rukhsati: "10:00 PM",
+            subRow: "8:00 PM"
+          };
+        } else if (type === "walima") {
+          return {
+            mainTime: "7:00 PM",
+            arrival: "7:00 PM",
+            meal: "8:30 PM",
+            dua: "10:00 PM",
+            subRow: "8:00 PM"
+          };
+        } else if (type === "mehndi") {
+          return {
+            mainTime: "7:00 PM",
+            arrival: "7:00 PM",
+            rasm: "8:00 PM",
+            meal: "9:00 PM",
+            subRow: "8:00 PM"
+          };
+        } else {
+          return {
+            mainTime: "6:30 PM",
+            arrival: "6:30 PM",
+            nikkah: "7:30 PM",
+            meal: "8:30 PM",
+            subRow: "8:00 PM"
+          };
+        }
+      }
+    }
 
     function updateEventNumbers() {
       const cards = eventsContainer.querySelectorAll(".event-section");
@@ -1686,12 +1779,26 @@
     function buildMealAndSubScheduleHtml(type, side, initData = {}) {
       const isBride = side === "bride";
       const mealType = initData.mealType || "dinner";
-      const defaultMealTimeByType = mealType === "lunch"
-        ? "2:30 PM"
-        : (mealType === "hitea"
-          ? "5:30 PM"
-          : (type === "walima" ? "8:45 PM" : (type === "nikkah" ? "5:30 PM" : (type === "engagement" ? "8:00 PM" : "9:30 PM"))));
-      const mealTime = initData.mealTime || initData.lunch || initData.dinner || defaultMealTimeByType;
+      const sug = getSuggestedTimingsForMeal(type, mealType);
+      const mealTime = initData.mealTime || initData.lunch || initData.dinner || sug.meal;
+
+      const mealTypeSelectHtml = `
+        <div class="form-field-group" style="margin-bottom:12px;">
+          <label class="form-field-label"><span>Meal Type (Lunch / Dinner)</span><span class="urdu-label">ضیافت کی قسم</span></label>
+          <select class="form-input evt-meal-type" style="background:rgba(6,22,16,0.95); color:#fff; cursor:pointer;">
+            <option value="dinner" ${mealType === 'dinner' ? 'selected' : ''}>🍽️ Dinner (رات کا کھانا / عشائیہ)</option>
+            <option value="lunch" ${mealType === 'lunch' ? 'selected' : ''}>☀️ Lunch (دوپہر کا کھانا / ظہرانہ)</option>
+            <option value="hitea" ${mealType === 'hitea' ? 'selected' : ''}>☕ Hi-Tea & Refreshments (ہائی ٹی / تواضع)</option>
+          </select>
+        </div>
+      `;
+
+      const mealTimeInputHtml = `
+        <div class="form-field-group" style="margin-bottom:8px;">
+          <label class="form-field-label"><span>Lunch / Dinner Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">کھانے کا وقت</span></label>
+          <input class="form-input evt-meal-time" type="text" placeholder="e.g. 2:30 PM (Lunch) or 9:00 PM (Dinner)" value="${mealTime}">
+        </div>
+      `;
 
       let specificMilestonesHtml = "";
       if (type === "barat") {
@@ -1701,11 +1808,11 @@
             <div class="form-grid-2">
               <div class="form-field-group" style="margin-bottom:8px;">
                 <label class="form-field-label"><span>Sehra Bandi Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
-                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 4:30 PM" value="${initData.sehraTime || '4:30 PM'}">
+                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 1:00 PM or 6:00 PM" value="${initData.sehraTime || sug.sehra}">
               </div>
               <div class="form-field-group" style="margin-bottom:8px;">
                 <label class="form-field-label"><span>Departure of Baraat <span class="optional-pill">Suggested</span></span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
-                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 5:30 PM" value="${initData.departureTime || '5:30 PM'}">
+                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.departureTime || sug.departure}">
               </div>
             </div>
           </div>
@@ -1714,31 +1821,35 @@
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Baraat Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">آمدِ بارات کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:30 PM" value="${initData.arrival || '7:30 PM'}">
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 8:30 PM" value="${initData.nikkah || '8:30 PM'}">
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 2:00 PM or 8:00 PM" value="${initData.nikkah || sug.nikkah}">
             </div>
           </div>
-          <div class="form-field-group" style="margin-bottom:10px;">
-            <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
-            <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 10:30 PM" value="${initData.rukhsati || '10:30 PM'}">
+
+          <!-- Lunch / Dinner Time placed above Rukhsati Time -->
+          <div class="form-grid-2" style="margin-bottom:10px;">
+            ${mealTimeInputHtml}
+            <div class="form-field-group" style="margin-bottom:8px;">
+              <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
+              <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.rukhsati || sug.rukhsati}">
+            </div>
           </div>
         `;
       } else if (type === "walima") {
-        const defWalimaArrival = mealType === "lunch" ? "1:30 PM" : "7:00 PM";
-        const defWalimaDua = mealType === "lunch" ? "4:00 PM" : "10:30 PM";
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Arrival / Reception <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || defWalimaArrival}">
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
             </div>
-            <div class="form-field-group" style="margin-bottom:8px;">
-              <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
-              <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:30 PM" value="${initData.duaTime || defWalimaDua}">
-            </div>
+            ${mealTimeInputHtml}
+          </div>
+          <div class="form-field-group" style="margin-bottom:10px;">
+            <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
+            <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.duaTime || sug.dua}">
           </div>
         `;
       } else if (type === "mehndi") {
@@ -1746,26 +1857,32 @@
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 7:00 PM" value="${initData.arrival || '7:00 PM'}">
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Rasm-e-Hina Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رسمِ حنا کا وقت</span></label>
-              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 8:30 PM" value="${initData.rasmTime || '8:30 PM'}">
+              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 2:30 PM or 8:00 PM" value="${initData.rasmTime || sug.rasm}">
             </div>
           </div>
+          ${mealTimeInputHtml}
         `;
       } else if (type === "nikkah") {
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Gathering Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی تشریف آوری</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 4:00 PM" value="${initData.arrival || '4:00 PM'}">
+              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.arrival || sug.arrival}">
             </div>
             <div class="form-field-group" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Khutbah & Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">خطبہ و عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 4:45 PM" value="${initData.nikkah || '4:45 PM'}">
+              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 2:15 PM or 7:30 PM" value="${initData.nikkah || sug.nikkah}">
             </div>
           </div>
+          ${mealTimeInputHtml}
+        `;
+      } else {
+        specificMilestonesHtml = `
+          ${mealTimeInputHtml}
         `;
       }
 
@@ -1776,22 +1893,9 @@
             <span style="font-family:var(--urdu); color:var(--gold-primary); font-weight:400;">کھانے کا وقت (دوپہر / رات) اور ذیلی شیڈول</span>
           </div>
 
-          ${specificMilestonesHtml}
+          ${mealTypeSelectHtml}
 
-          <div class="form-grid-2" style="margin-bottom:6px;">
-            <div class="form-field-group" style="margin-bottom:6px;">
-              <label class="form-field-label"><span>Meal Type (Lunch / Dinner)</span><span class="urdu-label">ضیافت کی قسم</span></label>
-              <select class="form-input evt-meal-type" style="background:rgba(6,22,16,0.95); color:#fff; cursor:pointer;">
-                <option value="dinner" ${mealType === 'dinner' ? 'selected' : ''}>🍽️ Dinner (رات کا کھانا / عشائیہ)</option>
-                <option value="lunch" ${mealType === 'lunch' ? 'selected' : ''}>☀️ Lunch (دوپہر کا کھانا / ظہرانہ)</option>
-                <option value="hitea" ${mealType === 'hitea' ? 'selected' : ''}>☕ Hi-Tea & Refreshments (ہائی ٹی / تواضع)</option>
-              </select>
-            </div>
-            <div class="form-field-group" style="margin-bottom:6px;">
-              <label class="form-field-label"><span>Lunch / Dinner Time <span class="optional-pill">Optional</span></span><span class="urdu-label">کھانے کا وقت</span></label>
-              <input class="form-input evt-meal-time" type="text" placeholder="e.g. 2:30 PM (Lunch) or 9:00 PM (Dinner)" value="${mealTime}">
-            </div>
-          </div>
+          ${specificMilestonesHtml}
 
           <div class="custom-sub-rows-list"></div>
           <button type="button" class="add-sub-row-btn">
@@ -1973,35 +2077,35 @@
         subRowsList.appendChild(row);
       }
 
-      // Auto-adjust suggested meal & Walima times when switching between Dinner, Lunch, and Hi-Tea
+      // Auto-fill ALL time fields in this event card according to Lunch (1:00 PM - 4:00 PM) or Dinner (6:00 PM - 10:00 PM)
       const mealTypeSel = card.querySelector(".evt-meal-type");
-      const mealTimeInp = card.querySelector(".evt-meal-time");
-      if (mealTypeSel && mealTimeInp) {
+      if (mealTypeSel) {
         mealTypeSel.addEventListener("change", () => {
           const mt = mealTypeSel.value;
-          if (mt === "lunch") {
-            mealTimeInp.value = "2:30 PM";
-            if (type === "walima") {
-              const mainT = card.querySelector(".evt-time");
-              const arrT = card.querySelector(".evt-b-arrival");
-              const duaT = card.querySelector(".evt-dua-time");
-              if (mainT && (mainT.value === "7:30 PM" || !mainT.value)) mainT.value = "1:30 PM";
-              if (arrT && (arrT.value === "7:00 PM" || !arrT.value)) arrT.value = "1:30 PM";
-              if (duaT && (duaT.value === "10:30 PM" || !duaT.value)) duaT.value = "4:00 PM";
-            }
-          } else if (mt === "hitea") {
-            mealTimeInp.value = "5:30 PM";
-          } else {
-            mealTimeInp.value = type === "walima" ? "8:45 PM" : "9:30 PM";
-            if (type === "walima") {
-              const mainT = card.querySelector(".evt-time");
-              const arrT = card.querySelector(".evt-b-arrival");
-              const duaT = card.querySelector(".evt-dua-time");
-              if (mainT && (mainT.value === "1:30 PM" || !mainT.value)) mainT.value = "7:30 PM";
-              if (arrT && (arrT.value === "1:30 PM" || !arrT.value)) arrT.value = "7:00 PM";
-              if (duaT && (duaT.value === "4:00 PM" || !duaT.value)) duaT.value = "10:30 PM";
-            }
-          }
+          const sug = getSuggestedTimingsForMeal(type, mt);
+          const mainT = card.querySelector(".evt-time");
+          const sehraT = card.querySelector(".evt-b-sehra");
+          const depT = card.querySelector(".evt-b-departure");
+          const arrT = card.querySelector(".evt-b-arrival");
+          const nikT = card.querySelector(".evt-b-nikkah");
+          const rasmT = card.querySelector(".evt-rasm-time");
+          const mealT = card.querySelector(".evt-meal-time");
+          const rukT = card.querySelector(".evt-b-rukhsati");
+          const duaT = card.querySelector(".evt-dua-time");
+
+          if (mainT && sug.mainTime) mainT.value = sug.mainTime;
+          if (sehraT && sug.sehra) sehraT.value = sug.sehra;
+          if (depT && sug.departure) depT.value = sug.departure;
+          if (arrT && sug.arrival) arrT.value = sug.arrival;
+          if (nikT && sug.nikkah) nikT.value = sug.nikkah;
+          if (rasmT && sug.rasm) rasmT.value = sug.rasm;
+          if (mealT && sug.meal) mealT.value = sug.meal;
+          if (rukT && sug.rukhsati) rukT.value = sug.rukhsati;
+          if (duaT && sug.dua) duaT.value = sug.dua;
+
+          card.querySelectorAll(".sub-time-inp").forEach(inp => {
+            if (sug.subRow) inp.value = sug.subRow;
+          });
         });
       }
 
