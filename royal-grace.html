@@ -222,6 +222,85 @@
     /* ==========================================================================
        STAGE 1: CINEMATIC VIDEO REVEAL HERO
        ========================================================================== */
+    
+    /* Tap To Open Initial Cover Overlay */
+    .tap-to-open-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(30, 38, 26, 0.35) 0%, rgba(15, 15, 15, 0.65) 100%);
+      cursor: pointer;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .tap-to-open-overlay.hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .tap-medallion {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 136px;
+      height: 136px;
+      border-radius: 50%;
+      background: rgba(45, 68, 50, 0.90);
+      border: 2px solid #c5a86a;
+      box-shadow: 0 0 0 5px rgba(197, 168, 106, 0.25), 0 16px 36px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: medallionPulse 2.2s infinite ease-in-out;
+    }
+
+    @keyframes medallionPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 5px rgba(197, 168, 106, 0.25), 0 16px 36px rgba(0, 0, 0, 0.5);
+      }
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 11px rgba(197, 168, 106, 0.38), 0 20px 42px rgba(0, 0, 0, 0.65);
+      }
+    }
+
+    .tap-medallion .tap-icon {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tap-medallion .tap-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .tap-medallion .tap-text {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #f7f2e6;
+    }
+
+    .tap-medallion .tap-sparkle {
+      font-size: 12px;
+      color: #c5a86a;
+      margin-top: 3px;
+    }
+
     .cinematic-hero-section {
       position: relative;
       min-height: 100vh;
@@ -1152,6 +1231,20 @@
            STAGE 1: CINEMATIC VIDEO REVEAL HERO
            ====================================================================== -->
       <section class="cinematic-hero-section" id="heroStage">
+
+        <!-- Tap To Open Initial Cover Overlay -->
+        <div class="tap-to-open-overlay" id="tapToOpenOverlay" role="button" tabindex="0" aria-label="Tap to open invitation">
+          <div class="tap-medallion">
+            <div class="tap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#c5a86a"/>
+              </svg>
+            </div>
+            <span class="tap-text" id="tapPromptText">Tap to Open</span>
+            <span class="tap-sparkle">✦</span>
+          </div>
+        </div>
+
         <!-- Gate opening video -->
         <video 
           id="revealVideo" 
@@ -1729,46 +1822,53 @@
         }
       });
 
-      // 3. Opening Video Play & Exact Timing Trigger (6.0s text delay matching video)
+      // 3. Opening Video Play on User Tap (Never autoplays before user taps)
       let videoTriggered = false;
+      const tapOverlay = document.getElementById("tapToOpenOverlay");
+
       function startVideoExperience() {
         if (videoTriggered) return;
         videoTriggered = true;
 
-        video.play().then(() => {
-          playAudio();
-        }).catch(() => {
-          playAudio();
-        });
+        if (tapOverlay) {
+          tapOverlay.classList.add("hidden");
+        }
 
-        // Match Reference Video Exact Timings:
-        // Gates take ~6.0s to finish swinging open
+        // Start gate video
+        if (video) {
+          video.play().catch(() => {});
+        }
+
+        // Start background music seamlessly on user gesture
+        playAudio();
+
+        // Reveal couple info at 6.0s (when gates finish swinging open)
         setTimeout(() => {
-          coupleInfo.classList.add("active");
+          if (coupleInfo) coupleInfo.classList.add("active");
         }, 6000);
 
-        // "SCROLL" badge bounces into view at 8.5s directly over the fountain
+        // "SCROLL" badge bounces into view at 8.5s
         setTimeout(() => {
-          scrollBadge.classList.add("active");
+          if (scrollBadge) scrollBadge.classList.add("active");
         }, 8500);
       }
 
-      // Start on tap of the hero stage or video
-      document.getElementById("heroStage").addEventListener("click", startVideoExperience);
-      video.addEventListener("click", startVideoExperience);
+      // Start experience ONLY when user taps/clicks the screen or medallion
+      if (tapOverlay) {
+        tapOverlay.addEventListener("click", startVideoExperience);
+        tapOverlay.addEventListener("touchstart", function(e) {
+          e.preventDefault();
+          startVideoExperience();
+        }, { passive: false });
+      }
 
-      // Auto start video muted on load if supported, or reveal gracefully after timeout
-      video.play().then(() => {
-        // Autoplay worked
-        setTimeout(() => {
-          coupleInfo.classList.add("active");
-        }, 6000);
-        setTimeout(() => {
-          scrollBadge.classList.add("active");
-        }, 8500);
-      }).catch(() => {
-        // Needs user touch
-      });
+      const heroStageEl = document.getElementById("heroStage");
+      if (heroStageEl) {
+        heroStageEl.addEventListener("click", startVideoExperience);
+      }
+      if (video) {
+        video.addEventListener("click", startVideoExperience);
+      }
 
       scrollBadge.addEventListener("click", function(e) {
         e.stopPropagation();
