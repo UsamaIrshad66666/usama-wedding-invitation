@@ -1390,48 +1390,50 @@
             </svg>
           </div>
 
-          <!-- Day 1 Header -->
-          <div class="date-subheader-pill" id="day1Header">FRIDAY, OCT 16, 2026</div>
+          <div id="dynamicTimelineContainer">
+            <!-- Day 1 Header -->
+            <div class="date-subheader-pill" id="day1Header">FRIDAY, OCT 16, 2026</div>
 
-          <div class="timeline-schedule-grid">
-            <div class="schedule-row">
-              <div class="schedule-time-col">11:30 AM</div>
-              <div class="schedule-divider-line"></div>
-              <div class="schedule-desc-col">
-                <div class="schedule-title" id="t1Title">Guest Arrival</div>
-                <div class="schedule-subtitle" id="t1Sub">We welcome you.. ❤</div>
+            <div class="timeline-schedule-grid">
+              <div class="schedule-row">
+                <div class="schedule-time-col">11:30 AM</div>
+                <div class="schedule-divider-line"></div>
+                <div class="schedule-desc-col">
+                  <div class="schedule-title" id="t1Title">Guest Arrival</div>
+                  <div class="schedule-subtitle" id="t1Sub">We welcome you.. ❤</div>
+                </div>
+              </div>
+
+              <div class="schedule-row">
+                <div class="schedule-time-col">12:30 PM</div>
+                <div class="schedule-divider-line"></div>
+                <div class="schedule-desc-col">
+                  <div class="schedule-title" id="t2Title">Sacred Nikkah Ceremony</div>
+                  <div class="schedule-subtitle" id="t2Sub">Your presence means a lot!</div>
+                </div>
+              </div>
+
+              <div class="schedule-row">
+                <div class="schedule-time-col">01:30 PM</div>
+                <div class="schedule-divider-line"></div>
+                <div class="schedule-desc-col">
+                  <div class="schedule-title" id="t3Title">Royal Luncheon</div>
+                  <div class="schedule-subtitle" id="t3Sub">Celebratory wedding feast</div>
+                </div>
               </div>
             </div>
 
-            <div class="schedule-row">
-              <div class="schedule-time-col">12:30 PM</div>
-              <div class="schedule-divider-line"></div>
-              <div class="schedule-desc-col">
-                <div class="schedule-title" id="t2Title">Sacred Nikkah Ceremony</div>
-                <div class="schedule-subtitle" id="t2Sub">Your presence means a lot!</div>
-              </div>
-            </div>
+            <!-- Day 2 Header -->
+            <div class="date-subheader-pill" id="day2Header">SATURDAY, OCT 17, 2026</div>
 
-            <div class="schedule-row">
-              <div class="schedule-time-col">01:30 PM</div>
-              <div class="schedule-divider-line"></div>
-              <div class="schedule-desc-col">
-                <div class="schedule-title" id="t3Title">Royal Luncheon</div>
-                <div class="schedule-subtitle" id="t3Sub">Celebratory wedding feast</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Day 2 Header -->
-          <div class="date-subheader-pill" id="day2Header">SATURDAY, OCT 17, 2026</div>
-
-          <div class="timeline-schedule-grid">
-            <div class="schedule-row">
-              <div class="schedule-time-col">07:30 PM</div>
-              <div class="schedule-divider-line"></div>
-              <div class="schedule-desc-col">
-                <div class="schedule-title" id="t4Title">Walima Reception</div>
-                <div class="schedule-subtitle" id="t4Sub">Evening of dinner &amp; blessings</div>
+            <div class="timeline-schedule-grid">
+              <div class="schedule-row">
+                <div class="schedule-time-col">07:30 PM</div>
+                <div class="schedule-divider-line"></div>
+                <div class="schedule-desc-col">
+                  <div class="schedule-title" id="t4Title">Walima Reception</div>
+                  <div class="schedule-subtitle" id="t4Sub">Evening of dinner &amp; blessings</div>
+                </div>
               </div>
             </div>
           </div>
@@ -2163,6 +2165,9 @@
         } else {
           document.getElementById("welcomeProseText").textContent = dynamicProseEn;
         }
+        if (typeof renderDynamicRoyalGraceSchedule === "function") {
+          renderDynamicRoyalGraceSchedule(isUrduMode);
+        }
       });
 
       // 12. Universal ?invite= / ?d= Payload Hydration for Royal Grace
@@ -2170,6 +2175,7 @@
       let dynamicCoupleUr = "زیان اور رانیہ";
       let dynamicProseEn = "We are honored to welcome you to the Sacred Nikkah and Walima ceremonies of Zayan & Rania. As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤";
       let dynamicProseUr = "ہم آپ کو دل کی اتھاہ گہرائیوں سے زیان اور رانیہ کے نکاح و ولیمہ کی تقریب میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤";
+      let renderDynamicRoyalGraceSchedule = null;
 
       function decodeInvitePayload(encoded) {
         if (!encoded) return null;
@@ -2248,58 +2254,173 @@
           if (revDay) revDay.textContent = primaryEv.title || (primaryEv.key.charAt(0).toUpperCase() + primaryEv.key.slice(1));
           if (revTime) revTime.textContent = pTimeStr;
 
-          const vName = document.getElementById("venueNameText");
-          const vAddr = document.getElementById("venueAddrText");
-          const vMap = document.getElementById("venueMapBtn");
-          if (vName && primaryEv.venue) vName.textContent = primaryEv.venue;
-          if (vAddr) vAddr.textContent = primaryEv.address || primaryEv.venue || "";
-          if (vMap && primaryEv.mapUrl) vMap.href = primaryEv.mapUrl;
+          renderDynamicRoyalGraceSchedule = function(isUr) {
+            const timelineContainer = document.getElementById("dynamicTimelineContainer");
+            if (timelineContainer) {
+              timelineContainer.innerHTML = activeList.map((ev, idx) => {
+                const defaultTitleEn = ev.key === "mehndi" ? "Mehndi Ceremony" : (ev.key === "baraat" ? "Baraat & Nikkah" : "Walima Reception");
+                const defaultTitleUr = ev.key === "mehndi" ? "تقریبِ مہندی" : (ev.key === "baraat" ? "بارات اور نکاح" : "دعوتِ ولیمہ");
+                const dayTitle = isUr ? (ev.titleUrdu || defaultTitleUr) : (ev.title || defaultTitleEn);
+                const dVal = isUr ? (ev.displayDateUrdu || ev.displayDate || ev.date || "") : (ev.displayDate || ev.date || "");
+                const headerLabel = dVal ? `${dayTitle} — ${dVal}` : dayTitle;
 
-          // Build Timeline cards for all ordered events
-          const timelineGrid = document.querySelector(".timeline-schedule-grid");
-          const day1Header = document.getElementById("day1Header");
-          if (day1Header) {
-            day1Header.textContent = activeList.length === 1
-              ? `${activeList[0].title || activeList[0].key.toUpperCase()} — ${activeList[0].displayDate || activeList[0].date || ""}`
-              : `${activeList.length}-Day Wedding Schedule`;
-          }
-          if (timelineGrid) {
-            timelineGrid.innerHTML = activeList.map(ev => {
-              const title = ev.title || (ev.key === "mehndi" ? "Mehndi Ceremony" : (ev.key === "baraat" ? "Baraat & Nikkah" : "Dawat-e-Walima"));
-              const tVal = ev.displayTime || ev.time || ev.arrivalTime || ev.arrival || "7:00 PM";
-              const dVal = ev.displayDate || ev.date || "";
-              const mealType = (ev.mealType || "dinner").toLowerCase();
-              const mealTime = ev.mealTime || ev.dinnerTime || "";
-              const mealLbl = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");
-              let subDetails = [];
-              if (ev.sehraTime) subDetails.push(`Sehra Bandi: ${ev.sehraTime}`);
-              if (ev.departureTime) subDetails.push(`Departure: ${ev.departureTime}`);
-              if (ev.arrivalTime || ev.arrival) subDetails.push(`Arrival: ${ev.arrivalTime || ev.arrival}`);
-              if (ev.nikkahTime || ev.nikkah) subDetails.push(`Nikkah: ${ev.nikkahTime || ev.nikkah}`);
-              if (mealTime && mealType !== "none") subDetails.push(`${mealLbl}: ${mealTime}`);
-              if (ev.rukhsatiTime || ev.rukhsati) subDetails.push(`Rukhsati: ${ev.rukhsatiTime || ev.rukhsati}`);
-              if (ev.duaTime) subDetails.push(`Dua: ${ev.duaTime}`);
-              if (Array.isArray(ev.subSchedule)) {
-                ev.subSchedule.forEach(s => {
-                  if (s && (s.title || s.time)) subDetails.push(`${s.title}: ${s.time}`);
-                });
-              }
-              return `
-                <div class="timeline-step-card">
-                  <div class="step-time-pill">${dVal ? dVal + " • " : ""}${tVal}</div>
-                  <div class="step-info-box">
-                    <h4>${title}</h4>
-                    <p>${ev.venue || ""}${ev.address ? " — " + ev.address : ""}</p>
-                    ${subDetails.length ? `<p style="margin-top:4px;font-size:0.85em;opacity:0.9;">${subDetails.join(" | ")}</p>` : ""}
+                const venueName = isUr ? (ev.venueUrdu || ev.venue || "") : (ev.venue || "");
+                const venueAddr = isUr ? (ev.addressUrdu || ev.address || "") : (ev.address || "");
+                const venueDesc = [venueName, venueAddr].filter(Boolean).join(" — ");
+
+                const mainTime = (ev.displayTime || ev.time || "").trim();
+                const arrivalTime = (ev.arrivalTime || ev.arrival || "").trim();
+                const rows = [];
+
+                if (ev.sehraTime) {
+                  rows.push({
+                    time: ev.sehraTime,
+                    title: isUr ? "سہرا بندی" : "Sehra Bandi",
+                    sub: isUr ? "دولہا کے گھر کی تقریب اور دعائیں" : "Groom's family ceremony & prayers"
+                  });
+                }
+                if (ev.departureTime) {
+                  rows.push({
+                    time: ev.departureTime,
+                    title: isUr ? "روانگیِ بارات" : "Baraat Departure",
+                    sub: isUr ? "بارات کی تقریب گاہ کے لیے روانگی" : "Procession departs for the venue"
+                  });
+                }
+                if (arrivalTime) {
+                  const arrTitle = ev.key === "baraat"
+                    ? (isUr ? "آمدِ بارات و استقبال" : "Baraat Arrival & Reception")
+                    : (ev.key === "mehndi"
+                      ? (isUr ? "تقریبِ مہندی و آمدِ مہمانان" : "Mehndi Ceremony & Guest Arrival")
+                      : (isUr ? "تقریبِ ولیمہ و آمدِ مہمانان" : "Walima Reception & Guest Arrival"));
+                  rows.push({
+                    time: arrivalTime,
+                    title: arrTitle,
+                    sub: venueDesc || (isUr ? "ہم آپ کو خوش آمدید کہتے ہیں ❤" : "We welcome you with warmth & joy ❤")
+                  });
+                } else if (mainTime) {
+                  rows.push({
+                    time: mainTime,
+                    title: dayTitle,
+                    sub: venueDesc || (ev.key === "walima"
+                      ? (isUr ? "پرمسرت ضیافت اور دعائیں" : "Evening of dinner & blessings")
+                      : (isUr ? "خوشیوں اور دعاؤں بھری تقریب" : "Evening of celebration & blessings"))
+                  });
+                }
+                if (ev.nikkahTime || ev.nikkah) {
+                  rows.push({
+                    time: ev.nikkahTime || ev.nikkah,
+                    title: isUr ? "مسنون نکاح" : "Sacred Nikkah Ceremony",
+                    sub: isUr ? "ایجاب و قبول اور خصوصی دعا" : "Solemnization of marriage & blessings"
+                  });
+                }
+                const mealType = (ev.mealType || "dinner").toLowerCase();
+                const mealTime = ev.mealTime || ev.dinnerTime || "";
+                if (mealTime && mealType !== "none") {
+                  const mTitle = mealType === "lunch"
+                    ? (isUr ? "پرتکلف ظہرانہ (Lunch)" : "Royal Luncheon")
+                    : (mealType === "hitea"
+                      ? (isUr ? "شام کی چائے (Hi-Tea)" : "Evening Hi-Tea")
+                      : (isUr ? "پرتکلف عشائیہ (Dinner)" : "Wedding Dinner"));
+                  const mSub = mealType === "lunch"
+                    ? (isUr ? "شادی کی خوشی میں پرتکلف ظہرانہ" : "Celebratory wedding luncheon & blessings")
+                    : (isUr ? "پرمسرت ضیافت اور دعائیں" : "Evening of dinner & blessings");
+                  rows.push({
+                    time: mealTime,
+                    title: mTitle,
+                    sub: mSub
+                  });
+                }
+                if (ev.rukhsatiTime || ev.rukhsati) {
+                  rows.push({
+                    time: ev.rukhsatiTime || ev.rukhsati,
+                    title: isUr ? "رخصتی" : "Rukhsati",
+                    sub: isUr ? "دعاؤں کے سائے میں رخصتی" : "Farewell with prayers & blessings"
+                  });
+                }
+                if (ev.duaTime) {
+                  rows.push({
+                    time: ev.duaTime,
+                    title: isUr ? "دعا اور اختتام" : "Dua & Farewell",
+                    sub: isUr ? "نیک تمنائیں اور اختتامی دعا" : "Concluding prayers & warm wishes"
+                  });
+                }
+                if (Array.isArray(ev.subSchedule)) {
+                  ev.subSchedule.forEach(s => {
+                    if (s && (s.title || s.time)) {
+                      rows.push({
+                        time: s.time || mainTime || "",
+                        title: s.title || (isUr ? "تقریب" : "Ceremony"),
+                        sub: s.subtitle || venueDesc || (isUr ? "خوشگوار لمحات" : "Special ceremony moment")
+                      });
+                    }
+                  });
+                }
+                if (rows.length === 0) {
+                  rows.push({
+                    time: mainTime || "07:00 PM",
+                    title: dayTitle,
+                    sub: venueDesc || (isUr ? "پرمسرت ضیافت اور دعائیں" : "Evening of dinner & blessings")
+                  });
+                }
+
+                return `
+                  <div class="date-subheader-pill" style="${idx > 0 ? 'margin-top: 28px;' : ''}">${headerLabel}</div>
+                  <div class="timeline-schedule-grid">
+                    ${rows.map(r => `
+                      <div class="schedule-row">
+                        <div class="schedule-time-col">${r.time}</div>
+                        <div class="schedule-divider-line"></div>
+                        <div class="schedule-desc-col">
+                          <div class="schedule-title">${r.title}</div>
+                          <div class="schedule-subtitle">${r.sub}</div>
+                        </div>
+                      </div>
+                    `).join("")}
                   </div>
-                </div>
-              `;
-            }).join("");
-          }
-          // Hide static Pre-Wedding Events section when dynamic schedule is rendered
+                `;
+              }).join("");
+            }
+
+            // Also organize Venues for all selected days (1-day, 2-day, or 3-day)
+            const venueBox = document.querySelector(".venue-details-box");
+            if (venueBox) {
+              venueBox.innerHTML = activeList.map((ev, idx) => {
+                const defaultTitleEn = ev.key === "mehndi" ? "Mehndi Ceremony" : (ev.key === "baraat" ? "Baraat & Nikkah" : "Walima Reception");
+                const defaultTitleUr = ev.key === "mehndi" ? "تقریبِ مہندی" : (ev.key === "baraat" ? "بارات اور نکاح" : "دعوتِ ولیمہ");
+                const dayTitle = isUr ? (ev.titleUrdu || defaultTitleUr) : (ev.title || defaultTitleEn);
+                const vTitle = isUr ? (ev.venueUrdu || ev.venue || "Wedding Venue") : (ev.venue || "Wedding Venue");
+                const vAddr = isUr ? (ev.addressUrdu || ev.address || vTitle) : (ev.address || vTitle);
+                const mapHref = ev.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(vTitle + " " + vAddr)}`;
+                const mapBtnLbl = isUr ? "گوگل میپ میں دیکھیں" : "View in Maps";
+                return `
+                  <div style="${idx > 0 ? 'margin-top: 24px; padding-top: 18px; border-top: 1px dashed rgba(138, 122, 78, 0.3);' : ''}">
+                    ${activeList.length > 1 ? `<div class="date-subheader-pill" style="margin: 4px 0 10px;">${dayTitle}</div>` : ""}
+                    <div class="venue-title-text">${vTitle}</div>
+                    <div class="venue-address-text">${vAddr}</div>
+                    <a href="${mapHref}" target="_blank" rel="noopener noreferrer" class="venue-map-link-btn">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                      </svg>
+                      <span>${mapBtnLbl}</span>
+                    </a>
+                  </div>
+                `;
+              }).join("");
+            }
+          };
+
+          renderDynamicRoyalGraceSchedule(isUrduMode);
+
+          // Hide static Pre-Wedding Events section and its trailing wavy divider when dynamic schedule is rendered
           const preWedTitle = document.getElementById("preWeddingTitle");
           if (preWedTitle && preWedTitle.closest("section")) {
-            preWedTitle.closest("section").style.display = "none";
+            const preSec = preWedTitle.closest("section");
+            preSec.style.display = "none";
+            if (preSec.nextElementSibling && preSec.nextElementSibling.classList.contains("grace-wavy-divider")) {
+              preSec.nextElementSibling.style.display = "none";
+            }
           }
           const parsedTarget = Date.parse(primaryEv.dateTime || primaryEv.displayDate || primaryEv.date || "");
           if (!isNaN(parsedTarget)) {
