@@ -250,11 +250,12 @@
       position: relative;
       z-index: 10;
       width: 100%;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0 20px;
+      padding: 0 16px;
       text-align: center;
       pointer-events: none;
       margin-top: -30px;
@@ -302,22 +303,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .cinematic-heart-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       fill: #2d4432;
     }
 
     .cinematic-message {
       font-family: var(--font-serif);
-      font-size: 24px;
+      font-size: clamp(18px, 4.8vw, 24px);
       line-height: 1.25;
       color: #2d4432;
       font-weight: 500;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: 0.02em;
     }
 
@@ -326,7 +327,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin: 6px auto 14px;
+      margin: 4px auto 10px;
       width: 140px;
     }
 
@@ -345,28 +346,31 @@
 
     .cinematic-couple-name {
       font-family: var(--font-calligraphy);
-      font-size: 60px;
-      line-height: 0.95;
+      font-size: clamp(34px, 8.5vw, 54px);
+      line-height: 1.05;
       color: #2d4432;
       font-weight: 600;
       letter-spacing: -0.01em;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 90vw;
     }
 
     .cinematic-sub-credentials {
       font-family: var(--font-serif-body);
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-style: italic;
       color: #43543d;
-      line-height: 1.45;
-      margin-top: 3px;
+      line-height: 1.4;
+      margin-top: 2px;
     }
 
     .cinematic-ampersand {
       font-family: var(--font-serif-body);
-      font-size: 32px;
+      font-size: clamp(22px, 5.5vw, 28px);
       font-style: italic;
       color: #2d4432;
-      margin: 4px 0;
+      margin: 2px 0;
       line-height: 1;
     }
 
@@ -1734,6 +1738,19 @@
         if (topAudioBtn) topAudioBtn.classList.remove("playing");
       }
 
+      // Automatically pause music when user leaves/switches tab or minimizes browser
+      document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+          pauseAudio();
+        }
+      });
+      window.addEventListener("pagehide", function() {
+        pauseAudio();
+      });
+      window.addEventListener("blur", function() {
+        pauseAudio();
+      });
+
       if (topAudioBtn) {
         topAudioBtn.addEventListener("touchstart", function(e) {
           e.stopPropagation();
@@ -2231,6 +2248,12 @@
         if (proseEl) proseEl.textContent = dynamicProseEn;
         const closingEl = document.getElementById("closingNames");
         if (closingEl) closingEl.textContent = dynamicCoupleEn;
+
+        // In final built client invitation, hide demo family side switcher toggles
+        const sideBar = document.querySelector(".family-side-bar");
+        if (sideBar) {
+          sideBar.style.display = "none";
+        }
 
         // Collect active events
         const evs = customData.events || {};

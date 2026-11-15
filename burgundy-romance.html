@@ -3345,6 +3345,13 @@
         audioPauseIcon.style.display = "none";
       }
 
+      // Automatically pause music when user leaves the website/tab
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) pauseAudio();
+      });
+      window.addEventListener("pagehide", pauseAudio);
+      window.addEventListener("blur", pauseAudio);
+
       audioToggleBtn.addEventListener("click", () => {
         if (weddingAudio.paused) {
           playAudio();

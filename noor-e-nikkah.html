@@ -1861,6 +1861,12 @@
         if (customInvite.cardSide === "bride") currentSide = "bride";
         if (customInvite.rsvpPhone) WEDDING_DATA.rsvpPhone = customInvite.rsvpPhone;
 
+        // In final built client invitation, hide demo family side switcher toggles
+        const sideBar = document.querySelector(".family-side-bar");
+        if (sideBar) {
+          sideBar.style.display = "none";
+        }
+
         const gInit = (WEDDING_DATA.groom || "Z").trim().charAt(0).toUpperCase();
         const bInit = (WEDDING_DATA.bride || "R").trim().charAt(0).toUpperCase();
         const monoEl = document.querySelector(".wax-seal-monogram");
@@ -1981,6 +1987,21 @@
           }).catch(console.error);
         }
       });
+
+      // Automatically pause music when user leaves the website/tab
+      function handleTabLeavePause() {
+        if (weddingAudio && audioPlaying) {
+          weddingAudio.pause();
+          audioPlaying = false;
+          audioToggleBtn.classList.add("audio-muted");
+          if (audioBtnText) audioBtnText.textContent = currentLang === "ur" ? "موسیقی" : "Music";
+        }
+      }
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) handleTabLeavePause();
+      });
+      window.addEventListener("pagehide", handleTabLeavePause);
+      window.addEventListener("blur", handleTabLeavePause);
 
       // 4. Family Side Switcher Logic
       function setFamilySide(side) {
