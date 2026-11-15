@@ -243,6 +243,24 @@
       gap: 12px;
       margin-top: 12px;
     }
+    .admin-sug-tagline-btn {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold-light);
+      padding: 4px 11px;
+      border-radius: 14px;
+      font-size: 0.73rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .admin-sug-tagline-btn:hover {
+      background: rgba(212, 175, 55, 0.25);
+      border-color: var(--gold-primary);
+      transform: translateY(-1px);
+    }
     .admin-saved-item {
       display: flex;
       flex-wrap: wrap;
@@ -752,6 +770,14 @@
             <label class="admin-field-label">Baraat Tagline Badge (English/Roman)</label>
             <input class="admin-input" type="text" id="f_b_tagline_en" placeholder="e.g. Duaon Kay Saaye Mein Rukhsati">
           </div>
+        </div>
+        <div style="margin-top:6px; display:flex; flex-wrap:wrap; gap:6px;">
+          <button type="button" class="admin-sug-tagline-btn" data-ur="دل والے دلہنیا لے جا رہے ہیں" data-en="Dil Walay Dulhania Le Ja Rahay Hain">👑 دل والے دلہنیا</button>
+          <button type="button" class="admin-sug-tagline-btn" data-ur="دعاؤں کے سائے میں رخصتی" data-en="Duaon Kay Saaye Mein Rukhsati">🕊️ دعاؤں کے سائے میں</button>
+          <button type="button" class="admin-sug-tagline-btn" data-ur="شہزادے کی بارات" data-en="Shehzaday Ki Baraat">🐎 شہزادے کی بارات</button>
+          <button type="button" class="admin-sug-tagline-btn" data-ur="بابا کی لاڈلی، دعاؤں کی چھاؤں میں" data-en="Baba Ki Laadli, Duaon Ki Chhaon Mein">🌸 بابا کی لاڈلی</button>
+          <button type="button" class="admin-sug-tagline-btn" data-ur="ایک نئی زندگی کا بابرکت آغاز" data-en="A Blessed Beginning of a New Life">💫 بابرکت آغاز</button>
+          <button type="button" class="admin-sug-tagline-btn" data-ur="دو دل، ایک نئی شروعات" data-en="Do Dil, Aik Nayi Shuruat">🤍 دو دل، نئی شروعات</button>
         </div>
 
         <div class="admin-grid-2" style="margin-top:14px;">
@@ -1526,6 +1552,16 @@
       });
     });
 
+    // Baraat quick tagline suggestion chips click handler
+    document.querySelectorAll(".admin-sug-tagline-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const uInp = document.getElementById("f_b_tagline_ur");
+        const eInp = document.getElementById("f_b_tagline_en");
+        if (uInp) uInp.value = btn.dataset.ur || "";
+        if (eInp) eInp.value = btn.dataset.en || "";
+      });
+    });
+
     function syncGroomBaraatTime() {
       const s = document.getElementById("f_b_sehra") ? document.getElementById("f_b_sehra").value.trim() : "";
       const d = document.getElementById("f_b_departure") ? document.getElementById("f_b_departure").value.trim() : "";
@@ -2067,8 +2103,10 @@
         applyClientSubField("f_b_dinner", bMealVal, "");
         applyClientSubField("f_b_rukhsati", b.rukhsati, "");
         renderAdminCustomSubRows("baraat", b.subSchedule || []);
-        document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || (side === "bride" ? "دعاؤں کے سائے میں رخصتی" : "دل والے دلہنیا لے جا رہے ہیں");
-        document.getElementById("f_b_tagline_en").value = b.taglineRoman || (side === "bride" ? "Duaon Kay Saaye Mein Rukhsati" : "Dil Walay Dulhania Le Ja Rahay Hain");
+        const clientTaglineUr = (b && (b.taglineUrdu || b.tagline)) || client.taglineUrdu || client.tagline || "";
+        const clientTaglineEn = (b && (b.taglineRoman || b.tagline)) || client.taglineRoman || client.tagline || "";
+        document.getElementById("f_b_tagline_ur").value = clientTaglineUr || (side === "bride" ? "دعاؤں کے سائے میں رخصتی" : "دل والے دلہنیا لے جا رہے ہیں");
+        document.getElementById("f_b_tagline_en").value = clientTaglineEn || (side === "bride" ? "Duaon Kay Saaye Mein Rukhsati" : "Dil Walay Dulhania Le Ja Rahay Hain");
         document.getElementById("f_b_venue").value = b.venue || "";
         document.getElementById("f_b_addr").value = b.address || "";
         document.getElementById("f_b_map").value = b.mapUrl || "";

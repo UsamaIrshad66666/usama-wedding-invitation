@@ -405,6 +405,47 @@
       font-weight: 600;
       box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
     }
+    .tagline-chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tagline-chip-btn {
+      background: rgba(12, 38, 28, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--cream);
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.3;
+      text-align: left;
+    }
+    .tagline-chip-btn:hover {
+      border-color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.16);
+      transform: translateY(-1px);
+    }
+    .tagline-chip-btn.active {
+      background: linear-gradient(135deg, #d4af37, #aa8220);
+      color: #071912;
+      border-color: #f3e5ab;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+    }
+    .tagline-chip-urdu {
+      font-family: var(--urdu);
+      font-size: 0.95rem;
+    }
+    .tagline-chip-sub {
+      font-size: 0.7rem;
+      opacity: 0.82;
+      font-family: var(--serif);
+    }
     .sub-schedule-box {
       background: rgba(0, 0, 0, 0.22);
       border: 1px dashed rgba(212, 175, 55, 0.32);
@@ -1253,6 +1294,25 @@
 
         </div>
 
+        <!-- Wedding Tagline Badge Section -->
+        <div class="form-field-group" style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px dashed rgba(212, 175, 55, 0.25);">
+          <label class="form-field-label">
+            <span>Wedding Tagline / Badge <span class="optional-pill">Optional — اختیاری</span></span>
+            <span class="urdu-label">شادی کی ٹیگ لائن / عنوان</span>
+          </label>
+          <div style="position:relative;">
+            <input class="form-input" type="text" id="c_tagline" placeholder="Select a suggested tagline below or enter your own...">
+          </div>
+
+          <div class="tagline-suggestions-wrap" style="margin-top:10px;">
+            <div style="font-size:0.75rem; color:var(--gold-primary); margin-bottom:8px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+              <span>💡 Suggested Taglines (کلک کر کے منتخب کریں):</span>
+              <button type="button" id="clearTaglineBtn" style="background:none; border:none; color:var(--text-muted); font-size:0.75rem; cursor:pointer; text-decoration:underline; display:none;">✕ Clear</button>
+            </div>
+            <div class="tagline-chips-grid" id="taglineChipsGrid"></div>
+          </div>
+        </div>
+
       </div>
 
 
@@ -1636,6 +1696,176 @@
     renderClientHosts();
 
     // =========================================================================
+    // WEDDING TAGLINE SUGGESTIONS & AUTO-FILL ENGINE
+    // =========================================================================
+    const TAGLINE_SUGGESTIONS = [
+      {
+        side: "groom",
+        ur: "دل والے دلہنیا لے جا رہے ہیں",
+        en: "Dil Walay Dulhania Le Ja Rahay Hain",
+        icon: "👑"
+      },
+      {
+        side: "bride",
+        ur: "دعاؤں کے سائے میں رخصتی",
+        en: "Duaon Kay Saaye Mein Rukhsati",
+        icon: "🕊️"
+      },
+      {
+        side: "groom",
+        ur: "شہزادے کی بارات",
+        en: "Shehzaday Ki Baraat",
+        icon: "🐎"
+      },
+      {
+        side: "bride",
+        ur: "بابا کی لاڈلی، دعاؤں کی چھاؤں میں",
+        en: "Baba Ki Laadli, Duaon Ki Chhaon Mein",
+        icon: "🌸"
+      },
+      {
+        side: "bride",
+        ur: "آنگن کی رونق، دعاؤں کے ساتھ رخصت",
+        en: "Aangan Ki Raunaq, Duaon Kay Saath Rukhsat",
+        icon: "✨"
+      },
+      {
+        side: "both",
+        ur: "ایک نئی زندگی کا بابرکت آغاز",
+        en: "A Blessed Beginning of a New Life",
+        icon: "💫"
+      },
+      {
+        side: "both",
+        ur: "دو دل، ایک نئی شروعات",
+        en: "Do Dil, Aik Nayi Shuruat",
+        icon: "🤍"
+      },
+      {
+        side: "both",
+        ur: "محبت اور دعاؤں کا حسیں سفر",
+        en: "A Journey of Love & Prayers",
+        icon: "🌷"
+      },
+      {
+        side: "both",
+        ur: "دو دلوں کا ملن، نئے سفر کا آغاز",
+        en: "Two Hearts, One Sacred Journey",
+        icon: "💍"
+      }
+    ];
+
+    const taglineInput = document.getElementById("c_tagline");
+    const taglineChipsGrid = document.getElementById("taglineChipsGrid");
+    const clearTaglineBtn = document.getElementById("clearTaglineBtn");
+
+    function renderTaglineSuggestions(currentSide) {
+      if (!taglineChipsGrid) return;
+      taglineChipsGrid.innerHTML = "";
+
+      const side = currentSide || (document.getElementById("f_side") ? document.getElementById("f_side").value : "groom");
+
+      const sorted = [...TAGLINE_SUGGESTIONS].sort((a, b) => {
+        if (a.side === side && b.side !== side) return -1;
+        if (b.side === side && a.side !== side) return 1;
+        if (a.side === "both" && b.side !== "both") return -1;
+        if (b.side === "both" && a.side !== "both") return 1;
+        return 0;
+      });
+
+      const currentVal = (taglineInput ? taglineInput.value : "").trim();
+
+      sorted.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tagline-chip-btn";
+        if (currentVal && (currentVal === item.ur || currentVal === item.en)) {
+          btn.classList.add("active");
+        }
+        btn.innerHTML = `${item.icon} <span class="tagline-chip-urdu">${item.ur}</span> <span class="tagline-chip-sub">(${item.en})</span>`;
+
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("active")) {
+            btn.classList.remove("active");
+            if (taglineInput) {
+              taglineInput.value = "";
+              taglineInput.dataset.taglineUr = "";
+              taglineInput.dataset.taglineEn = "";
+            }
+            if (clearTaglineBtn) clearTaglineBtn.style.display = "none";
+            syncBaraatTagline("");
+          } else {
+            taglineChipsGrid.querySelectorAll(".tagline-chip-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            if (taglineInput) {
+              taglineInput.value = item.ur;
+              taglineInput.dataset.taglineUr = item.ur;
+              taglineInput.dataset.taglineEn = item.en;
+            }
+            if (clearTaglineBtn) clearTaglineBtn.style.display = "inline-block";
+            syncBaraatTagline(item.ur);
+          }
+        });
+
+        taglineChipsGrid.appendChild(btn);
+      });
+
+      if (clearTaglineBtn) {
+        clearTaglineBtn.style.display = currentVal ? "inline-block" : "none";
+      }
+    }
+
+    function syncBaraatTagline(val) {
+      document.querySelectorAll(".evt-b-tagline").forEach(inp => {
+        inp.value = val;
+      });
+    }
+
+    if (taglineInput) {
+      taglineInput.addEventListener("input", () => {
+        const val = taglineInput.value.trim();
+        if (clearTaglineBtn) clearTaglineBtn.style.display = val ? "inline-block" : "none";
+
+        let foundMatch = false;
+        if (taglineChipsGrid) {
+          taglineChipsGrid.querySelectorAll(".tagline-chip-btn").forEach((btn, idx) => {
+            const item = TAGLINE_SUGGESTIONS[idx];
+            if (item && (item.ur === val || item.en === val)) {
+              btn.classList.add("active");
+              taglineInput.dataset.taglineUr = item.ur;
+              taglineInput.dataset.taglineEn = item.en;
+              foundMatch = true;
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+        }
+        if (!foundMatch) {
+          taglineInput.dataset.taglineUr = val;
+          taglineInput.dataset.taglineEn = val;
+        }
+        syncBaraatTagline(val);
+      });
+    }
+
+    if (clearTaglineBtn) {
+      clearTaglineBtn.addEventListener("click", () => {
+        if (taglineInput) {
+          taglineInput.value = "";
+          taglineInput.dataset.taglineUr = "";
+          taglineInput.dataset.taglineEn = "";
+        }
+        if (taglineChipsGrid) {
+          taglineChipsGrid.querySelectorAll(".tagline-chip-btn").forEach(b => b.classList.remove("active"));
+        }
+        clearTaglineBtn.style.display = "none";
+        syncBaraatTagline("");
+      });
+    }
+
+    renderTaglineSuggestions("groom");
+
+    // =========================================================================
     // DYNAMIC EVENTS BUILDER (Mehndi, Barat, Walima, Engagement, Nikah, Custom)
     // =========================================================================
     const eventsContainer = document.getElementById("eventsContainer");
@@ -1886,6 +2116,15 @@
                 <input class="form-input evt-b-rukhsati" type="text" data-default-sug="rukhsati" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.rukhsati !== undefined ? initData.rukhsati : sug.rukhsati}">
                 <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
               </div>
+            </div>
+          </div>
+
+          <!-- Baraat Tagline Badge -->
+          <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
+            <label class="form-field-label"><span>Baraat Tagline Badge <span class="optional-pill">Optional</span></span><span class="urdu-label">بارات کی ٹیگ لائن / عنوان</span></label>
+            <div class="pre-sub-input-row">
+              <input class="form-input evt-b-tagline" type="text" placeholder='e.g. دل والے دلہنیا لے جا رہے ہیں یا دعاؤں کے سائے میں رخصتی' value="${initData.taglineUrdu || initData.tagline || (document.getElementById('c_tagline') ? document.getElementById('c_tagline').value : '')}">
+              <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this tagline">✕ Remove</button>
             </div>
           </div>
         `;
@@ -2437,6 +2676,9 @@
           if (groomWrap) groomWrap.style.display = "block";
         });
       }
+      if (typeof renderTaglineSuggestions === "function") {
+        renderTaglineSuggestions(side);
+      }
     }
 
     tabGroom.addEventListener("click", () => setFormSide("groom"));
@@ -2483,6 +2725,9 @@
       const host = document.getElementById("c_host").value.trim();
       const clientName = document.getElementById("c_client_name").value.trim();
       const clientPhone = document.getElementById("c_client_phone").value.trim();
+      const tagline = document.getElementById("c_tagline") ? document.getElementById("c_tagline").value.trim() : "";
+      const taglineUr = document.getElementById("c_tagline")?.dataset?.taglineUr || tagline;
+      const taglineEn = document.getElementById("c_tagline")?.dataset?.taglineEn || tagline;
 
       const themeRadio = document.querySelector('input[name="c_theme"]:checked');
       const themeValue = themeRadio ? themeRadio.value : "optional";
@@ -2511,6 +2756,7 @@
         const rasmTime = card.querySelector(".evt-rasm-time") ? card.querySelector(".evt-rasm-time").value.trim() : "";
         const duaTime = card.querySelector(".evt-dua-time") ? card.querySelector(".evt-dua-time").value.trim() : "";
         const notes = card.querySelector(".evt-notes") ? card.querySelector(".evt-notes").value.trim() : "";
+        const eventTagline = card.querySelector(".evt-b-tagline") ? card.querySelector(".evt-b-tagline").value.trim() : "";
 
         const subSchedule = [];
         card.querySelectorAll(".custom-sub-row").forEach(r => {
@@ -2564,7 +2810,10 @@
           address: addr,
           mapUrl,
           rsvpPhone: rsvp,
-          notes
+          notes,
+          tagline: eventTagline || tagline,
+          taglineUrdu: eventTagline || taglineUr || tagline,
+          taglineRoman: eventTagline || taglineEn || tagline
         };
 
         eventsList.push(evObj);
@@ -2578,6 +2827,7 @@
           : (customName.toUpperCase() + (customNameUr ? ` (${customNameUr})` : ""))))));
 
         eventsWaText += `\n\n${iconMap[type] || "✨"} ${num}. ${headerTag}:`;
+        if (eventTagline) eventsWaText += `\n• Tagline Badge: ${eventTagline}`;
         if (date) eventsWaText += `\n• Date: ${date}`;
         if (time) eventsWaText += `\n• Time: ${time}`;
         if (sehraTime) eventsWaText += `\n• Sehra Bandi: ${sehraTime}`;
@@ -2853,6 +3103,9 @@
         brideUrdu: transliterateToUrdu(bride),
         host,
         hostUrdu: transliterateToUrdu(host),
+        tagline: tagline,
+        taglineUrdu: taglineUr || tagline,
+        taglineRoman: taglineEn || tagline,
         welcomeHosts: clientHosts.filter(h => h.name && h.phone).map(h => ({
           name: h.name,
           nameUrdu: h.nameUrdu || transliterateToUrdu(h.name),
@@ -2894,7 +3147,7 @@
 • Couple: ${coupleTitle}
 • Groom: ${groom}
 • Bride: ${bride}
-• Main Host / Parents: ${host}
+• Main Host / Parents: ${host}${tagline ? `\n• Wedding Tagline: ${tagline}` : ""}
 • Preferred Theme: ${themeValue === "optional" ? "Elitara's Choice (Optional)" : themeValue}
 ${eventsWaText}${welcomingWa}`;
 

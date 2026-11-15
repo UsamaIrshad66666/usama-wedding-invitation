@@ -8593,8 +8593,10 @@ function renderAboutPage(animateGlide = false) {
             ? "محبت، وقار اور دعاؤں کے سائے میں رخصتی کا پروقار لمحہ، لختِ جگر کی نئی زندگی کے لیے نیک تمنائیں اور دعائیں۔"
             : "A blessed occasion of love and prayers as our beloved daughter begins her new sacred journey under parents' heartfelt prayers.";
         }
-        const baraatUrduTag = (eventConf && eventConf.taglineUrdu) || (isBrideCard ? t.baraatBrideTaglineUrdu : t.baraatTaglineUrdu);
-        const baraatRomanTag = (eventConf && eventConf.taglineRoman) || (isBrideCard ? t.baraatBrideTaglineRoman : t.baraatTaglineRoman);
+        const globalTagUrdu = (typeof window !== "undefined" && window.CUSTOM_INVITATION_DATA && (window.CUSTOM_INVITATION_DATA.taglineUrdu || window.CUSTOM_INVITATION_DATA.tagline)) || "";
+        const globalTagRoman = (typeof window !== "undefined" && window.CUSTOM_INVITATION_DATA && (window.CUSTOM_INVITATION_DATA.taglineRoman || window.CUSTOM_INVITATION_DATA.tagline)) || "";
+        const baraatUrduTag = (eventConf && (eventConf.taglineUrdu || eventConf.tagline)) || globalTagUrdu || (isBrideCard ? t.baraatBrideTaglineUrdu : t.baraatTaglineUrdu);
+        const baraatRomanTag = (eventConf && (eventConf.taglineRoman || eventConf.tagline)) || globalTagRoman || (isBrideCard ? t.baraatBrideTaglineRoman : t.baraatTaglineRoman);
         customHeaderHtml = `
           <div class="seq-step seq-3">
             <div class="baraat-tagline-badge">

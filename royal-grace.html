@@ -522,6 +522,26 @@
       max-width: 50px;
     }
 
+    .royal-tagline-badge {
+      display: table;
+      font-family: var(--font-urdu, 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif);
+      font-size: 15px;
+      color: #3b4e3a;
+      background: rgba(138, 122, 78, 0.12);
+      border: 1px dashed rgba(138, 122, 78, 0.45);
+      border-radius: 20px;
+      padding: 3px 18px;
+      margin: 4px auto 14px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    html:not([dir="rtl"]) .royal-tagline-badge {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 13.5px;
+      letter-spacing: 0.04em;
+    }
+
     /* Islamic Calligraphy & Welcome Verse */
     .islamic-header-block {
       margin-bottom: 18px;
@@ -2417,8 +2437,13 @@
                 // Chronological sort
                 rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
 
+                const evTagline = isUr
+                  ? (ev.taglineUrdu || ev.tagline || (customData && (customData.taglineUrdu || customData.tagline)))
+                  : (ev.taglineRoman || ev.tagline || (customData && (customData.taglineRoman || customData.tagline)));
+
                 return `
                   <div class="date-subheader-pill" style="${idx > 0 ? 'margin-top: 28px;' : ''}">${headerLabel}</div>
+                  ${evTagline ? `<div class="royal-tagline-badge">✦ ${evTagline} ✦</div>` : ""}
                   <div class="timeline-schedule-grid">
                     ${rows.map(r => `
                       <div class="schedule-row">

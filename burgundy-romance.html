@@ -966,6 +966,27 @@
       font-weight: 500;
     }
 
+    .schedule-tagline-badge {
+      display: inline-block;
+      font-family: var(--font-urdu, 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif);
+      font-size: 15px;
+      color: #7a1c2e;
+      background: linear-gradient(135deg, rgba(122, 28, 46, 0.08) 0%, rgba(180, 140, 61, 0.16) 100%);
+      border: 1px dashed rgba(180, 140, 61, 0.55);
+      padding: 4px 18px;
+      border-radius: 20px;
+      margin: -10px auto 18px;
+      line-height: 1.6;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(122, 28, 46, 0.06);
+    }
+    html:not([dir="rtl"]) .schedule-tagline-badge {
+      font-family: 'Ovo', 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 13.5px;
+      letter-spacing: 0.03em;
+    }
+
     .schedule-card-venue-pill {
       margin: 14px auto 0;
       max-width: 330px;
@@ -4062,6 +4083,8 @@
             mapUrl: ev.mapUrl || "",
             rsvpPhone: ev.rsvpPhone || "",
             notes: ev.notes || "",
+            taglineEn: ev.taglineRoman || ev.tagline || (data && (data.taglineRoman || data.tagline)) || "",
+            taglineUr: ev.taglineUrdu || ev.tagline || (data && (data.taglineUrdu || data.tagline)) || "",
             rows
           };
         });
@@ -4087,6 +4110,7 @@
               : (isUr ? (translations.ur.timelineHeading || "پروگرام و تقاریب") : (translations.en.timelineHeading || "Schedule of Events"));
 
             const dateSubText = isUr ? ev.humanDateUr : ev.humanDateEn;
+            const eventTagline = isUr ? (ev.taglineUr || ev.taglineEn) : (ev.taglineEn || ev.taglineUr);
 
             const rowsHtml = ev.rows.map((r, rIdx) => `
               <div class="timeline-row" data-index="${rIdx}">
@@ -4135,6 +4159,7 @@
                     </picture>
                   </div>
                   ${dateSubText ? `<div class="schedule-date-sub">${dateSubText}</div>` : ""}
+                  ${eventTagline ? `<div class="schedule-tagline-badge">✦ ${eventTagline} ✦</div>` : ""}
 
                   <div class="timeline-container">
                     <img src="assets/timeline-rose-full.webp" class="timeline-rose-floating" alt="Rose" />
