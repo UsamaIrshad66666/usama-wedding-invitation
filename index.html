@@ -941,6 +941,75 @@
       font-weight: 500;
     }
 
+    .mughal-host-block {
+      margin: 0.5rem auto 0.8rem;
+    }
+    .host-prefix {
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 0.2rem;
+      opacity: 0.9;
+    }
+    .host-name {
+      font-size: 1.35rem;
+      letter-spacing: 0.05em;
+      color: var(--gold-bright);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .couple-credentials-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin: 0.5rem auto 1.2rem;
+      max-width: 500px;
+    }
+    .couple-cred-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      line-height: 1.4;
+    }
+    .couple-cred-col .parentage-line {
+      font-style: italic;
+      opacity: 0.9;
+    }
+    .couple-cred-col .occ-badge {
+      display: inline-block;
+      margin-top: 3px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(212, 173, 93, 0.12);
+      border: 1px solid rgba(212, 173, 93, 0.28);
+      font-size: 0.78rem;
+      color: var(--gold-bright);
+      letter-spacing: 0.05em;
+    }
+
+    html[dir="rtl"] .host-prefix {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+    html[dir="rtl"] .host-name {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    html[dir="rtl"] .couple-cred-col {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 0.92rem;
+    }
+    html[dir="rtl"] .couple-cred-col .occ-badge {
+      font-family: var(--font-urdu, 'Noto Nastaliq Urdu', serif);
+      font-size: 0.85rem;
+    }
+
     .request-text {
       font-family: var(--serif);
       font-style: italic;
@@ -2804,6 +2873,9 @@
 </head>
 <body>
 
+  <!-- Background Audio Element -->
+  <audio id="mughalBgAudio" src="assets/royal-grace-music.mp3" loop preload="auto"></audio>
+
   <div class="outer-border"></div>
   <i class="corner-ornament c-tl"></i>
   <i class="corner-ornament c-tr"></i>
@@ -2818,7 +2890,11 @@
           <span id="homeNavText">Front Page</span>
         </button>
       </div>
-      <div class="top-controls-right">
+      <div class="top-controls-right" style="display: flex; gap: 6px; align-items: center;">
+        <button class="ctrl-btn" id="mughalAudioBtn" type="button" aria-label="Toggle background music">
+          <span id="mughalAudioIcon">🔊</span>
+          <span id="mughalAudioText">Music: Off</span>
+        </button>
         <button class="ctrl-btn" id="langToggleBtn" type="button" aria-label="Switch between English and Urdu">
           <span id="langLabel">اردو / English</span>
         </button>
@@ -3043,15 +3119,29 @@
     function decodeWeddingData(str) {
       try {
         if (!str) return null;
-        const bin = atob(str);
+        let b64 = str.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
         try {
-          const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-          const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
-          if (text.trim().startsWith("{")) return JSON.parse(text);
-        } catch (e) {}
+          const bin = atob(b64);
+          try {
+            const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+            const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+            if (text.trim().startsWith("{")) return JSON.parse(text);
+          } catch (e) {}
 
-        const decoded = safeDecodeURI(bin);
-        if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
+          const decoded = safeDecodeURI(bin);
+          if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
+        } catch (eB64) {}
+
+        // Fallback for direct URL-encoded or raw JSON
+        try {
+          const direct = decodeURIComponent(str);
+          if (direct.trim().startsWith("{")) return JSON.parse(direct);
+        } catch (eDirect) {}
+
+        try {
+          if (str.trim().startsWith("{")) return JSON.parse(str);
+        } catch (eRaw) {}
 
         return null;
       } catch (err) {
@@ -3491,6 +3581,20 @@
         cfg.cardSide = "bride";
       } else if (!cfg.cardSide) {
         cfg.cardSide = "groom";
+      }
+
+      if (cfg) {
+        if (!cfg.events) {
+          cfg.events = {};
+        }
+        if (Array.isArray(cfg.eventsList)) {
+          cfg.eventsList.forEach(ev => {
+            const k = (ev.type || ev.key || "").toLowerCase().replace("barat", "baraat");
+            if (k && !cfg.events[k]) cfg.events[k] = ev;
+          });
+        }
+        if (cfg.events.barat && !cfg.events.baraat) cfg.events.baraat = cfg.events.barat;
+        if (cfg.events.baraat && !cfg.events.barat) cfg.events.barat = cfg.events.baraat;
       }
 
       if (cfg.cardSide === "bride" && cfg.events && cfg.events.baraat) {
@@ -4096,7 +4200,7 @@
     }
 
     function getEventDateFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = (WEDDING && WEDDING.events && (WEDDING.events[eventKey] || (eventKey === "barat" ? WEDDING.events.baraat : (eventKey === "baraat" ? WEDDING.events.barat : null)))) || {};
       const t = I18N[currentLang];
       if (currentLang === "ur" && e.displayDateUrdu) return e.displayDateUrdu;
       if (e.displayDate) return e.displayDate;
@@ -4118,7 +4222,7 @@
     }
 
     function getEventTimeFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = (WEDDING && WEDDING.events && (WEDDING.events[eventKey] || (eventKey === "barat" ? WEDDING.events.baraat : (eventKey === "baraat" ? WEDDING.events.barat : null)))) || {};
       const t = I18N[currentLang];
       if (currentLang === "ur" && e.displayTimeUrdu) return e.displayTimeUrdu;
       if (e.displayTime) return e.displayTime;
@@ -4126,7 +4230,7 @@
     }
 
     function getEventVenueFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = (WEDDING && WEDDING.events && (WEDDING.events[eventKey] || (eventKey === "barat" ? WEDDING.events.baraat : (eventKey === "baraat" ? WEDDING.events.barat : null)))) || {};
       const t = I18N[currentLang];
       if (currentLang === "ur" && e.venueUrdu) return e.venueUrdu;
       if (e.venue) return e.venue;
@@ -4134,7 +4238,7 @@
     }
 
     function getEventAddressFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = (WEDDING && WEDDING.events && (WEDDING.events[eventKey] || (eventKey === "barat" ? WEDDING.events.baraat : (eventKey === "baraat" ? WEDDING.events.barat : null)))) || {};
       const t = I18N[currentLang];
       if (currentLang === "ur" && e.addressUrdu) return e.addressUrdu;
       if (e.address) return e.address;
@@ -8159,11 +8263,41 @@ function renderAboutPage(animateGlide = false) {
       const t = I18N[currentLang];
       const groom = currentLang === "ur" ? WEDDING.groomUrdu : WEDDING.groom;
       const bride = currentLang === "ur" ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
-      const host = currentLang === "ur" ? WEDDING.hostUrdu : WEDDING.host;
+      const host = currentLang === "ur"
+        ? (WEDDING.hostUrdu || (isBrideCard ? (WEDDING.brideParentsUrdu || WEDDING.brideParents) : (WEDDING.groomParentsUrdu || WEDDING.groomParents)) || WEDDING.host)
+        : (WEDDING.host || (isBrideCard ? WEDDING.brideParents : WEDDING.groomParents) || "");
+
+      function parseHostPartsEn(raw) {
+        if (!raw) return { prefix: "Mr. & Mrs.", name: "Tariq Mahmood" };
+        let s = String(raw).replace(/\s*\((?:Bride|Groom)'?s?\s*Parents\)/gi, "").trim();
+        const m = s.match(/^(Mr\.\s*&\s*Mrs\.|Mr\s*&\s*Mrs|Drs?\.\s*&\s*Mrs\.|Prof\.\s*&\s*Mrs\.)\s*(.*)$/i);
+        if (m) return { prefix: m[1].trim(), name: m[2].trim() || s };
+        const single = s.match(/^(Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|Chaudhry|Haji|Syed)\s+(.*)$/i);
+        if (single) return { prefix: single[1].trim(), name: single[2].trim() || s };
+        return { prefix: "Mr. & Mrs.", name: s };
+      }
+
+      function parseHostPartsUr(raw) {
+        if (!raw) return { prefix: "جناب و محترمہ", name: "طارق محمود" };
+        let s = String(raw).replace(/\s*\(والدینِ?\s*(?:دلہن|دولہا)\)/gi, "").trim();
+        const m = s.match(/^(جناب\s*و\s*محترمہ|چوہدری\s*و\s*بیگم|ڈاکٹر\s*و\s*محترمہ|حاجی\s*و\s*محترمہ)\s*(.*)$/);
+        if (m) return { prefix: m[1].trim(), name: m[2].trim() || s };
+        const single = s.match(/^(جناب|محترمہ|چوہدری|حاجی|سید|سیدہ|ڈاکٹر)\s+(.*)$/);
+        if (single) return { prefix: single[1].trim(), name: single[2].trim() || s };
+        return { prefix: "جناب و محترمہ", name: s };
+      }
+
+      const parsedHost = currentLang === "ur" ? parseHostPartsUr(host) : parseHostPartsEn(host);
       const nameFirst = isBrideCard ? bride : groom;
       const nameSecond = isBrideCard ? groom : bride;
       const connectorWord = currentLang === "ur" ? "ہمراہ" : "with";
       const invitationLineText = isBrideCard ? t.invitationLineBride : t.invitationLine;
+
+      const groomOcc = currentLang === "ur" ? (WEDDING.groomOccupationUrdu || WEDDING.groomOccupation || "") : (WEDDING.groomOccupation || "");
+      const brideOcc = currentLang === "ur" ? (WEDDING.brideOccupationUrdu || WEDDING.brideOccupation || "") : (WEDDING.brideOccupation || "");
+      const otherParents = currentLang === "ur"
+        ? (WEDDING.otherParentsUrdu || (isBrideCard ? (WEDDING.groomParentsUrdu || WEDDING.groomParents) : (WEDDING.brideParentsUrdu || WEDDING.brideParents)) || "")
+        : (WEDDING.otherParents || (isBrideCard ? WEDDING.groomParents : WEDDING.brideParents) || "");
 
       app.innerHTML = `
         <div class="bismillah-calligraphy fade-in">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
@@ -8180,14 +8314,28 @@ function renderAboutPage(animateGlide = false) {
           ${getHeartBadgeSvg(38)}
         </div>
 
-        <div class="hostline rise-in">${host}</div>
-        <p class="request-text rise-in">${invitationLineText}</p>
+        <div class="mughal-host-block rise-in">
+          <div class="host-prefix">${parsedHost.prefix}</div>
+          <div class="host-name">${parsedHost.name}</div>
+          <p class="request-text">${invitationLineText}</p>
+        </div>
 
         <h1 class="couple-title rise-in">
           <span class="couple-fullname">${formatCoupleNameHtml(nameFirst)}</span>
           <span class="couple-connector">${connectorWord}</span>
           <span class="couple-fullname">${formatCoupleNameHtml(nameSecond)}</span>
         </h1>
+
+        <div class="couple-credentials-row rise-in">
+          <div class="couple-cred-col">
+            ${isBrideCard && otherParents ? `<span class="parentage-line">${currentLang === "ur" ? `فرزند ${otherParents}` : `Son of ${otherParents}`}</span>` : ""}
+            ${groomOcc ? `<span class="occ-badge">${groomOcc}</span>` : ""}
+          </div>
+          <div class="couple-cred-col">
+            ${!isBrideCard && otherParents ? `<span class="parentage-line">${currentLang === "ur" ? `دختر ${otherParents}` : `Daughter of ${otherParents}`}</span>` : ""}
+            ${brideOcc ? `<span class="occ-badge">${brideOcc}</span>` : ""}
+          </div>
+        </div>
 
         <div class="envelope-stage rise-in">
           <div class="envelope" id="envelopeElement" role="region" aria-label="Wedding Envelope">
@@ -8242,6 +8390,7 @@ function renderAboutPage(animateGlide = false) {
         }
         if (!env || env.classList.contains("open")) return;
         env.classList.add("open");
+        if (typeof playMughalAudio === "function") playMughalAudio();
         if (btn) {
           btn.disabled = true;
           btn.textContent = t.openingBtn;
@@ -8994,8 +9143,63 @@ function renderAboutPage(animateGlide = false) {
       langToggleBtn.addEventListener("click", () => {
         const nextLang = currentLang === "en" ? "ur" : "en";
         setLanguage(nextLang);
+        updateAudioUi(isMughalAudioPlaying);
       });
     }
+
+    // Background Audio Manager
+    const mughalAudio = document.getElementById("mughalBgAudio");
+    const mughalAudioBtn = document.getElementById("mughalAudioBtn");
+    const mughalAudioIcon = document.getElementById("mughalAudioIcon");
+    const mughalAudioText = document.getElementById("mughalAudioText");
+    let isMughalAudioPlaying = false;
+
+    function updateAudioUi(playing) {
+      isMughalAudioPlaying = playing;
+      if (mughalAudioBtn) {
+        if (playing) {
+          mughalAudioBtn.classList.add("playing");
+          if (mughalAudioIcon) mughalAudioIcon.textContent = "🔊";
+          if (mughalAudioText) mughalAudioText.textContent = currentLang === "ur" ? "موسیقی: جاری" : "Music: On";
+        } else {
+          mughalAudioBtn.classList.remove("playing");
+          if (mughalAudioIcon) mughalAudioIcon.textContent = "🔇";
+          if (mughalAudioText) mughalAudioText.textContent = currentLang === "ur" ? "موسیقی: بند" : "Music: Off";
+        }
+      }
+    }
+
+    function playMughalAudio() {
+      if (!mughalAudio) return;
+      mughalAudio.muted = false;
+      const p = mughalAudio.play();
+      if (p && typeof p.then === "function") {
+        p.then(() => updateAudioUi(true)).catch(() => {});
+      } else {
+        updateAudioUi(true);
+      }
+    }
+
+    function pauseMughalAudio() {
+      if (mughalAudio && !mughalAudio.paused) {
+        mughalAudio.pause();
+      }
+      updateAudioUi(false);
+    }
+
+    if (mughalAudioBtn) {
+      mughalAudioBtn.addEventListener("click", () => {
+        if (isMughalAudioPlaying) pauseMughalAudio();
+        else playMughalAudio();
+      });
+    }
+
+    // Automatically pause music when user leaves/switches tab or minimizes browser
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) pauseMughalAudio();
+    });
+    window.addEventListener("pagehide", pauseMughalAudio);
+    window.addEventListener("blur", pauseMughalAudio);
 
     // Intercept client-side link navigation for smooth SPA feel
     document.addEventListener("click", (e) => {

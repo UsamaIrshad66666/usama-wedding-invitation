@@ -641,16 +641,77 @@
       font-size: 16px;
       line-height: 1.7;
       color: #453724;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+    }
+
+    .host-honorific {
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #9C7D46;
+      margin-bottom: 2px;
+      font-weight: 500;
     }
 
     .host-names {
       font-family: var(--font-serif);
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
       color: #302107;
       letter-spacing: 0.5px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+    }
+
+    .couple-credentials-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .cred-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 13px;
+      color: #555;
+    }
+    .cred-col .parentage-line {
+      font-style: italic;
+      color: #6E533F;
+    }
+    .cred-col .cred-badge {
+      display: inline-block;
+      margin-top: 3px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(179, 135, 71, 0.12);
+      border: 1px solid rgba(179, 135, 71, 0.3);
+      font-size: 12px;
+      color: #8c6a2b;
+      letter-spacing: 0.5px;
+    }
+
+    .nikkah-tagline-badge {
+      display: inline-block;
+      margin: 10px auto 14px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(27, 56, 43, 0.08);
+      border: 1px solid rgba(179, 135, 71, 0.35);
+      color: #8c6a2b;
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+
+    html[lang="ur"] .host-honorific {
+      font-family: var(--font-urdu), serif;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+    html[lang="ur"] .cred-col, html[lang="ur"] .cred-badge, html[lang="ur"] .nikkah-tagline-badge {
+      font-family: var(--font-urdu), serif;
     }
 
     .couple-highlight-box {
@@ -1425,19 +1486,18 @@
 
             <div class="ornament-divider">❖</div>
 
-            <div class="host-intro-text" id="tHostIntro">
-              With the grace and blessings of Allah Almighty, we joyfully invite you and your family to grace the sacred Nikkah and Walima celebration of our beloved children:
+            <div class="nikkah-host-block" id="nikkahHostBlock">
+              <div class="host-honorific" id="tHostPrefix">Mr. &amp; Mrs.</div>
+              <div class="host-names" id="tHostNames">Tariq Mahmood</div>
+              <div class="host-intro-text" id="tHostIntro">
+                With the grace and blessings of Allah Almighty, we joyfully invite you and your family to grace the sacred Nikkah and Walima celebration of our beloved son:
+              </div>
             </div>
 
             <div class="couple-highlight-box">
               <div class="couple-title-names" id="tCoupleNames">Zayan &amp; Rania</div>
-            </div>
-
-            <div class="host-intro-text" id="tHostCordial">
-              Cordially invited by:
-            </div>
-            <div class="host-names" id="tHostNames">
-              Mr. &amp; Mrs. Tariq Mahmood
+              <div class="couple-credentials-row" id="tCoupleCredentials"></div>
+              <div id="tTaglineWrap" style="text-align: center;"></div>
             </div>
           </div>
         </section>
@@ -1835,10 +1895,19 @@
           } catch (e1) {}
           const uriDecoded = decodeURIComponent(binary);
           if (uriDecoded.trim().startsWith("{")) return JSON.parse(uriDecoded);
-          return null;
-        } catch (e) {
-          return null;
-        }
+        } catch (e) {}
+
+        // Fallback for direct URL-encoded or raw JSON
+        try {
+          const direct = decodeURIComponent(encoded);
+          if (direct.trim().startsWith("{")) return JSON.parse(direct);
+        } catch (e2) {}
+
+        try {
+          if (encoded.trim().startsWith("{")) return JSON.parse(encoded);
+        } catch (e3) {}
+
+        return null;
       }
 
       function parseTimeToMinutes(timeStr, hasEveningContext = true) {
@@ -1877,6 +1946,30 @@
           WEDDING_DATA.groomHostUrdu = customInvite.hostUrdu;
           WEDDING_DATA.brideHostUrdu = customInvite.hostUrdu;
         }
+        if (customInvite.groomParents) {
+          WEDDING_DATA.groomParents = customInvite.groomParents;
+          if (!customInvite.host) WEDDING_DATA.groomHost = customInvite.groomParents;
+        }
+        if (customInvite.groomParentsUrdu) {
+          WEDDING_DATA.groomParentsUrdu = customInvite.groomParentsUrdu;
+          if (!customInvite.hostUrdu) WEDDING_DATA.groomHostUrdu = customInvite.groomParentsUrdu;
+        }
+        if (customInvite.brideParents) {
+          WEDDING_DATA.brideParents = customInvite.brideParents;
+          if (!customInvite.host) WEDDING_DATA.brideHost = customInvite.brideParents;
+        }
+        if (customInvite.brideParentsUrdu) {
+          WEDDING_DATA.brideParentsUrdu = customInvite.brideParentsUrdu;
+          if (!customInvite.hostUrdu) WEDDING_DATA.brideHostUrdu = customInvite.brideParentsUrdu;
+        }
+        if (customInvite.otherParents) WEDDING_DATA.otherParents = customInvite.otherParents;
+        if (customInvite.otherParentsUrdu) WEDDING_DATA.otherParentsUrdu = customInvite.otherParentsUrdu;
+        if (customInvite.groomOccupation) WEDDING_DATA.groomOccupation = customInvite.groomOccupation;
+        if (customInvite.groomOccupationUrdu) WEDDING_DATA.groomOccupationUrdu = customInvite.groomOccupationUrdu;
+        if (customInvite.brideOccupation) WEDDING_DATA.brideOccupation = customInvite.brideOccupation;
+        if (customInvite.brideOccupationUrdu) WEDDING_DATA.brideOccupationUrdu = customInvite.brideOccupationUrdu;
+        if (customInvite.taglineRoman || customInvite.tagline) WEDDING_DATA.taglineRoman = customInvite.taglineRoman || customInvite.tagline;
+        if (customInvite.taglineUrdu || customInvite.tagline) WEDDING_DATA.taglineUrdu = customInvite.taglineUrdu || customInvite.tagline;
         if (customInvite.cardSide === "bride") currentSide = "bride";
         if (customInvite.rsvpPhone) WEDDING_DATA.rsvpPhone = customInvite.rsvpPhone;
 
@@ -2062,10 +2155,10 @@
 
       // Automatically pause music when user leaves the website/tab
       function handleTabLeavePause() {
-        if (weddingAudio && audioPlaying) {
+        if (weddingAudio && !weddingAudio.paused) {
           weddingAudio.pause();
           audioPlaying = false;
-          audioToggleBtn.classList.add("audio-muted");
+          if (audioToggleBtn) audioToggleBtn.classList.add("audio-muted");
           if (audioBtnText) audioBtnText.textContent = currentLang === "ur" ? "موسیقی" : "Music";
         }
       }
@@ -2122,18 +2215,77 @@
           (isUr ? "✨ تقریبِ نکاح و رخصتی ✨" : "✨ Sacred Nikkah & Rukhsati ✨") : 
           (isUr ? "✨ نورِ نکاح و شاہانہ ولیمہ ✨" : "✨ Noor-e-Nikkah & Walima ✨");
 
+        function parseNikkahHostEn(raw) {
+          if (!raw) return { prefix: "Mr. & Mrs.", name: "Tariq Mahmood" };
+          let s = String(raw).replace(/\s*\((?:Bride|Groom)'?s?\s*Parents\)/gi, "").trim();
+          const m = s.match(/^(Mr\.\s*&\s*Mrs\.|Mr\s*&\s*Mrs|Drs?\.\s*&\s*Mrs\.|Prof\.\s*&\s*Mrs\.)\s*(.*)$/i);
+          if (m) return { prefix: m[1].trim(), name: m[2].trim() || s };
+          const single = s.match(/^(Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|Chaudhry|Haji|Syed)\s+(.*)$/i);
+          if (single) return { prefix: single[1].trim(), name: single[2].trim() || s };
+          return { prefix: "Mr. & Mrs.", name: s };
+        }
+
+        function parseNikkahHostUr(raw) {
+          if (!raw) return { prefix: "جناب و محترمہ", name: "طارق محمود" };
+          let s = String(raw).replace(/\s*\(والدینِ?\s*(?:دلہن|دولہا)\)/gi, "").trim();
+          const m = s.match(/^(جناب\s*و\s*محترمہ|چوہدری\s*و\s*بیگم|ڈاکٹر\s*و\s*محترمہ|حاجی\s*و\s*محترمہ)\s*(.*)$/);
+          if (m) return { prefix: m[1].trim(), name: m[2].trim() || s };
+          const single = s.match(/^(جناب|محترمہ|چوہدری|حاجی|سید|سیدہ|ڈاکٹر)\s+(.*)$/);
+          if (single) return { prefix: single[1].trim(), name: single[2].trim() || s };
+          return { prefix: "جناب و محترمہ", name: s };
+        }
+
+        const rawHost = isBride
+          ? (isUr ? (WEDDING_DATA.brideHostUrdu || WEDDING_DATA.brideHost) : WEDDING_DATA.brideHost)
+          : (isUr ? (WEDDING_DATA.groomHostUrdu || WEDDING_DATA.groomHost) : WEDDING_DATA.groomHost);
+        const parsedHost = isUr ? parseNikkahHostUr(rawHost) : parseNikkahHostEn(rawHost);
+
+        const hostPrefixEl = document.getElementById("tHostPrefix");
+        if (hostPrefixEl) hostPrefixEl.textContent = parsedHost.prefix;
+        const hostNamesEl = document.getElementById("tHostNames");
+        if (hostNamesEl) hostNamesEl.textContent = parsedHost.name;
+
         if (isBride) {
           document.getElementById("tGroomName").textContent = brideName;
           document.getElementById("tBrideName").textContent = groomName;
           document.getElementById("tCoupleNames").textContent = `${brideName} & ${groomName}`;
           document.getElementById("tHostIntro").textContent = t.hostIntroBride;
-          document.getElementById("tHostNames").textContent = isUr ? WEDDING_DATA.brideHostUrdu : WEDDING_DATA.brideHost;
         } else {
           document.getElementById("tGroomName").textContent = groomName;
           document.getElementById("tBrideName").textContent = brideName;
           document.getElementById("tCoupleNames").textContent = `${groomName} & ${brideName}`;
           document.getElementById("tHostIntro").textContent = t.hostIntroGroom;
-          document.getElementById("tHostNames").textContent = isUr ? WEDDING_DATA.groomHostUrdu : WEDDING_DATA.groomHost;
+        }
+
+        const otherParents = isUr
+          ? (WEDDING_DATA.otherParentsUrdu || (isBride ? (WEDDING_DATA.groomParentsUrdu || WEDDING_DATA.groomParents) : (WEDDING_DATA.brideParentsUrdu || WEDDING_DATA.brideParents)) || "")
+          : (WEDDING_DATA.otherParents || (isBride ? WEDDING_DATA.groomParents : WEDDING_DATA.brideParents) || "");
+        const groomOcc = isUr ? (WEDDING_DATA.groomOccupationUrdu || WEDDING_DATA.groomOccupation || "") : (WEDDING_DATA.groomOccupation || "");
+        const brideOcc = isUr ? (WEDDING_DATA.brideOccupationUrdu || WEDDING_DATA.brideOccupation || "") : (WEDDING_DATA.brideOccupation || "");
+
+        const credWrap = document.getElementById("tCoupleCredentials");
+        if (credWrap) {
+          const gCol = `
+            <div class="cred-col">
+              ${isBride && otherParents ? `<span class="parentage-line">${isUr ? `فرزند ${otherParents}` : `Son of ${otherParents}`}</span>` : ""}
+              ${groomOcc ? `<span class="cred-badge">${groomOcc}</span>` : ""}
+            </div>
+          `;
+          const bCol = `
+            <div class="cred-col">
+              ${!isBride && otherParents ? `<span class="parentage-line">${isUr ? `دختر ${otherParents}` : `Daughter of ${otherParents}`}</span>` : ""}
+              ${brideOcc ? `<span class="cred-badge">${brideOcc}</span>` : ""}
+            </div>
+          `;
+          credWrap.innerHTML = isBride ? (bCol + gCol) : (gCol + bCol);
+        }
+
+        const tagWrap = document.getElementById("tTaglineWrap");
+        const customTagline = isUr
+          ? (WEDDING_DATA.taglineUrdu || WEDDING_DATA.tagline || "")
+          : (WEDDING_DATA.taglineRoman || WEDDING_DATA.tagline || "");
+        if (tagWrap) {
+          tagWrap.innerHTML = customTagline ? `<div class="nikkah-tagline-badge">✦ ${customTagline} ✦</div>` : "";
         }
 
         document.getElementById("tHeroDate").textContent = t.heroDate;

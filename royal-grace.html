@@ -1208,7 +1208,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Audio Element -->
-  <audio id="weddingAudio" src="/assets/royal-grace-music.mp3" loop preload="auto"></audio>
+  <audio id="weddingAudio" src="assets/royal-grace-music.mp3" loop preload="auto"></audio>
 
   <!-- Top-Right Audio Mute/Unmute Control (Exact Match to Video) -->
   <button id="topAudioBtn" class="top-audio-toggle" aria-label="Toggle background music">
@@ -2265,8 +2265,12 @@
 
         if (typeof customData !== "undefined" && customData) {
           const isBrideSide = customData.cardSide === "bride";
-          const groomOcc = customData.groomOccupation || customData.groomSub || "";
-          const brideOcc = customData.brideOccupation || customData.brideSub || "";
+          const groomOcc = isUrdu
+            ? (customData.groomOccupationUrdu || customData.groomOccupation || customData.groomSubUrdu || customData.groomSub || "")
+            : (customData.groomOccupation || customData.groomSub || "");
+          const brideOcc = isUrdu
+            ? (customData.brideOccupationUrdu || customData.brideOccupation || customData.brideSubUrdu || customData.brideSub || "")
+            : (customData.brideOccupation || customData.brideSub || "");
           const otherParentsEn = customData.otherParents || (isBrideSide ? customData.groomParents : customData.brideParents) || "";
           const otherParentsUr = customData.otherParentsUrdu || (isBrideSide ? (customData.groomParentsUrdu || customData.groomParents) : (customData.brideParentsUrdu || customData.brideParents)) || otherParentsEn;
           const otherParents = isUrdu ? otherParentsUr : otherParentsEn;
@@ -2429,10 +2433,19 @@
           } catch (e1) {}
           const uriDecoded = decodeURIComponent(binary);
           if (uriDecoded.trim().startsWith("{")) return JSON.parse(uriDecoded);
-          return null;
-        } catch (e) {
-          return null;
-        }
+        } catch (e) {}
+
+        // Fallback for direct URL-encoded or raw JSON
+        try {
+          const direct = decodeURIComponent(encoded);
+          if (direct.trim().startsWith("{")) return JSON.parse(direct);
+        } catch (e2) {}
+
+        try {
+          if (encoded.trim().startsWith("{")) return JSON.parse(encoded);
+        } catch (e3) {}
+
+        return null;
       }
 
       function parseTimeToMinutes(timeStr, hasEveningContext = true) {

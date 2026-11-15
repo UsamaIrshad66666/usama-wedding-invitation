@@ -2618,6 +2618,96 @@
       margin: 0 6px;
     }
     
+    .family-host-prefix {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9C7D46;
+      margin-bottom: 4px;
+    }
+    .family-host-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #3b131e;
+      margin: 0 0 6px;
+      line-height: 1.25;
+    }
+    .family-host-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: #6E533F;
+      line-height: 1.5;
+      max-width: 380px;
+      margin: 0 auto 12px;
+    }
+    .couple-person-col {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: top;
+    }
+    .person-cred-badge {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: #6E533F;
+      margin-top: 4px;
+      line-height: 1.4;
+      max-width: 200px;
+    }
+
+    html[dir="rtl"] .family-host-prefix {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+    html[dir="rtl"] .family-host-title {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    html[dir="rtl"] .family-host-desc {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 1.8;
+    }
+    html[dir="rtl"] .person-cred-badge {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    /* Envelope Wax Seal Tap Prompt Pill */
+    .wei-tap-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(59, 19, 30, 0.88);
+      color: #FFE7B3;
+      border: 1px solid rgba(212, 173, 93, 0.6);
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      cursor: pointer;
+      animation: pulseHint 2s infinite ease-in-out;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    @keyframes pulseHint {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.95; }
+      50% { transform: translateX(-50%) scale(1.05); opacity: 1; box-shadow: 0 6px 20px rgba(212, 173, 93, 0.4); }
+    }
+    
 
     /* ==========================================================================
        STAGE 2: BRAND CREDITS FOOTER (On Clean Ivory / White Space)
@@ -2956,14 +3046,21 @@
               <span class="quran-ref">— Surah Ar-Rum (30:21)</span>
             </div>
             <div class="poetry-family-block">
-              <h4 class="family-host-title" id="tFamilyInviteTitle">Mr. &amp; Mrs. Tariq Mehmood</h4>
+              <div class="family-host-prefix" id="tFamilyHostPrefix">Mr. &amp; Mrs.</div>
+              <h4 class="family-host-title" id="tFamilyInviteTitle">Tariq Mehmood</h4>
               <p class="family-host-desc" id="tFamilyInviteDesc">
                 Cordially invite you to celebrate the blessed occasion of the Walima reception of their beloved son
               </p>
               <div class="couple-highlight-names">
-                <span class="groom-hl">Rohan</span>
+                <div class="couple-person-col">
+                  <span class="groom-hl" id="tSpanGroom">Rohan</span>
+                  <div class="person-cred-badge" id="tGroomCred"></div>
+                </div>
                 <span class="amp-hl">&amp;</span>
-                <span class="bride-hl">Zara</span>
+                <div class="couple-person-col">
+                  <span class="bride-hl" id="tSpanBride">Zara</span>
+                  <div class="person-cred-badge" id="tBrideCred"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -3719,15 +3816,29 @@
       function decodeWeddingData(str) {
         try {
           if (!str) return null;
-          const bin = atob(str);
+          let b64 = str.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+          while (b64.length % 4) b64 += "=";
           try {
-            const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-            const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
-            if (text.trim().startsWith("{")) return JSON.parse(text);
-          } catch (e) {}
+            const bin = atob(b64);
+            try {
+              const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+              const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+              if (text.trim().startsWith("{")) return JSON.parse(text);
+            } catch (e) {}
 
-          const decoded = safeDecodeURI(bin);
-          if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
+            const decoded = safeDecodeURI(bin);
+            if (decoded.trim().startsWith("{")) return JSON.parse(decoded);
+          } catch (eB64) {}
+
+          // Fallback for direct URL-encoded or raw JSON
+          try {
+            const direct = decodeURIComponent(str);
+            if (direct.trim().startsWith("{")) return JSON.parse(direct);
+          } catch (eDirect) {}
+
+          try {
+            if (str.trim().startsWith("{")) return JSON.parse(str);
+          } catch (eRaw) {}
 
           return null;
         } catch (err) {
@@ -4264,21 +4375,89 @@
       const isBrideMode = bParams.get("side") === "bride" || window.location.pathname.toLowerCase().includes("bride");
       const dynData = decodeWeddingData(bParams.get("invite") || bParams.get("d"));
 
+      function parseHostLineEnglish(raw) {
+        if (!raw) return { prefix: "Mr. & Mrs.", name: "Tariq Mahmood" };
+        let s = String(raw).replace(/\s*\((?:Bride|Groom)'?s?\s*Parents\)/gi, "").trim();
+        const m = s.match(/^(Mr\.\s*&\s*Mrs\.|Mr\s*&\s*Mrs|Drs?\.\s*&\s*Mrs\.|Prof\.\s*&\s*Mrs\.)\s*(.*)$/i);
+        if (m) {
+          return { prefix: m[1].trim(), name: m[2].trim() || s };
+        }
+        const single = s.match(/^(Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|Chaudhry|Haji|Syed)\s+(.*)$/i);
+        if (single) {
+          return { prefix: single[1].trim(), name: single[2].trim() || s };
+        }
+        return { prefix: "Mr. & Mrs.", name: s };
+      }
+
+      function parseHostLineUrdu(raw) {
+        if (!raw) return { prefix: "جناب و محترمہ", name: "طارق محمود" };
+        let s = String(raw).replace(/\s*\(والدینِ?\s*(?:دلہن|دولہا)\)/gi, "").trim();
+        const m = s.match(/^(جناب\s*و\s*محترمہ|چوہدری\s*و\s*بیگم|ڈاکٹر\s*و\s*محترمہ|حاجی\s*و\s*محترمہ)\s*(.*)$/);
+        if (m) {
+          return { prefix: m[1].trim(), name: m[2].trim() || s };
+        }
+        const single = s.match(/^(جناب|محترمہ|چوہدری|حاجی|سید|سیدہ|ڈاکٹر)\s+(.*)$/);
+        if (single) {
+          return { prefix: single[1].trim(), name: single[2].trim() || s };
+        }
+        return { prefix: "جناب و محترمہ", name: s };
+      }
+
       if (dynData) {
         const isBride = dynData.cardSide === "bride" || isBrideMode;
         const gEn = dynData.groom || "Daniyal";
         const gUr = dynData.groomUrdu || gEn;
         const bEn = dynData.bride || "Ayla";
         const bUr = dynData.brideUrdu || bEn;
-        const hEn = dynData.host || (isBride ? `${bEn}'s Parents` : `${gEn}'s Parents`);
-        const hUr = dynData.hostUrdu || hEn;
+        const hEn = dynData.host || (isBride ? (dynData.brideParents || `${bEn}'s Parents`) : (dynData.groomParents || `${gEn}'s Parents`));
+        const hUr = dynData.hostUrdu || (isBride ? (dynData.brideParentsUrdu || dynData.brideParents || hEn) : (dynData.groomParentsUrdu || dynData.groomParents || hEn));
+
+        const parsedHostEn = parseHostLineEnglish(hEn);
+        const parsedHostUr = parseHostLineUrdu(hUr);
+
+        const otherParentsEn = dynData.otherParents || (isBride ? dynData.groomParents : dynData.brideParents) || "";
+        const otherParentsUr = dynData.otherParentsUrdu || (isBride ? (dynData.groomParentsUrdu || dynData.groomParents) : (dynData.brideParentsUrdu || dynData.brideParents)) || otherParentsEn;
+        const groomOccEn = dynData.groomOccupation || dynData.groomSub || "";
+        const groomOccUr = dynData.groomOccupationUrdu || dynData.groomSubUrdu || groomOccEn;
+        const brideOccEn = dynData.brideOccupation || dynData.brideSub || "";
+        const brideOccUr = dynData.brideOccupationUrdu || dynData.brideSubUrdu || brideOccEn;
 
         translations.en.heroGroom = isBride ? bEn : gEn;
         translations.en.heroBride = isBride ? gEn : bEn;
         translations.ur.heroGroom = isBride ? bUr : gUr;
         translations.ur.heroBride = isBride ? gUr : bUr;
-        translations.en.familyInviteTitle = hEn;
-        translations.ur.familyInviteTitle = hUr;
+
+        translations.en.familyHostPrefix = parsedHostEn.prefix;
+        translations.en.familyInviteTitle = parsedHostEn.name;
+        translations.en.familyInviteDesc = isBride
+          ? "Cordially invite you to celebrate the blessed occasion of the wedding ceremonies & Rukhsati of their beloved daughter"
+          : "Cordially invite you to celebrate the blessed occasion of the wedding ceremonies of their beloved son";
+
+        translations.ur.familyHostPrefix = parsedHostUr.prefix;
+        translations.ur.familyInviteTitle = parsedHostUr.name;
+        translations.ur.familyInviteDesc = isBride
+          ? "آپ کو اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں"
+          : "آپ کو اپنے لختِ جگر کی شادی کی پرمسرت تقریب میں شرکت کی صمیمِ قلب سے دعوت دیتے ہیں";
+
+        const gCredEn = [];
+        if (isBride && otherParentsEn) gCredEn.push(`Son of ${otherParentsEn}`);
+        if (groomOccEn) gCredEn.push(groomOccEn);
+        const bCredEn = [];
+        if (!isBride && otherParentsEn) bCredEn.push(`Daughter of ${otherParentsEn}`);
+        if (brideOccEn) bCredEn.push(brideOccEn);
+
+        const gCredUr = [];
+        if (isBride && otherParentsUr) gCredUr.push(`فرزند ${otherParentsUr}`);
+        if (groomOccUr) gCredUr.push(groomOccUr);
+        const bCredUr = [];
+        if (!isBride && otherParentsUr) bCredUr.push(`دختر ${otherParentsUr}`);
+        if (brideOccUr) bCredUr.push(brideOccUr);
+
+        translations.en.groomCred = isBride ? bCredEn.join("<br>") : gCredEn.join("<br>");
+        translations.en.brideCred = isBride ? gCredEn.join("<br>") : bCredEn.join("<br>");
+        translations.ur.groomCred = isBride ? bCredUr.join("<br>") : gCredUr.join("<br>");
+        translations.ur.brideCred = isBride ? gCredUr.join("<br>") : bCredUr.join("<br>");
+
         translations.en.farewellNames = isBride ? `${bEn} and ${gEn}` : `${gEn} and ${bEn}`;
         translations.ur.farewellNames = isBride ? `${bUr} اور ${gUr}` : `${gUr} اور ${bUr}`;
 
@@ -4469,8 +4648,13 @@
         const pl = document.getElementById("tPoetryLead"); if(pl) pl.textContent = t.poetryLead;
         const ps = document.getElementById("tPoetrySacred"); if(ps) ps.textContent = t.poetrySacred;
         const qv = document.getElementById("tQuranVerse"); if(qv) qv.innerHTML = t.quranVerse;
+        const fhp = document.getElementById("tFamilyHostPrefix"); if(fhp) fhp.textContent = t.familyHostPrefix || (currentLang === "ur" ? "جناب و محترمہ" : "Mr. & Mrs.");
         const fit = document.getElementById("tFamilyInviteTitle"); if(fit) fit.textContent = t.familyInviteTitle;
         const fid = document.getElementById("tFamilyInviteDesc"); if(fid) fid.textContent = t.familyInviteDesc;
+        const gc = document.getElementById("tGroomCred"); if(gc) gc.innerHTML = t.groomCred || "";
+        const bc = document.getElementById("tBrideCred"); if(bc) bc.innerHTML = t.brideCred || "";
+        const spg = document.getElementById("tSpanGroom"); if(spg) spg.textContent = t.heroGroom;
+        const spb = document.getElementById("tSpanBride"); if(spb) spb.textContent = t.heroBride;
 
         // Countdown
         const cdh = document.getElementById("tCountdownHeading"); if(cdh) cdh.textContent = t.countdownHeading;
