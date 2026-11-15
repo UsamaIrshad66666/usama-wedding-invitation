@@ -84,7 +84,32 @@ For English, use high-end serif typography (`Ovo`, `Playfair Display`, `Cinzel`,
 
 ---
 
-## 4. Sub-Schedules, Meal Types & Timing Rules
+## 4. Couple Credentials, Professions & Secondary Parents Rules
+
+Pakistani digital invitations frequently feature professional credentials and respectful lineage identifiers for both the groom and bride.
+
+### 4.1 Fields Specification
+1. **Groom Profession / Title (`groomOccupation`)**:
+   - Optional credential displayed beneath the Groom's name (e.g., *"Software Architect & Entrepreneur"*, *"Doctor of Medicine"*, *"Civil Engineer"*, *"Businessman"*).
+2. **Bride Profession / Title (`brideOccupation`)**:
+   - Optional credential displayed beneath the Bride's name (e.g., *"Doctor of Medicine (M.D)"*, *"Lecturer"*, *"Graphic Designer"*).
+3. **Secondary Parents / In-Laws (`otherParents` / `brideParents` / `groomParents`)**:
+   - **For Groom's Card**: Bride's Parents line (e.g., *"Mr. & Mrs. Kamran Akhtar"*). Displayed under the Bride's name as:
+     - English: `"Daughter of Mr. & Mrs. Kamran Akhtar"`
+     - Urdu: `"دختر جناب و محترمہ کامران اختر"`
+   - **For Bride's Card**: Groom's Parents line (e.g., *"Mr. & Mrs. Tariq Mahmood"*). Displayed under the Groom's name as:
+     - English: `"Son of Mr. & Mrs. Tariq Mahmood"`
+     - Urdu: `"فرزند جناب و محترمہ طارق محمود"`
+
+### 4.2 Mandatory "Remove (✕)" and Restore Capability
+- In the Order Form (`order.html`), all 3 credential fields are **strictly optional** and must provide an inline `[✕ Remove]` button.
+- If a client or family prefers privacy or a minimal layout, clicking `✕ Remove` hides the input and clears its value.
+- An intuitive `+ Add ...` restore pill (`btnAddGroomOcc`, `btnAddBrideOcc`, `btnAddOtherParents`) must be rendered so the client can restore the field anytime if desired.
+- In themes, if any credential field is empty or removed, the theme **must cleanly omit the line** without rendering blank vertical spaces, broken line breaks, or duplicate parent lines.
+
+---
+
+## 5. Sub-Schedules, Meal Types & Timing Rules
 
 Pakistani weddings feature specific ceremonies with strict timing workflows. All themes and order forms must adhere to the following rules:
 
@@ -175,8 +200,13 @@ Dynamic invitations encode wedding details into a Base64 URL parameter (`?invite
   "theme": "burgundy",
   "groom": "Syed Usama",
   "groomUrdu": "سید اسامہ",
+  "groomOccupation": "Software Architect & Entrepreneur",
   "bride": "Dr. Bissal Khan",
   "brideUrdu": "ڈاکٹر بسل خان",
+  "brideOccupation": "Doctor of Medicine (M.D)",
+  "otherParents": "Mr. & Mrs. Kamran Akhtar",
+  "otherParentsUrdu": "جناب و محترمہ کامران اختر",
+  "brideParents": "Mr. & Mrs. Kamran Akhtar",
   "tagline": "دل والے دلہنیا لے جا رہے ہیں",
   "taglineUrdu": "دل والے دلہنیا لے جا رہے ہیں",
   "taglineRoman": "Dil Walay Dulhania Le Ja Rahay Hain",

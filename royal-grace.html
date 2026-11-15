@@ -2223,8 +2223,8 @@
         const isBride = (typeof customData !== "undefined" && customData && customData.cardSide === "bride") || currentSide === "bride";
 
         if (typeof customData !== "undefined" && customData) {
-          const rawHostEn = customData.host || (isBride ? "Mr. & Mrs. Kamran Akhtar" : "Mr. & Mrs. Tariq Mahmood");
-          const rawHostUr = customData.hostUrdu || rawHostEn;
+          const rawHostEn = customData.host || customData.hosts || (isBride ? "Mr. & Mrs. Kamran Akhtar" : "Mr. & Mrs. Tariq Mahmood");
+          const rawHostUr = customData.hostUrdu || customData.hostsUrdu || rawHostEn;
 
           if (isUrdu) {
             const parsedUr = parseHostLineUrdu(rawHostUr);
@@ -2258,6 +2258,58 @@
         }
       }
 
+      function updateHeroSubCredentials(isUrdu) {
+        const hGroomSub = document.getElementById("heroGroomSub");
+        const hBrideSub = document.getElementById("heroBrideSub");
+        if (!hGroomSub || !hBrideSub) return;
+
+        if (typeof customData !== "undefined" && customData) {
+          const isBrideSide = customData.cardSide === "bride";
+          const groomOcc = customData.groomOccupation || customData.groomSub || "";
+          const brideOcc = customData.brideOccupation || customData.brideSub || "";
+          const otherParentsEn = customData.otherParents || (isBrideSide ? customData.groomParents : customData.brideParents) || "";
+          const otherParentsUr = customData.otherParentsUrdu || (isBrideSide ? (customData.groomParentsUrdu || customData.groomParents) : (customData.brideParentsUrdu || customData.brideParents)) || otherParentsEn;
+          const otherParents = isUrdu ? otherParentsUr : otherParentsEn;
+
+          // For Groom:
+          const groomLines = [];
+          if (isBrideSide && otherParents) {
+            groomLines.push(isUrdu ? `فرزند ${otherParents}` : `Son of ${otherParents}`);
+          }
+          if (groomOcc) {
+            groomLines.push(groomOcc);
+          }
+          hGroomSub.innerHTML = groomLines.join("<br>");
+
+          // For Bride:
+          const brideLines = [];
+          if (!isBrideSide && otherParents) {
+            brideLines.push(isUrdu ? `دختر ${otherParents}` : `Daughter of ${otherParents}`);
+          }
+          if (brideOcc) {
+            brideLines.push(brideOcc);
+          }
+          hBrideSub.innerHTML = brideLines.join("<br>");
+        } else {
+          // Demo Mode
+          if (currentSide === "bride") {
+            hGroomSub.innerHTML = isUrdu
+              ? `فرزند جناب و محترمہ طارق محمود<br>سافٹ ویئر آرکیٹیکٹ`
+              : `Son of Mr. &amp; Mrs. Tariq Mahmood<br>Software Architect &amp; Entrepreneur`;
+            hBrideSub.innerHTML = isUrdu
+              ? `ڈاکٹر آف میڈیسن (ایم ڈی)`
+              : `Doctor of Medicine (M.D)`;
+          } else {
+            hGroomSub.innerHTML = isUrdu
+              ? `سافٹ ویئر آرکیٹیکٹ`
+              : `Software Architect &amp; Entrepreneur`;
+            hBrideSub.innerHTML = isUrdu
+              ? `دختر جناب و محترمہ کامران اختر<br>ڈاکٹر آف میڈیسن (ایم ڈی)`
+              : `Daughter of Mr. &amp; Mrs. Kamran Akhtar<br>Doctor of Medicine (M.D)`;
+          }
+        }
+      }
+
       function updateFamilySide(side) {
         currentSide = side;
         if (side === "groom") {
@@ -2268,6 +2320,7 @@
           btnGroomSide.classList.remove("active");
         }
         updateHeroHostBlock(isUrduMode);
+        updateHeroSubCredentials(isUrduMode);
       }
 
       btnGroomSide.addEventListener("click", () => updateFamilySide("groom"));
@@ -2282,6 +2335,7 @@
         if (isUrduMode) {
           langBtnText.textContent = "English";
           updateHeroHostBlock(true);
+          updateHeroSubCredentials(true);
           document.getElementById("heroScrollText").textContent = "نیچے دیکھیں";
           document.getElementById("welcomeProseText").textContent = "ہم آپ کو دل کی اتھاہ گہرائیوں سے زیان اور رانیہ کے نکاح و ولیمہ کی تقریب میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤";
           if (!isCleared) scratchTitle.textContent = "تاریخ دیکھنے کے لیے کھرچیں";
@@ -2313,6 +2367,7 @@
         } else {
           langBtnText.textContent = "اردو";
           updateHeroHostBlock(false);
+          updateHeroSubCredentials(false);
           document.getElementById("heroScrollText").textContent = "SCROLL";
           document.getElementById("welcomeProseText").textContent = "We are honored to welcome you to the Sacred Nikkah and Walima ceremonies of Zayan & Rania. As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤";
           if (!isCleared) scratchTitle.textContent = "Scratch to Reveal";
@@ -2426,9 +2481,8 @@
 
         const hGroomSub = document.getElementById("heroGroomSub");
         const hBrideSub = document.getElementById("heroBrideSub");
-        if (hGroomSub) hGroomSub.innerHTML = (customData.groomSub || "");
-        if (hBrideSub) hBrideSub.innerHTML = (customData.brideSub || "");
         updateHeroHostBlock(isUrduMode);
+        updateHeroSubCredentials(isUrduMode);
 
         const proseEl = document.getElementById("welcomeProseText");
         if (proseEl) proseEl.textContent = dynamicProseEn;
@@ -2656,6 +2710,7 @@
         }
       }
       updateHeroHostBlock(isUrduMode);
+      updateHeroSubCredentials(isUrduMode);
       }
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", runRoyalGrace);

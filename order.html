@@ -529,6 +529,24 @@
     .restore-sub-events-btn:hover {
       background: rgba(212, 175, 55, 0.18);
     }
+    .restore-opt-pill {
+      border: 1px dashed rgba(212, 175, 55, 0.45);
+      background: rgba(212, 175, 55, 0.08);
+      color: var(--gold-light);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .restore-opt-pill:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      color: #fff;
+    }
     .add-sub-row-btn {
       margin-top: 8px;
       background: rgba(212, 175, 55, 0.12);
@@ -1240,11 +1258,37 @@
 
           </div>
 
+          <!-- Optional Groom & Bride Professions / Titles -->
+          <div class="form-field-group" id="groupGroomOccupation">
+            <label class="form-field-label">
+              <span>Groom Profession / Title <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label">دولہا کا پیشہ / تعلیمی ڈگری</span>
+            </label>
+            <div class="pre-sub-input-row">
+              <input class="form-input" type="text" id="c_groom_occupation" placeholder="e.g. Software Architect &amp; Entrepreneur">
+              <button type="button" class="remove-sub-row-btn" id="btnRemoveGroomOcc" title="Remove Groom Profession">✕ Remove</button>
+            </div>
+          </div>
+
+          <div class="form-field-group" id="groupBrideOccupation">
+            <label class="form-field-label">
+              <span>Bride Profession / Title <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label">دلہن کا پیشہ / تعلیمی ڈگری</span>
+            </label>
+            <div class="pre-sub-input-row">
+              <input class="form-input" type="text" id="c_bride_occupation" placeholder="e.g. Doctor of Medicine (M.D)">
+              <button type="button" class="remove-sub-row-btn" id="btnRemoveBrideOcc" title="Remove Bride Profession">✕ Remove</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="restore-details-wrap" id="restoreCoupleDetailsWrap" style="margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="restore-opt-pill" id="btnAddGroomOcc" style="display:none;">+ Add Groom Profession</button>
+          <button type="button" class="restore-opt-pill" id="btnAddBrideOcc" style="display:none;">+ Add Bride Profession</button>
         </div>
 
       </div>
-
-
 
       <!-- 2. Parents & Host Line -->
 
@@ -1272,6 +1316,22 @@
 
           <input class="form-input" type="text" id="c_host" placeholder="e.g. Mr. & Mrs. Tariq Mahmood" required>
 
+        </div>
+
+        <!-- Optional Secondary Parents / Other Side Parents -->
+        <div class="form-field-group" id="groupOtherParents" style="margin-top:1.1rem;">
+          <label class="form-field-label">
+            <span id="labelOtherParentsEn">Bride's Parents (In-Laws) <span class="optional-pill">Optional</span></span>
+            <span class="urdu-label" id="labelOtherParentsUr">والدینِ دلہن (سسرال)</span>
+          </label>
+          <div class="pre-sub-input-row">
+            <input class="form-input" type="text" id="c_other_parents" placeholder="e.g. Mr. & Mrs. Kamran Akhtar">
+            <button type="button" class="remove-sub-row-btn" id="btnRemoveOtherParents" title="Remove In-Laws Parents">✕ Remove</button>
+          </div>
+        </div>
+
+        <div class="restore-details-wrap" id="restoreHostDetailsWrap" style="margin-top:4px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="restore-opt-pill" id="btnAddOtherParents" style="display:none;">+ Add Bride's Parents</button>
         </div>
 
 
@@ -1694,6 +1754,64 @@
     });
 
     renderClientHosts();
+
+    // =========================================================================
+    // OPTIONAL CREDENTIALS & SECONDARY PARENTS (REMOVE / RESTORE ENGINE)
+    // =========================================================================
+    const groupGroomOcc = document.getElementById("groupGroomOccupation");
+    const groupBrideOcc = document.getElementById("groupBrideOccupation");
+    const groupOtherParents = document.getElementById("groupOtherParents");
+
+    const btnRemoveGroomOcc = document.getElementById("btnRemoveGroomOcc");
+    const btnRemoveBrideOcc = document.getElementById("btnRemoveBrideOcc");
+    const btnRemoveOtherParents = document.getElementById("btnRemoveOtherParents");
+
+    const btnAddGroomOcc = document.getElementById("btnAddGroomOcc");
+    const btnAddBrideOcc = document.getElementById("btnAddBrideOcc");
+    const btnAddOtherParents = document.getElementById("btnAddOtherParents");
+
+    if (btnRemoveGroomOcc && groupGroomOcc && btnAddGroomOcc) {
+      btnRemoveGroomOcc.addEventListener("click", () => {
+        document.getElementById("c_groom_occupation").value = "";
+        groupGroomOcc.style.display = "none";
+        btnAddGroomOcc.style.display = "inline-flex";
+        showToast("Groom Profession field removed.");
+      });
+      btnAddGroomOcc.addEventListener("click", () => {
+        groupGroomOcc.style.display = "block";
+        btnAddGroomOcc.style.display = "none";
+        document.getElementById("c_groom_occupation").focus();
+      });
+    }
+
+    if (btnRemoveBrideOcc && groupBrideOcc && btnAddBrideOcc) {
+      btnRemoveBrideOcc.addEventListener("click", () => {
+        document.getElementById("c_bride_occupation").value = "";
+        groupBrideOcc.style.display = "none";
+        btnAddBrideOcc.style.display = "inline-flex";
+        showToast("Bride Profession field removed.");
+      });
+      btnAddBrideOcc.addEventListener("click", () => {
+        groupBrideOcc.style.display = "block";
+        btnAddBrideOcc.style.display = "none";
+        document.getElementById("c_bride_occupation").focus();
+      });
+    }
+
+    if (btnRemoveOtherParents && groupOtherParents && btnAddOtherParents) {
+      btnRemoveOtherParents.addEventListener("click", () => {
+        document.getElementById("c_other_parents").value = "";
+        groupOtherParents.style.display = "none";
+        btnAddOtherParents.style.display = "inline-flex";
+        const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+        showToast(`${side === "bride" ? "Groom's Parents" : "Bride's Parents"} field removed.`);
+      });
+      btnAddOtherParents.addEventListener("click", () => {
+        groupOtherParents.style.display = "block";
+        btnAddOtherParents.style.display = "none";
+        document.getElementById("c_other_parents").focus();
+      });
+    }
 
     // =========================================================================
     // WEDDING TAGLINE SUGGESTIONS & AUTO-FILL ENGINE
@@ -2642,6 +2760,13 @@
         labelHostEn.textContent = "Bride's Parents / Inviting Hosts";
         labelHostUr.textContent = "والدینِ دلہن و میزبان";
 
+        const labelOtherParentsEn = document.getElementById("labelOtherParentsEn");
+        const labelOtherParentsUr = document.getElementById("labelOtherParentsUr");
+        const btnAddOtherParents = document.getElementById("btnAddOtherParents");
+        if (labelOtherParentsEn) labelOtherParentsEn.innerHTML = "Groom's Parents (In-Laws) <span class='optional-pill'>Optional</span>";
+        if (labelOtherParentsUr) labelOtherParentsUr.textContent = "والدینِ دولہا (سسرال)";
+        if (btnAddOtherParents) btnAddOtherParents.textContent = "+ Add Groom's Parents";
+
         // Update all Barat cards dynamically
         document.querySelectorAll('.event-section[data-event-type="barat"]').forEach(card => {
           const titleText = card.querySelector(".event-title-text");
@@ -2665,6 +2790,13 @@
         hostSectionTitleUr.textContent = "والدینِ دولہا و میزبان";
         labelHostEn.textContent = "Groom's Parents / Inviting Hosts";
         labelHostUr.textContent = "والدینِ دولہا و میزبان";
+
+        const labelOtherParentsEn = document.getElementById("labelOtherParentsEn");
+        const labelOtherParentsUr = document.getElementById("labelOtherParentsUr");
+        const btnAddOtherParents = document.getElementById("btnAddOtherParents");
+        if (labelOtherParentsEn) labelOtherParentsEn.innerHTML = "Bride's Parents (In-Laws) <span class='optional-pill'>Optional</span>";
+        if (labelOtherParentsUr) labelOtherParentsUr.textContent = "والدینِ دلہن (سسرال)";
+        if (btnAddOtherParents) btnAddOtherParents.textContent = "+ Add Bride's Parents";
 
         // Update all Barat cards dynamically
         document.querySelectorAll('.event-section[data-event-type="barat"]').forEach(card => {
@@ -2728,6 +2860,13 @@
       const tagline = document.getElementById("c_tagline") ? document.getElementById("c_tagline").value.trim() : "";
       const taglineUr = document.getElementById("c_tagline")?.dataset?.taglineUr || tagline;
       const taglineEn = document.getElementById("c_tagline")?.dataset?.taglineEn || tagline;
+
+      const groomOcc = (document.getElementById("groupGroomOccupation")?.style.display !== "none")
+        ? (document.getElementById("c_groom_occupation")?.value.trim() || "") : "";
+      const brideOcc = (document.getElementById("groupBrideOccupation")?.style.display !== "none")
+        ? (document.getElementById("c_bride_occupation")?.value.trim() || "") : "";
+      const otherParents = (document.getElementById("groupOtherParents")?.style.display !== "none")
+        ? (document.getElementById("c_other_parents")?.value.trim() || "") : "";
 
       const themeRadio = document.querySelector('input[name="c_theme"]:checked');
       const themeValue = themeRadio ? themeRadio.value : "optional";
@@ -3101,8 +3240,14 @@
         groomUrdu: transliterateToUrdu(groom),
         bride,
         brideUrdu: transliterateToUrdu(bride),
+        groomOccupation: groomOcc,
+        brideOccupation: brideOcc,
         host,
         hostUrdu: transliterateToUrdu(host),
+        otherParents: otherParents,
+        otherParentsUrdu: transliterateToUrdu(otherParents),
+        brideParents: side === "groom" ? otherParents : "",
+        groomParents: side === "bride" ? otherParents : "",
         tagline: tagline,
         taglineUrdu: taglineUr || tagline,
         taglineRoman: taglineEn || tagline,
@@ -3145,9 +3290,9 @@
 • Invitation Side: ${sideText}
 • Client: ${clientName} (${clientPhone})
 • Couple: ${coupleTitle}
-• Groom: ${groom}
-• Bride: ${bride}
-• Main Host / Parents: ${host}${tagline ? `\n• Wedding Tagline: ${tagline}` : ""}
+• Groom: ${groom}${groomOcc ? ` (${groomOcc})` : ""}
+• Bride: ${bride}${brideOcc ? ` (${brideOcc})` : ""}
+• Main Host / Parents: ${host}${otherParents ? `\n• ${side === "groom" ? "Bride's Parents" : "Groom's Parents"}: ${otherParents}` : ""}${tagline ? `\n• Wedding Tagline: ${tagline}` : ""}
 • Preferred Theme: ${themeValue === "optional" ? "Elitara's Choice (Optional)" : themeValue}
 ${eventsWaText}${welcomingWa}`;
 

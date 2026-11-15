@@ -535,6 +535,17 @@
           </div>
         </div>
 
+        <div class="admin-grid-2" style="margin-top:10px;">
+          <div>
+            <label class="admin-field-label">Groom Profession / Title (Optional)</label>
+            <input class="admin-input" type="text" id="f_groom_occ" placeholder="e.g. Software Architect &amp; Entrepreneur">
+          </div>
+          <div>
+            <label class="admin-field-label">Bride Profession / Title (Optional)</label>
+            <input class="admin-input" type="text" id="f_bride_occ" placeholder="e.g. Doctor of Medicine (M.D)">
+          </div>
+        </div>
+
         <div style="margin-top:14px;">
           <label class="admin-field-label">🎨 Wedding Design Theme & Art Style</label>
           <select class="admin-input" id="f_theme" style="background:#040f0b; color:#fff; cursor:pointer;">
@@ -564,6 +575,17 @@
           <div>
             <label class="admin-field-label" id="labelHostUr">Main Host Line (Urdu)</label>
             <input class="admin-input" type="text" id="f_hostUrdu" placeholder="e.g. جناب و محترمہ طارق محمود" dir="rtl" required>
+          </div>
+        </div>
+
+        <div class="admin-grid-2" style="margin-top:10px;">
+          <div>
+            <label class="admin-field-label" id="labelOtherParentsAdminEn">Bride's Parents / In-Laws (English)</label>
+            <input class="admin-input" type="text" id="f_other_parents" placeholder="e.g. Mr. & Mrs. Kamran Akhtar">
+          </div>
+          <div>
+            <label class="admin-field-label" id="labelOtherParentsAdminUr">Bride's Parents / In-Laws (Urdu)</label>
+            <input class="admin-input" type="text" id="f_other_parentsUrdu" placeholder="e.g. جناب و محترمہ کامران اختر" dir="rtl">
           </div>
         </div>
 
@@ -1498,6 +1520,7 @@
     bindAutoUrduInput("f_groom", "f_groomUrdu");
     bindAutoUrduInput("f_bride", "f_brideUrdu");
     bindAutoUrduInput("f_host", "f_hostUrdu");
+    bindAutoUrduInput("f_other_parents", "f_other_parentsUrdu");
 
     function getSelectedCardSide() {
       const el = document.querySelector('input[name="f_cardSide"]:checked');
@@ -1516,6 +1539,8 @@
         const rukhsatiInput = document.getElementById("f_b_rukhsati");
         const labelHostEn = document.getElementById("labelHostEn");
         const labelHostUr = document.getElementById("labelHostUr");
+        const labelOtherParentsAdminEn = document.getElementById("labelOtherParentsAdminEn");
+        const labelOtherParentsAdminUr = document.getElementById("labelOtherParentsAdminUr");
 
         const groomSchedWrap = document.getElementById("adminGroomScheduleWrap");
         const brideSchedWrap = document.getElementById("adminBrideScheduleWrap");
@@ -1524,6 +1549,8 @@
           if (header) header.textContent = "🎺 4. Baraat & Rukhsati Ceremony (تقریبِ بارات و رخصتی)";
           if (labelHostEn) labelHostEn.textContent = "Main Host Line - Bride's Parents (English)";
           if (labelHostUr) labelHostUr.textContent = "Main Host Line - والدینِ دلہن (Urdu)";
+          if (labelOtherParentsAdminEn) labelOtherParentsAdminEn.textContent = "Groom's Parents / In-Laws (English)";
+          if (labelOtherParentsAdminUr) labelOtherParentsAdminUr.textContent = "والدینِ دولہا (سسرال)";
           if (groomSchedWrap) groomSchedWrap.style.display = "none";
           if (brideSchedWrap) brideSchedWrap.style.display = "block";
           if (!taglineUr.value || taglineUr.value === "دل والے دلہنیا لے جا رہے ہیں") {
@@ -1540,6 +1567,8 @@
           if (header) header.textContent = "🎺 4. Baraat Ceremony (تقریبِ بارات)";
           if (labelHostEn) labelHostEn.textContent = "Main Host Line (English)";
           if (labelHostUr) labelHostUr.textContent = "Main Host Line (Urdu)";
+          if (labelOtherParentsAdminEn) labelOtherParentsAdminEn.textContent = "Bride's Parents / In-Laws (English)";
+          if (labelOtherParentsAdminUr) labelOtherParentsAdminUr.textContent = "والدینِ دلہن (سسرال)";
           if (groomSchedWrap) groomSchedWrap.style.display = "block";
           if (brideSchedWrap) brideSchedWrap.style.display = "block";
           if (taglineUr.value === "دعاؤں کے سائے میں رخصتی") {
@@ -1999,9 +2028,17 @@
       document.getElementById("f_bride").value = brideEn;
       document.getElementById("f_brideUrdu").value = client.brideUrdu || transliterateToUrdu(brideEn);
 
+      // Optional Credentials & Professions
+      document.getElementById("f_groom_occ").value = client.groomOccupation || "";
+      document.getElementById("f_bride_occ").value = client.brideOccupation || "";
+
       // 3. Set Host Lines (with automatic Urdu translation if empty)
       document.getElementById("f_host").value = hostEn;
       document.getElementById("f_hostUrdu").value = client.hostUrdu || transliterateToUrdu(hostEn);
+
+      const otherParentsEn = client.otherParents || (client.cardSide === "bride" ? client.groomParents : client.brideParents) || "";
+      document.getElementById("f_other_parents").value = otherParentsEn;
+      document.getElementById("f_other_parentsUrdu").value = client.otherParentsUrdu || transliterateToUrdu(otherParentsEn);
 
       // 4. Set Theme (Theme is optional from client's end)
       const themeSelect = document.getElementById("f_theme");
@@ -2514,6 +2551,10 @@
       const brideUrdu = document.getElementById("f_brideUrdu").value.trim();
       const host = document.getElementById("f_host").value.trim();
       const hostUrdu = document.getElementById("f_hostUrdu").value.trim();
+      const groomOccupation = document.getElementById("f_groom_occ").value.trim();
+      const brideOccupation = document.getElementById("f_bride_occ").value.trim();
+      const otherParents = document.getElementById("f_other_parents").value.trim();
+      const otherParentsUrdu = document.getElementById("f_other_parentsUrdu").value.trim();
 
       const theme = document.getElementById("f_theme") ? document.getElementById("f_theme").value : "emerald";
 
@@ -2675,10 +2716,16 @@
         cardSide: side,
         groom,
         groomUrdu,
+        groomOccupation,
         bride,
         brideUrdu,
+        brideOccupation,
         host,
         hostUrdu,
+        otherParents,
+        otherParentsUrdu,
+        brideParents: side === "groom" ? otherParents : "",
+        groomParents: side === "bride" ? otherParents : "",
         theme,
         welcomeHosts: currentHosts.filter(h => h.name && h.phone),
         eventsList,
