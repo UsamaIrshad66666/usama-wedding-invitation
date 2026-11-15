@@ -1691,7 +1691,8 @@
        CLIENT APPLICATION LOGIC
        ========================================================================== -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    (function initRoyalGraceApp() {
+      function runRoyalGrace() {
       // 1. Elements
       const video = document.getElementById("revealVideo");
       const coupleInfo = document.getElementById("coupleInfo");
@@ -1707,72 +1708,125 @@
 
       // 2. Audio State Management
       let isAudioPlaying = false;
+      let userManuallyPaused = false;
       function playAudio() {
-        weddingAudio.play().then(() => {
+        if (!weddingAudio) return;
+        weddingAudio.muted = false;
+        const p = weddingAudio.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            isAudioPlaying = true;
+            if (topAudioBtn) topAudioBtn.classList.add("playing");
+          }).catch(() => {
+            // Browser autoplay restriction
+          });
+        } else {
           isAudioPlaying = true;
-          topAudioBtn.classList.add("playing");
-        }).catch(() => {
-          // Browser autoplay restriction
-        });
+          if (topAudioBtn) topAudioBtn.classList.add("playing");
+        }
       }
 
       function pauseAudio() {
-        weddingAudio.pause();
+        if (weddingAudio) weddingAudio.pause();
         isAudioPlaying = false;
-        topAudioBtn.classList.remove("playing");
+        if (topAudioBtn) topAudioBtn.classList.remove("playing");
       }
 
-      topAudioBtn.addEventListener("click", function(e) {
-        e.stopPropagation();
-        if (isAudioPlaying) {
-          pauseAudio();
-        } else {
-          playAudio();
-        }
-      });
+      if (topAudioBtn) {
+        topAudioBtn.addEventListener("touchstart", function(e) {
+          e.stopPropagation();
+        }, { passive: true });
+        topAudioBtn.addEventListener("touchend", function(e) {
+          e.stopPropagation();
+        }, { passive: true });
+        topAudioBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          if (!videoTriggered) {
+            triggerGateVideoOnly();
+          }
+          if (isAudioPlaying || (weddingAudio && !weddingAudio.paused)) {
+            userManuallyPaused = true;
+            pauseAudio();
+          } else {
+            userManuallyPaused = false;
+            isAudioPlaying = true;
+            topAudioBtn.classList.add("playing");
+            playAudio();
+          }
+        });
+      }
 
       // 3. Opening Video Play on User Tap (Waits for user tap on screen, never autoplays)
       let videoTriggered = false;
 
-      function startVideoExperience() {
+      function triggerGateVideoOnly() {
         if (videoTriggered) return;
         videoTriggered = true;
 
-        // Start gate video
         if (video) {
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute("playsinline", "");
+          video.setAttribute("webkit-playsinline", "");
           video.play().catch(() => {});
         }
 
-        // Start background music seamlessly on user gesture
-        playAudio();
-
-        // Reveal couple info at 6.0s (when gates finish swinging open)
+        // Reveal couple info at 5.5s (when gates finish swinging open)
         setTimeout(() => {
           if (coupleInfo) coupleInfo.classList.add("active");
-        }, 6000);
+        }, 5500);
 
-        // "SCROLL" badge bounces into view at 8.5s
+        // "SCROLL" badge bounces into view at 8.0s
         setTimeout(() => {
           if (scrollBadge) scrollBadge.classList.add("active");
-        }, 8500);
+        }, 8000);
+      }
+
+      if (video) {
+        video.addEventListener("ended", function() {
+          if (coupleInfo) coupleInfo.classList.add("active");
+          if (scrollBadge) scrollBadge.classList.add("active");
+        });
+      }
+
+      function startVideoExperience(e) {
+        if (e && e.target && e.target.closest && (
+          e.target.closest("#topAudioBtn") ||
+          e.target.closest("#langToggleBtn") ||
+          e.target.closest(".bottom-floating-bar")
+        )) {
+          return;
+        }
+
+        if (!videoTriggered) {
+          triggerGateVideoOnly();
+        } else if (video && video.paused && video.currentTime === 0) {
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+
+        // Start background music seamlessly on user gesture if not manually paused
+        if (!isAudioPlaying && !userManuallyPaused) {
+          playAudio();
+        }
       }
 
       // Start experience when user taps/clicks anywhere on screen or video
       const heroStageEl = document.getElementById("heroStage");
       if (heroStageEl) {
         heroStageEl.addEventListener("click", startVideoExperience);
+        heroStageEl.addEventListener("touchend", startVideoExperience, { passive: true });
         heroStageEl.addEventListener("touchstart", startVideoExperience, { passive: true });
       }
       if (video) {
         video.addEventListener("click", startVideoExperience);
+        video.addEventListener("touchend", startVideoExperience, { passive: true });
         video.addEventListener("touchstart", startVideoExperience, { passive: true });
       }
-      window.addEventListener("click", function() {
-        if (!videoTriggered) startVideoExperience();
-      });
-      window.addEventListener("touchstart", function() {
-        if (!videoTriggered) startVideoExperience();
-      }, { passive: true });
+      window.addEventListener("click", startVideoExperience);
+      window.addEventListener("touchend", startVideoExperience, { passive: true });
+      window.addEventListener("touchstart", startVideoExperience, { passive: true });
 
       scrollBadge.addEventListener("click", function(e) {
         e.stopPropagation();
@@ -1969,8 +2023,8 @@
         showSlide(currentSlide + 1);
       }, 4200);
 
-      // 8. Countdown Timer to Oct 16, 2026
-      const targetWeddingDate = new Date("October 16, 2026 11:30:00").getTime();
+      // 8. Countdown Timer
+      let targetWeddingDate = new Date("December 16, 2026 19:00:00").getTime();
       function updateCountdown() {
         const now = new Date().getTime();
         const diff = targetWeddingDate - now;
@@ -2247,9 +2301,20 @@
           if (preWedTitle && preWedTitle.closest("section")) {
             preWedTitle.closest("section").style.display = "none";
           }
+          const parsedTarget = Date.parse(primaryEv.dateTime || primaryEv.displayDate || primaryEv.date || "");
+          if (!isNaN(parsedTarget)) {
+            targetWeddingDate = parsedTarget;
+            updateCountdown();
+          }
         }
       }
-    });
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", runRoyalGrace);
+      } else {
+        runRoyalGrace();
+      }
+    })();
   </script>
 </body>
 </html>

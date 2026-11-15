@@ -6431,10 +6431,9 @@ function renderRoyalGraceScreen(isPopState) {
   `;
       window.scrollTo(0, 0);
 
-      // Execute Royal Grace logic
+      // Execute Royal Grace logic immediately (DOM is already loaded)
       try {
         const rgInitScript = new Function(`
-    document.addEventListener("DOMContentLoaded", function() {
       // 1. Elements
       const video = document.getElementById("revealVideo");
       const coupleInfo = document.getElementById("coupleInfo");
@@ -6450,72 +6449,122 @@ function renderRoyalGraceScreen(isPopState) {
 
       // 2. Audio State Management
       let isAudioPlaying = false;
+      let userManuallyPaused = false;
       function playAudio() {
-        weddingAudio.play().then(() => {
+        if (!weddingAudio) return;
+        weddingAudio.muted = false;
+        const p = weddingAudio.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            isAudioPlaying = true;
+            if (topAudioBtn) topAudioBtn.classList.add("playing");
+          }).catch(() => {});
+        } else {
           isAudioPlaying = true;
-          topAudioBtn.classList.add("playing");
-        }).catch(() => {
-          // Browser autoplay restriction
-        });
+          if (topAudioBtn) topAudioBtn.classList.add("playing");
+        }
       }
 
       function pauseAudio() {
-        weddingAudio.pause();
+        if (weddingAudio) weddingAudio.pause();
         isAudioPlaying = false;
-        topAudioBtn.classList.remove("playing");
+        if (topAudioBtn) topAudioBtn.classList.remove("playing");
       }
 
-      topAudioBtn.addEventListener("click", function(e) {
-        e.stopPropagation();
-        if (isAudioPlaying) {
-          pauseAudio();
-        } else {
-          playAudio();
-        }
-      });
+      if (topAudioBtn) {
+        topAudioBtn.addEventListener("touchstart", function(e) {
+          e.stopPropagation();
+        }, { passive: true });
+        topAudioBtn.addEventListener("touchend", function(e) {
+          e.stopPropagation();
+        }, { passive: true });
+        topAudioBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          if (!videoTriggered) {
+            triggerGateVideoOnly();
+          }
+          if (isAudioPlaying || (weddingAudio && !weddingAudio.paused)) {
+            userManuallyPaused = true;
+            pauseAudio();
+          } else {
+            userManuallyPaused = false;
+            isAudioPlaying = true;
+            topAudioBtn.classList.add("playing");
+            playAudio();
+          }
+        });
+      }
 
       // 3. Opening Video Play on User Tap (Waits for user tap on screen, never autoplays)
       let videoTriggered = false;
 
-      function startVideoExperience() {
+      function triggerGateVideoOnly() {
         if (videoTriggered) return;
         videoTriggered = true;
 
-        // Start gate video
         if (video) {
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute("playsinline", "");
+          video.setAttribute("webkit-playsinline", "");
           video.play().catch(() => {});
         }
 
-        // Start background music seamlessly on user gesture
-        playAudio();
-
-        // Reveal couple info at 6.0s (when gates finish swinging open)
+        // Reveal couple info at 5.5s (when gates finish swinging open)
         setTimeout(() => {
           if (coupleInfo) coupleInfo.classList.add("active");
-        }, 6000);
+        }, 5500);
 
-        // "SCROLL" badge bounces into view at 8.5s
+        // "SCROLL" badge bounces into view at 8.0s
         setTimeout(() => {
           if (scrollBadge) scrollBadge.classList.add("active");
-        }, 8500);
+        }, 8000);
+      }
+
+      if (video) {
+        video.addEventListener("ended", function() {
+          if (coupleInfo) coupleInfo.classList.add("active");
+          if (scrollBadge) scrollBadge.classList.add("active");
+        });
+      }
+
+      function startVideoExperience(e) {
+        if (e && e.target && e.target.closest && (
+          e.target.closest("#topAudioBtn") ||
+          e.target.closest("#langToggleBtn") ||
+          e.target.closest(".bottom-floating-bar")
+        )) {
+          return;
+        }
+
+        if (!videoTriggered) {
+          triggerGateVideoOnly();
+        } else if (video && video.paused && video.currentTime === 0) {
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+
+        if (!isAudioPlaying && !userManuallyPaused) {
+          playAudio();
+        }
       }
 
       // Start experience when user taps/clicks anywhere on screen or video
       const heroStageEl = document.getElementById("heroStage");
       if (heroStageEl) {
         heroStageEl.addEventListener("click", startVideoExperience);
+        heroStageEl.addEventListener("touchend", startVideoExperience, { passive: true });
         heroStageEl.addEventListener("touchstart", startVideoExperience, { passive: true });
       }
       if (video) {
         video.addEventListener("click", startVideoExperience);
+        video.addEventListener("touchend", startVideoExperience, { passive: true });
         video.addEventListener("touchstart", startVideoExperience, { passive: true });
       }
-      window.addEventListener("click", function() {
-        if (!videoTriggered) startVideoExperience();
-      });
-      window.addEventListener("touchstart", function() {
-        if (!videoTriggered) startVideoExperience();
-      }, { passive: true });
+      window.addEventListener("click", startVideoExperience);
+      window.addEventListener("touchend", startVideoExperience, { passive: true });
+      window.addEventListener("touchstart", startVideoExperience, { passive: true });
 
       scrollBadge.addEventListener("click", function(e) {
         e.stopPropagation();
@@ -6847,9 +6896,48 @@ function renderRoyalGraceScreen(isPopState) {
           document.getElementById("closingNames").textContent = "Zayan & Rania";
         }
       });
-    });
   `);
         rgInitScript();
+        // Hydrate Royal Grace screen from ?invite= / ?d= payload if present
+        const rgParams = new URLSearchParams(window.location.search);
+        const rgRaw = rgParams.get("invite") || rgParams.get("d");
+        if (rgRaw) {
+          try {
+            let b64 = rgRaw.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+            while (b64.length % 4) b64 += "=";
+            const bin = atob(b64);
+            let rgCustom = null;
+            try {
+              const bytes = new Uint8Array(bin.length);
+              for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+              const txt = new TextDecoder().decode(bytes);
+              if (txt.trim().startsWith("{")) rgCustom = JSON.parse(txt);
+            } catch (e1) {}
+            if (!rgCustom) {
+              const uriDec = decodeURIComponent(bin);
+              if (uriDec.trim().startsWith("{")) rgCustom = JSON.parse(uriDec);
+            }
+            if (rgCustom) {
+              const gEn = rgCustom.groom || "Zayan";
+              const bEn = rgCustom.bride || "Rania";
+              const isBride = rgCustom.cardSide === "bride";
+              const fEn = isBride ? bEn : gEn;
+              const sEn = isBride ? gEn : bEn;
+              const cEn = fEn + " & " + sEn;
+              document.title = cEn + " — Royal Grace Wedding Invitation";
+              const hG = document.getElementById("heroGroomName");
+              const hB = document.getElementById("heroBrideName");
+              if (hG) hG.textContent = fEn;
+              if (hB) hB.textContent = sEn;
+              const hGSub = document.getElementById("heroGroomSub");
+              const hBSub = document.getElementById("heroBrideSub");
+              if (hGSub && rgCustom.host) hGSub.textContent = rgCustom.host;
+              if (hBSub) hBSub.textContent = "";
+              const clEl = document.getElementById("closingNames");
+              if (clEl) clEl.textContent = cEn;
+            }
+          } catch (e2) {}
+        }
       } catch (err) {
         console.error("Royal Grace initialization error:", err);
       }

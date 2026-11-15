@@ -1094,7 +1094,7 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
 
-    .letter-slide {
+        .letter-slide {
       display: none !important;
     }
 
@@ -2971,8 +2971,10 @@
       const rawPath = decodeURIComponent(window.location.pathname || "").toLowerCase();
       const pathSegments = rawPath.split("/").filter(s => s && s !== "index.html");
       let routeSlug = pathSegments.length ? pathSegments[pathSegments.length - 1].replace(/\.html$/, "") : "";
-      if (rawPath.includes("ahmed-and-ayesha") || rawPath.includes("ahmed")) {
-        routeSlug = "ahmed-and-ayesha";
+      if (rawPath.includes("ahmed-and-ayesha") || rawPath.includes("ahmed")) routeSlug = "ahmed-and-ayesha";
+      if (false && !isFileProto) {
+        const pathSegments = rawPath.split("/").filter(s => s && s !== "index.html");
+        routeSlug = pathSegments.length ? pathSegments[pathSegments.length - 1] : "";
       }
       const params = new URLSearchParams(window.location.search);
 
@@ -3291,10 +3293,10 @@
       if (!cfg) {
         const isFileProto = window.location.protocol === "file:";
         const rawPath = decodeURIComponent(window.location.pathname || "").toLowerCase();
-        const pathSegments = rawPath.split("/").filter(s => s && s !== "index.html");
-        let routeSlug = pathSegments.length ? pathSegments[pathSegments.length - 1].replace(/\.html$/, "") : "";
-        if (rawPath.includes("ahmed-and-ayesha") || rawPath.includes("ahmed")) {
-          routeSlug = "ahmed-and-ayesha";
+        let routeSlug = "";
+        if (!isFileProto) {
+          const pathSegments = rawPath.split("/").filter(s => s && s !== "index.html");
+          routeSlug = pathSegments.length ? pathSegments[pathSegments.length - 1] : "";
         }
 
         const isFarmanTheme = routeSlug.includes("farman") ||
@@ -5578,7 +5580,7 @@
           if (screenGlow) screenGlow.classList.add("active");
         }, 180);
 
-        // At peak golden glow coverage, transition to the all ceremonies page
+        // At peak golden glow coverage, transition cleanly to the all ceremonies page
         setTimeout(() => {
           const { card } = getUrlState();
           updateUrlState(card, null, true, "events");
