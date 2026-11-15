@@ -2297,13 +2297,12 @@
                     title: arrTitle,
                     sub: venueDesc || (isUr ? "ہم آپ کو خوش آمدید کہتے ہیں ❤" : "We welcome you with warmth & joy ❤")
                   });
-                } else if (mainTime) {
+                }
+                if (ev.rasmTime) {
                   rows.push({
-                    time: mainTime,
-                    title: dayTitle,
-                    sub: venueDesc || (ev.key === "walima"
-                      ? (isUr ? "پرمسرت ضیافت اور دعائیں" : "Evening of dinner & blessings")
-                      : (isUr ? "خوشیوں اور دعاؤں بھری تقریب" : "Evening of celebration & blessings"))
+                    time: ev.rasmTime,
+                    title: isUr ? "رسمِ حنا (مہندی)" : "Rasm-e-Hina Ceremony",
+                    sub: isUr ? "خوشیوں، رنگوں اور دعاؤں بھری تقریب" : "Traditional henna ceremony & celebrations"
                   });
                 }
                 if (ev.nikkahTime || ev.nikkah) {
@@ -2346,10 +2345,11 @@
                 }
                 if (Array.isArray(ev.subSchedule)) {
                   ev.subSchedule.forEach(s => {
-                    if (s && (s.title || s.time)) {
+                    const customTitle = s ? (s.title || s.label || "") : "";
+                    if (s && (customTitle || s.time)) {
                       rows.push({
                         time: s.time || mainTime || "",
-                        title: s.title || (isUr ? "تقریب" : "Ceremony"),
+                        title: customTitle || (isUr ? "تقریب" : "Ceremony"),
                         sub: s.subtitle || venueDesc || (isUr ? "خوشگوار لمحات" : "Special ceremony moment")
                       });
                     }

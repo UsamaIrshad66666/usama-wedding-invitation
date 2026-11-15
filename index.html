@@ -6972,8 +6972,9 @@ function renderRoyalGraceScreen(isPopState) {
                     if (arrivalTime) {
                       const arrTitle = ev.key === "baraat" ? "Baraat Arrival & Reception" : (ev.key === "mehndi" ? "Mehndi Ceremony & Guest Arrival" : "Walima Reception & Guest Arrival");
                       rows.push({ time: arrivalTime, title: arrTitle, sub: venueDesc || "We welcome you with warmth & joy ❤" });
-                    } else if (mainTime) {
-                      rows.push({ time: mainTime, title: dayTitle, sub: venueDesc || "Evening of celebration & blessings" });
+                    }
+                    if (ev.rasmTime) {
+                      rows.push({ time: ev.rasmTime, title: "Rasm-e-Hina Ceremony", sub: "Traditional henna ceremony & celebrations" });
                     }
                     if (ev.nikkahTime || ev.nikkah) rows.push({ time: ev.nikkahTime || ev.nikkah, title: "Sacred Nikkah Ceremony", sub: "Solemnization of marriage & blessings" });
                     const mealType = (ev.mealType || "dinner").toLowerCase();
@@ -6987,7 +6988,8 @@ function renderRoyalGraceScreen(isPopState) {
                     if (ev.duaTime) rows.push({ time: ev.duaTime, title: "Dua & Farewell", sub: "Concluding prayers & warm wishes" });
                     if (Array.isArray(ev.subSchedule)) {
                       ev.subSchedule.forEach(s => {
-                        if (s && (s.title || s.time)) rows.push({ time: s.time || mainTime || "", title: s.title || "Ceremony", sub: s.subtitle || venueDesc || "Special ceremony moment" });
+                        const customTitle = s ? (s.title || s.label || "") : "";
+                        if (s && (customTitle || s.time)) rows.push({ time: s.time || mainTime || "", title: customTitle || "Ceremony", sub: s.subtitle || venueDesc || "Special ceremony moment" });
                       });
                     }
                     if (rows.length === 0) rows.push({ time: mainTime || "07:00 PM", title: dayTitle, sub: venueDesc || "Evening of dinner & blessings" });

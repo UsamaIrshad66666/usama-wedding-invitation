@@ -446,14 +446,47 @@
       border: 1px solid rgba(220, 53, 69, 0.45);
       color: #ff99a2;
       border-radius: 6px;
-      width: 34px;
       height: 38px;
+      padding: 0 10px;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
       flex-shrink: 0;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .remove-sub-row-btn:hover {
+      background: rgba(220, 53, 69, 0.35);
+      color: #fff;
+    }
+    .pre-sub-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .pre-sub-input-row .form-input {
+      flex: 1;
+    }
+    .restore-sub-events-btn {
+      margin-top: 8px;
+      margin-left: 6px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px dashed rgba(212, 175, 55, 0.45);
+      color: var(--gold-light);
+      border-radius: 6px;
+      padding: 6px 11px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 5px;
+    }
+    .restore-sub-events-btn:hover {
+      background: rgba(212, 175, 55, 0.18);
     }
     .add-sub-row-btn {
       margin-top: 8px;
@@ -1794,9 +1827,12 @@
       `;
 
       const mealTimeInputHtml = `
-        <div class="form-field-group" style="margin-bottom:8px;">
+        <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
           <label class="form-field-label"><span>Lunch / Dinner Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">کھانے کا وقت</span></label>
-          <input class="form-input evt-meal-time" type="text" placeholder="e.g. 2:30 PM (Lunch) or 9:00 PM (Dinner)" value="${mealTime}">
+          <div class="pre-sub-input-row">
+            <input class="form-input evt-meal-time" type="text" data-default-sug="meal" placeholder="e.g. 2:30 PM (Lunch) or 9:00 PM (Dinner)" value="${mealTime}">
+            <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+          </div>
         </div>
       `;
 
@@ -1806,62 +1842,89 @@
           <!-- Groom Side Timings Wrap -->
           <div class="groom-barat-times-wrap" style="display:${isBride ? 'none' : 'block'}; margin-bottom:10px;">
             <div class="form-grid-2">
-              <div class="form-field-group" style="margin-bottom:8px;">
+              <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
                 <label class="form-field-label"><span>Sehra Bandi Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">سہرہ بندی کا وقت</span></label>
-                <input class="form-input evt-b-sehra" type="text" placeholder="e.g. 1:00 PM or 6:00 PM" value="${initData.sehraTime || sug.sehra}">
+                <div class="pre-sub-input-row">
+                  <input class="form-input evt-b-sehra" type="text" data-default-sug="sehra" placeholder="e.g. 1:00 PM or 6:00 PM" value="${initData.sehraTime !== undefined ? initData.sehraTime : sug.sehra}">
+                  <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+                </div>
               </div>
-              <div class="form-field-group" style="margin-bottom:8px;">
+              <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
                 <label class="form-field-label"><span>Departure of Baraat <span class="optional-pill">Suggested</span></span><span class="urdu-label">روانگیِ بارات کا وقت</span></label>
-                <input class="form-input evt-b-departure" type="text" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.departureTime || sug.departure}">
+                <div class="pre-sub-input-row">
+                  <input class="form-input evt-b-departure" type="text" data-default-sug="departure" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.departureTime !== undefined ? initData.departureTime : sug.departure}">
+                  <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Shared / Bride & Groom Ceremony Milestones -->
           <div class="form-grid-2" style="margin-bottom:10px;">
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Baraat Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">آمدِ بارات کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-arrival" type="text" data-default-sug="arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival !== undefined ? initData.arrival : sug.arrival}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 2:00 PM or 8:00 PM" value="${initData.nikkah || sug.nikkah}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-nikkah" type="text" data-default-sug="nikkah" placeholder="e.g. 2:00 PM or 8:00 PM" value="${initData.nikkah !== undefined ? initData.nikkah : sug.nikkah}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
 
           <!-- Lunch / Dinner Time placed above Rukhsati Time -->
           <div class="form-grid-2" style="margin-bottom:10px;">
             ${mealTimeInputHtml}
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Rukhsati Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رخصتی کا وقت</span></label>
-              <input class="form-input evt-b-rukhsati" type="text" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.rukhsati || sug.rukhsati}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-rukhsati" type="text" data-default-sug="rukhsati" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.rukhsati !== undefined ? initData.rukhsati : sug.rukhsati}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
         `;
       } else if (type === "walima") {
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Arrival / Reception <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد کا وقت</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-arrival" type="text" data-default-sug="arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival !== undefined ? initData.arrival : sug.arrival}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
             ${mealTimeInputHtml}
           </div>
-          <div class="form-field-group" style="margin-bottom:10px;">
+          <div class="form-field-group pre-sub-event-item" style="margin-bottom:10px;">
             <label class="form-field-label"><span>Dua / Farewell Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">دعائے خیر و الوداع کا وقت</span></label>
-            <input class="form-input evt-dua-time" type="text" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.duaTime || sug.dua}">
+            <div class="pre-sub-input-row">
+              <input class="form-input evt-dua-time" type="text" data-default-sug="dua" placeholder="e.g. 4:00 PM or 10:00 PM" value="${initData.duaTime !== undefined ? initData.duaTime : sug.dua}">
+              <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+            </div>
           </div>
         `;
       } else if (type === "mehndi") {
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Arrival Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی آمد</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival || sug.arrival}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-arrival" type="text" data-default-sug="arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="${initData.arrival !== undefined ? initData.arrival : sug.arrival}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Rasm-e-Hina Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">رسمِ حنا کا وقت</span></label>
-              <input class="form-input evt-rasm-time" type="text" placeholder="e.g. 2:30 PM or 8:00 PM" value="${initData.rasmTime || sug.rasm}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-rasm-time" type="text" data-default-sug="rasm" placeholder="e.g. 2:30 PM or 8:00 PM" value="${initData.rasmTime !== undefined ? initData.rasmTime : sug.rasm}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
           ${mealTimeInputHtml}
@@ -1869,13 +1932,19 @@
       } else if (type === "nikkah") {
         specificMilestonesHtml = `
           <div class="form-grid-2" style="margin-bottom:10px;">
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Guest Gathering Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">مہمانوں کی تشریف آوری</span></label>
-              <input class="form-input evt-b-arrival" type="text" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.arrival || sug.arrival}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-arrival" type="text" data-default-sug="arrival" placeholder="e.g. 1:30 PM or 6:30 PM" value="${initData.arrival !== undefined ? initData.arrival : sug.arrival}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div class="form-field-group" style="margin-bottom:8px;">
+            <div class="form-field-group pre-sub-event-item" style="margin-bottom:8px;">
               <label class="form-field-label"><span>Khutbah & Nikkah Time <span class="optional-pill">Suggested</span></span><span class="urdu-label">خطبہ و عقدِ نکاح کا وقت</span></label>
-              <input class="form-input evt-b-nikkah" type="text" placeholder="e.g. 2:15 PM or 7:30 PM" value="${initData.nikkah || sug.nikkah}">
+              <div class="pre-sub-input-row">
+                <input class="form-input evt-b-nikkah" type="text" data-default-sug="nikkah" placeholder="e.g. 2:15 PM or 7:30 PM" value="${initData.nikkah !== undefined ? initData.nikkah : sug.nikkah}">
+                <button type="button" class="remove-sub-row-btn remove-pre-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
           ${mealTimeInputHtml}
@@ -1898,10 +1967,13 @@
           ${specificMilestonesHtml}
 
           <div class="custom-sub-rows-list"></div>
-          <button type="button" class="add-sub-row-btn">
-            <span>+ Add Custom Sub-Schedule Time (e.g. Entrance, Cake Cutting, Qawwali)</span>
-            <span style="font-family:var(--urdu);">(+ ذیلی وقت شامل کریں)</span>
-          </button>
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+            <button type="button" class="add-sub-row-btn">
+              <span>+ Add Custom Sub-Schedule Time (e.g. Entrance, Cake Cutting, Qawwali)</span>
+              <span style="font-family:var(--urdu);">(+ ذیلی وقت شامل کریں)</span>
+            </button>
+            <button type="button" class="restore-sub-events-btn">↺ Restore Removed Sub-Events</button>
+          </div>
         </div>
       `;
     }
@@ -2064,6 +2136,7 @@
       // Hook up "+ Add Custom Sub-Schedule Time" button
       const addSubBtn = card.querySelector(".add-sub-row-btn");
       const subRowsList = card.querySelector(".custom-sub-rows-list");
+      const restoreSubBtn = card.querySelector(".restore-sub-events-btn");
       function appendCustomSubRow(timeVal = "8:00 PM", labelVal = "") {
         if (!subRowsList) return;
         const row = document.createElement("div");
@@ -2071,13 +2144,49 @@
         row.innerHTML = `
           <input type="text" class="form-input sub-time-inp" placeholder="Time (e.g. 8:00 PM)" value="${timeVal}">
           <input type="text" class="form-input sub-label-inp" placeholder="Detail (e.g. Lunch, Arrival, Dua, Qawwali)" value="${labelVal}">
-          <button type="button" class="remove-sub-row-btn" title="Remove row">✕</button>
+          <button type="button" class="remove-sub-row-btn" title="Remove row">✕ Remove</button>
         `;
-        row.querySelector(".remove-sub-row-btn").addEventListener("click", () => row.remove());
+        row.querySelector(".remove-sub-row-btn").addEventListener("click", () => {
+          row.remove();
+          showToast("Custom sub-event removed.");
+        });
         subRowsList.appendChild(row);
       }
 
-      // Auto-fill ALL time fields in this event card according to Lunch (1:00 PM - 4:00 PM) or Dinner (6:00 PM - 10:00 PM)
+      // Hook up Remove buttons on pre-added sub-event fields
+      card.querySelectorAll(".remove-pre-sub-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.closest(".pre-sub-event-item");
+          if (item) {
+            const inp = item.querySelector("input");
+            if (inp) inp.value = "";
+            item.dataset.removed = "true";
+            item.style.display = "none";
+            if (restoreSubBtn) restoreSubBtn.style.display = "inline-flex";
+            showToast("Sub-event removed.");
+          }
+        });
+      });
+
+      if (restoreSubBtn) {
+        restoreSubBtn.addEventListener("click", () => {
+          const mt = card.querySelector(".evt-meal-type")?.value || "dinner";
+          const sug = getSuggestedTimingsForMeal(type, mt);
+          card.querySelectorAll(".pre-sub-event-item").forEach(item => {
+            delete item.dataset.removed;
+            item.style.display = "";
+            const inp = item.querySelector("input");
+            if (inp && !inp.value.trim()) {
+              const key = inp.dataset.defaultSug;
+              if (key && sug[key]) inp.value = sug[key];
+            }
+          });
+          restoreSubBtn.style.display = "none";
+          showToast("Pre-added sub-events restored!");
+        });
+      }
+
+      // Auto-fill ALL active (non-removed) time fields in this event card according to Lunch (1:00 PM - 4:00 PM) or Dinner (6:00 PM - 10:00 PM)
       const mealTypeSel = card.querySelector(".evt-meal-type");
       if (mealTypeSel) {
         mealTypeSel.addEventListener("change", () => {
@@ -2093,15 +2202,16 @@
           const rukT = card.querySelector(".evt-b-rukhsati");
           const duaT = card.querySelector(".evt-dua-time");
 
+          const isNotRemoved = (el) => el && !el.closest('[data-removed="true"]');
           if (mainT && sug.mainTime) mainT.value = sug.mainTime;
-          if (sehraT && sug.sehra) sehraT.value = sug.sehra;
-          if (depT && sug.departure) depT.value = sug.departure;
-          if (arrT && sug.arrival) arrT.value = sug.arrival;
-          if (nikT && sug.nikkah) nikT.value = sug.nikkah;
-          if (rasmT && sug.rasm) rasmT.value = sug.rasm;
-          if (mealT && sug.meal) mealT.value = sug.meal;
-          if (rukT && sug.rukhsati) rukT.value = sug.rukhsati;
-          if (duaT && sug.dua) duaT.value = sug.dua;
+          if (isNotRemoved(sehraT) && sug.sehra) sehraT.value = sug.sehra;
+          if (isNotRemoved(depT) && sug.departure) depT.value = sug.departure;
+          if (isNotRemoved(arrT) && sug.arrival) arrT.value = sug.arrival;
+          if (isNotRemoved(nikT) && sug.nikkah) nikT.value = sug.nikkah;
+          if (isNotRemoved(rasmT) && sug.rasm) rasmT.value = sug.rasm;
+          if (isNotRemoved(mealT) && sug.meal) mealT.value = sug.meal;
+          if (isNotRemoved(rukT) && sug.rukhsati) rukT.value = sug.rukhsati;
+          if (isNotRemoved(duaT) && sug.dua) duaT.value = sug.dua;
 
           card.querySelectorAll(".sub-time-inp").forEach(inp => {
             if (sug.subRow) inp.value = sug.subRow;
@@ -2406,7 +2516,7 @@
         card.querySelectorAll(".custom-sub-row").forEach(r => {
           const st = r.querySelector(".sub-time-inp")?.value.trim() || "";
           const sl = r.querySelector(".sub-label-inp")?.value.trim() || "";
-          if (st || sl) subSchedule.push({ time: st, label: sl });
+          if (st || sl) subSchedule.push({ time: st, label: sl, title: sl });
         });
 
         const mealLabelWa = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");

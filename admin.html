@@ -324,6 +324,87 @@
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Sub-Event Remove, Restore & Custom Sub-Schedule Controls in Admin */
+    .admin-pre-sub-item {
+      position: relative;
+    }
+    .admin-sub-input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .admin-sub-input-row .admin-input {
+      flex: 1;
+    }
+    .admin-remove-sub-btn {
+      background: rgba(180, 45, 45, 0.22);
+      border: 1px solid rgba(255, 110, 110, 0.38);
+      color: #ff9e9e;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .admin-remove-sub-btn:hover {
+      background: rgba(210, 50, 50, 0.42);
+      border-color: #ff6b6b;
+      color: #fff;
+    }
+    .admin-custom-sub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .admin-custom-sub-row {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .admin-custom-sub-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .admin-sub-actions-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .admin-add-sub-btn {
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px dashed rgba(212, 175, 55, 0.45);
+      color: var(--gold-light);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .admin-add-sub-btn:hover {
+      background: rgba(212, 175, 55, 0.24);
+      border-color: var(--gold-primary);
+    }
+    .admin-restore-sub-btn {
+      display: none;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px dashed rgba(212, 175, 55, 0.5);
+      color: var(--gold-light);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .admin-restore-sub-btn:hover {
+      background: rgba(212, 175, 55, 0.26);
+    }
   </style>
 </head>
 <body>
@@ -479,7 +560,7 @@
       <div class="admin-section">
         <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
           <span>🌸 3. Mehndi Ceremony (Rasm-e-Hina) <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
-          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_m_dt','f_m_date','f_m_dateUr','f_m_time','f_m_venue','f_m_addr','f_m_map','f_m_rsvp','f_m_rasm','f_m_meal_time'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Mehndi</button>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="clearAdminCeremonySection('mehndi');">Clear Mehndi</button>
         </div>
         <div class="admin-grid-2">
           <div>
@@ -501,7 +582,7 @@
             <input class="admin-input" type="text" id="f_m_time" placeholder="e.g. 7:00 PM" value="7:00 PM">
           </div>
         </div>
-        <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
+        <div id="adminMehndiSubScheduleBox" data-ceremony="mehndi" style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
           <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Mehndi Sub-Schedule & Meal (Optional)</div>
           <div style="margin-bottom:8px;">
             <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
@@ -511,15 +592,36 @@
               <option value="hitea">☕ Hi-Tea</option>
             </select>
           </div>
-          <div class="admin-grid-2" style="margin-bottom:0;">
-            <div>
+          <div class="admin-grid-2" style="margin-bottom:8px;">
+            <div class="admin-pre-sub-item">
+              <label class="admin-field-label">Guest Arrival Time (مہمانوں کی آمد)</label>
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_m_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
+            </div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Rasm-e-Hina Time (رسمِ حنا کا وقت)</label>
-              <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 2:30 PM or 8:00 PM" value="8:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_m_rasm" placeholder="e.g. 2:30 PM or 8:00 PM" value="8:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div>
+          </div>
+          <div class="admin-grid-2" style="margin-bottom:0;">
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
-              <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 3:30 PM or 9:00 PM" value="9:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_m_meal_time" placeholder="e.g. 3:30 PM or 9:00 PM" value="9:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
+            <div></div>
+          </div>
+          <div class="admin-custom-sub-list" id="adminMehndiSubRows"></div>
+          <div class="admin-sub-actions-bar">
+            <button type="button" class="admin-add-sub-btn" data-add-custom-sub="mehndi">+ Add Custom Sub-Schedule Time</button>
+            <button type="button" class="admin-restore-sub-btn" data-restore-pre-subs="mehndi">↺ Restore Removed Sub-Events</button>
           </div>
         </div>
         <div class="admin-grid-2">
@@ -548,7 +650,7 @@
       <div class="admin-section">
         <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
           <span id="baraatSectionHeader">🎺 4. Baraat Ceremony <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
-          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_b_dt','f_b_date','f_b_dateUr','f_b_time','f_b_sehra','f_b_departure','f_b_arrival','f_b_nikkah','f_b_dinner','f_b_rukhsati','f_b_venue','f_b_addr','f_b_map','f_b_rsvp'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Baraat</button>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="clearAdminCeremonySection('baraat');">Clear Baraat</button>
         </div>
         <div class="admin-grid-2">
           <div>
@@ -572,7 +674,7 @@
         </div>
 
         <!-- Ceremony Milestones & Meal Schedule (Available for both Groom & Bride cards) -->
-        <div id="adminBrideScheduleWrap" style="margin-top:12px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+        <div id="adminBrideScheduleWrap" data-ceremony="baraat" style="margin-top:12px; padding:12px 14px; background:rgba(0,0,0,0.25); border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
           <div style="font-size:0.82rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏱️ Baraat Sub-Schedule & Meal Timings (آمدِ بارات، نکاح، طعام، رخصتی)</div>
           <div style="margin-bottom:10px;">
             <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
@@ -585,35 +687,58 @@
           <!-- Groom Side: Separate Sehra Bandi & Departure of Baraat Schedule -->
           <div id="adminGroomScheduleWrap" style="margin-bottom:10px;">
             <div class="admin-grid-2" style="margin-bottom:0;">
-              <div>
+              <div class="admin-pre-sub-item">
                 <label class="admin-field-label">Sehra Bandi Time (سہرہ بندی کا وقت)</label>
-                <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 1:00 PM or 6:00 PM" value="6:00 PM">
+                <div class="admin-sub-input-row">
+                  <input class="admin-input" type="text" id="f_b_sehra" placeholder="e.g. 1:00 PM or 6:00 PM" value="6:00 PM">
+                  <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+                </div>
               </div>
-              <div>
+              <div class="admin-pre-sub-item">
                 <label class="admin-field-label">Departure of Baraat Time (روانگیِ بارات)</label>
-                <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 1:30 PM or 6:30 PM" value="6:30 PM">
+                <div class="admin-sub-input-row">
+                  <input class="admin-input" type="text" id="f_b_departure" placeholder="e.g. 1:30 PM or 6:30 PM" value="6:30 PM">
+                  <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+                </div>
               </div>
             </div>
           </div>
           <div class="admin-grid-2">
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Arrival of Baraat (آمدِ بارات)</label>
-              <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_b_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Nikkah Ceremony (عقدِ نکاح)</label>
-              <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 2:00 PM or 8:00 PM" value="8:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_b_nikkah" placeholder="e.g. 2:00 PM or 8:00 PM" value="8:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
-              <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 2:45 PM or 9:00 PM" value="9:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_b_dinner" placeholder="e.g. 2:45 PM or 9:00 PM" value="9:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Rukhsati Time (رخصتی کا وقت)</label>
-              <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_b_rukhsati" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
+          </div>
+          <div class="admin-custom-sub-list" id="adminBaraatSubRows"></div>
+          <div class="admin-sub-actions-bar">
+            <button type="button" class="admin-add-sub-btn" data-add-custom-sub="baraat">+ Add Custom Sub-Schedule Time</button>
+            <button type="button" class="admin-restore-sub-btn" data-restore-pre-subs="baraat">↺ Restore Removed Sub-Events</button>
           </div>
         </div>
 
@@ -655,7 +780,7 @@
       <div class="admin-section">
         <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
           <span>✨ 5. Walima Reception <span style="font-size:0.76rem; color:var(--cream-muted); font-weight:400;">(Leave blank if not in order)</span></span>
-          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="['f_w_dt','f_w_date','f_w_dateUr','f_w_time','f_w_arrival','f_w_meal_time','f_w_dua','f_w_venue','f_w_addr','f_w_map','f_w_rsvp'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});">Clear Walima</button>
+          <button type="button" class="outline-btn" style="padding:3px 10px; font-size:0.74rem;" onclick="clearAdminCeremonySection('walima');">Clear Walima</button>
         </div>
         <div class="admin-grid-2">
           <div>
@@ -678,7 +803,7 @@
           </div>
         </div>
 
-        <div style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
+        <div id="adminWalimaSubScheduleBox" data-ceremony="walima" style="margin:10px 0 14px; padding:10px 12px; background:rgba(0,0,0,0.22); border-radius:8px; border:1px dashed rgba(212,175,55,0.28);">
           <div style="font-size:0.8rem; color:var(--gold-light); font-weight:600; margin-bottom:8px;">⏰ Walima Sub-Schedule & Lunch / Dinner Timings (Optional)</div>
           <div style="margin-bottom:8px;">
             <label class="admin-field-label">Meal Type (ضیافت کی قسم)</label>
@@ -689,21 +814,35 @@
             </select>
           </div>
           <div class="admin-grid-2">
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Guest Arrival / Reception Time</label>
-              <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_w_arrival" placeholder="e.g. 1:30 PM or 7:00 PM" value="7:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Lunch / Dinner Time (کھانے کا وقت)</label>
-              <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:30 PM" value="8:30 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_w_meal_time" placeholder="e.g. 2:30 PM or 8:30 PM" value="8:30 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
           </div>
           <div class="admin-grid-2" style="margin-top:8px; margin-bottom:0;">
-            <div>
+            <div class="admin-pre-sub-item">
               <label class="admin-field-label">Dua / Farewell Time (دعائے خیر و الوداع)</label>
-              <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
+              <div class="admin-sub-input-row">
+                <input class="admin-input" type="text" id="f_w_dua" placeholder="e.g. 4:00 PM or 10:00 PM" value="10:00 PM">
+                <button type="button" class="admin-remove-sub-btn" title="Remove this sub-event">✕ Remove</button>
+              </div>
             </div>
             <div></div>
+          </div>
+          <div class="admin-custom-sub-list" id="adminWalimaSubRows"></div>
+          <div class="admin-sub-actions-bar">
+            <button type="button" class="admin-add-sub-btn" data-add-custom-sub="walima">+ Add Custom Sub-Schedule Time</button>
+            <button type="button" class="admin-restore-sub-btn" data-restore-pre-subs="walima">↺ Restore Removed Sub-Events</button>
           </div>
         </div>
 
@@ -1401,6 +1540,173 @@
     if (sehraInp) sehraInp.addEventListener("input", syncGroomBaraatTime);
     if (depInp) depInp.addEventListener("input", syncGroomBaraatTime);
 
+    /* ==============================================================
+       SUB-EVENT REMOVE, RESTORE & CUSTOM SUB-SCHEDULE CONTROLS (ADMIN)
+       ============================================================== */
+    function isSubEventRemoved(inputId) {
+      const el = document.getElementById(inputId);
+      if (!el) return false;
+      const item = el.closest(".admin-pre-sub-item");
+      return Boolean(item && item.getAttribute("data-removed") === "true");
+    }
+
+    function setAdminSubEventValue(inputId, val) {
+      const el = document.getElementById(inputId);
+      if (!el || isSubEventRemoved(inputId)) return;
+      el.value = val;
+    }
+
+    function markAdminSubEventRemoved(inputId, removed) {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      const item = el.closest(".admin-pre-sub-item");
+      const box = el.closest("[data-ceremony]");
+      if (removed) {
+        el.value = "";
+        if (item) {
+          item.setAttribute("data-removed", "true");
+          item.style.display = "none";
+        }
+      } else {
+        if (item) {
+          item.removeAttribute("data-removed");
+          item.style.display = "";
+        }
+      }
+      if (box) updateAdminRestoreBtnVisibility(box);
+      if (inputId === "f_b_sehra" || inputId === "f_b_departure") {
+        syncGroomBaraatTime();
+      }
+    }
+
+    function updateAdminRestoreBtnVisibility(box) {
+      if (!box) return;
+      const restoreBtn = box.querySelector(".admin-restore-sub-btn");
+      if (!restoreBtn) return;
+      const anyRemoved = box.querySelectorAll('.admin-pre-sub-item[data-removed="true"]').length > 0;
+      restoreBtn.style.display = anyRemoved ? "inline-block" : "none";
+    }
+
+    function restoreAdminCeremonySubEvents(ceremonyKey) {
+      const box = document.querySelector(`[data-ceremony="${ceremonyKey}"]`);
+      if (!box) return;
+      box.querySelectorAll(".admin-pre-sub-item").forEach(item => {
+        item.removeAttribute("data-removed");
+        item.style.display = "";
+      });
+      updateAdminRestoreBtnVisibility(box);
+      if (ceremonyKey === "mehndi" && document.getElementById("f_m_meal_type")) {
+        document.getElementById("f_m_meal_type").dispatchEvent(new Event("change"));
+      } else if (ceremonyKey === "baraat" && document.getElementById("f_b_meal_type")) {
+        document.getElementById("f_b_meal_type").dispatchEvent(new Event("change"));
+      } else if (ceremonyKey === "walima" && document.getElementById("f_w_meal_type")) {
+        document.getElementById("f_w_meal_type").dispatchEvent(new Event("change"));
+      }
+    }
+
+    function appendAdminCustomSubRow(ceremonyKey, timeVal = "8:30 PM", labelVal = "") {
+      const containerId = ceremonyKey === "mehndi"
+        ? "adminMehndiSubRows"
+        : (ceremonyKey === "baraat" ? "adminBaraatSubRows" : "adminWalimaSubRows");
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const row = document.createElement("div");
+      row.className = "admin-custom-sub-row";
+      row.innerHTML = `
+        <input type="text" class="admin-input admin-custom-sub-time" placeholder="Time (e.g. 8:30 PM)" value="${(timeVal || '').replace(/"/g, '&quot;')}">
+        <input type="text" class="admin-input admin-custom-sub-label" placeholder="Sub-Event Title (e.g. Qawali Night / Cake Cutting)" value="${(labelVal || '').replace(/"/g, '&quot;')}">
+        <button type="button" class="admin-remove-sub-btn admin-del-custom-sub" title="Remove this custom sub-event">✕ Remove</button>
+      `;
+      row.querySelector(".admin-del-custom-sub").addEventListener("click", () => row.remove());
+      container.appendChild(row);
+    }
+
+    function getAdminCustomSubRows(ceremonyKey) {
+      const containerId = ceremonyKey === "mehndi"
+        ? "adminMehndiSubRows"
+        : (ceremonyKey === "baraat" ? "adminBaraatSubRows" : "adminWalimaSubRows");
+      const container = document.getElementById(containerId);
+      if (!container) return [];
+      const list = [];
+      container.querySelectorAll(".admin-custom-sub-row").forEach(row => {
+        const t = (row.querySelector(".admin-custom-sub-time")?.value || "").trim();
+        const l = (row.querySelector(".admin-custom-sub-label")?.value || "").trim();
+        if (t || l) {
+          list.push({ time: t, label: l, title: l });
+        }
+      });
+      return list;
+    }
+
+    function renderAdminCustomSubRows(ceremonyKey, items = []) {
+      const containerId = ceremonyKey === "mehndi"
+        ? "adminMehndiSubRows"
+        : (ceremonyKey === "baraat" ? "adminBaraatSubRows" : "adminWalimaSubRows");
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = "";
+      if (Array.isArray(items)) {
+        items.forEach(item => {
+          if (item && (item.time || item.label || item.title)) {
+            appendAdminCustomSubRow(ceremonyKey, item.time || "", item.label || item.title || "");
+          }
+        });
+      }
+    }
+
+    function clearAdminCeremonySection(ceremonyKey) {
+      if (ceremonyKey === "mehndi") {
+        ["f_m_dt","f_m_date","f_m_dateUr","f_m_time","f_m_arrival","f_m_rasm","f_m_meal_time","f_m_venue","f_m_addr","f_m_map","f_m_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        renderAdminCustomSubRows("mehndi", []);
+      } else if (ceremonyKey === "baraat") {
+        ["f_b_dt","f_b_date","f_b_dateUr","f_b_time","f_b_sehra","f_b_departure","f_b_arrival","f_b_nikkah","f_b_dinner","f_b_rukhsati","f_b_venue","f_b_addr","f_b_map","f_b_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        renderAdminCustomSubRows("baraat", []);
+      } else if (ceremonyKey === "walima") {
+        ["f_w_dt","f_w_date","f_w_dateUr","f_w_time","f_w_arrival","f_w_meal_time","f_w_dua","f_w_venue","f_w_addr","f_w_map","f_w_rsvp"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        renderAdminCustomSubRows("walima", []);
+      }
+    }
+    window.clearAdminCeremonySection = clearAdminCeremonySection;
+
+    // Bind Remove buttons on all pre-added sub-events in Admin
+    document.querySelectorAll(".admin-pre-sub-item .admin-remove-sub-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".admin-pre-sub-item");
+        const inp = item ? item.querySelector("input") : null;
+        if (inp && inp.id) {
+          markAdminSubEventRemoved(inp.id, true);
+        }
+      });
+    });
+
+    // Bind Restore buttons for pre-added sub-events in Admin
+    document.querySelectorAll("[data-restore-pre-subs]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-restore-pre-subs");
+        restoreAdminCeremonySubEvents(key);
+      });
+    });
+
+    // Bind + Add Custom Sub-Schedule Time buttons in Admin
+    document.querySelectorAll("[data-add-custom-sub]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-add-custom-sub");
+        const mealSelId = key === "mehndi" ? "f_m_meal_type" : (key === "baraat" ? "f_b_meal_type" : "f_w_meal_type");
+        const mt = document.getElementById(mealSelId) ? document.getElementById(mealSelId).value : "dinner";
+        const defaultTime = mt === "lunch" ? "2:30 PM" : (mt === "hitea" ? "5:00 PM" : "8:30 PM");
+        appendAdminCustomSubRow(key, defaultTime, "");
+      });
+    });
+
     // Auto-fill Admin event time fields when switching Meal Type between Lunch (1-4 PM) and Dinner (6-10 PM)
     const mMealSel = document.getElementById("f_m_meal_type");
     if (mMealSel) {
@@ -1408,16 +1714,19 @@
         const mt = mMealSel.value;
         if (mt === "lunch") {
           document.getElementById("f_m_time").value = "1:30 PM";
-          document.getElementById("f_m_rasm").value = "2:30 PM";
-          document.getElementById("f_m_meal_time").value = "3:30 PM";
+          setAdminSubEventValue("f_m_arrival", "1:30 PM");
+          setAdminSubEventValue("f_m_rasm", "2:30 PM");
+          setAdminSubEventValue("f_m_meal_time", "3:30 PM");
         } else if (mt === "hitea") {
           document.getElementById("f_m_time").value = "4:30 PM";
-          document.getElementById("f_m_rasm").value = "5:00 PM";
-          document.getElementById("f_m_meal_time").value = "5:30 PM";
+          setAdminSubEventValue("f_m_arrival", "4:30 PM");
+          setAdminSubEventValue("f_m_rasm", "5:00 PM");
+          setAdminSubEventValue("f_m_meal_time", "5:30 PM");
         } else {
           document.getElementById("f_m_time").value = "7:00 PM";
-          document.getElementById("f_m_rasm").value = "8:00 PM";
-          document.getElementById("f_m_meal_time").value = "9:00 PM";
+          setAdminSubEventValue("f_m_arrival", "7:00 PM");
+          setAdminSubEventValue("f_m_rasm", "8:00 PM");
+          setAdminSubEventValue("f_m_meal_time", "9:00 PM");
         }
       });
     }
@@ -1428,30 +1737,31 @@
         const mt = bMealSel.value;
         const side = getSelectedCardSide();
         if (mt === "lunch") {
-          document.getElementById("f_b_sehra").value = "1:00 PM";
-          document.getElementById("f_b_departure").value = "1:30 PM";
+          setAdminSubEventValue("f_b_sehra", "1:00 PM");
+          setAdminSubEventValue("f_b_departure", "1:30 PM");
           document.getElementById("f_b_time").value = side === "bride" ? "1:30 PM" : "Sehra Bandi: 1:00 PM · Departure: 1:30 PM";
-          document.getElementById("f_b_arrival").value = "1:30 PM";
-          document.getElementById("f_b_nikkah").value = "2:00 PM";
-          document.getElementById("f_b_dinner").value = "2:45 PM";
-          document.getElementById("f_b_rukhsati").value = "4:00 PM";
+          setAdminSubEventValue("f_b_arrival", "1:30 PM");
+          setAdminSubEventValue("f_b_nikkah", "2:00 PM");
+          setAdminSubEventValue("f_b_dinner", "2:45 PM");
+          setAdminSubEventValue("f_b_rukhsati", "4:00 PM");
         } else if (mt === "hitea") {
-          document.getElementById("f_b_sehra").value = "3:30 PM";
-          document.getElementById("f_b_departure").value = "4:00 PM";
+          setAdminSubEventValue("f_b_sehra", "3:30 PM");
+          setAdminSubEventValue("f_b_departure", "4:00 PM");
           document.getElementById("f_b_time").value = side === "bride" ? "4:30 PM" : "Sehra Bandi: 3:30 PM · Departure: 4:00 PM";
-          document.getElementById("f_b_arrival").value = "4:30 PM";
-          document.getElementById("f_b_nikkah").value = "5:00 PM";
-          document.getElementById("f_b_dinner").value = "5:30 PM";
-          document.getElementById("f_b_rukhsati").value = "6:30 PM";
+          setAdminSubEventValue("f_b_arrival", "4:30 PM");
+          setAdminSubEventValue("f_b_nikkah", "5:00 PM");
+          setAdminSubEventValue("f_b_dinner", "5:30 PM");
+          setAdminSubEventValue("f_b_rukhsati", "6:30 PM");
         } else {
-          document.getElementById("f_b_sehra").value = "6:00 PM";
-          document.getElementById("f_b_departure").value = "6:30 PM";
+          setAdminSubEventValue("f_b_sehra", "6:00 PM");
+          setAdminSubEventValue("f_b_departure", "6:30 PM");
           document.getElementById("f_b_time").value = side === "bride" ? "7:00 PM" : "Sehra Bandi: 6:00 PM · Departure: 6:30 PM";
-          document.getElementById("f_b_arrival").value = "7:00 PM";
-          document.getElementById("f_b_nikkah").value = "8:00 PM";
-          document.getElementById("f_b_dinner").value = "9:00 PM";
-          document.getElementById("f_b_rukhsati").value = "10:00 PM";
+          setAdminSubEventValue("f_b_arrival", "7:00 PM");
+          setAdminSubEventValue("f_b_nikkah", "8:00 PM");
+          setAdminSubEventValue("f_b_dinner", "9:00 PM");
+          setAdminSubEventValue("f_b_rukhsati", "10:00 PM");
         }
+        if (side === "groom") syncGroomBaraatTime();
       });
     }
 
@@ -1461,19 +1771,19 @@
         const mt = wMealSel.value;
         if (mt === "lunch") {
           document.getElementById("f_w_time").value = "1:30 PM";
-          document.getElementById("f_w_arrival").value = "1:30 PM";
-          document.getElementById("f_w_meal_time").value = "2:30 PM";
-          document.getElementById("f_w_dua").value = "4:00 PM";
+          setAdminSubEventValue("f_w_arrival", "1:30 PM");
+          setAdminSubEventValue("f_w_meal_time", "2:30 PM");
+          setAdminSubEventValue("f_w_dua", "4:00 PM");
         } else if (mt === "hitea") {
           document.getElementById("f_w_time").value = "4:30 PM";
-          document.getElementById("f_w_arrival").value = "4:30 PM";
-          document.getElementById("f_w_meal_time").value = "5:30 PM";
-          document.getElementById("f_w_dua").value = "6:30 PM";
+          setAdminSubEventValue("f_w_arrival", "4:30 PM");
+          setAdminSubEventValue("f_w_meal_time", "5:30 PM");
+          setAdminSubEventValue("f_w_dua", "6:30 PM");
         } else {
           document.getElementById("f_w_time").value = "7:00 PM";
-          document.getElementById("f_w_arrival").value = "7:00 PM";
-          document.getElementById("f_w_meal_time").value = "8:30 PM";
-          document.getElementById("f_w_dua").value = "10:00 PM";
+          setAdminSubEventValue("f_w_arrival", "7:00 PM");
+          setAdminSubEventValue("f_w_meal_time", "8:30 PM");
+          setAdminSubEventValue("f_w_dua", "10:00 PM");
         }
       });
     }
@@ -1686,9 +1996,9 @@
       const b = ev.baraat || ev.barat || {};
       const w = ev.walima || {};
 
-      const hasM = Boolean(m.date || m.venue || m.time || m.rasmTime || m.mealTime);
-      const hasB = Boolean(b.date || b.venue || b.time || b.sehraTime || b.arrival || b.nikkah || b.dinner || b.mealTime);
-      const hasW = Boolean(w.date || w.venue || w.time || w.arrival || w.mealTime || w.lunch || w.dinner);
+      const hasM = Boolean(m.date || m.venue || m.time || m.arrival || m.rasmTime || m.mealTime || (m.subSchedule && m.subSchedule.length));
+      const hasB = Boolean(b.date || b.venue || b.time || b.sehraTime || b.arrival || b.nikkah || b.dinner || b.mealTime || (b.subSchedule && b.subSchedule.length));
+      const hasW = Boolean(w.date || w.venue || w.time || w.arrival || w.mealTime || w.lunch || w.dinner || w.duaTime || (w.subSchedule && w.subSchedule.length));
 
       window.activeClientCustomSubSchedules = {
         mehndi: m.subSchedule || [],
@@ -1696,26 +2006,39 @@
         walima: w.subSchedule || []
       };
 
+      function applyClientSubField(inputId, val, fallbackVal = "") {
+        const el = document.getElementById(inputId);
+        if (!el) return;
+        const resolved = val !== undefined ? String(val || "").trim() : fallbackVal;
+        if (!resolved) {
+          markAdminSubEventRemoved(inputId, true);
+        } else {
+          markAdminSubEventRemoved(inputId, false);
+          el.value = resolved;
+        }
+      }
+
       // Mehndi
       if (hasM) {
         const mDate = m.date || "";
-        const mTime = m.time || "7:00 PM";
+        const mMealType = m.mealType || "dinner";
+        const mTime = m.time || m.arrival || (mMealType === "lunch" ? "1:30 PM" : "7:00 PM");
         document.getElementById("f_m_dt").value = mDate.includes("T") ? mDate.slice(0, 16) : (mDate ? `${mDate}T19:00` : "");
         document.getElementById("f_m_date").value = mDate ? formatDisplayDate(mDate, "en") : "";
         document.getElementById("f_m_dateUr").value = mDate ? formatDisplayDate(mDate, "ur") : "";
         document.getElementById("f_m_time").value = mTime;
-        if (document.getElementById("f_m_rasm")) document.getElementById("f_m_rasm").value = m.rasmTime || "8:30 PM";
-        if (document.getElementById("f_m_meal_type")) document.getElementById("f_m_meal_type").value = m.mealType || "dinner";
-        if (document.getElementById("f_m_meal_time")) document.getElementById("f_m_meal_time").value = m.mealTime || m.dinner || m.lunch || "9:30 PM";
+        if (document.getElementById("f_m_meal_type")) document.getElementById("f_m_meal_type").value = mMealType;
+        applyClientSubField("f_m_arrival", m.arrival !== undefined ? m.arrival : m.time, "7:00 PM");
+        applyClientSubField("f_m_rasm", m.rasmTime, "");
+        const mMealVal = m.mealTime !== undefined ? m.mealTime : (m.dinner !== undefined ? m.dinner : m.lunch);
+        applyClientSubField("f_m_meal_time", mMealVal, "");
+        renderAdminCustomSubRows("mehndi", m.subSchedule || []);
         document.getElementById("f_m_venue").value = m.venue || "";
         document.getElementById("f_m_addr").value = m.address || "";
         document.getElementById("f_m_map").value = m.mapUrl || "";
         document.getElementById("f_m_rsvp").value = m.rsvpPhone || client.clientPhone || "+923012345678";
       } else {
-        ["f_m_dt","f_m_date","f_m_dateUr","f_m_time","f_m_rasm","f_m_meal_time","f_m_venue","f_m_addr","f_m_map","f_m_rsvp"].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.value = "";
-        });
+        clearAdminCeremonySection("mehndi");
       }
 
       // Baraat
@@ -1723,25 +2046,27 @@
         const bDate = b.date || "";
         let bTime = b.time || "";
         if (side === "groom") {
-          const sTime = b.sehraTime || "4:30 PM";
-          const dTime = b.departureTime || "5:30 PM";
-          if (document.getElementById("f_b_sehra")) document.getElementById("f_b_sehra").value = sTime;
-          if (document.getElementById("f_b_departure")) document.getElementById("f_b_departure").value = dTime;
+          const sTime = b.sehraTime !== undefined ? b.sehraTime : "";
+          const dTime = b.departureTime !== undefined ? b.departureTime : "";
+          applyClientSubField("f_b_sehra", b.sehraTime, "");
+          applyClientSubField("f_b_departure", b.departureTime, "");
           if (sTime && dTime && !bTime) {
             bTime = `Sehra Bandi: ${sTime} · Departure: ${dTime}`;
           }
         } else {
-          if (!bTime) bTime = "7:30 PM";
+          if (!bTime) bTime = b.arrival || "7:30 PM";
         }
         document.getElementById("f_b_dt").value = bDate.includes("T") ? bDate.slice(0, 16) : (bDate ? `${bDate}T19:00` : "");
         document.getElementById("f_b_date").value = bDate ? formatDisplayDate(bDate, "en") : "";
         document.getElementById("f_b_dateUr").value = bDate ? formatDisplayDate(bDate, "ur") : "";
         document.getElementById("f_b_time").value = bTime;
-        document.getElementById("f_b_arrival").value = b.arrival || "7:30 PM";
-        document.getElementById("f_b_nikkah").value = b.nikkah || "8:30 PM";
         if (document.getElementById("f_b_meal_type")) document.getElementById("f_b_meal_type").value = b.mealType || "dinner";
-        document.getElementById("f_b_dinner").value = b.mealTime || b.dinner || b.lunch || "9:30 PM";
-        document.getElementById("f_b_rukhsati").value = b.rukhsati || "10:30 PM";
+        applyClientSubField("f_b_arrival", b.arrival, "");
+        applyClientSubField("f_b_nikkah", b.nikkah, "");
+        const bMealVal = b.mealTime !== undefined ? b.mealTime : (b.dinner !== undefined ? b.dinner : b.lunch);
+        applyClientSubField("f_b_dinner", bMealVal, "");
+        applyClientSubField("f_b_rukhsati", b.rukhsati, "");
+        renderAdminCustomSubRows("baraat", b.subSchedule || []);
         document.getElementById("f_b_tagline_ur").value = b.taglineUrdu || (side === "bride" ? "دعاؤں کے سائے میں رخصتی" : "دل والے دلہنیا لے جا رہے ہیں");
         document.getElementById("f_b_tagline_en").value = b.taglineRoman || (side === "bride" ? "Duaon Kay Saaye Mein Rukhsati" : "Dil Walay Dulhania Le Ja Rahay Hain");
         document.getElementById("f_b_venue").value = b.venue || "";
@@ -1749,34 +2074,30 @@
         document.getElementById("f_b_map").value = b.mapUrl || "";
         document.getElementById("f_b_rsvp").value = b.rsvpPhone || client.clientPhone || "+923012345678";
       } else {
-        ["f_b_dt","f_b_date","f_b_dateUr","f_b_time","f_b_sehra","f_b_departure","f_b_arrival","f_b_nikkah","f_b_dinner","f_b_rukhsati","f_b_venue","f_b_addr","f_b_map","f_b_rsvp"].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.value = "";
-        });
+        clearAdminCeremonySection("baraat");
       }
 
       // Walima
       if (hasW) {
         const wDate = w.date || "";
         const wMealType = w.mealType || "dinner";
-        const wTime = w.time || (wMealType === "lunch" ? "1:30 PM" : "7:30 PM");
+        const wTime = w.time || w.arrival || (wMealType === "lunch" ? "1:30 PM" : "7:30 PM");
         document.getElementById("f_w_dt").value = wDate.includes("T") ? wDate.slice(0, 16) : (wDate ? `${wDate}T19:00` : "");
         document.getElementById("f_w_date").value = wDate ? formatDisplayDate(wDate, "en") : "";
         document.getElementById("f_w_dateUr").value = wDate ? formatDisplayDate(wDate, "ur") : "";
         document.getElementById("f_w_time").value = wTime;
-        if (document.getElementById("f_w_arrival")) document.getElementById("f_w_arrival").value = w.arrival || (wMealType === "lunch" ? "1:30 PM" : "7:00 PM");
         if (document.getElementById("f_w_meal_type")) document.getElementById("f_w_meal_type").value = wMealType;
-        if (document.getElementById("f_w_meal_time")) document.getElementById("f_w_meal_time").value = w.mealTime || w.lunch || w.dinner || (wMealType === "lunch" ? "2:30 PM" : "8:45 PM");
-        if (document.getElementById("f_w_dua")) document.getElementById("f_w_dua").value = w.duaTime || (wMealType === "lunch" ? "4:00 PM" : "10:30 PM");
+        applyClientSubField("f_w_arrival", w.arrival !== undefined ? w.arrival : w.time, "");
+        const wMealVal = w.mealTime !== undefined ? w.mealTime : (w.lunch !== undefined ? w.lunch : w.dinner);
+        applyClientSubField("f_w_meal_time", wMealVal, "");
+        applyClientSubField("f_w_dua", w.duaTime, "");
+        renderAdminCustomSubRows("walima", w.subSchedule || []);
         document.getElementById("f_w_venue").value = w.venue || "";
         document.getElementById("f_w_addr").value = w.address || "";
         document.getElementById("f_w_map").value = w.mapUrl || "";
         document.getElementById("f_w_rsvp").value = w.rsvpPhone || client.clientPhone || "+923012345678";
       } else {
-        ["f_w_dt","f_w_date","f_w_dateUr","f_w_time","f_w_arrival","f_w_meal_time","f_w_dua","f_w_venue","f_w_addr","f_w_map","f_w_rsvp"].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.value = "";
-        });
+        clearAdminCeremonySection("walima");
       }
 
       // Snippet feedback
@@ -2039,6 +2360,10 @@
     document.getElementById("loadDemoBtn").addEventListener("click", fillSampleData);
     document.getElementById("clearFormBtn").addEventListener("click", () => {
       document.getElementById("cardGeneratorForm").reset();
+      ["mehndi", "baraat", "walima"].forEach(k => {
+        restoreAdminCeremonySubEvents(k);
+        renderAdminCustomSubRows(k, []);
+      });
       if (document.getElementById("f_theme")) document.getElementById("f_theme").value = "emerald";
       currentHosts = [{ name: "", nameUrdu: "", phone: "+92 " }];
       renderHostsInputs();
@@ -2159,6 +2484,7 @@
       const mDate = document.getElementById("f_m_date").value.trim();
       const mDateUr = document.getElementById("f_m_dateUr").value.trim();
       const mTime = document.getElementById("f_m_time").value.trim();
+      const mArrival = document.getElementById("f_m_arrival") ? document.getElementById("f_m_arrival").value.trim() : "";
       const mVenue = document.getElementById("f_m_venue").value.trim();
       const mAddr = document.getElementById("f_m_addr").value.trim();
       const mMap = document.getElementById("f_m_map").value.trim();
@@ -2166,7 +2492,8 @@
       const mRasm = document.getElementById("f_m_rasm") ? document.getElementById("f_m_rasm").value.trim() : "";
       const mMealType = document.getElementById("f_m_meal_type") ? document.getElementById("f_m_meal_type").value : "dinner";
       const mMealTime = document.getElementById("f_m_meal_time") ? document.getElementById("f_m_meal_time").value.trim() : "";
-      const hasMehndi = Boolean(mDate || mDt || mVenue || mTime);
+      const mCustomSubs = getAdminCustomSubRows("mehndi");
+      const hasMehndi = Boolean(mDate || mDt || mVenue || mTime || mArrival || mRasm || mMealTime || mCustomSubs.length);
 
       // Baraat fields
       const bDt = document.getElementById("f_b_dt").value.trim();
@@ -2186,7 +2513,8 @@
       const bAddr = document.getElementById("f_b_addr").value.trim();
       const bMap = document.getElementById("f_b_map").value.trim();
       const bRsvp = document.getElementById("f_b_rsvp").value.trim();
-      const hasBaraat = Boolean(bDate || bDt || bVenue || bTime || bSehra || bArrival);
+      const bCustomSubs = getAdminCustomSubRows("baraat");
+      const hasBaraat = Boolean(bDate || bDt || bVenue || bTime || bSehra || bArrival || bNikkah || bDinner || bRukhsati || bCustomSubs.length);
 
       // Walima fields
       const wDt = document.getElementById("f_w_dt").value.trim();
@@ -2201,14 +2529,13 @@
       const wAddr = document.getElementById("f_w_addr").value.trim();
       const wMap = document.getElementById("f_w_map").value.trim();
       const wRsvp = document.getElementById("f_w_rsvp").value.trim();
-      const hasWalima = Boolean(wDate || wDt || wVenue || wTime || wArrival || wMealTime);
+      const wCustomSubs = getAdminCustomSubRows("walima");
+      const hasWalima = Boolean(wDate || wDt || wVenue || wTime || wArrival || wMealTime || wDua || wCustomSubs.length);
 
       if (!hasMehndi && !hasBaraat && !hasWalima) {
         showToast("Please fill in at least 1 event (Mehndi, Baraat, or Walima)!");
         return;
       }
-
-      const customSubs = window.activeClientCustomSubSchedules || {};
 
       const mehndiObj = hasMehndi ? {
         type: "mehndi",
@@ -2220,12 +2547,13 @@
         displayTime: mTime,
         displayTimeUrdu: mTime,
         time: mTime,
+        arrival: mArrival,
         rasmTime: mRasm,
         mealType: mMealType,
         mealTime: mMealTime,
         dinner: mMealType === "dinner" ? mMealTime : "",
         lunch: mMealType === "lunch" ? mMealTime : "",
-        subSchedule: customSubs.mehndi || [],
+        subSchedule: mCustomSubs,
         venue: mVenue,
         venueUrdu: mVenue,
         address: mAddr,
@@ -2261,7 +2589,7 @@
         rukhsati: bRukhsati,
         rukhsatiTime: bRukhsati,
         rukhsatiTimeUrdu: bRukhsati,
-        subSchedule: customSubs.baraat || [],
+        subSchedule: bCustomSubs,
         taglineUrdu: bTaglineUr,
         taglineRoman: bTaglineEn,
         venue: bVenue,
@@ -2288,7 +2616,7 @@
         dinner: wMealType === "dinner" ? wMealTime : "",
         lunch: wMealType === "lunch" ? wMealTime : "",
         duaTime: wDua,
-        subSchedule: customSubs.walima || [],
+        subSchedule: wCustomSubs,
         venue: wVenue,
         venueUrdu: wVenue,
         address: wAddr,
