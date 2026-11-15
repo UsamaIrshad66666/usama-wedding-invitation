@@ -3535,7 +3535,15 @@
 
     const CARD_VARIANTS = {
       "walima": ["walima"],
+      "barat": ["baraat"],
+      "baraat": ["baraat"],
+      "mehndi": ["mehndi"],
+      "mehndi-barat": ["mehndi", "baraat"],
+      "mehndi-baraat": ["mehndi", "baraat"],
+      "barat-walima": ["baraat", "walima"],
+      "baraat-walima": ["baraat", "walima"],
       "mehndi-walima": ["mehndi", "walima"],
+      "mehndi-barat-walima": ["mehndi", "baraat", "walima"],
       "all": ["mehndi", "baraat", "walima"]
     };
 
@@ -3987,13 +3995,31 @@
 
     function getUrlState() {
       const p = new URLSearchParams(window.location.search);
-      const pathLower = decodeURIComponent(window.location.pathname || "").toLowerCase();
-      let rawCard = p.get("card");
+      let rawCard = (p.get("card") || p.get("event") || "").toLowerCase().trim();
       if (!rawCard) {
+        const segments = decodeURIComponent(window.location.pathname || "").split("/").filter(Boolean);
+        if (segments.length >= 2) {
+          const last = segments[segments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+          if (CARD_VARIANTS[last]) rawCard = last;
+        } else if (segments.length === 1) {
+          const single = segments[0].toLowerCase().replace(/\.(html|php)$/i, "");
+          if (CARD_VARIANTS[single]) rawCard = single;
+        }
+      }
+      if (!rawCard) {
+        const pathLower = decodeURIComponent(window.location.pathname || "").toLowerCase();
         if (pathLower.includes("mehndi-walima")) {
           rawCard = "mehndi-walima";
+        } else if (pathLower.includes("mehndi-barat") || pathLower.includes("mehndi-baraat")) {
+          rawCard = "mehndi-barat";
+        } else if (pathLower.includes("barat-walima") || pathLower.includes("baraat-walima")) {
+          rawCard = "barat-walima";
         } else if (pathLower.includes("walima")) {
           rawCard = "walima";
+        } else if (pathLower.includes("barat") || pathLower.includes("baraat")) {
+          rawCard = "baraat";
+        } else if (pathLower.includes("mehndi")) {
+          rawCard = "mehndi";
         }
       }
       const card = CARD_VARIANTS[rawCard] ? rawCard : "all";

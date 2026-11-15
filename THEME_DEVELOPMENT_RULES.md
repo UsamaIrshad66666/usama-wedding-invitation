@@ -280,15 +280,81 @@ Dynamic invitations encode wedding details into a Base64 URL parameter (`?invite
 
 ---
 
-## 8. Cloudflare Edge Routing & Crawler Metadata
+## 8. Multi-Event Link Architecture & Edge Routing
 
-`_worker.js` must intercept requests to inject customized Open Graph tags for social crawlers before returning edge responses:
+All themes and invitation links adhere to the unified Mughal-style URL convention:
+```
+https://e-dawatnama.com/{couple-slug}/{event-variant}?invite={payload}&theme={theme}
+```
 
-1. **Path Mapping**:
-   Any path like `/{couple-slug}/{event-variant}` must route directly to the appropriate theme HTML file without changing the URL bar or returning a 404.
-2. **Social Media Previews**:
-   - `og:title`: `${couple} — ${eventTitle}` (e.g. *Zayan & Rania — Walima Reception*).
-   - `og:description`: Personalized invitation text tailored to that specific event.
+### 8.1 URL Path & Variant Standards
+- **Couple Slug**:
+  - Groom's family card: `${slugify(groom)}-and-${slugify(bride)}` (e.g. `zayan-and-rania`)
+  - Bride's family card: `${slugify(bride)}-with-${slugify(groom)}` (e.g. `rania-with-zayan`)
+- **Event Variant Slugs**:
+  - `all` or `mehndi-barat-walima`: Complete wedding invitation with all active days.
+  - `barat`: Single-day Barat & Rukhsati ceremony invitation.
+  - `walima`: Single-day Walima Reception invitation.
+  - `mehndi`: Single-day Mehndi ceremony invitation.
+  - `mehndi-barat`: 2-day Mehndi + Barat combination.
+  - `barat-walima`: 2-day Barat + Walima combination.
+  - `mehndi-walima`: 2-day Mehndi + Walima combination.
+
+### 8.2 Mandatory Theme Variant Resolver
+Every theme must include the unified variant resolver and filtering engine:
+```javascript
+function resolveCardVariantFromUrl() {
+  const p = new URLSearchParams(window.location.search);
+  const queryVar = (p.get("card") || p.get("event") || "").toLowerCase().trim();
+  if (queryVar) return queryVar;
+
+  const pathSegments = decodeURIComponent(window.location.pathname || "").split("/").filter(Boolean);
+  if (pathSegments.length >= 2) {
+    const last = pathSegments[pathSegments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+    const known = ["all", "walima", "barat", "baraat", "mehndi", "mehndi-barat", "mehndi-baraat", "barat-walima", "baraat-walima", "mehndi-walima", "mehndi-barat-walima", "nikkah"];
+    if (known.includes(last)) return last;
+  } else if (pathSegments.length === 1) {
+    const single = pathSegments[0].toLowerCase().replace(/\.(html|php)$/i, "");
+    const known = ["walima", "barat", "baraat", "mehndi", "mehndi-barat", "barat-walima", "mehndi-walima", "all"];
+    if (known.includes(single)) return single;
+  }
+  return "all";
+}
+
+function filterEventsByVariant(list, variant) {
+  if (!variant || variant === "all" || variant === "mehndi-barat-walima") return list;
+  const norm = variant.toLowerCase().replace("baraat", "barat");
+  let allowed = [];
+  if (norm === "walima") allowed = ["walima"];
+  else if (norm === "barat") allowed = ["barat", "baraat"];
+  else if (norm === "mehndi") allowed = ["mehndi"];
+  else if (norm === "mehndi-barat") allowed = ["mehndi", "barat", "baraat"];
+  else if (norm === "barat-walima") allowed = ["barat", "baraat", "walima"];
+  else if (norm === "mehndi-walima") allowed = ["mehndi", "walima"];
+  else allowed = [norm];
+
+  const filtered = list.filter(e => {
+    const k = ((e.key || e.type || "") + "").toLowerCase().replace("baraat", "barat");
+    return allowed.includes(k);
+  });
+  return filtered.length > 0 ? filtered : list;
+}
+```
+
+### 8.3 Theme Component Adaptation Rules
+When an event variant is active (e.g. Walima only):
+1. **Hero & Date Badges**: Must target the date, time, and ceremony title of the invited ceremony (e.g. showing "Walima Reception — Sunday, October 18, 2026", not Baraat).
+2. **Timeline / Itinerary**: Must render rows exclusively for the ceremonies included in that variant.
+3. **Countdown Clock**: Must compute remaining time against the earliest ceremony of the filtered list.
+4. **Venue & RSVP**: Must provide maps and RSVP buttons corresponding to the guest's invited events.
+
+### 8.4 Cloudflare Edge Routing (`_worker.js`)
+`_worker.js` intercepts requests to serve themes and customized Open Graph tags:
+1. **Internal Rewrite**:
+   Paths like `/{couple-slug}/{event-variant}` are mapped directly to the appropriate theme HTML file (`/royal-grace`, `/burgundy-romance`, `/shahi-farman`, `/noor-e-nikkah`, or `/index.html`) using internal `env.ASSETS.fetch` without redirecting the browser.
+2. **Dynamic Social Crawler Previews**:
+   - `og:title`: `${couple} — ${eventTitle}` (e.g. *Zayan & Rania — Walima Reception* or *Zayan & Rania — Baraat & Rukhsati Ceremony*).
+   - `og:description`: Tailored to that specific ceremony.
    - `og:image`: High-resolution theme poster matching the chosen aesthetic.
 
 ---

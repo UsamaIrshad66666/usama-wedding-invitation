@@ -1654,6 +1654,12 @@
         • 📋 <strong>Order summary is copied in your clipboard!</strong>
       </div>
 
+      <div id="modalMultiLinksWrap" style="background:rgba(212,173,93,0.1); border:1px solid rgba(212,173,93,0.3); border-radius:10px; padding:12px 14px; margin-bottom:14px; text-align:left;">
+        <div style="font-size:0.84rem; font-weight:600; color:var(--gold-light); margin-bottom:6px;">✦ Prepared Multi-Event Guest Links ✦</div>
+        <div id="modalLinksList" style="font-size:0.78rem; color:var(--cream); display:flex; flex-direction:column; gap:5px;">
+        </div>
+      </div>
+
       <p id="modalOrderSummary" style="margin-bottom:1.1rem;">
 
         Your order has been saved to our Admin Studio and your complete order summary is copied in your clipboard. If WhatsApp did not open automatically, tap below:
@@ -3326,6 +3332,53 @@ ${eventsWaText}${welcomingWa}`;
         copyTextToClipboard(waText);
         showToast("Order summary copied to clipboard!");
       };
+
+      const linksListEl = document.getElementById("modalLinksList");
+      if (linksListEl) {
+        const slugify = (str) => (str || "").toLowerCase().replace(/^(mr\.|mrs\.|dr\.|syed|syeda)\s+/gi, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+        const gSlug = slugify(orderData.groom) || "groom";
+        const bSlug = slugify(orderData.bride) || "bride";
+        const cSlug = side === "bride" ? `${bSlug}-with-${gSlug}` : `${gSlug}-and-${bSlug}`;
+        const hasM = Boolean(orderData.eventsList && orderData.eventsList.some(e => e.type === "mehndi"));
+        const hasB = Boolean(orderData.eventsList && orderData.eventsList.some(e => e.type === "barat" || e.type === "baraat"));
+        const hasW = Boolean(orderData.eventsList && orderData.eventsList.some(e => e.type === "walima"));
+
+        const previewList = [];
+        if (hasM && hasB && hasW) {
+          previewList.push({ label: "👑 All Days (Complete)", path: `/${cSlug}/all` });
+          previewList.push({ label: "🐎 Barat Guests Only", path: `/${cSlug}/barat` });
+          previewList.push({ label: "🍽️ Walima Guests Only", path: `/${cSlug}/walima` });
+          previewList.push({ label: "🌿 Mehndi Friends Only", path: `/${cSlug}/mehndi` });
+        } else if (hasM && hasB) {
+          previewList.push({ label: "💫 Mehndi & Barat (2-Day)", path: `/${cSlug}/mehndi-barat` });
+          previewList.push({ label: "🐎 Barat Guests Only", path: `/${cSlug}/barat` });
+          previewList.push({ label: "🌿 Mehndi Friends Only", path: `/${cSlug}/mehndi` });
+        } else if (hasB && hasW) {
+          previewList.push({ label: "🕊️ Barat & Walima (2-Day)", path: `/${cSlug}/barat-walima` });
+          previewList.push({ label: "🐎 Barat Guests Only", path: `/${cSlug}/barat` });
+          previewList.push({ label: "🍽️ Walima Guests Only", path: `/${cSlug}/walima` });
+        } else if (hasM && hasW) {
+          previewList.push({ label: "🌸 Mehndi & Walima (2-Day)", path: `/${cSlug}/mehndi-walima` });
+          previewList.push({ label: "🍽️ Walima Guests Only", path: `/${cSlug}/walima` });
+          previewList.push({ label: "🌿 Mehndi Friends Only", path: `/${cSlug}/mehndi` });
+        } else {
+          if (hasB) previewList.push({ label: "🐎 Barat & Rukhsati", path: `/${cSlug}/barat` });
+          if (hasW) previewList.push({ label: "🍽️ Walima Reception", path: `/${cSlug}/walima` });
+          if (hasM) previewList.push({ label: "🌿 Mehndi Ceremony", path: `/${cSlug}/mehndi` });
+          if (!previewList.length) {
+            previewList.push({ label: "👑 All Ceremonies (Complete)", path: `/${cSlug}/all` });
+            previewList.push({ label: "🐎 Barat Guests Only", path: `/${cSlug}/barat` });
+            previewList.push({ label: "🍽️ Walima Guests Only", path: `/${cSlug}/walima` });
+          }
+        }
+
+        linksListEl.innerHTML = previewList.map(item => `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); padding:4px 8px; border-radius:6px;">
+            <span>${item.label}</span>
+            <code style="color:var(--gold-primary); font-size:0.75rem;">e-dawatnama.com${item.path}</code>
+          </div>
+        `).join("");
+      }
 
       modal.classList.add("show");
       showToast("✅ Order placed! Sent to Admin Panel & copied to clipboard.");

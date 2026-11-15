@@ -4294,7 +4294,46 @@
           sealEl.textContent = `${gEn.charAt(0).toUpperCase()}&${bEn.charAt(0).toUpperCase()}`;
         }
 
-        activeNormalizedEvents = extractNormalizedEvents(dynData, isBride);
+        function resolveCardVariantFromUrl() {
+          const p = new URLSearchParams(window.location.search);
+          const queryVar = (p.get("card") || p.get("event") || "").toLowerCase().trim();
+          if (queryVar) return queryVar;
+
+          const pathSegments = decodeURIComponent(window.location.pathname || "").split("/").filter(Boolean);
+          if (pathSegments.length >= 2) {
+            const last = pathSegments[pathSegments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+            const known = ["all", "walima", "barat", "baraat", "mehndi", "mehndi-barat", "mehndi-baraat", "barat-walima", "baraat-walima", "mehndi-walima", "mehndi-barat-walima", "nikkah"];
+            if (known.includes(last)) return last;
+          } else if (pathSegments.length === 1) {
+            const single = pathSegments[0].toLowerCase().replace(/\.(html|php)$/i, "");
+            const known = ["walima", "barat", "baraat", "mehndi", "mehndi-barat", "barat-walima", "mehndi-walima", "all"];
+            if (known.includes(single)) return single;
+          }
+          return "all";
+        }
+
+        function filterEventsByVariant(list, variant) {
+          if (!variant || variant === "all" || variant === "mehndi-barat-walima") return list;
+          const norm = variant.toLowerCase().replace("baraat", "barat");
+          let allowed = [];
+          if (norm === "walima") allowed = ["walima"];
+          else if (norm === "barat") allowed = ["barat", "baraat"];
+          else if (norm === "mehndi") allowed = ["mehndi"];
+          else if (norm === "mehndi-barat") allowed = ["mehndi", "barat", "baraat"];
+          else if (norm === "barat-walima") allowed = ["barat", "baraat", "walima"];
+          else if (norm === "mehndi-walima") allowed = ["mehndi", "walima"];
+          else allowed = [norm];
+
+          const filtered = list.filter(e => {
+            const k = ((e.key || e.type || "") + "").toLowerCase().replace("baraat", "barat");
+            return allowed.includes(k);
+          });
+          return filtered.length > 0 ? filtered : list;
+        }
+
+        const rawEvents = extractNormalizedEvents(dynData, isBride);
+        const cardVariant = resolveCardVariantFromUrl();
+        activeNormalizedEvents = filterEventsByVariant(rawEvents, cardVariant);
 
         if (activeNormalizedEvents.length === 1) {
           const ev0 = activeNormalizedEvents[0];

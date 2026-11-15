@@ -73,24 +73,49 @@ function resolveMetadata(url) {
         const couple = isBride && b ? `${b} with ${g}` : `${g} with ${b}`;
         const cardTheme = (themeParam || data.theme || (pathLower.includes("burgundy") ? "burgundy" : "") || "").toLowerCase();
 
-        const ev = data.events || {};
-        const hasMehndi = ev.mehndi && (ev.mehndi.displayDate || ev.mehndi.dateTime);
-        const hasBarat = ev.baraat && (ev.baraat.displayDate || ev.baraat.dateTime);
-        const hasWalima = ev.walima && (ev.walima.displayDate || ev.walima.dateTime);
+        const segments = pathDecoded.split("/").filter(Boolean);
+        let eventVariant = (url.searchParams.get("card") || url.searchParams.get("event") || "").toLowerCase().trim();
+        if (!eventVariant && segments.length >= 2) {
+          eventVariant = segments[segments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+        }
 
-        let eventTypeTitle = "Wedding Invitation";
-        if (hasMehndi && hasBarat && !hasWalima) {
-          eventTypeTitle = isBride ? "Baraat & Mehndi Invitation" : "Mehndi & Baraat Invitation";
-        } else if (hasBarat && !hasMehndi && !hasWalima) {
-          eventTypeTitle = "Baraat & Rukhsati Invitation";
-        } else if (hasWalima && !hasBarat && !hasMehndi) {
+        let eventTypeTitle = "";
+        if (eventVariant === "walima") {
           eventTypeTitle = "Walima Reception";
+        } else if (eventVariant === "barat" || eventVariant === "baraat") {
+          eventTypeTitle = isBride ? "Baraat & Rukhsati Ceremony" : "Baraat Ceremony";
+        } else if (eventVariant === "mehndi") {
+          eventTypeTitle = "Mehndi Ceremony";
+        } else if (eventVariant === "mehndi-barat" || eventVariant === "mehndi-baraat") {
+          eventTypeTitle = isBride ? "Baraat & Mehndi Celebrations" : "Mehndi & Baraat Celebrations";
+        } else if (eventVariant === "barat-walima" || eventVariant === "baraat-walima") {
+          eventTypeTitle = "Baraat & Walima Celebrations";
+        } else if (eventVariant === "mehndi-walima") {
+          eventTypeTitle = "Mehndi & Walima Celebrations";
+        } else if (eventVariant === "all" || eventVariant === "mehndi-barat-walima") {
+          eventTypeTitle = "Wedding Celebrations";
+        }
+
+        if (!eventTypeTitle) {
+          const ev = data.events || {};
+          const hasMehndi = ev.mehndi && (ev.mehndi.displayDate || ev.mehndi.dateTime);
+          const hasBarat = (ev.baraat || ev.barat) && ((ev.baraat && (ev.baraat.displayDate || ev.baraat.dateTime)) || (ev.barat && (ev.barat.displayDate || ev.barat.dateTime)));
+          const hasWalima = ev.walima && (ev.walima.displayDate || ev.walima.dateTime);
+
+          eventTypeTitle = "Wedding Invitation";
+          if (hasMehndi && hasBarat && !hasWalima) {
+            eventTypeTitle = isBride ? "Baraat & Mehndi Invitation" : "Mehndi & Baraat Invitation";
+          } else if (hasBarat && !hasMehndi && !hasWalima) {
+            eventTypeTitle = "Baraat & Rukhsati Invitation";
+          } else if (hasWalima && !hasBarat && !hasMehndi) {
+            eventTypeTitle = "Walima Reception";
+          }
         }
 
         return {
           title: `${couple} — ${eventTypeTitle}`,
           desc: `With the grace of Allah Almighty, you are cordially invited to celebrate the ${eventTypeTitle} of ${couple}.`,
-          image: THEME_IMAGES[cardTheme] || THEME_IMAGES.burgundy || THEME_IMAGES.emerald
+          image: THEME_IMAGES[cardTheme] || THEME_IMAGES["royal-grace"] || THEME_IMAGES.burgundy || THEME_IMAGES.emerald
         };
       }
     } catch (e) {
@@ -222,29 +247,39 @@ function resolveMetadata(url) {
 // 7. (Moved to Rule 0 for priority metadata resolution)
 
   // 8. Dynamic Couple Slug from URL Path:
-  // e.g. /Hamza-and-Fatima-wedding-invitation, /Zain-with-Amina-wedding-invitation, /Ali-and-Sara
+  // e.g. /zayan-and-rania/walima, /Hamza-and-Fatima-wedding-invitation, /Ali-and-Sara/barat
   const segments = pathDecoded.split("/").filter(Boolean);
   if (segments.length > 0) {
-    const slug = segments[segments.length - 1]
+    let coupleSlug = segments[0]
       .replace(/\.(html|php)$/i, "")
       .replace(/-wedding-invitation$/i, "");
+    let eventVariant = segments.length >= 2 ? segments[1].toLowerCase().replace(/\.(html|php)$/i, "") : "";
 
     let couple = "";
-    if (slug.includes("-and-")) {
-      const parts = slug.split("-and-");
+    if (coupleSlug.includes("-and-")) {
+      const parts = coupleSlug.split("-and-");
       couple = `${formatName(parts[0])} & ${formatName(parts[1])}`;
-    } else if (slug.includes("-with-")) {
-      const parts = slug.split("-with-");
+    } else if (coupleSlug.includes("-with-")) {
+      const parts = coupleSlug.split("-with-");
       couple = `${formatName(parts[0])} with ${formatName(parts[1])}`;
-    } else if (slug.includes("-&-")) {
-      const parts = slug.split("-&-");
+    } else if (coupleSlug.includes("-&-")) {
+      const parts = coupleSlug.split("-&-");
       couple = `${formatName(parts[0])} & ${formatName(parts[1])}`;
     }
 
     if (couple) {
+      let eventTypeTitle = "Wedding Invitation";
+      if (eventVariant === "walima") eventTypeTitle = "Walima Reception";
+      else if (eventVariant === "barat" || eventVariant === "baraat") eventTypeTitle = "Baraat Ceremony";
+      else if (eventVariant === "mehndi") eventTypeTitle = "Mehndi Ceremony";
+      else if (eventVariant === "mehndi-barat" || eventVariant === "mehndi-baraat") eventTypeTitle = "Mehndi & Baraat Celebrations";
+      else if (eventVariant === "barat-walima" || eventVariant === "baraat-walima") eventTypeTitle = "Baraat & Walima Celebrations";
+      else if (eventVariant === "mehndi-walima") eventTypeTitle = "Mehndi & Walima Celebrations";
+      else if (eventVariant === "all") eventTypeTitle = "Wedding Celebrations";
+
       return {
-        title: `${couple} — Wedding Invitation`,
-        desc: `With the grace of Allah Almighty, you are cordially invited to celebrate the wedding ceremonies of ${couple}.`,
+        title: `${couple} — ${eventTypeTitle}`,
+        desc: `With the grace of Allah Almighty, you are cordially invited to celebrate the ${eventTypeTitle} of ${couple}.`,
         image: themeImg
       };
     }
@@ -252,6 +287,79 @@ function resolveMetadata(url) {
 
   // 9. Root Homepage (e-dawatnama.com / e-dawatnama.com/)
   return DEFAULT_BRAND;
+}
+
+const RESERVED_FIRST_SEGMENTS = new Set([
+  "about", "admin", "order", "form", "demos", "samples", "templates",
+  "royal-grace", "demo-royal-grace", "demo-grace", "grace", "nikkah-royal-grace",
+  "burgundy-romance", "burgundy", "demo-burgundy", "velvet-romance", "theme",
+  "noor-e-nikkah", "noor-nikkah", "ivory-gold", "ivory",
+  "shahi-farman", "farman", "assets", "api", "favicon.ico", "robots.txt", "sitemap.xml"
+]);
+
+function getThemeAssetPath(themeKey) {
+  const t = (themeKey || "").toLowerCase().trim();
+  if (t === "royal-grace" || t === "grace") return "/royal-grace";
+  if (t === "burgundy" || t === "burgundy-romance" || t === "velvet-romance") return "/burgundy-romance";
+  if (t === "noor-e-nikkah" || t === "noor-nikkah" || t === "ivory" || t === "ivory-gold") return "/noor-e-nikkah";
+  if (t === "shahi-farman" || t === "farman") return "/shahi-farman";
+  return "/index.html";
+}
+
+function extractThemeFromRequest(url) {
+  const queryTheme = (url.searchParams.get("theme") || "").toLowerCase().trim();
+  if (queryTheme) return queryTheme;
+
+  const payload = url.searchParams.get("invite") || url.searchParams.get("d");
+  if (payload) {
+    try {
+      const raw = atob(payload);
+      let data = null;
+      try { data = JSON.parse(decodeURIComponent(raw)); }
+      catch (e1) {
+        try { data = JSON.parse(raw); }
+        catch (e2) {}
+      }
+      if (data && data.theme) return (data.theme || "").toLowerCase().trim();
+    } catch (e) {}
+  }
+  return "";
+}
+
+function applyMetaRewriter(response, meta, urlHref) {
+  const title = (meta && meta.title) || DEFAULT_BRAND.title;
+  const desc = (meta && meta.desc) || DEFAULT_BRAND.desc;
+  const image = (meta && meta.image) || DEFAULT_BRAND.image;
+
+  class MetaSetter {
+    constructor(content) {
+      this.content = content;
+    }
+    element(el) {
+      if (this.content) el.setAttribute("content", this.content);
+    }
+  }
+
+  class TitleSetter {
+    constructor(text) {
+      this.text = text;
+    }
+    element(el) {
+      if (this.text) el.setInnerContent(this.text);
+    }
+  }
+
+  const rewriter = new HTMLRewriter()
+    .on("title", new TitleSetter(title))
+    .on('meta[property="og:title"]', new MetaSetter(title))
+    .on('meta[name="twitter:title"]', new MetaSetter(title))
+    .on('meta[property="og:description"]', new MetaSetter(desc))
+    .on('meta[name="twitter:description"]', new MetaSetter(desc))
+    .on('meta[property="og:image"]', new MetaSetter(image))
+    .on('meta[name="twitter:image"]', new MetaSetter(image))
+    .on('meta[property="og:url"]', new MetaSetter(urlHref));
+
+  return rewriter.transform(response);
 }
 
 export default {
@@ -267,50 +375,41 @@ export default {
         return env.ASSETS.fetch(request);
       }
 
-      // 1b. Direct asset fetch for standalone themes (clean URLs without .html to prevent 308 canonical loops)
+      // 1b. Direct asset fetch for standalone pages and theme aliases
+      let targetAsset = "";
       if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/royal-grace";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/burgundy-romance";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/noor-e-nikkah";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/shahi-farman" || lower === "/farman") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/shahi-farman";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/demos";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/about") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/about";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/order" || lower === "/form") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/order";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
-      if (lower === "/admin") {
-        const assetUrl = new URL(request.url);
-        assetUrl.pathname = "/admin";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        targetAsset = "/royal-grace";
+      } else if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
+        targetAsset = "/burgundy-romance";
+      } else if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory") {
+        targetAsset = "/noor-e-nikkah";
+      } else if (lower === "/shahi-farman" || lower === "/farman") {
+        targetAsset = "/shahi-farman";
+      } else if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
+        targetAsset = "/demos";
+      } else if (lower === "/about") {
+        targetAsset = "/about";
+      } else if (lower === "/order" || lower === "/form") {
+        targetAsset = "/order";
+      } else if (lower === "/admin") {
+        targetAsset = "/admin";
+      } else {
+        // 1c. Dynamic Multi-Event Couple Paths (e.g. /{couple}/{event} or /{couple})
+        const pathSegments = decodeURIComponent(url.pathname).split("/").filter(Boolean);
+        if (pathSegments.length >= 1 && !RESERVED_FIRST_SEGMENTS.has(pathSegments[0].toLowerCase())) {
+          const themeKey = extractThemeFromRequest(url);
+          targetAsset = getThemeAssetPath(themeKey);
+        }
       }
 
-      // 2. Fetch base response from ASSETS
-      const response = await env.ASSETS.fetch(request);
+      let response;
+      if (targetAsset) {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = targetAsset;
+        response = await env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+      } else {
+        response = await env.ASSETS.fetch(request);
+      }
 
       // If not HTML response, return as-is
       const contentType = response.headers.get("content-type") || "";
@@ -320,40 +419,7 @@ export default {
 
       // 3. Resolve dynamic metadata for social crawlers
       const meta = resolveMetadata(url) || DEFAULT_BRAND;
-      const title = meta.title || DEFAULT_BRAND.title;
-      const desc = meta.desc || DEFAULT_BRAND.desc;
-      const image = meta.image || DEFAULT_BRAND.image;
-
-      // 4. Transform HTML stream using Cloudflare HTMLRewriter
-      class MetaSetter {
-        constructor(content) {
-          this.content = content;
-        }
-        element(el) {
-          if (this.content) el.setAttribute("content", this.content);
-        }
-      }
-
-      class TitleSetter {
-        constructor(text) {
-          this.text = text;
-        }
-        element(el) {
-          if (this.text) el.setInnerContent(this.text);
-        }
-      }
-
-      const rewriter = new HTMLRewriter()
-        .on("title", new TitleSetter(title))
-        .on('meta[property="og:title"]', new MetaSetter(title))
-        .on('meta[name="twitter:title"]', new MetaSetter(title))
-        .on('meta[property="og:description"]', new MetaSetter(desc))
-        .on('meta[name="twitter:description"]', new MetaSetter(desc))
-        .on('meta[property="og:image"]', new MetaSetter(image))
-        .on('meta[name="twitter:image"]', new MetaSetter(image))
-        .on('meta[property="og:url"]', new MetaSetter(url.href));
-
-      return rewriter.transform(response);
+      return applyMetaRewriter(response, meta, url.href);
     } catch (err) {
       return env.ASSETS.fetch(request);
     }

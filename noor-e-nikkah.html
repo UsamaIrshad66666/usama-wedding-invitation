@@ -1895,12 +1895,49 @@
         I18N.ur.modalSub = `${WEDDING_DATA.groomUrdu} اور ${WEDDING_DATA.brideUrdu} کی مبارک شادی`;
         document.title = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride} — Noor-e-Nikkah Wedding Invitation`;
 
-        const activeEvents = [];
+        function resolveCardVariantFromUrl() {
+          const p = new URLSearchParams(window.location.search);
+          const queryVar = (p.get("card") || p.get("event") || "").toLowerCase().trim();
+          if (queryVar) return queryVar;
+
+          const pathSegments = decodeURIComponent(window.location.pathname || "").split("/").filter(Boolean);
+          if (pathSegments.length >= 2) {
+            const last = pathSegments[pathSegments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+            const known = ["all", "walima", "barat", "baraat", "mehndi", "mehndi-barat", "mehndi-baraat", "barat-walima", "baraat-walima", "mehndi-walima", "mehndi-barat-walima", "nikkah"];
+            if (known.includes(last)) return last;
+          } else if (pathSegments.length === 1) {
+            const single = pathSegments[0].toLowerCase().replace(/\.(html|php)$/i, "");
+            const known = ["walima", "barat", "baraat", "mehndi", "mehndi-barat", "barat-walima", "mehndi-walima", "all"];
+            if (known.includes(single)) return single;
+          }
+          return "all";
+        }
+
+        function filterEventsByVariant(list, variant) {
+          if (!variant || variant === "all" || variant === "mehndi-barat-walima") return list;
+          const norm = variant.toLowerCase().replace("baraat", "barat");
+          let allowed = [];
+          if (norm === "walima") allowed = ["walima"];
+          else if (norm === "barat") allowed = ["barat", "baraat"];
+          else if (norm === "mehndi") allowed = ["mehndi"];
+          else if (norm === "mehndi-barat") allowed = ["mehndi", "barat", "baraat"];
+          else if (norm === "barat-walima") allowed = ["barat", "baraat", "walima"];
+          else if (norm === "mehndi-walima") allowed = ["mehndi", "walima"];
+          else allowed = [norm];
+
+          const filtered = list.filter(e => {
+            const k = ((e.key || e.type || "") + "").toLowerCase().replace("baraat", "barat");
+            return allowed.includes(k);
+          });
+          return filtered.length > 0 ? filtered : list;
+        }
+
+        const rawActiveEvents = [];
         if (Array.isArray(customInvite.eventsList) && customInvite.eventsList.length > 0) {
           customInvite.eventsList.forEach(item => {
             if (!item) return;
             const normKey = (item.type === "barat" || item.type === "baraat") ? "baraat" : (item.type || "custom");
-            activeEvents.push({ key: normKey, ...item });
+            rawActiveEvents.push({ key: normKey, ...item });
           });
         } else {
           const evs = customInvite.events || {};
@@ -1908,10 +1945,13 @@
           orderKeys.forEach(k => {
             const ev = evs[k];
             if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time || ev.arrival || ev.mealTime || (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0))) {
-              activeEvents.push({ key: k, ...ev });
+              rawActiveEvents.push({ key: k, ...ev });
             }
           });
         }
+
+        const cardVariant = resolveCardVariantFromUrl();
+        const activeEvents = filterEventsByVariant(rawActiveEvents, cardVariant);
 
         if (activeEvents.length > 0) {
           const primary = activeEvents.find(e => e.key === "baraat") || activeEvents[0];
