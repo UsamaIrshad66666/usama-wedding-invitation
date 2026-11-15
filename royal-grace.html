@@ -2214,6 +2214,25 @@
         }
       }
 
+      function parseTimeToMinutes(timeStr, hasEveningContext = true) {
+        if (!timeStr) return 9999;
+        const s = String(timeStr).trim();
+        const m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/i);
+        if (!m) return 9999;
+        let hr = parseInt(m[1], 10);
+        let min = parseInt(m[2] || "0", 10);
+        let ampm = (m[3] || "").toUpperCase();
+        if (!ampm) {
+          ampm = (hr >= 1 && hr <= 11) ? "PM" : (hr === 12 ? "PM" : "AM");
+        }
+        let total24 = (hr % 12) + (ampm === "PM" ? 12 : 0);
+        let totalMins = total24 * 60 + min;
+        if (ampm === "AM" && (hr === 12 || hr <= 5) && hasEveningContext) {
+          totalMins += 1440;
+        }
+        return totalMins;
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const rawInvite = urlParams.get("invite") || urlParams.get("d");
       const customData = decodeInvitePayload(rawInvite);
@@ -2256,15 +2275,23 @@
         }
 
         // Collect active events
-        const evs = customData.events || {};
-        const orderKeys = ["mehndi", "baraat", "walima"];
         const activeList = [];
-        orderKeys.forEach(k => {
-          const ev = evs[k];
-          if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time)) {
-            activeList.push({ key: k, ...ev });
-          }
-        });
+        if (Array.isArray(customData.eventsList) && customData.eventsList.length > 0) {
+          customData.eventsList.forEach(item => {
+            if (!item) return;
+            const normKey = (item.type === "barat" || item.type === "baraat") ? "baraat" : (item.type || "custom");
+            activeList.push({ key: normKey, ...item });
+          });
+        } else {
+          const evs = customData.events || {};
+          const orderKeys = ["mehndi", "baraat", "walima", "nikkah", "engagement", "custom"];
+          orderKeys.forEach(k => {
+            const ev = evs[k];
+            if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time || ev.arrival || ev.mealTime || (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0))) {
+              activeList.push({ key: k, ...ev });
+            }
+          });
+        }
 
         if (activeList.length > 0) {
           const primaryEv = activeList.find(e => e.key === "baraat") || activeList[0];
@@ -2293,6 +2320,7 @@
 
                 const mainTime = (ev.displayTime || ev.time || "").trim();
                 const arrivalTime = (ev.arrivalTime || ev.arrival || "").trim();
+                const arrTime = arrivalTime || (!ev.sehraTime && mainTime ? mainTime : "");
                 const rows = [];
 
                 if (ev.sehraTime) {
@@ -2309,14 +2337,14 @@
                     sub: isUr ? "بارات کی تقریب گاہ کے لیے روانگی" : "Procession departs for the venue"
                   });
                 }
-                if (arrivalTime) {
+                if (arrTime) {
                   const arrTitle = ev.key === "baraat"
                     ? (isUr ? "آمدِ بارات و استقبال" : "Baraat Arrival & Reception")
                     : (ev.key === "mehndi"
                       ? (isUr ? "تقریبِ مہندی و آمدِ مہمانان" : "Mehndi Ceremony & Guest Arrival")
                       : (isUr ? "تقریبِ ولیمہ و آمدِ مہمانان" : "Walima Reception & Guest Arrival"));
                   rows.push({
-                    time: arrivalTime,
+                    time: arrTime,
                     title: arrTitle,
                     sub: venueDesc || (isUr ? "ہم آپ کو خوش آمدید کہتے ہیں ❤" : "We welcome you with warmth & joy ❤")
                   });
@@ -2336,7 +2364,7 @@
                   });
                 }
                 const mealType = (ev.mealType || "dinner").toLowerCase();
-                const mealTime = ev.mealTime || ev.dinnerTime || "";
+                const mealTime = ev.mealTime || ev.dinnerTime || ev.dinner || ev.lunch || "";
                 if (mealTime && mealType !== "none") {
                   const mTitle = mealType === "lunch"
                     ? (isUr ? "پرتکلف ظہرانہ (Lunch)" : "Royal Luncheon")
@@ -2385,6 +2413,9 @@
                     sub: venueDesc || (isUr ? "پرمسرت ضیافت اور دعائیں" : "Evening of dinner & blessings")
                   });
                 }
+
+                // Chronological sort
+                rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
 
                 return `
                   <div class="date-subheader-pill" style="${idx > 0 ? 'margin-top: 28px;' : ''}">${headerLabel}</div>

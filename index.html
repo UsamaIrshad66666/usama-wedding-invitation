@@ -6917,6 +6917,25 @@ function renderRoyalGraceScreen(isPopState) {
       });
   `);
         rgInitScript();
+        function parseTimeToMinutes(timeStr, hasEveningContext = true) {
+          if (!timeStr) return 9999;
+          const s = String(timeStr).trim();
+          const m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/i);
+          if (!m) return 9999;
+          let hr = parseInt(m[1], 10);
+          let min = parseInt(m[2] || "0", 10);
+          let ampm = (m[3] || "").toUpperCase();
+          if (!ampm) {
+            ampm = (hr >= 1 && hr <= 11) ? "PM" : (hr === 12 ? "PM" : "AM");
+          }
+          let total24 = (hr % 12) + (ampm === "PM" ? 12 : 0);
+          let totalMins = total24 * 60 + min;
+          if (ampm === "AM" && (hr === 12 || hr <= 5) && hasEveningContext) {
+            totalMins += 1440;
+          }
+          return totalMins;
+        }
+
         // Hydrate Royal Grace screen from ?invite= / ?d= payload if present
         const rgParams = new URLSearchParams(window.location.search);
         const rgRaw = rgParams.get("invite") || rgParams.get("d");
@@ -6961,15 +6980,23 @@ function renderRoyalGraceScreen(isPopState) {
                 sideBar.style.display = "none";
               }
 
-              const evs = rgCustom.events || {};
-              const orderKeys = ["mehndi", "baraat", "walima"];
               const activeList = [];
-              orderKeys.forEach(k => {
-                const ev = evs[k];
-                if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time)) {
-                  activeList.push({ key: k, ...ev });
-                }
-              });
+              if (Array.isArray(rgCustom.eventsList) && rgCustom.eventsList.length > 0) {
+                rgCustom.eventsList.forEach(item => {
+                  if (!item) return;
+                  const normKey = (item.type === "barat" || item.type === "baraat") ? "baraat" : (item.type || "custom");
+                  activeList.push({ key: normKey, ...item });
+                });
+              } else {
+                const evs = rgCustom.events || {};
+                const orderKeys = ["mehndi", "baraat", "walima", "nikkah", "engagement", "custom"];
+                orderKeys.forEach(k => {
+                  const ev = evs[k];
+                  if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time || ev.arrival || ev.mealTime || (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0))) {
+                    activeList.push({ key: k, ...ev });
+                  }
+                });
+              }
               if (activeList.length > 0) {
                 const primaryEv = activeList.find(e => e.key === "baraat") || activeList[0];
                 const revDate = document.getElementById("revDate");
@@ -6989,19 +7016,20 @@ function renderRoyalGraceScreen(isPopState) {
                     const venueDesc = [ev.venue, ev.address].filter(Boolean).join(" — ");
                     const mainTime = (ev.displayTime || ev.time || "").trim();
                     const arrivalTime = (ev.arrivalTime || ev.arrival || "").trim();
+                    const arrTime = arrivalTime || (!ev.sehraTime && mainTime ? mainTime : "");
                     const rows = [];
                     if (ev.sehraTime) rows.push({ time: ev.sehraTime, title: "Sehra Bandi", sub: "Groom's family ceremony & prayers" });
                     if (ev.departureTime) rows.push({ time: ev.departureTime, title: "Baraat Departure", sub: "Procession departs for the venue" });
-                    if (arrivalTime) {
+                    if (arrTime) {
                       const arrTitle = ev.key === "baraat" ? "Baraat Arrival & Reception" : (ev.key === "mehndi" ? "Mehndi Ceremony & Guest Arrival" : "Walima Reception & Guest Arrival");
-                      rows.push({ time: arrivalTime, title: arrTitle, sub: venueDesc || "We welcome you with warmth & joy ❤" });
+                      rows.push({ time: arrTime, title: arrTitle, sub: venueDesc || "We welcome you with warmth & joy ❤" });
                     }
                     if (ev.rasmTime) {
                       rows.push({ time: ev.rasmTime, title: "Rasm-e-Hina Ceremony", sub: "Traditional henna ceremony & celebrations" });
                     }
                     if (ev.nikkahTime || ev.nikkah) rows.push({ time: ev.nikkahTime || ev.nikkah, title: "Sacred Nikkah Ceremony", sub: "Solemnization of marriage & blessings" });
                     const mealType = (ev.mealType || "dinner").toLowerCase();
-                    const mealTime = ev.mealTime || ev.dinnerTime || "";
+                    const mealTime = ev.mealTime || ev.dinnerTime || ev.dinner || ev.lunch || "";
                     if (mealTime && mealType !== "none") {
                       const mTitle = mealType === "lunch" ? "Royal Luncheon" : (mealType === "hitea" ? "Evening Hi-Tea" : "Wedding Dinner");
                       const mSub = mealType === "lunch" ? "Celebratory wedding luncheon & blessings" : "Evening of dinner & blessings";
@@ -7016,6 +7044,9 @@ function renderRoyalGraceScreen(isPopState) {
                       });
                     }
                     if (rows.length === 0) rows.push({ time: mainTime || "07:00 PM", title: dayTitle, sub: venueDesc || "Evening of dinner & blessings" });
+
+                    // Chronological sort
+                    rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
 
                     return '<div class="date-subheader-pill" style="' + (idx > 0 ? "margin-top: 28px;" : "") + '">' + headerLabel + '</div>' +
                       '<div class="timeline-schedule-grid">' +

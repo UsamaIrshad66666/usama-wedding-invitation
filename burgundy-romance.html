@@ -3759,6 +3759,25 @@
         return `${new12}:${String(newMin).padStart(2, "0")} ${newAmPm}`;
       }
 
+      function parseTimeToMinutes(timeStr, hasEveningContext = true) {
+        if (!timeStr) return 9999;
+        const s = String(timeStr).trim();
+        const m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/i);
+        if (!m) return 9999;
+        let hr = parseInt(m[1], 10);
+        let min = parseInt(m[2] || "0", 10);
+        let ampm = (m[3] || "").toUpperCase();
+        if (!ampm) {
+          ampm = (hr >= 1 && hr <= 11) ? "PM" : (hr === 12 ? "PM" : "AM");
+        }
+        let total24 = (hr % 12) + (ampm === "PM" ? 12 : 0);
+        let totalMins = total24 * 60 + min;
+        if (ampm === "AM" && (hr === 12 || hr <= 5) && hasEveningContext) {
+          totalMins += 1440;
+        }
+        return totalMins;
+      }
+
       function detectIsLunchTime(timeStr, explicitMealType) {
         if (explicitMealType === "lunch") return true;
         if (explicitMealType === "dinner" || explicitMealType === "hitea") return false;
@@ -3849,83 +3868,81 @@
           });
         };
 
-        // 1. Check explicit subSchedule array if provided
+        const mealType = (ev.mealType || "").toLowerCase();
+        const mealTimeVal = ev.mealTime || ev.lunch || ev.dinner || ev.dinnerTime || "";
+        const isLunch = detectIsLunchTime(mealTimeVal || ev.time || ev.displayTime, ev.lunch ? "lunch" : mealType);
+        const mealLabelEn = mealType === "hitea"
+          ? "Hi-Tea & Royal Refreshments"
+          : (isLunch ? "Royal Lunch Banquet" : "Royal Dinner Banquet");
+        const mealLabelUr = mealType === "hitea"
+          ? "شاہی ہائی ٹی و تواضع"
+          : (isLunch ? "پُرتکلف شاہی ظہرانہ (دوپہر کا کھانا)" : "پُرتکلف شاہی طعام و عشائیہ");
+
+        // 1. Gather all pre-added named milestone fields
+        if (ev.sehraTime) {
+          addRow(ev.sehraTime, "Sehra Bandi & Gathering", "سہرہ بندی اور معزز مہمانوں کا استقبال", ev.sehraTimeUrdu);
+        }
+        if (ev.departureTime) {
+          addRow(ev.departureTime, "Departure of Baraat", "روانگیِ بارات", ev.departureTimeUrdu);
+        }
+        const arrVal = ev.arrival || ev.arrivalTime || "";
+        if (arrVal) {
+          addRow(
+            arrVal,
+            type === "barat" ? "Arrival of Baraat & Welcome" : "Guest Arrival & Reception",
+            type === "barat" ? "آمدِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم",
+            ev.arrivalUrdu
+          );
+        }
+        if (ev.rasmTime) {
+          addRow(
+            ev.rasmTime,
+            type === "mehndi" ? "Rasm-e-Hina & Festive Ceremonies" : "Main Ceremony & Celebrations",
+            type === "mehndi" ? "رسمِ حنا کی دلکش تقریب" : "مرکزی تقریب",
+            ev.rasmTimeUrdu
+          );
+        }
+        if (ev.nikkah || ev.nikkahTime) {
+          const nk = ev.nikkah || ev.nikkahTime;
+          addRow(nk, "Sacred Nikkah Ceremony", "عقدِ نکاح کی مبارک تقریب", ev.nikkahTimeUrdu);
+        }
+        if (mealTimeVal && mealType !== "none") {
+          addRow(mealTimeVal, mealLabelEn, mealLabelUr, ev.mealTimeUrdu);
+        }
+        const rukhVal = ev.rukhsati || ev.rukhsatiTime || "";
+        if (rukhVal) {
+          addRow(rukhVal, "Rukhsati & Emotional Farewell", "رخصتی اور دعاؤں کی چھاؤں", ev.rukhsatiUrdu);
+        }
+        if (ev.duaTime || ev.farewellTime) {
+          addRow(ev.duaTime || ev.farewellTime, "Dua & Warm Farewell", "دعائے خیر اور الوداع");
+        }
+
+        // 2. Gather user-added custom subSchedule items
         if (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0) {
           ev.subSchedule.forEach(item => {
-            if (item && (item.time || item.label)) {
+            if (item && (item.time || item.label || item.title)) {
               addRow(
                 item.time || "",
                 item.label || item.title || "Ceremony Milestone",
-                item.labelUr || item.titleUr || item.label || "تقریب",
+                item.labelUr || item.titleUr || item.label || item.title || "تقریب",
                 item.timeUr || ""
               );
             }
           });
         }
 
-        // 2. Check named milestone fields if subSchedule wasn't exhaustive
-        if (rows.length === 0) {
-          const mealType = (ev.mealType || "").toLowerCase();
-          const mealTimeVal = ev.mealTime || ev.lunch || ev.dinner || ev.dinnerTime || "";
-          const isLunch = detectIsLunchTime(mealTimeVal || ev.time || ev.displayTime, ev.lunch ? "lunch" : mealType);
-          const mealLabelEn = mealType === "hitea"
-            ? "Hi-Tea & Royal Refreshments"
-            : (isLunch ? "Royal Lunch Banquet" : "Royal Dinner Banquet");
-          const mealLabelUr = mealType === "hitea"
-            ? "شاہی ہائی ٹی و تواضع"
-            : (isLunch ? "پُرتکلف شاہی ظہرانہ (دوپہر کا کھانا)" : "پُرتکلف شاہی طعام و عشائیہ");
-
-          if (ev.sehraTime) {
-            addRow(ev.sehraTime, "Sehra Bandi & Gathering", "سہرہ بندی اور معزز مہمانوں کا استقبال", ev.sehraTimeUrdu);
-          }
-          if (ev.departureTime) {
-            addRow(ev.departureTime, "Departure of Baraat", "روانگیِ بارات", ev.departureTimeUrdu);
-          }
-          const arrVal = ev.arrival || ev.arrivalTime || "";
-          if (arrVal) {
-            addRow(
-              arrVal,
-              type === "barat" ? "Arrival of Baraat & Welcome" : "Guest Arrival & Reception",
-              type === "barat" ? "آمدِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم",
-              ev.arrivalUrdu
-            );
-          }
-          if (ev.rasmTime) {
-            addRow(
-              ev.rasmTime,
-              type === "mehndi" ? "Rasm-e-Hina & Festive Ceremonies" : "Main Ceremony & Celebrations",
-              type === "mehndi" ? "رسمِ حنا کی دلکش تقریب" : "مرکزی تقریب",
-              ev.rasmTimeUrdu
-            );
-          }
-          if (ev.nikkah || ev.nikkahTime) {
-            const nk = ev.nikkah || ev.nikkahTime;
-            addRow(nk, "Sacred Nikkah Ceremony", "عقدِ نکاح کی مبارک تقریب", ev.nikkahTimeUrdu);
-          }
-          if (mealTimeVal) {
-            addRow(mealTimeVal, mealLabelEn, mealLabelUr, ev.mealTimeUrdu);
-          }
-          const rukhVal = ev.rukhsati || ev.rukhsatiTime || "";
-          if (rukhVal) {
-            addRow(rukhVal, "Rukhsati & Emotional Farewell", "رخصتی اور دعاؤں کی چھاؤں", ev.rukhsatiUrdu);
-          }
-          if (ev.duaTime || ev.farewellTime) {
-            addRow(ev.duaTime || ev.farewellTime, "Dua & Warm Farewell", "دعائے خیر اور الوداع");
-          }
-
-          // If user provided a main event time (e.g. 7:00 PM) plus e.g. only Lunch/Dinner time, prepend main time as Guest Arrival
-          const rawMainTime = (ev.displayTime || ev.time || "").trim();
-          const isCompositeTime = rawMainTime.toLowerCase().includes("sehra") || rawMainTime.toLowerCase().includes("departure");
-          if (rows.length > 0 && rawMainTime && !isCompositeTime && !ev.arrival && !ev.sehraTime) {
-            const alreadyUsed = rows.some(r => r.timeEn.toLowerCase() === rawMainTime.toLowerCase());
-            if (!alreadyUsed) {
-              rows.unshift({
-                timeEn: rawMainTime,
-                timeUr: ev.displayTimeUrdu || formatTimeUrdu(rawMainTime),
-                descEn: type === "barat" ? "Baraat Reception & Welcome" : "Guest Arrival & Welcome",
-                descUr: type === "barat" ? "استقبالِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم"
-              });
-            }
+        // 3. Prepend main event time as Guest Arrival if arrival wasn't explicitly given
+        const rawMainTime = (ev.displayTime || ev.time || "").trim();
+        const isCompositeTime = rawMainTime.toLowerCase().includes("sehra") || rawMainTime.toLowerCase().includes("departure");
+        if (rows.length > 0 && rawMainTime && !isCompositeTime && !arrVal && !ev.sehraTime) {
+          const alreadyUsed = rows.some(r => r.timeEn.toLowerCase() === rawMainTime.toLowerCase());
+          if (!alreadyUsed) {
+            rows.unshift({
+              timeEn: rawMainTime,
+              timeUr: ev.displayTimeUrdu || formatTimeUrdu(rawMainTime),
+              descEn: type === "barat" ? "Baraat Reception & Welcome" : "Guest Arrival & Welcome",
+              descUr: type === "barat" ? "استقبالِ بارات و خیر مقدم" : "مہمانوں کی تشریف آوری و خیر مقدم"
+            });
           }
         }
 
@@ -3975,6 +3992,9 @@
             addRow(addMinutesToTimeStr(baseTime, 90), mealLabelEn, mealLabelUr);
           }
         }
+
+        // Sort all milestones chronologically
+        rows.sort((a, b) => parseTimeToMinutes(a.timeEn) - parseTimeToMinutes(b.timeEn));
 
         return rows;
       }

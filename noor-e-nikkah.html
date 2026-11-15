@@ -1841,6 +1841,25 @@
         }
       }
 
+      function parseTimeToMinutes(timeStr, hasEveningContext = true) {
+        if (!timeStr) return 9999;
+        const s = String(timeStr).trim();
+        const m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/i);
+        if (!m) return 9999;
+        let hr = parseInt(m[1], 10);
+        let min = parseInt(m[2] || "0", 10);
+        let ampm = (m[3] || "").toUpperCase();
+        if (!ampm) {
+          ampm = (hr >= 1 && hr <= 11) ? "PM" : (hr === 12 ? "PM" : "AM");
+        }
+        let total24 = (hr % 12) + (ampm === "PM" ? 12 : 0);
+        let totalMins = total24 * 60 + min;
+        if (ampm === "AM" && (hr === 12 || hr <= 5) && hasEveningContext) {
+          totalMins += 1440;
+        }
+        return totalMins;
+      }
+
       const rawInvite = urlParams.get("invite") || urlParams.get("d");
       const customInvite = decodeInvitePayload(rawInvite);
       if (customInvite) {
@@ -1876,15 +1895,23 @@
         I18N.ur.modalSub = `${WEDDING_DATA.groomUrdu} اور ${WEDDING_DATA.brideUrdu} کی مبارک شادی`;
         document.title = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride} — Noor-e-Nikkah Wedding Invitation`;
 
-        const evs = customInvite.events || {};
-        const orderKeys = ["mehndi", "baraat", "walima"];
         const activeEvents = [];
-        orderKeys.forEach(k => {
-          const ev = evs[k];
-          if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time)) {
-            activeEvents.push({ key: k, ...ev });
-          }
-        });
+        if (Array.isArray(customInvite.eventsList) && customInvite.eventsList.length > 0) {
+          customInvite.eventsList.forEach(item => {
+            if (!item) return;
+            const normKey = (item.type === "barat" || item.type === "baraat") ? "baraat" : (item.type || "custom");
+            activeEvents.push({ key: normKey, ...item });
+          });
+        } else {
+          const evs = customInvite.events || {};
+          const orderKeys = ["mehndi", "baraat", "walima", "nikkah", "engagement", "custom"];
+          orderKeys.forEach(k => {
+            const ev = evs[k];
+            if (ev && (ev.displayDate || ev.dateTime || ev.date || ev.venue || ev.displayTime || ev.time || ev.arrival || ev.mealTime || (Array.isArray(ev.subSchedule) && ev.subSchedule.length > 0))) {
+              activeEvents.push({ key: k, ...ev });
+            }
+          });
+        }
 
         if (activeEvents.length > 0) {
           const primary = activeEvents.find(e => e.key === "baraat") || activeEvents[0];
@@ -1914,22 +1941,27 @@
               const evTime = ev.displayTime || ev.time || ev.arrivalTime || ev.arrival || "7:00 PM";
               const evDate = ev.displayDate || ev.date || "";
               const mealType = (ev.mealType || "dinner").toLowerCase();
-              const mealTime = ev.mealTime || ev.dinnerTime || "";
+              const mealTime = ev.mealTime || ev.dinnerTime || ev.dinner || ev.lunch || "";
               const mealLbl = mealType === "lunch" ? "Lunch" : (mealType === "hitea" ? "Hi-Tea" : "Dinner");
-              let subLines = [];
-              if (ev.rasmTime) subLines.push(`Rasm-e-Hina: ${ev.rasmTime}`);
-              if (ev.sehraTime) subLines.push(`Sehra Bandi: ${ev.sehraTime}`);
-              if (ev.departureTime) subLines.push(`Departure: ${ev.departureTime}`);
-              if (ev.arrivalTime || ev.arrival) subLines.push(`Arrival: ${ev.arrivalTime || ev.arrival}`);
-              if (ev.nikkahTime || ev.nikkah) subLines.push(`Nikkah: ${ev.nikkahTime || ev.nikkah}`);
-              if (mealTime && mealType !== "none") subLines.push(`${mealLbl}: ${mealTime}`);
-              if (ev.rukhsatiTime || ev.rukhsati) subLines.push(`Rukhsati: ${ev.rukhsatiTime || ev.rukhsati}`);
-              if (ev.duaTime) subLines.push(`Dua: ${ev.duaTime}`);
+              let subItems = [];
+              if (ev.rasmTime) subItems.push({ time: ev.rasmTime, text: `Rasm-e-Hina: ${ev.rasmTime}` });
+              if (ev.sehraTime) subItems.push({ time: ev.sehraTime, text: `Sehra Bandi: ${ev.sehraTime}` });
+              if (ev.departureTime) subItems.push({ time: ev.departureTime, text: `Departure: ${ev.departureTime}` });
+              if (ev.arrivalTime || ev.arrival) subItems.push({ time: ev.arrivalTime || ev.arrival, text: `Arrival: ${ev.arrivalTime || ev.arrival}` });
+              if (ev.nikkahTime || ev.nikkah) subItems.push({ time: ev.nikkahTime || ev.nikkah, text: `Nikkah: ${ev.nikkahTime || ev.nikkah}` });
+              if (mealTime && mealType !== "none") subItems.push({ time: mealTime, text: `${mealLbl}: ${mealTime}` });
+              if (ev.rukhsatiTime || ev.rukhsati) subItems.push({ time: ev.rukhsatiTime || ev.rukhsati, text: `Rukhsati: ${ev.rukhsatiTime || ev.rukhsati}` });
+              if (ev.duaTime) subItems.push({ time: ev.duaTime, text: `Dua: ${ev.duaTime}` });
               if (Array.isArray(ev.subSchedule)) {
                 ev.subSchedule.forEach(s => {
-                  if (s && (s.title || s.time)) subLines.push(`${s.title}: ${s.time}`);
+                  if (s && (s.title || s.label || s.time)) {
+                    const ttl = s.title || s.label || "Ceremony";
+                    subItems.push({ time: s.time || "", text: s.time ? `${ttl}: ${s.time}` : ttl });
+                  }
                 });
               }
+              subItems.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+              const subLines = subItems.map(si => si.text);
               itemsHtml += `
                 <div class="ceremony-card">
                   <div class="ceremony-icon-badge">${evIcon}</div>
