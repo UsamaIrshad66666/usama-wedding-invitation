@@ -9,7 +9,7 @@
   <meta property="og:title" content="Royal Digital Wedding Invitation — E-Dawatnama">
   <meta property="og:description" content="Tap to open your personalized interactive royal digital wedding invitation by E-Dawatnama.">
   <meta property="og:image" content="https://e-dawatnama.com/assets/maroon-hero-poster.jpg">
-  <meta property="og:url" content="https://e-dawatnama.com/burgundy-romance">
+  <meta property="og:url" content="https://e-dawatnama.com/maroon-romance">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#200408">
 
@@ -3139,6 +3139,9 @@
       background: rgba(140, 22, 45, 0.4) !important;
       border: 1px solid rgba(223, 186, 115, 0.4) !important;
     }
+    .person-cred-badge:empty {
+      display: none !important;
+    }
     .dress-desc {
       color: #F8EFE6 !important;
     }
@@ -5002,7 +5005,13 @@
         }
 
         const firstRsvpEv = activeNormalizedEvents.find(e => e.rsvpPhone);
-        window.activeRsvpPhone = (firstRsvpEv && firstRsvpEv.rsvpPhone) || dynData.rsvpPhone || "+923298120981";
+        window.activeRsvpPhone = (firstRsvpEv && firstRsvpEv.rsvpPhone) || dynData.rsvpPhone || "+923298120981";
+
+        // Rule 7: Instant Deep-Link Unseal for event variants or card links
+        const urlHasDeepLink = Boolean(bParams.get("card") || bParams.get("event") || (cardVariant && cardVariant !== "all"));
+        if (urlHasDeepLink && typeof endSequence === "function") {
+          endSequence();
+        }
       } else if (isBrideMode) {
         // EN Bride customizations
         translations.en.heroSubtitle = "Baraat & Rukhsati";
@@ -5054,8 +5063,8 @@
         if (fit) fit.textContent = t.familyInviteTitle;
         const fid = document.getElementById("tFamilyInviteDesc") || document.getElementById("tHostIntro"); 
         if (fid) fid.textContent = t.familyInviteDesc;
-        const gc = document.getElementById("tGroomCred"); if(gc) gc.innerHTML = t.groomCred || "";
-        const bc = document.getElementById("tBrideCred"); if(bc) bc.innerHTML = t.brideCred || "";
+        const gc = document.getElementById("tGroomCred"); if(gc) { gc.innerHTML = t.groomCred || ""; gc.style.display = t.groomCred ? "block" : "none"; }
+        const bc = document.getElementById("tBrideCred"); if(bc) { bc.innerHTML = t.brideCred || ""; bc.style.display = t.brideCred ? "block" : "none"; }
         const spg = document.getElementById("tSpanGroom"); if(spg) spg.textContent = t.heroGroom;
         const spb = document.getElementById("tSpanBride"); if(spb) spb.textContent = t.heroBride;
 
