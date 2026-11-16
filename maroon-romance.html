@@ -2118,27 +2118,40 @@
       flex-direction: column;
       align-items: center;
       gap: 0;
-      margin: auto 0;
-      padding-bottom: 95px; /* Sits completely clear above the swimming swans */
+      margin-top: clamp(8px, 1.8vh, 20px);
+      margin-bottom: auto;
+      padding-bottom: 0;
       opacity: 0;
     }
 
     .hero-name {
       font-family: 'Beau Rivage', 'Great Vibes', cursive;
-      font-size: clamp(52px, 13vw, 72px);
+      font-size: clamp(40px, 10.5vw, 58px);
       color: #9c6c28;
-      line-height: 0.82;
+      line-height: 0.85;
       font-weight: 400;
       text-shadow: 0 2px 8px rgba(255, 255, 255, 0.98), 0 0 14px rgba(255, 248, 230, 0.9);
     }
 
     .hero-ampersand {
       font-family: 'Imperial Script', 'Alex Brush', cursive;
-      font-size: 28px;
+      font-size: clamp(22px, 5.5vw, 28px);
       color: #9c6c28;
       line-height: 1;
       margin: 2px 0;
       text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95);
+    }
+
+    html[dir="rtl"] .hero-name {
+      font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;
+      font-size: clamp(32px, 8.5vw, 44px);
+      line-height: 1.25;
+    }
+
+    html[dir="rtl"] .hero-ampersand {
+      font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;
+      font-size: clamp(20px, 5vw, 26px);
+      margin: 0;
     }
 
     /* Keyframe Animations Triggered Upon Reveal */
@@ -2876,13 +2889,13 @@
 
   <div id="weiVideoWrap">
     <div class="wei-envelope-stage" id="weiVideoStage">
-      <video id="weiVideo" playsinline preload="auto" muted src="assets/maroon-envelope-video.mp4"></video>
+      <video id="weiVideo" playsinline preload="auto" src="assets/maroon-envelope-video.mp4"></video>
     </div>
   </div>
 
 
   <!-- Audio Soundtrack element (Exact video music) -->
-  <audio id="weddingAudio" src="assets/burgundy-einaudi-divenire.mp3" preload="auto" loop></audio>
+  <!-- Video audio used directly; external bgMusic removed -->
 
   <!-- Top Floating Controls -->
   <div class="top-floating-bar">
@@ -3005,7 +3018,7 @@
         <!-- SECTION 1: HERO SWANS VIDEO & ROYAL MONOGRAM (Matches The Sacred Garden 1:1) -->
         <section class="hero-section" id="heroSection">
           <div class="hero-video-wrapper">
-            <video class="hero-swans-video" autoplay loop muted playsinline poster="assets/maroon-hero-poster.webp" src="assets/maroon-hero-video.mp4"></video>
+            <video class="hero-swans-video" loop playsinline poster="assets/maroon-hero-poster.webp" src="assets/maroon-hero-video.mp4"></video>
             <div class="hero-video-overlay"></div>
           </div>
           <canvas class="petals-canvas" id="petalsCanvas"></canvas>
@@ -3356,39 +3369,30 @@
       const langBtnText = document.getElementById("langBtnText");
       let currentLang = "en";
 
-      // 1. AUTHENTIC SACRED GARDEN VIDEO SEQUENCE & AUDIO (1:1 Match)
+      // 1. AUTHENTIC SACRED GARDEN VIDEO SEQUENCE & VIDEO AUDIO
       const overlay = document.getElementById("weiOverlay");
       const videoWrap = document.getElementById("weiVideoWrap");
       const video = document.getElementById("weiVideo");
+      const heroVid = document.querySelector(".hero-swans-video");
       let sequenceDone = false;
-      let audioUnlocked = false;
-
-      function unlockAudio() {
-        if (audioUnlocked) return;
-        audioUnlocked = true;
-        if (weddingAudio) {
-          const p = weddingAudio.play();
-          if (p && p.then) {
-            p.then(() => {
-              weddingAudio.pause();
-              weddingAudio.currentTime = 0;
-            }).catch(() => {});
-          } else {
-            weddingAudio.pause();
-          }
-        }
-      }
 
       function startSequence() {
         if (sequenceDone) return;
         sequenceDone = true;
 
-        playAudio();
-
         if (videoWrap && video) {
           videoWrap.classList.add("wei-video-in");
+          // Play envelope unsealing video WITH its own audio
+          video.muted = false;
+          video.volume = 1.0;
           const vp = video.play();
-          if (vp && vp.catch) vp.catch(() => {});
+          if (vp && vp.catch) {
+            vp.catch(err => {
+              console.log("Unmuted envelope playback fallback:", err);
+              video.muted = true;
+              video.play().catch(() => {});
+            });
+          }
           if (overlay) {
             overlay.style.opacity = "0";
             overlay.style.pointerEvents = "none";
@@ -3411,15 +3415,30 @@
           videoWrap.style.pointerEvents = "none";
           setTimeout(() => { videoWrap.style.display = "none"; }, 800);
         }
+        if (video) {
+          video.pause();
+        }
 
         if (inviteContainer) {
           inviteContainer.classList.add("active");
         }
 
-        const heroVid = document.querySelector(".hero-swans-video");
+        // Hero video plays WITH its own audio
         if (heroVid) {
           heroVid.currentTime = 0;
-          heroVid.play().catch(e => console.log("Hero swans video:", e));
+          heroVid.muted = false;
+          heroVid.volume = 1.0;
+          heroVid.play().then(() => {
+            if (audioToggleBtn) {
+              audioToggleBtn.classList.add("playing");
+              if (audioPlayIcon) audioPlayIcon.style.display = "none";
+              if (audioPauseIcon) audioPauseIcon.style.display = "block";
+            }
+          }).catch(e => {
+            console.log("Hero video sound fallback to muted:", e);
+            heroVid.muted = true;
+            heroVid.play().catch(() => {});
+          });
         }
 
         if (audioToggleBtn) {
@@ -3430,8 +3449,9 @@
         if (typeof checkRevealOnScroll === 'function') checkRevealOnScroll();
       }
 
+      window.endSequence = endSequence;
+
       if (overlay) {
-        overlay.addEventListener("touchstart", unlockAudio, { passive: true });
         overlay.addEventListener("click", startSequence);
       }
 
@@ -3449,33 +3469,41 @@
         video.load();
       }
 
-      // 2. AUDIO PLAYBACK MANAGEMENT
-      function playAudio() {
-        if (!weddingAudio) return;
-        weddingAudio.play().then(() => {
-          audioToggleBtn.classList.add("playing");
-          audioPlayIcon.style.display = "none";
-          audioPauseIcon.style.display = "block";
-        }).catch(err => {
-          console.log("Audio autoplay prevented by browser policy:", err);
-        });
+      // 2. VIDEO AUDIO PLAYBACK CONTROLS (Floating audio fab controls hero video sound)
+      function getActiveMedia() {
+        if (videoWrap && videoWrap.classList.contains("wei-video-in") && !videoWrap.classList.contains("wei-video-out")) {
+          return video;
+        }
+        return heroVid;
       }
 
-      function pauseAudio() {
-        if (!weddingAudio) return;
-        weddingAudio.pause();
-        audioToggleBtn.classList.remove("playing");
-        audioPlayIcon.style.display = "block";
-        audioPauseIcon.style.display = "none";
+      function unmuteActiveAudio() {
+        const med = getActiveMedia();
+        if (!med) return;
+        med.muted = false;
+        med.play().then(() => {
+          if (audioToggleBtn) audioToggleBtn.classList.add("playing");
+          if (audioPlayIcon) audioPlayIcon.style.display = "none";
+          if (audioPauseIcon) audioPauseIcon.style.display = "block";
+        }).catch(err => console.log("Audio unmute failed:", err));
       }
 
-      // Automatically pause music when user leaves the website/tab
+      function muteActiveAudio() {
+        const med = getActiveMedia();
+        if (!med) return;
+        med.muted = true;
+        if (audioToggleBtn) audioToggleBtn.classList.remove("playing");
+        if (audioPlayIcon) audioPlayIcon.style.display = "block";
+        if (audioPauseIcon) audioPauseIcon.style.display = "none";
+      }
+
       let wasPlayingBeforeHidden = false;
       document.addEventListener("visibilitychange", () => {
-        if (!weddingAudio) return;
+        const med = getActiveMedia();
+        if (!med) return;
         if (document.hidden) {
-          if (!weddingAudio.paused) {
-            weddingAudio.pause();
+          if (!med.paused && !med.muted) {
+            med.pause();
             wasPlayingBeforeHidden = true;
             if (audioPlayIcon && audioPauseIcon) {
               audioPlayIcon.style.display = "block";
@@ -3484,17 +3512,26 @@
           }
         } else {
           if (wasPlayingBeforeHidden) {
-            playAudio();
+            med.muted = false;
+            med.play().catch(() => {});
             wasPlayingBeforeHidden = false;
+            if (audioPlayIcon && audioPauseIcon) {
+              audioPlayIcon.style.display = "none";
+              audioPauseIcon.style.display = "block";
+            }
           }
         }
       });
+
       window.addEventListener("pagehide", () => {
-        if (weddingAudio && !weddingAudio.paused) weddingAudio.pause();
+        const med = getActiveMedia();
+        if (med && !med.paused) med.pause();
       });
+
       window.addEventListener("blur", () => {
-        if (weddingAudio && !weddingAudio.paused) {
-          weddingAudio.pause();
+        const med = getActiveMedia();
+        if (med && !med.paused && !med.muted) {
+          med.pause();
           wasPlayingBeforeHidden = true;
           if (audioPlayIcon && audioPauseIcon) {
             audioPlayIcon.style.display = "block";
@@ -3502,20 +3539,31 @@
           }
         }
       });
+
       window.addEventListener("focus", () => {
-        if (wasPlayingBeforeHidden) {
-          playAudio();
+        const med = getActiveMedia();
+        if (wasPlayingBeforeHidden && med) {
+          med.muted = false;
+          med.play().catch(() => {});
           wasPlayingBeforeHidden = false;
+          if (audioPlayIcon && audioPauseIcon) {
+            audioPlayIcon.style.display = "none";
+            audioPauseIcon.style.display = "block";
+          }
         }
       });
 
-      audioToggleBtn.addEventListener("click", () => {
-        if (weddingAudio.paused) {
-          playAudio();
-        } else {
-          pauseAudio();
-        }
-      });
+      if (audioToggleBtn) {
+        audioToggleBtn.addEventListener("click", () => {
+          const med = getActiveMedia();
+          if (!med) return;
+          if (med.paused || med.muted) {
+            unmuteActiveAudio();
+          } else {
+            muteActiveAudio();
+          }
+        });
+      }
 
       // 3. SCROLL DOWN SMOOTH BEHAVIOR
       if (scrollPrompt) {
