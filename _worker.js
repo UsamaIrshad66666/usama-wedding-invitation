@@ -208,7 +208,7 @@ function resolveMetadata(url) {
     pathLower === "/theme/gulistan"
   ) {
     return {
-      title: "Dr. Junaid & Dr. Ayesha — Gulistan & Royal Rose Garden Wedding Invitation",
+      title: "Hamza & Zoya — Gulistan & Royal Rose Garden Wedding Invitation",
       desc: "Untie the royal silk ribbon to enter Gulistan — an enchanted rose garden digital wedding invitation with 3D flippable luggage tags, wax-sealed letter, and live countdown.",
       image: THEME_IMAGES.gulistan
     };
