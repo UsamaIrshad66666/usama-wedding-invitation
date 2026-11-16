@@ -11,7 +11,7 @@
   <meta property="og:image" content="https://e-dawatnama.com/assets/maroon-hero-poster.jpg">
   <meta property="og:url" content="https://e-dawatnama.com/burgundy-romance">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#2b060d">
+  <meta name="theme-color" content="#200408">
 
   <!-- Google Fonts: Luxury Calligraphy & Editorial Serifs -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,19 +60,28 @@
     }
 
     :root {
-      --color-burgundy-deep: #200409;
-      --color-burgundy-main: #3d0c17;
-      --color-burgundy-rich: #5c1223;
-      --color-burgundy-light: #821c32;
+      /* Authentic Royal Velvet Maroon Palette */
+      --color-maroon-deep: #200408;
+      --color-maroon-main: #3D0712;
+      --color-maroon-rich: #5C0B1B;
+      --color-maroon-light: #7A1226;
+      --color-maroon-accent: #8C162E;
+
+      /* Aliases for theme continuity */
+      --color-burgundy-deep: #200408;
+      --color-burgundy-main: #3D0712;
+      --color-burgundy-rich: #5C0B1B;
+      --color-burgundy-light: #7A1226;
       --color-rose-gold: #c88b86;
       --color-rose-gold-light: #f5ddd6;
       --color-gold-foil: #dfba73;
       --color-gold-bright: #ffd98a;
-      --color-parchment: #fdfbf7;
-      --color-parchment-warm: #f6eee5;
+      --color-gold-antique: #b88628;
+      --color-parchment: #FAF3EB;
+      --color-parchment-warm: #F5EAE0;
       --color-parchment-border: rgba(184, 137, 110, 0.28);
-      --color-text-dark: #2c1a1d;
-      --color-text-muted: #6f595c;
+      --color-text-dark: #2A050C;
+      --color-text-muted: #6E3E46;
       --color-text-light: #fef8f5;
 
       --font-cursive: 'Beau Rivage', 'Imperial Script', 'Great Vibes', cursive;
@@ -88,7 +97,7 @@
 
     html, body {
       width: 100%;
-      min-height: 100%; background-color: #F9F0E0;
+      min-height: 100%; background-color: #FAF3EB;
       background-image: 
         radial-gradient(circle at 50% 20%, rgba(102, 18, 34, 0.45) 0%, transparent 65%),
         radial-gradient(circle at 20% 80%, rgba(74, 13, 24, 0.6) 0%, #0d0103 100%);
@@ -118,7 +127,7 @@
     .phone-container {
       width: 100%;
       max-width: 460px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       position: relative;
       overflow: visible;
       min-height: 100vh;
@@ -554,7 +563,7 @@
        ========================================================================== */
     .invite-container {
       width: 100%;
-      background: #F9F0E0;
+      background: #FAF3EB;
       position: relative;
       opacity: 0;
       transform: translateY(20px);
@@ -787,7 +796,7 @@
     .deckle-divider-top {
       width: 100%;
       height: 28px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       clip-path: polygon(
         0% 100%, 3% 20%, 7% 85%, 12% 15%, 16% 90%, 21% 10%, 25% 80%, 30% 25%,
         35% 95%, 40% 18%, 45% 85%, 50% 12%, 55% 90%, 60% 20%, 65% 80%, 70% 15%,
@@ -800,7 +809,7 @@
 
     .section-invitation-body {
       padding: 35px 26px 40px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
     }
@@ -835,7 +844,7 @@
        ========================================================================== */
     .section-countdown {
       padding: 30px 16px 12px;
-      background: #F9F0E0 !important;
+      background: #FAF3EB !important;
       text-align: center;
       position: relative;
       margin-bottom: 0;
@@ -844,7 +853,7 @@
     .countdown-title {
       font-family: 'Imperial Script', 'Alex Brush', cursive;
       font-size: clamp(34px, 8.5vw, 44px);
-      color: #B48C3D;
+      color: #5C0B1B;
       font-weight: 400;
       margin-bottom: 18px;
       line-height: 1.1;
@@ -880,7 +889,7 @@
       font-family: 'Ovo', 'Playfair Display', serif;
       line-height: 1.1;
       color: #9C7D46;
-      background: linear-gradient(135deg, #A8894E 0%, #BF9E5E 50%, #8C6D38 100%);
+      background: linear-gradient(135deg, #B88628 0%, #6B0F20 60%, #4A0814 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
@@ -900,7 +909,7 @@
     .colon {
       font-size: 28px;
       font-family: 'Ovo', serif;
-      color: #BF9E5E;
+      color: #B88628;
       font-weight: 400;
       align-self: flex-start;
       margin-top: 6px;
@@ -911,7 +920,7 @@
       font-family: 'Jost', sans-serif;
       text-transform: capitalize;
       letter-spacing: 0.5px;
-      color: #9C7D46;
+      color: #731828;
       margin-top: 4px;
       font-weight: 400;
     }
@@ -921,7 +930,7 @@
        ========================================================================== */
     .section-timeline-wrapper {
       position: relative;
-      background: #F9F0E0 !important;
+      background: #FAF3EB !important;
       padding: 0;
       margin-top: -10px; /* Seamless flow from countdown to torn paper */
       overflow: hidden;
@@ -947,9 +956,9 @@
       font-size: 11.5px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #7a1c2e;
-      background: rgba(180, 140, 61, 0.15);
-      border: 1px solid rgba(180, 140, 61, 0.38);
+      color: #6B0F20;
+      background: rgba(107, 15, 32, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.45);
       padding: 4px 14px;
       border-radius: 20px;
       margin-bottom: 8px;
@@ -970,9 +979,9 @@
       display: inline-block;
       font-family: var(--font-urdu, 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif);
       font-size: 15px;
-      color: #7a1c2e;
-      background: linear-gradient(135deg, rgba(122, 28, 46, 0.08) 0%, rgba(180, 140, 61, 0.16) 100%);
-      border: 1px dashed rgba(180, 140, 61, 0.55);
+      color: #6B0F20;
+      background: linear-gradient(135deg, rgba(107, 15, 32, 0.08) 0%, rgba(212, 175, 55, 0.16) 100%);
+      border: 1px dashed rgba(212, 175, 55, 0.55);
       padding: 4px 18px;
       border-radius: 20px;
       margin: -10px auto 18px;
@@ -991,15 +1000,15 @@
       margin: 14px auto 0;
       max-width: 330px;
       padding: 10px 14px 2px;
-      border-top: 1px solid rgba(180, 140, 61, 0.3);
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
       font-family: 'Ovo', Georgia, serif;
       font-size: 13.5px;
-      color: #5C4535;
+      color: #4A0814;
       line-height: 1.45;
     }
 
     .schedule-card-venue-pill strong {
-      color: #7a1c2e;
+      color: #5C0B1B;
       font-weight: 600;
       display: block;
       margin-bottom: 2px;
@@ -1014,8 +1023,8 @@
     }
 
     .multi-venue-card {
-      background: rgba(239, 227, 209, 0.72);
-      border: 1px solid rgba(180, 140, 61, 0.38);
+      background: rgba(255, 250, 245, 0.92);
+      border: 1px solid rgba(212, 175, 55, 0.4);
       border-radius: 8px;
       padding: 16px 16px 18px;
       box-shadow: 0 4px 14px rgba(90, 15, 27, 0.08);
@@ -1027,7 +1036,7 @@
       font-size: 11.5px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #7a1c2e;
+      color: #6B0F20;
       background: rgba(180, 140, 61, 0.18);
       border: 1px solid rgba(180, 140, 61, 0.32);
       padding: 3px 12px;
@@ -1243,7 +1252,7 @@
        ========================================================================== */
     .section-location-ref {
       padding: 34px 20px 45px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
     }
@@ -1251,7 +1260,7 @@
     .location-script-title {
       font-family: 'Imperial Script', 'Alex Brush', cursive;
       font-size: clamp(38px, 10vw, 48px);
-      color: #B48C3D;
+      color: #5C0B1B;
       font-weight: 400;
       line-height: 1;
       margin-bottom: 6px;
@@ -1270,7 +1279,7 @@
     .location-venue-name {
       font-family: 'GT Super Display', 'Playfair Display', serif;
       font-size: clamp(18px, 5vw, 23px);
-      color: #553e30;
+      color: #4A0814;
       font-weight: 400;
       margin-bottom: 6px;
       line-height: 1.3;
@@ -1279,7 +1288,7 @@
     .location-venue-address {
       font-family: 'Ovo', Georgia, serif;
       font-size: clamp(13px, 3.8vw, 15px);
-      color: #6a5140;
+      color: #5C1D28;
       max-width: 310px;
       margin: 0 auto 24px;
       line-height: 1.5;
@@ -1320,7 +1329,7 @@
       align-items: center;
       gap: 8px;
       padding: 10px 22px;
-      background: #5A0F1B;
+      background: linear-gradient(135deg, #6B0F20 0%, #4A0814 100%);
       color: #dfba73;
       border-radius: 30px;
       font-family: 'Ovo', serif;
@@ -1452,7 +1461,7 @@
        ========================================================================== */
     .section-dresscode {
       padding: 40px 24px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
       border-top: 1px dashed rgba(184, 137, 110, 0.3);
@@ -1514,10 +1523,10 @@
       transform: scale(1.12);
     }
 
-    .swatch-circle.burgundy { background: #4a0d18; }
-    .swatch-circle.rosegold { background: #c88b86; }
+    .swatch-circle.burgundy { background: #5C0B1B; }
+    .swatch-circle.rosegold { background: #DFBA73; }
     .swatch-circle.champagne { background: #f3dfd0; }
-    .swatch-circle.espresso { background: #2c1a1d; }
+    .swatch-circle.espresso { background: #26040A; }
 
     .swatch-name {
       font-family: var(--font-sans);
@@ -1682,7 +1691,7 @@
     }
 
     .rsvp-modal-content {
-      background: #F9F0E0;
+      background: #FAF3EB;
       width: 100%;
       max-width: 420px;
       border-radius: 20px;
@@ -1841,7 +1850,7 @@
       position: fixed;
       inset: 0;
       z-index: 99999;
-      background: #F9F0E0;
+      background: #FAF3EB;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1960,7 +1969,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #F9F0E0;
+      background: #FAF3EB;
       opacity: 0;
       pointer-events: none;
       padding-bottom: 42px;
@@ -2025,7 +2034,7 @@
       align-items: center;
       padding: 85px 20px 22px;
       overflow: hidden;
-      background: #F9F0E0;
+      background: #FAF3EB;
       box-sizing: border-box;
     }
 
@@ -2127,16 +2136,16 @@
     .hero-name {
       font-family: 'Beau Rivage', 'Great Vibes', cursive;
       font-size: clamp(40px, 10.5vw, 58px);
-      color: #9c6c28;
+      color: #B88628;
       line-height: 0.85;
       font-weight: 400;
-      text-shadow: 0 2px 8px rgba(255, 255, 255, 0.98), 0 0 14px rgba(255, 248, 230, 0.9);
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.98), 0 2px 10px rgba(92, 11, 27, 0.28);
     }
 
     .hero-ampersand {
       font-family: 'Imperial Script', 'Alex Brush', cursive;
       font-size: clamp(22px, 5.5vw, 28px);
-      color: #9c6c28;
+      color: #B88628;
       line-height: 1;
       margin: 2px 0;
       text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95);
@@ -2234,7 +2243,7 @@
       font-family: 'Imperial Script', 'Alex Brush', cursive;
       font-size: 28px;
       font-weight: 500;
-      color: #7d4e20;
+      color: #8C2133;
       line-height: 1;
       text-shadow: 0 1px 4px rgba(255, 255, 255, 0.98), 0 0 8px rgba(255, 250, 240, 0.95);
     }
@@ -2242,8 +2251,8 @@
     .scroll-chevron {
       width: 10px;
       height: 10px;
-      border-right: 2px solid #7d4e20;
-      border-bottom: 2px solid #7d4e20;
+      border-right: 2px solid #8C2133;
+      border-bottom: 2px solid #8C2133;
       transform: rotate(45deg);
       animation: bounceChevron 2.2s ease-in-out infinite;
       filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.9));
@@ -2256,7 +2265,7 @@
 
     /* SECTION 2: POETRY & BOTANICAL DECKLE CARD */
     .section-poetry-garland {
-      background: #F9F0E0;
+      background: #FAF3EB;
       padding: 35px 16px 50px;
       text-align: center;
       position: relative;
@@ -2276,7 +2285,7 @@
     .bismillah-arabic {
       font-family: 'Amiri', 'Noto Nastaliq Urdu', serif;
       font-size: 21px;
-      color: #7d4e20;
+      color: #5C0B1B;
       margin-bottom: 12px;
       line-height: 1.4;
     }
@@ -2307,7 +2316,7 @@
     .poetry-lead {
       font-family: 'GT Super Display', 'Playfair Display', serif;
       font-size: 22px;
-      color: #9c6c28;
+      color: #A67622;
       line-height: 1.25;
       font-weight: 300;
     }
@@ -2330,7 +2339,7 @@
     .family-invite-title {
       font-family: 'Ovo', 'GT Super Display', Georgia, serif;
       font-size: 16px;
-      color: #6a5140;
+      color: #6B0F20;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       font-weight: 600;
@@ -2340,7 +2349,7 @@
     .family-invite-desc {
       font-family: 'Ovo', 'Cormorant Garamond', Georgia, serif;
       font-size: 15px;
-      color: #6a5140;
+      color: #380710;
       line-height: 1.6;
     }
 
@@ -2363,7 +2372,7 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #5A0F1B url('assets/burgundy-rose-icon.png') center / 16px no-repeat;
+      background: #5A0F1B url('assets/maroon-velvet-rose.webp') center / 16px no-repeat;
       border: 2px solid #a67d2b;
       box-shadow: 0 0 10px rgba(166, 125, 43, 0.5);
     }
@@ -2424,7 +2433,7 @@
        ========================================================================== */
     .section-dresscode-ref {
       padding: 30px 16px 40px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
     }
@@ -2433,7 +2442,7 @@
       width: 100%;
       max-width: 410px;
       margin: 0 auto;
-      background: #efe4d0 url('assets/burgundy-sand-speckles.png') repeat;
+      background: #FAF3EB;
       background-size: 180px;
       padding: 38px 24px 34px;
       position: relative;
@@ -2493,7 +2502,7 @@
        ========================================================================== */
     .section-rsvp-ref {
       padding: 35px 20px 45px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
     }
@@ -2554,7 +2563,7 @@
        ========================================================================== */
     .section-farewell-ref {
       padding: 40px 16px 60px;
-      background: #F9F0E0;
+      background: #FAF3EB;
       text-align: center;
       position: relative;
       overflow: hidden;
