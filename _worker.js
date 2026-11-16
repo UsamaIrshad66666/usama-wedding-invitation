@@ -15,6 +15,8 @@ const THEME_IMAGES = {
   lilac: "https://e-dawatnama.com/assets/lilac-baraat.jpg",
   farman: "https://e-dawatnama.com/assets/obsidian-baraat.jpg",
   burgundy: "https://e-dawatnama.com/assets/burgundy-arch-swans.jpg",
+  maroon: "https://e-dawatnama.com/assets/maroon-hero-poster.jpg",
+  "maroon-romance": "https://e-dawatnama.com/assets/maroon-hero-poster.jpg",
   ivory: "https://e-dawatnama.com/assets/noor-nikkah-hero.jpg",
   "royal-grace": "https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg",
   grace: "https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg"
@@ -195,6 +197,20 @@ function resolveMetadata(url) {
     };
   }
 
+  // 3e. Maroon Romance Theme Demo
+  if (
+    pathLower === "/maroon-romance" ||
+    pathLower === "/maroon-romance.html" ||
+    pathLower === "/maroon" ||
+    pathLower === "/demo-maroon"
+  ) {
+    return {
+      title: "Ahmed & Ayesha — Maroon Romance & Royal Wedding Invitation",
+      desc: "Experience the bespoke Maroon Romance interactive wedding invitation by E-Dawatnama. Featuring cinematic golden light envelope unsealing, ivory floral archway, and live countdown.",
+      image: THEME_IMAGES.maroon || "https://e-dawatnama.com/assets/maroon-hero-poster.jpg"
+    };
+  }
+
   // 3c. Burgundy Romance Theme Demo
   if (
     pathLower === "/burgundy-romance" ||
@@ -300,6 +316,7 @@ const RESERVED_FIRST_SEGMENTS = new Set([
 function getThemeAssetPath(themeKey) {
   const t = (themeKey || "").toLowerCase().trim();
   if (t === "royal-grace" || t === "grace") return "/royal-grace";
+  if (t === "maroon" || t === "maroon-romance") return "/maroon-romance";
   if (t === "burgundy" || t === "burgundy-romance" || t === "velvet-romance") return "/burgundy-romance";
   if (t === "noor-e-nikkah" || t === "noor-nikkah" || t === "ivory" || t === "ivory-gold") return "/noor-e-nikkah";
   if (t === "shahi-farman" || t === "farman") return "/shahi-farman";
@@ -379,6 +396,8 @@ export default {
       let targetAsset = "";
       if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
         targetAsset = "/royal-grace";
+      } else if (lower === "/maroon-romance" || lower === "/maroon" || lower === "/demo-maroon" || lower === "/theme/maroon-romance" || lower === "/theme/maroon") {
+        targetAsset = "/maroon-romance";
       } else if (lower === "/burgundy-romance" || lower === "/burgundy" || lower === "/demo-burgundy" || lower === "/velvet-romance" || lower === "/theme/burgundy-romance" || lower === "/theme/burgundy") {
         targetAsset = "/burgundy-romance";
       } else if (lower === "/noor-e-nikkah" || lower === "/noor-nikkah" || lower === "/ivory-gold" || lower === "/ivory") {
