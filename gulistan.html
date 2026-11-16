@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en" class="is-shut">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6ece6">
+  <title>Dr. Junaid &amp; Dr. Ayesha · Gulistan Royal Wedding Invitation | E-Dawatnama</title>
+  
+  <meta name="description" content="Experience the bespoke Gulistan Rose Garden royal digital wedding invitation by E-Dawatnama.">
+  <meta property="og:title" content="Dr. Junaid &amp; Dr. Ayesha — Gulistan Royal Wedding Invitation">
+  <meta property="og:description" content="You are cordially invited to our wedding celebrations. Tap to untie the ribbon and open your invitation.">
+  <meta property="og:image" content="https://e-dawatnama.com/assets/gulistan/beyond.webp">
+  <meta property="og:url" content="https://e-dawatnama.com/gulistan">
+  <meta property="og:type" content="website">
+
+  <!-- Luxury Typography: Corinthia, Cormorant Garamond, Amiri, Amiri Quran, Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Corinthia:wght@700&amp;family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Amiri&amp;family=Amiri+Quran&amp;family=Noto+Nastaliq+Urdu:wght@400;700&amp;display=swap">
+  
+  <!-- Master Gulistan Theme Stylesheet -->
+  <link rel="stylesheet" href="assets/gulistan/gulistan.css">
+
+  <style>
+    /* ==========================================================================
+       GULISTAN E-DAWATNAMA INTEGRATIONS & LUXURY POLISH
+       ========================================================================== */
+    :root {
+      --rose-accent: #8a4e54;
+      --gold-royal: #c89d58;
+      --gold-bright: #dfba73;
+      --font-nastaliq: 'Noto Nastaliq Urdu', serif;
+    }
+
+    /* Fixed Top Navigation: Language Toggle & Music FAB */
+    .gulistan-top-nav {
+      position: fixed;
+      top: max(14px, env(safe-area-inset-top));
+      right: max(14px, env(safe-area-inset-right));
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .glass-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      min-height: 38px;
+      background: rgba(246, 236, 230, 0.85);
+      border: 1px solid rgba(138, 78, 84, 0.35);
+      border-radius: 999px;
+      color: #5b3a3d;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(91, 58, 61, 0.12);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      user-select: none;
+    }
+    .glass-nav-btn:hover {
+      background: rgba(246, 236, 230, 0.98);
+      border-color: #8a4e54;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(91, 58, 61, 0.2);
+    }
+
+    .lang-pill-btn {
+      font-family: 'Noto Nastaliq Urdu', 'Cormorant Garamond', serif;
+      font-weight: 700;
+    }
+
+    /* Urdu Nastaliq Typography Overrides */
+    html[dir="rtl"] {
+      font-family: var(--font-nastaliq);
+    }
+    html[dir="rtl"] .h-kicker,
+    html[dir="rtl"] .h-line,
+    html[dir="rtl"] .lt-kicker,
+    html[dir="rtl"] .lt-for,
+    html[dir="rtl"] .lt-greeting,
+    html[dir="rtl"] .fm-kicker,
+    html[dir="rtl"] .fm-title,
+    html[dir="rtl"] .fm-label,
+    html[dir="rtl"] .fm-both,
+    html[dir="rtl"] .ev-kicker,
+    html[dir="rtl"] .ev-title,
+    html[dir="rtl"] .ev-hint,
+    html[dir="rtl"] .cd-kicker,
+    html[dir="rtl"] .cd-title,
+    html[dir="rtl"] .cl-kicker,
+    html[dir="rtl"] .cl-title,
+    html[dir="rtl"] .cl-msg,
+    html[dir="rtl"] .cl-sign {
+      font-family: var(--font-nastaliq) !important;
+      direction: rtl;
+    }
+    html[dir="rtl"] .h-names {
+      font-family: var(--font-nastaliq) !important;
+      font-size: clamp(34px, 9cqi, 52px) !important;
+      line-height: 1.6 !important;
+    }
+    html[dir="rtl"] .lp-couple {
+      font-family: var(--font-nastaliq) !important;
+      font-size: clamp(30px, 8cqi, 44px) !important;
+      line-height: 1.5 !important;
+    }
+    html[dir="rtl"] .tg-when,
+    html[dir="rtl"] .eb-when,
+    html[dir="rtl"] .ev-venue,
+    html[dir="rtl"] .cd-foot {
+      font-family: var(--font-nastaliq) !important;
+      direction: rtl;
+    }
+
+    /* 3-Tier Split Host Typography */
+    .lp-parents {
+      margin: 1.2em 0 1em 0;
+      text-align: center;
+    }
+    .host-prefix-line {
+      font-size: clamp(12px, 3.2cqi, 14.5px);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8a4e54;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .host-name-line {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(21px, 6cqi, 27px);
+      font-weight: 700;
+      color: #5b3a3d;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .host-invite-line {
+      font-size: clamp(14px, 4cqi, 17px);
+      font-style: italic;
+      color: #6b4c50;
+      line-height: 1.4;
+      margin-bottom: 0.8em;
+    }
+    html[dir="rtl"] .host-prefix-line {
+      letter-spacing: 0;
+      font-size: 15px;
+    }
+    html[dir="rtl"] .host-name-line {
+      font-family: var(--font-nastaliq) !important;
+      font-size: 22px;
+    }
+    html[dir="rtl"] .host-invite-line {
+      font-family: var(--font-nastaliq) !important;
+      font-style: normal;
+      font-size: 16px;
+    }
+
+    /* Couple Credentials Badges */
+    .couple-cred-pill {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #7b4348;
+      background: rgba(200, 157, 88, 0.14);
+      border: 1px solid rgba(200, 157, 88, 0.35);
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    .couple-cred-pill:empty {
+      display: none !important;
+    }
+    html[dir="rtl"] .couple-cred-pill {
+      font-family: var(--font-nastaliq) !important;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    /* Tagline Badge */
+    .gulistan-tagline-badge {
+      display: inline-block;
+      margin: 12px auto;
+      padding: 5px 16px;
+      border: 1px dashed rgba(200, 157, 88, 0.6);
+      background: rgba(255, 248, 238, 0.65);
+      border-radius: 20px;
+      font-size: 14px;
+      font-style: italic;
+      color: #6b2c40;
+      text-align: center;
+    }
+    html[dir="rtl"] .gulistan-tagline-badge {
+      font-family: var(--font-nastaliq) !important;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    /* Interactive Tag 3D Flip */
+    .ev-stage {
+      perspective: 1200px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      padding: 20px 10px;
+    }
+    .ev-tag-card-wrap {
+      position: relative;
+      width: min(88vw, 320px);
+      min-height: 480px;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .ev-tag-card-wrap.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .ev-tag-front, .ev-tag-back {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .ev-tag-back {
+      transform: rotateY(180deg);
+      background: #faf3ee url('assets/gulistan/sheet-ivory.webp') center / cover no-repeat;
+      box-shadow: 0 12px 35px rgba(91, 58, 61, 0.25);
+      border: 1px solid rgba(200, 157, 88, 0.4);
+      padding: 30px 20px 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    /* Interactive Envelope Open Transition */
+    .lt-stage {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lt-slot {
+      width: 100%;
+      transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+    }
+    .lt-letter.is-closed {
+      transform: translateY(120px) scale(0.9);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .lt-letter.is-open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lt-env.is-open .e-flap {
+      transform: rotateX(180deg);
+      opacity: 0;
+    }
+    .lt-env.is-open .e-flap-open {
+      opacity: 1;
+    }
+
+    /* Brand Footer Credit */
+    .gulistan-brand-footer {
+      width: 100%;
+      text-align: center;
+      padding: 32px 16px 40px 16px;
+      background: transparent;
+      z-index: 10;
+      position: relative;
+    }
+    .gulistan-brand-footer a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: rgba(246, 236, 230, 0.85);
+      text-decoration: none;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      transition: color 0.3s ease;
+    }
+    .gulistan-brand-footer a:hover {
+      color: #dfba73;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Floating Controls: Language Toggle & Background Music Toggle -->
+  <div class="gulistan-top-nav">
+    <button type="button" id="langToggleBtn" class="glass-nav-btn lang-pill-btn" aria-label="Switch Language">
+      <span id="langBtnText">اردو</span>
+    </button>
+    <button type="button" id="musicToggleBtn" class="glass-nav-btn" aria-label="Toggle Background Music">
+      <svg id="musicIconOn" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+      </svg>
+      <svg id="musicIconOff" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="display:none;">
+        <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73l4.73 4.73 1.27-1.27L4.27 3zM14 7h4V3h-6v5.18l2 2V7z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="bgMusic" src="assets/gulistan/music.mp3" preload="auto" loop></audio>
+  <audio id="sfxOpen" src="assets/gulistan/sfx-open.mp3" preload="auto"></audio>
+  <audio id="sfxLetter" src="assets/gulistan/sfx-letter.mp3" preload="auto"></audio>
+  <audio id="sfxTurn" src="assets/gulistan/sfx-turn.mp3" preload="auto"></audio>
+  <audio id="sfxDial" src="assets/gulistan/sfx-dial.mp3" preload="auto"></audio>
+
+  <!-- ==========================================================================
+       SECTION 0: THE ENCHANTED GARDEN GATE (INTERACTIVE COVER WITH UNTIE RIBBON)
+       ========================================================================== -->
+  <section class="gate" id="gate" aria-label="Your invitation">
+    <div class="gate-backdrop" aria-hidden="true"></div>
+    <div class="gate-inner" id="gateInner">
+      <div class="garden" id="garden">
+        <div class="stage" aria-hidden="true">
+          <div class="g-beyond g-art"></div>
+          <div class="g-light"></div>
+          <div class="g-leaf g-leaf-l"><div class="g-leaf-art"></div></div>
+          <div class="g-leaf g-leaf-r"><div class="g-leaf-art"></div></div>
+          <div class="g-seam"></div>
+          <div class="g-flies" style="--fly: 53.8px;">
+            <i class="g-fly" style="transform: translate(65px, 125px) rotate(-5deg);">
+              <span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span>
+            </i>
+            <i class="g-fly" style="transform: translate(290px, 340px) rotate(-45deg);">
+              <span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span>
+            </i>
+          </div>
+          <div class="g-petals">
+            <i class="g-petal" style="width: 18.4px;"><b><img alt="" draggable="false" src="assets/gulistan/petal-3.webp"></b></i>
+            <i class="g-petal" style="width: 16.7px;"><b><img alt="" draggable="false" src="assets/gulistan/petal-0.webp"></b></i>
+            <i class="g-petal" style="width: 23px;"><b><img alt="" draggable="false" src="assets/gulistan/petal-2.webp"></b></i>
+            <i class="g-petal" style="width: 19.9px;"><b><img alt="" draggable="false" src="assets/gulistan/petal-1.webp"></b></i>
+          </div>
+        </div>
+
+        <!-- Untie Ribbon Button -->
+        <button class="ribbon" id="ribbon" type="button" aria-label="Untie the ribbon and open the gates">
+          <span class="rb-ring" aria-hidden="true"></span>
+          <span class="rb-band rb-band-l" aria-hidden="true"></span>
+          <span class="rb-band rb-band-r" aria-hidden="true"></span>
+          <span class="rb-bow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <p class="gate-hint" id="tGateHint" aria-hidden="true">Untie the ribbon</p>
+    <div class="g-flood" aria-hidden="true"></div>
+  </section>
+
+  <!-- ==========================================================================
+       MAIN INVITATION CARD (Revealed after gate opening)
+       ========================================================================== -->
+  <main class="card" id="card" aria-hidden="true">
+
+    <!-- SECTION 1: HERO & BLOOMING ROSES -->
+    <section class="hero" id="hero" data-section="hero" aria-labelledby="heroNames">
+      <div class="h-scene">
+        <div class="h-pav" aria-hidden="true"></div>
+        <div class="h-roses" id="heroRoses" aria-hidden="true">
+          <!-- Interactive animated blooming roses -->
+          <i class="h-rose" style="left: 26.5%; top: 57.7%; width: 9.1%;">
+            <img alt="" draggable="false" src="assets/gulistan/rose-0.webp">
+            <img alt="" draggable="false" src="assets/gulistan/rose-1.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-2.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-3.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-4.webp" style="opacity:0">
+          </i>
+          <i class="h-rose" style="left: 69.4%; top: 68%; width: 9.1%;">
+            <img alt="" draggable="false" src="assets/gulistan/rose-0.webp">
+            <img alt="" draggable="false" src="assets/gulistan/rose-1.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-2.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-3.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-4.webp" style="opacity:0">
+          </i>
+          <i class="h-rose" style="left: 73%; top: 43%; width: 9.1%;">
+            <img alt="" draggable="false" src="assets/gulistan/rose-0.webp">
+            <img alt="" draggable="false" src="assets/gulistan/rose-1.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-2.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-3.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-4.webp" style="opacity:0">
+          </i>
+          <i class="h-rose" style="left: 29.4%; top: 44.3%; width: 9.1%;">
+            <img alt="" draggable="false" src="assets/gulistan/rose-0.webp">
+            <img alt="" draggable="false" src="assets/gulistan/rose-1.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-2.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-3.webp" style="opacity:0">
+            <img alt="" draggable="false" src="assets/gulistan/rose-4.webp" style="opacity:0">
+          </i>
+        </div>
+
+        <div class="h-words">
+          <p class="h-bism" lang="ar" aria-label="Bismillah ir-Rahman ir-Raheem">﷽</p>
+          <p class="h-kicker" id="tHeroKicker">Together with their families</p>
+          <h1 class="h-names" id="heroNames">
+            <span class="h-name" id="tHeroGroom">Dr. Junaid</span>
+            <span class="h-amp">&amp;</span>
+            <span class="h-name" id="tHeroBride">Dr. Ayesha</span>
+          </h1>
+          <p class="h-line" id="tHeroInviteLine">invite you to celebrate their wedding</p>
+          <div class="gulistan-tagline-badge" id="tHeroTagline" style="display:none;"></div>
+        </div>
+        <div class="h-petals" aria-hidden="true"></div>
+      </div>
+      <p class="h-scroll" aria-hidden="true"><i></i></p>
+    </section>
+
+    <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
+
+    <!-- SECTION 2: THE ROYAL LETTER & ENVELOPE (SURAH AR-RUM + 3-TIER HOST) -->
+    <section class="letter" id="letter" data-section="letter" aria-labelledby="letterFor">
+      <div class="lt-papers" aria-hidden="true">
+        <i class="lp-blush"></i>
+        <i class="lp-ivory"></i>
+        <i class="lp-garland"></i>
+        <i class="lp-corner"></i>
+        <i class="lp-corner lp-corner-r"></i>
+      </div>
+      <div class="lt-shade" aria-hidden="true"></div>
+      <div class="lt-petals" aria-hidden="true"></div>
+
+      <header class="lt-head">
+        <p class="lt-kicker" id="tLetterKicker">A letter for</p>
+        <h2 class="lt-for" id="letterFor"><span id="tGuestName">Family &amp; Friends</span></h2>
+      </header>
+
+      <div class="lt-stage">
+        <div class="lt-slot">
+          <article class="lt-letter is-open" id="letterSheet" aria-label="Your letter">
+            <p class="lt-verse" id="tQuranVerseAr" lang="ar" dir="rtl">وَمِنْ ءَايَـٰتِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
+            <p class="lt-verse-en" id="tQuranVerseEn">“And of His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy.”</p>
+            <p class="lt-verse-ref" id="tQuranRef">Surah Ar-Rum · 30:21</p>
+            <p class="lt-rule" aria-hidden="true"><i></i></p>
+            
+            <p class="lt-greeting" id="tLetterGreeting">Dear Family &amp; Friends,</p>
+
+            <!-- 3-Tier Split Host Typography Rule -->
+            <div class="lp-parents" id="hostBlock">
+              <div class="host-prefix-line" id="tHostPrefix">MR. &amp; MRS.</div>
+              <h3 class="host-name-line" id="tHostNames">Adv Rana Zahid Majeed Khan</h3>
+              <p class="host-invite-line" id="tHostIntro">invite you to the wedding ceremony of their beloved son</p>
+              
+              <div class="couple-names-block">
+                <div class="lp-couple" id="tLetterGroom">Dr. Junaid Zahid Majeed</div>
+                <div class="couple-cred-pill" id="tGroomCred"></div>
+                
+                <p class="lp-with" id="tLetterConnector">with</p>
+                
+                <div class="lp-couple" id="tLetterBride">Dr. Ayesha Dua Khan</div>
+                <div class="couple-cred-pill" id="tBrideCred"></div>
+              </div>
+            </div>
+
+            <p id="tLetterMessage1">We are getting married! Like a garden that grows quietly and then blooms all at once, our story has come to this happy day, and it would mean the world to us to have you with us as we begin our life together.</p>
+            <p id="tLetterMessage2">Your love and your duas have helped it grow. Our joy will not be complete without you.</p>
+            <p class="lt-closing" id="tLetterClosing">With love and duas,</p>
+
+            <p class="lt-mono" aria-hidden="true"><span id="tMonogram">J<i>&amp;</i>A</span></p>
+          </article>
+        </div>
+
+        <!-- Interactive Envelope Opening Flap -->
+        <div class="lt-keep">
+          <button class="lt-env is-open" id="envelope" type="button" aria-controls="letterSheet" aria-expanded="true">
+            <span class="e-back" aria-hidden="true"></span>
+            <span class="e-flap-open" aria-hidden="true"></span>
+            <span class="e-pocket" aria-hidden="true"></span>
+            <span class="e-flap-shadow" aria-hidden="true"></span>
+            <span class="e-flap" aria-hidden="true"></span>
+            <span class="e-seal" aria-hidden="true"><i class="gl-seal-ring"></i></span>
+            <span class="lt-sr">Open your letter</span>
+          </button>
+          <p class="lt-hint" id="tLetterTapHint" aria-hidden="true">Tap the letter to unfold</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
+
+    <!-- SECTION 3: FAMILY BLESSINGS & HADITH DUA -->
+    <section class="families" id="families" data-section="families" aria-labelledby="famTitle">
+      <div class="fm-scene">
+        <div class="fm-art" aria-hidden="true">
+          <i class="fm-veil"></i>
+          <span class="fm-rose">
+            <img alt="" draggable="false" src="assets/gulistan/rose-4.webp">
+          </span>
+          <div class="fm-petals"></div>
+        </div>
+        <div class="fm-words">
+          <header class="fm-head">
+            <p class="fm-kicker" id="tFamKicker">With the blessings of</p>
+            <h2 class="fm-title" id="famTitle">Our Family</h2>
+          </header>
+
+          <div class="fm-groom fm-his">
+            <p class="fm-label" id="tFamLabel">The Groom's Parents</p>
+            <p class="fm-mr" id="tFamPrefix">Mr &amp; Mrs</p>
+            <p class="fm-parents" id="tFamParents">Adv Rana Zahid Majeed Khan</p>
+          </div>
+
+          <div class="fm-groom fm-her" id="famBrideSideBlock" style="margin-top:14px; display:none;">
+            <p class="fm-label" id="tFamBrideLabel">The Bride's Parents</p>
+            <p class="fm-mr" id="tFamBridePrefix">Mr &amp; Mrs</p>
+            <p class="fm-parents" id="tFamBrideParents">Kamran Akhtar</p>
+          </div>
+
+          <p class="fm-both" id="tFamAppreciation">Your presence will be much appreciated</p>
+          
+          <div class="fm-dua">
+            <p class="fm-dua-ar" id="tHadithAr" lang="ar" dir="rtl">بَارَكَ اللَّهُ لَكَ، وَبَارَكَ عَلَيْكَ، وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</p>
+            <p class="fm-dua-en" id="tHadithEn">“May Allah bless you, shower His blessings upon you, and join you both together in goodness.”</p>
+            <p class="fm-dua-ref" id="tHadithRef">Sunan Abi Dawud · 2130</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
+
+    <!-- SECTION 4: CEREMONY TAGS (3D FLIPPABLE LUGGAGE TAGS) -->
+    <section class="events" id="events" data-section="events" aria-labelledby="evTitle">
+      <div class="ev-wall" aria-hidden="true"><i class="ev-shade ev-shade-a"></i><i class="ev-shade ev-shade-b"></i></div>
+      
+      <header class="ev-head">
+        <p class="ev-kicker" id="tEventsKicker">Please join us for</p>
+        <h2 class="ev-title" id="evTitle">The Wedding Ceremonies</h2>
+        <p class="ev-hint" id="tEventsHint">Touch a tag to turn it over</p>
+      </header>
+
+      <!-- Dynamic Event Cards Container -->
+      <div class="ev-stage" id="evStage">
+        <!-- Rendered via renderEventTags() -->
+      </div>
+    </section>
+
+    <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
+
+    <!-- SECTION 5: ASTROLABE / SUN-DIAL COUNTDOWN -->
+    <section class="countdown" id="countdown" data-section="countdown" aria-labelledby="cdTitle">
+      <div class="cd-pave" aria-hidden="true"><i class="cd-shade"></i></div>
+      <div class="cd-inner">
+        <header class="cd-head">
+          <p class="cd-kicker" id="tCdKicker">Counting down to</p>
+          <h2 class="cd-title" id="cdTitle">Our Wedding Day</h2>
+        </header>
+
+        <div class="cd-dial">
+          <span class="cd-dial-art" aria-hidden="true"></span>
+          <span class="cd-shadow" aria-hidden="true" style="--sun: 62deg;"><i></i></span>
+          <span class="cd-dial-art cd-gnomon" aria-hidden="true"></span>
+          
+          <div class="cd-count" role="timer">
+            <div class="cd-unit cd-days">
+              <span class="cd-num" id="cdDays">00</span>
+              <span class="cd-label" id="tCdDaysLabel">Days</span>
+            </div>
+            <i class="cd-sep cd-sep-d" aria-hidden="true"></i>
+            <div class="cd-unit cd-hours">
+              <span class="cd-num" id="cdHours">00</span>
+              <span class="cd-label" id="tCdHoursLabel">Hours</span>
+            </div>
+            <i class="cd-sep" aria-hidden="true"></i>
+            <div class="cd-unit cd-mins">
+              <span class="cd-num" id="cdMins">00</span>
+              <span class="cd-label" id="tCdMinsLabel">Minutes</span>
+            </div>
+            <i class="cd-sep" aria-hidden="true"></i>
+            <div class="cd-unit cd-secs">
+              <span class="cd-num" id="cdSecs">00</span>
+              <span class="cd-label" id="tCdSecsLabel">Seconds</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cd-foot">
+          <p class="cd-date"><span class="cd-dmy" id="tCdTargetDate">Sunday 6 December 2026</span> <span class="cd-when" id="tCdTargetTime">7:00 pm</span></p>
+          <p class="cd-line" id="tCdSubline">until our garden is in full bloom</p>
+          
+          <div class="cd-save-wrap" style="margin-top: 18px;">
+            <a class="ev-btn" id="tSaveDateBtn" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="5.5" width="16" height="14.5" rx="2"></rect>
+                <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13v4M10 15h4"></path>
+              </svg>
+              <span id="tSaveDateText">Add to Google Calendar</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
+
+    <!-- SECTION 6: SHUKRIYA & CLOSING NIGHT GARDEN -->
+    <section class="closing" id="closing" data-section="closing" aria-labelledby="clTitle">
+      <div class="cl-scene">
+        <div class="cl-art" aria-hidden="true">
+          <i class="cl-moon"></i>
+          <i class="cl-glow cl-lamp1"></i>
+          <i class="cl-glow cl-lamp2"></i>
+          <i class="cl-glow cl-pav"></i>
+          <i class="cl-veil"></i>
+          <div class="cl-flies"></div>
+          <div class="cl-petals"></div>
+        </div>
+        
+        <div class="cl-words">
+          <div class="cl-thanks">
+            <p class="cl-kicker" id="tCloseKicker">With love and gratitude</p>
+            <h2 class="cl-title" id="clTitle">Shukriya</h2>
+            <p class="cl-msg" id="tCloseMessage">for being a part of our story. Your presence, your love and your duas mean the world to us.</p>
+            <p class="cl-sign" id="tCloseSign"><span class="cl-n">Adv Rana Zahid Majeed Khan</span> <span class="cl-amp">&amp;</span> <span class="cl-n">Family</span></p>
+          </div>
+          
+          <div class="cl-dua">
+            <p class="cl-dua-ar" id="tCloseDuaAr" lang="ar" dir="rtl">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
+            <p class="cl-dua-en" id="tCloseDuaEn">“Our Lord, grant us from among our spouses and offspring comfort to our eyes, and make us an example for the righteous.”</p>
+            <p class="cl-dua-ref" id="tCloseDuaRef">Al-Furqan · 25:74</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Royal E-Dawatnama Brand Credit -->
+      <footer class="gulistan-brand-footer">
+        <a href="/about" target="_blank" rel="noopener">✦ Crafted by E-dawatnama.com ✦</a>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       GULISTAN JAVASCRIPT: INTERACTION, DUAL-LANGUAGE & DATA CONTRACT
+       ========================================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Audio Elements
+      const bgMusic = document.getElementById("bgMusic");
+      const sfxOpen = document.getElementById("sfxOpen");
+      const sfxLetter = document.getElementById("sfxLetter");
+      const sfxTurn = document.getElementById("sfxTurn");
+      const sfxDial = document.getElementById("sfxDial");
+
+      const musicToggleBtn = document.getElementById("musicToggleBtn");
+      const musicIconOn = document.getElementById("musicIconOn");
+      const musicIconOff = document.getElementById("musicIconOff");
+      let isMusicPlaying = false;
+      let wasPlayingBeforeHidden = false;
+
+      function playMusic() {
+        if (!bgMusic) return;
+        bgMusic.volume = 0.85;
+        const p = bgMusic.play();
+        if (p && p.catch) {
+          p.catch(() => {
+            console.log("Audio autoplay prevented by browser policy.");
+          });
+        }
+        isMusicPlaying = true;
+        if (musicIconOn) musicIconOn.style.display = "block";
+        if (musicIconOff) musicIconOff.style.display = "none";
+      }
+
+      function pauseMusic() {
+        if (!bgMusic) return;
+        bgMusic.pause();
+        isMusicPlaying = false;
+        if (musicIconOn) musicIconOn.style.display = "none";
+        if (musicIconOff) musicIconOff.style.display = "block";
+      }
+
+      if (musicToggleBtn) {
+        musicToggleBtn.addEventListener("click", () => {
+          if (isMusicPlaying) {
+            pauseMusic();
+            wasPlayingBeforeHidden = false;
+          } else {
+            playMusic();
+          }
+        });
+      }
+
+      // Rule 6: Audio Lifecycle Management (stops on visibilitychange hidden, pagehide, blur)
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          if (bgMusic && !bgMusic.paused) {
+            pauseMusic();
+            wasPlayingBeforeHidden = true;
+          }
+        } else {
+          if (wasPlayingBeforeHidden) {
+            playMusic();
+            wasPlayingBeforeHidden = false;
+          }
+        }
+      });
+
+      window.addEventListener("pagehide", () => {
+        if (bgMusic && !bgMusic.paused) pauseMusic();
+      });
+
+      window.addEventListener("blur", () => {
+        if (bgMusic && !bgMusic.paused) {
+          pauseMusic();
+          wasPlayingBeforeHidden = true;
+        }
+      });
+
+      function playSfx(audioEl) {
+        if (!audioEl) return;
+        audioEl.currentTime = 0;
+        audioEl.play().catch(() => {});
+      }
+
+      // 2. Gate Opening Sequence (Untie the Ribbon)
+      const gate = document.getElementById("gate");
+      const ribbon = document.getElementById("ribbon");
+      const card = document.getElementById("card");
+
+      function openGate(instant = false) {
+        playSfx(sfxOpen);
+        if (ribbon) ribbon.classList.add("is-untying");
+        if (gate) gate.classList.add("is-opening");
+        
+        const delay = instant ? 10 : 800;
+        setTimeout(() => {
+          document.documentElement.classList.remove("is-shut");
+          if (gate) {
+            gate.style.opacity = "0";
+            gate.style.pointerEvents = "none";
+            setTimeout(() => { gate.style.display = "none"; }, 400);
+          }
+          if (card) {
+            card.setAttribute("aria-hidden", "false");
+          }
+          playMusic();
+          initRoseBlooms();
+        }, delay);
+      }
+
+      if (ribbon) {
+        ribbon.addEventListener("click", () => openGate(false));
+      }
+
+      // 3. Interactive Envelope & Letter Sheet
+      const envelope = document.getElementById("envelope");
+      const letterSheet = document.getElementById("letterSheet");
+      let isEnvelopeOpened = true; // default opened for readability, toggleable
+
+      if (envelope) {
+        envelope.addEventListener("click", () => {
+          playSfx(sfxLetter);
+          isEnvelopeOpened = !isEnvelopeOpened;
+          if (isEnvelopeOpened) {
+            envelope.classList.add("is-open");
+            if (letterSheet) {
+              letterSheet.classList.remove("is-closed");
+              letterSheet.classList.add("is-open");
+            }
+          } else {
+            envelope.classList.remove("is-open");
+            if (letterSheet) {
+              letterSheet.classList.remove("is-open");
+              letterSheet.classList.add("is-closed");
+            }
+          }
+        });
+      }
+
+      // 4. Rose Blooming Animation
+      function initRoseBlooms() {
+        const roses = document.querySelectorAll(".h-rose");
+        roses.forEach((rose, rIdx) => {
+          const imgs = rose.querySelectorAll("img");
+          if (imgs.length < 2) return;
+          let frame = 0;
+          setInterval(() => {
+            imgs.forEach((img, i) => {
+              img.style.opacity = (i === frame) ? "1" : "0";
+            });
+            frame = (frame + 1) % imgs.length;
+          }, 1600 + (rIdx * 250));
+        });
+      }
+
+      // 5. Default Wedding Demo Data (Dr. Junaid & Dr. Ayesha)
+      const DEMO_DATA = {
+        cardSide: "groom",
+        groom: "Dr. Junaid Zahid Majeed",
+        groomUrdu: "ڈاکٹر جنید زاہد مجید",
+        groomOccupation: "Physician & Surgeon",
+        groomOccupationUrdu: "معالج و جراح",
+        bride: "Dr. Ayesha Dua Khan",
+        brideUrdu: "ڈاکٹر عائشہ دعا خان",
+        brideOccupation: "Dental Surgeon",
+        brideOccupationUrdu: "ڈینٹل سرجن",
+        host: "Mr. & Mrs. Adv Rana Zahid Majeed Khan",
+        hostUrdu: "جناب و محترمہ ایڈووکیٹ رانا زاہد مجید خان",
+        groomParents: "Mr. & Mrs. Adv Rana Zahid Majeed Khan",
+        groomParentsUrdu: "جناب و محترمہ ایڈووکیٹ رانا زاہد مجید خان",
+        brideParents: "Mr. & Mrs. Dr. Kamran Akhtar",
+        brideParentsUrdu: "جناب و محترمہ ڈاکٹر کامران اختر",
+        otherParents: "Mr. & Mrs. Dr. Kamran Akhtar",
+        otherParentsUrdu: "جناب و محترمہ ڈاکٹر کامران اختر",
+        taglineRoman: "Two souls, one blessed beginning",
+        taglineUrdu: "دو دلوں کا ایک بابرکت آغاز",
+        eventsList: [
+          {
+            type: "mehndi",
+            titleEn: "Mehndi Celebration",
+            titleUr: "رسمِ حنا (مہندی)",
+            date: "2026-12-04",
+            displayDate: "Friday, 4 December 2026",
+            displayDateUrdu: "جمعہ، ۴ دسمبر ۲۰۲۶",
+            time: "07:00 pm",
+            timeUrdu: "۷:۰۰ بجے شام",
+            venue: "Haveli Marquee",
+            venueUrdu: "حویلی مارکی",
+            address: "Canal Road, Faisalabad",
+            addressUrdu: "کینال روڈ، فیصل آباد",
+            mapUrl: "https://maps.google.com/?q=Faisalabad",
+            milestones: "Guest Arrival 7:00 pm · Dinner 8:30 pm"
+          },
+          {
+            type: "barat",
+            titleEn: "Baraat Ceremony",
+            titleUr: "تقریبِ بارات",
+            date: "2026-12-05",
+            displayDate: "Saturday, 5 December 2026",
+            displayDateUrdu: "ہفتہ، ۵ دسمبر ۲۰۲۶",
+            time: "08:00 pm",
+            timeUrdu: "۸:۰۰ بجے شب",
+            venue: "Royal Palm Golf Club",
+            venueUrdu: "رائل پام گالف کلب",
+            address: "Canal Bank, Lahore",
+            addressUrdu: "کینال بینک، لاہور",
+            mapUrl: "https://maps.google.com/?q=Lahore",
+            milestones: "Sehra Bandi 6:30 pm · Departure 7:15 pm · Nikkah 8:45 pm · Dinner 9:30 pm"
+          },
+          {
+            type: "walima",
+            titleEn: "The Walima",
+            titleUr: "دعوتِ ولیمہ",
+            date: "2026-12-06",
+            displayDate: "Sunday, 6 December 2026",
+            displayDateUrdu: "اتوار، ۶ دسمبر ۲۰۲۶",
+            time: "07:00 pm",
+            timeUrdu: "۷:۰۰ بجے شام",
+            venue: "Koh e Toor Marquee",
+            venueUrdu: "کوہِ طور مارکی",
+            address: "Daewoo Road, Faisalabad",
+            addressUrdu: "ڈائیوو روڈ، فیصل آباد",
+            mapUrl: "https://maps.app.goo.gl/9cG36NUM2m9NNRmf6",
+            milestones: "Arrival 7:00 pm · Dinner 8:00 pm"
+          }
+        ]
+      };
+
+      // 6. Resilient Payload Decoding (Base64 UTF-8, URL-encoded JSON, direct JSON)
+      function safeDecodeURI(str) {
+        try { return decodeURIComponent(str); } catch (e) { return unescape(str); }
+      }
+
+      function decodeWeddingData(str) {
+        if (!str) return null;
+        try {
+          let b64 = str.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+          while (b64.length % 4) b64 += "=";
+          try {
+            const bin = atob(b64);
+            try {
+              const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+              const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+              if (text.trim().startsWith("{")) return JSON.parse(text);
+            } catch (e) {}
+            const dec = safeDecodeURI(bin);
+            if (dec.trim().startsWith("{")) return JSON.parse(dec);
+          } catch (e) {}
+
+          try {
+            const direct = decodeURIComponent(str);
+            if (direct.trim().startsWith("{")) return JSON.parse(direct);
+          } catch (e) {}
+
+          if (str.trim().startsWith("{")) return JSON.parse(str);
+        } catch (err) {
+          console.error("Decoding error:", err);
+        }
+        return null;
+      }
+
+      // 7. Config Resolution & URL Variant Parsing
+      const params = new URLSearchParams(window.location.search);
+      const incomingRaw = params.get("invite") || params.get("d");
+      let WEDDING = decodeWeddingData(incomingRaw) || JSON.parse(JSON.stringify(DEMO_DATA));
+
+      // Side Override
+      const sideParam = params.get("side");
+      if (sideParam === "bride" || sideParam === "groom") {
+        WEDDING.cardSide = sideParam;
+      }
+
+      // Bidirectional Events Normalization (Rule 5.2)
+      if (!WEDDING.eventsList && WEDDING.events) {
+        WEDDING.eventsList = [];
+        const order = ["mehndi", "barat", "baraat", "walima", "nikkah"];
+        order.forEach(k => {
+          if (WEDDING.events[k]) {
+            const ev = WEDDING.events[k];
+            ev.type = k === "baraat" ? "barat" : k;
+            WEDDING.eventsList.push(ev);
+          }
+        });
+      } else if (WEDDING.eventsList && !WEDDING.events) {
+        WEDDING.events = {};
+        WEDDING.eventsList.forEach(ev => {
+          const k = (ev.type || ev.key || "").toLowerCase().replace("barat", "baraat");
+          if (k) WEDDING.events[k] = ev;
+        });
+      }
+
+      // Variant Filtering (Rule 3)
+      function resolveCardVariantFromUrl() {
+        const queryVar = (params.get("card") || params.get("event") || params.get("events") || "").toLowerCase().trim();
+        if (queryVar) return queryVar;
+        const pathSegments = decodeURIComponent(window.location.pathname || "").split("/").filter(Boolean);
+        if (pathSegments.length >= 2) {
+          return pathSegments[pathSegments.length - 1].toLowerCase().replace(/\.(html|php)$/i, "");
+        }
+        return "all";
+      }
+
+      function filterEventsByVariant(list, variant) {
+        if (!variant || variant === "all" || variant === "mehndi-barat-walima") return list;
+        const norm = variant.toLowerCase().replace("baraat", "barat");
+        let allowed = [];
+        if (norm === "walima") allowed = ["walima"];
+        else if (norm === "barat") allowed = ["barat", "baraat"];
+        else if (norm === "mehndi") allowed = ["mehndi"];
+        else if (norm === "mehndi-barat") allowed = ["mehndi", "barat", "baraat"];
+        else if (norm === "barat-walima") allowed = ["barat", "baraat", "walima"];
+        else if (norm === "mehndi-walima") allowed = ["mehndi", "walima"];
+        else allowed = [norm];
+
+        const filtered = list.filter(e => {
+          const k = ((e.type || e.key || "") + "").toLowerCase().replace("baraat", "barat");
+          return allowed.includes(k);
+        });
+        return filtered.length > 0 ? filtered : list;
+      }
+
+      const activeVariant = resolveCardVariantFromUrl();
+      const activeEvents = filterEventsByVariant(WEDDING.eventsList || [], activeVariant);
+
+      // Rule 7: Instant Deep-Link Unseal
+      const hasDeepLink = Boolean(params.get("card") || params.get("event") || (activeVariant && activeVariant !== "all"));
+      if (hasDeepLink) {
+        openGate(true);
+      }
+
+      // 8. 3-Tier Split Host Parser (Rule 2)
+      function parseHostHeader(hostStr, isUrdu) {
+        if (!hostStr) return { prefix: isUrdu ? "جناب و محترمہ" : "MR. & MRS.", name: "" };
+        const raw = hostStr.trim();
+        const enMatch = raw.match(/^(Mr\.\s*&\s*Mrs\.?|Mr\s*&\s*Mrs\.?|Mr\.?|Mrs\.?)\s*(.*)$/i);
+        if (enMatch && !isUrdu) {
+          return { prefix: enMatch[1].toUpperCase(), name: enMatch[2].trim() };
+        }
+        const urMatch = raw.match(/^(جناب\s*و\s*محترمہ|جناب|محترمہ)\s*(.*)$/);
+        if (urMatch && isUrdu) {
+          return { prefix: urMatch[1], name: urMatch[2].trim() };
+        }
+        return { prefix: isUrdu ? "جناب و محترمہ" : "MR. & MRS.", name: raw };
+      }
+
+      // 9. Dual-Language Translation Dictionary & Renderer
+      let currentLang = "en";
+      const URDU_DIGITS = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      function toUrduDigits(str) {
+        return String(str || '').replace(/[0-9]/g, d => URDU_DIGITS[+d]);
+      }
+
+      function renderEventTags(lang) {
+        const evStage = document.getElementById("evStage");
+        if (!evStage) return;
+        const isUr = lang === "ur";
+
+        evStage.innerHTML = activeEvents.map((ev, idx) => {
+          const tType = (ev.type || "walima").toLowerCase().replace("baraat", "barat");
+          const tagArt = `assets/gulistan/tag-${tType === "barat" ? "baraat" : tType}.webp`;
+          const title = isUr ? (ev.titleUr || ev.titleEn) : ev.titleEn;
+          const dateStr = isUr ? (ev.displayDateUrdu || toUrduDigits(ev.displayDate)) : ev.displayDate;
+          const timeStr = isUr ? (ev.timeUrdu || toUrduDigits(ev.time)) : ev.time;
+          const venue = isUr ? (ev.venueUrdu || ev.venue) : ev.venue;
+          const addr = isUr ? (ev.addressUrdu || ev.address) : ev.address;
+          const mapHref = ev.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(venue + ' ' + addr)}`;
+          const milestones = ev.milestones || "";
+
+          return `
+            <div class="ev-tag-card-wrap" data-tag-index="${idx}">
+              <!-- Front Side: Hanging Luggage Tag -->
+              <div class="ev-tag-front">
+                <button class="ev-tag" type="button" aria-label="View details for ${title}">
+                  <span class="tg-sway">
+                    <span class="tg-swing">
+                      <img class="tg-art" src="${tagArt}" alt="" draggable="false">
+                      <span class="tg-words">
+                        <span class="ev-name">${title}</span>
+                        <span class="tg-when">
+                          <span class="ev-dmy">${dateStr}</span>
+                          <span class="ev-time">${timeStr}</span>
+                        </span>
+                      </span>
+                      <span class="tg-tap">${isUr ? "تفصیلات دیکھیں" : "Tap for details"}</span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+
+              <!-- Back Side: Full Ceremony Program & Google Maps Actions -->
+              <div class="ev-tag-back">
+                <div>
+                  <h3 style="font-family:'Cormorant Garamond', serif; font-size: 26px; color: #5b3a3d; margin-bottom: 6px;">${title}</h3>
+                  <p style="font-size: 15px; color: #8a4e54; font-weight: 600; margin-bottom: 12px;">${dateStr}<br>${timeStr}</p>
+                  ${milestones ? `<p style="font-size: 13.5px; color: #6b4c50; line-height: 1.5; margin-bottom: 16px; background: rgba(200, 157, 88, 0.12); padding: 8px 12px; border-radius: 8px;">${milestones}</p>` : ""}
+                  <p style="font-size: 16px; font-weight: 700; color: #5b3a3d; margin-bottom: 2px;">📍 ${venue}</p>
+                  <p style="font-size: 13.5px; color: #7a5a5d; margin-bottom: 18px;">${addr}</p>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px; width: 100%;">
+                  <a class="ev-btn" href="${mapHref}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; justify-content:center; gap:6px; background:#8a4e54; color:#fff; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; font-size:14px;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>${isUr ? "گوگل میپ میں دیکھیں" : "View in Google Maps"}</span>
+                  </a>
+                  <button type="button" class="btn-flip-back" style="background:transparent; border:none; color:#8a4e54; font-size:13px; text-decoration:underline; cursor:pointer; padding:6px;">
+                    ${isUr ? "واپس پلٹیں" : "Flip back"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        // Attach 3D Flip Listeners
+        document.querySelectorAll(".ev-tag-card-wrap").forEach(cardWrap => {
+          cardWrap.addEventListener("click", (e) => {
+            if (e.target.closest("a.ev-btn")) return; // don't flip when clicking map link
+            playSfx(sfxTurn);
+            cardWrap.classList.toggle("is-flipped");
+          });
+        });
+      }
+
+      function renderCountdown(targetDateStr) {
+        const targetDate = new Date(targetDateStr).getTime();
+        const cdDays = document.getElementById("cdDays");
+        const cdHours = document.getElementById("cdHours");
+        const cdMins = document.getElementById("cdMins");
+        const cdSecs = document.getElementById("cdSecs");
+
+        function update() {
+          const now = new Date().getTime();
+          const diff = targetDate - now;
+          if (diff <= 0) {
+            if (cdDays) cdDays.textContent = "00";
+            if (cdHours) cdHours.textContent = "00";
+            if (cdMins) cdMins.textContent = "00";
+            if (cdSecs) cdSecs.textContent = "00";
+            return;
+          }
+          const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+          if (cdDays) cdDays.textContent = String(d).padStart(2, "0");
+          if (cdHours) cdHours.textContent = String(h).padStart(2, "0");
+          if (cdMins) cdMins.textContent = String(m).padStart(2, "0");
+          if (cdSecs) cdSecs.textContent = String(s).padStart(2, "0");
+        }
+        update();
+        setInterval(update, 1000);
+      }
+
+      function applyTranslations(lang) {
+        const isUr = lang === "ur";
+        document.documentElement.dir = isUr ? "rtl" : "ltr";
+        const isBride = WEDDING.cardSide === "bride";
+
+        // Names
+        const gName = isUr ? (WEDDING.groomUrdu || WEDDING.groom) : WEDDING.groom;
+        const bName = isUr ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
+        const firstName = isBride ? bName : gName;
+        const secondName = isBride ? gName : bName;
+
+        // Top Navigation
+        const langBtnText = document.getElementById("langBtnText");
+        if (langBtnText) langBtnText.textContent = isUr ? "EN" : "اردو";
+
+        // Hero
+        const tHeroGroom = document.getElementById("tHeroGroom");
+        const tHeroBride = document.getElementById("tHeroBride");
+        if (tHeroGroom) tHeroGroom.textContent = firstName;
+        if (tHeroBride) tHeroBride.textContent = secondName;
+
+        const tHeroKicker = document.getElementById("tHeroKicker");
+        if (tHeroKicker) tHeroKicker.textContent = isUr ? "خاندان کی پرخلوص دعاؤں کے ساتھ" : "Together with their families";
+        
+        const tHeroInviteLine = document.getElementById("tHeroInviteLine");
+        if (tHeroInviteLine) tHeroInviteLine.textContent = isUr ? "شادی خانہ آبادی کی تقریب میں شرکت کی دعوت دیتے ہیں" : "invite you to celebrate their wedding";
+
+        // Tagline
+        const tagline = isUr ? (WEDDING.taglineUrdu || WEDDING.taglineRoman) : (WEDDING.taglineRoman || WEDDING.taglineUrdu);
+        const tHeroTagline = document.getElementById("tHeroTagline");
+        if (tHeroTagline && tagline) {
+          tHeroTagline.textContent = `✦ ${tagline} ✦`;
+          tHeroTagline.style.display = "inline-block";
+        }
+
+        // Host Header 3-Tier Split
+        let rawHost = isUr ? (WEDDING.hostUrdu || WEDDING.host) : WEDDING.host;
+        if (isBride && (WEDDING.brideParents || WEDDING.brideParentsUrdu)) {
+          rawHost = isUr ? (WEDDING.brideParentsUrdu || WEDDING.brideParents) : WEDDING.brideParents;
+        } else if (!isBride && (WEDDING.groomParents || WEDDING.groomParentsUrdu)) {
+          rawHost = isUr ? (WEDDING.groomParentsUrdu || WEDDING.groomParents) : (WEDDING.host || WEDDING.groomParents);
+        }
+        const parsedHost = parseHostHeader(rawHost, isUr);
+        const tHostPrefix = document.getElementById("tHostPrefix");
+        const tHostNames = document.getElementById("tHostNames");
+        const tHostIntro = document.getElementById("tHostIntro");
+
+        if (tHostPrefix) tHostPrefix.textContent = parsedHost.prefix;
+        if (tHostNames) tHostNames.textContent = parsedHost.name;
+        if (tHostIntro) {
+          tHostIntro.textContent = isUr
+            ? (isBride ? "اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں" : "اپنے لختِ جگر کی تقریبِ شادی میں شرکت کی پرخلوص دعوت دیتے ہیں")
+            : (isBride ? "invite you to the wedding ceremony & Rukhsati of their beloved daughter" : "invite you to the wedding ceremony of their beloved son");
+        }
+
+        // Inside Letter Names & Credentials
+        const tLetterGroom = document.getElementById("tLetterGroom");
+        const tLetterBride = document.getElementById("tLetterBride");
+        if (tLetterGroom) tLetterGroom.textContent = firstName;
+        if (tLetterBride) tLetterBride.textContent = secondName;
+
+        const gOcc = isUr ? (WEDDING.groomOccupationUrdu || WEDDING.groomOccupation) : WEDDING.groomOccupation;
+        const bOcc = isUr ? (WEDDING.brideOccupationUrdu || WEDDING.brideOccupation) : WEDDING.brideOccupation;
+        const tGroomCred = document.getElementById("tGroomCred");
+        const tBrideCred = document.getElementById("tBrideCred");
+
+        if (tGroomCred) {
+          const credText = isBride ? bOcc : gOcc;
+          tGroomCred.textContent = credText || "";
+          tGroomCred.style.display = credText ? "inline-block" : "none";
+        }
+        if (tBrideCred) {
+          const credText = isBride ? gOcc : bOcc;
+          tBrideCred.textContent = credText || "";
+          tBrideCred.style.display = credText ? "inline-block" : "none";
+        }
+
+        // Family Section
+        const tFamKicker = document.getElementById("tFamKicker");
+        if (tFamKicker) tFamKicker.textContent = isUr ? "خاندانی دعاؤں کے سائے میں" : "With the blessings of";
+        const famTitle = document.getElementById("famTitle");
+        if (famTitle) famTitle.textContent = isUr ? "ہمارا خاندان" : "Our Family";
+
+        const tFamLabel = document.getElementById("tFamLabel");
+        if (tFamLabel) tFamLabel.textContent = isUr ? (isBride ? "والدینِ دلہن" : "والدینِ دولہا") : (isBride ? "The Bride's Parents" : "The Groom's Parents");
+        
+        const tFamPrefix = document.getElementById("tFamPrefix");
+        if (tFamPrefix) tFamPrefix.textContent = parsedHost.prefix;
+        
+        const tFamParents = document.getElementById("tFamParents");
+        if (tFamParents) tFamParents.textContent = parsedHost.name;
+
+        // Hadith Dua
+        const tHadithEn = document.getElementById("tHadithEn");
+        if (tHadithEn) tHadithEn.textContent = isUr ? "اللہ تم پر برکت نازل فرمائے اور تمہارے درمیان خیر و بھلائی جمع فرمائے۔" : "“May Allah bless you, shower His blessings upon you, and join you both together in goodness.”";
+
+        // Events Section Header
+        const evTitle = document.getElementById("evTitle");
+        if (evTitle) {
+          if (activeEvents.length === 1) {
+            evTitle.textContent = isUr ? (activeEvents[0].titleUr || activeEvents[0].titleEn) : activeEvents[0].titleEn;
+          } else {
+            evTitle.textContent = isUr ? "تقریباتِ شادی" : "The Wedding Ceremonies";
+          }
+        }
+
+        // Render Event Tags
+        renderEventTags(lang);
+
+        // Countdown Target
+        const firstEv = activeEvents[0] || WEDDING.eventsList[0];
+        const targetDate = (firstEv && firstEv.date) ? `${firstEv.date}T${firstEv.time && firstEv.time.includes(':') ? '19:00:00' : '19:00:00'}` : "2026-12-06T19:00:00";
+        renderCountdown(targetDate);
+        
+        const tCdTargetDate = document.getElementById("tCdTargetDate");
+        if (tCdTargetDate && firstEv) {
+          tCdTargetDate.textContent = isUr ? (firstEv.displayDateUrdu || toUrduDigits(firstEv.displayDate)) : firstEv.displayDate;
+        }
+
+        // Save Date Calendar Link
+        const tSaveDateBtn = document.getElementById("tSaveDateBtn");
+        if (tSaveDateBtn && firstEv) {
+          const calTitle = encodeURIComponent(`${firstName} & ${secondName} Wedding - ${firstEv.titleEn || "Reception"}`);
+          const calLoc = encodeURIComponent(`${firstEv.venue || ""} ${firstEv.address || ""}`);
+          tSaveDateBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&location=${calLoc}`;
+        }
+      }
+
+      // Initial Render
+      applyTranslations(currentLang);
+
+      // Language Switcher Listener
+      const langToggleBtn = document.getElementById("langToggleBtn");
+      if (langToggleBtn) {
+        langToggleBtn.addEventListener("click", () => {
+          currentLang = currentLang === "en" ? "ur" : "en";
+          applyTranslations(currentLang);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

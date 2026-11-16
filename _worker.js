@@ -19,7 +19,9 @@ const THEME_IMAGES = {
   "maroon-romance": "https://e-dawatnama.com/assets/maroon-hero-poster.jpg",
   ivory: "https://e-dawatnama.com/assets/noor-nikkah-hero.jpg",
   "royal-grace": "https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg",
-  grace: "https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg"
+  grace: "https://e-dawatnama.com/assets/royal-grace-welcome-bg.jpg",
+  gulistan: "https://e-dawatnama.com/assets/gulistan/beyond.webp",
+  "rose-garden": "https://e-dawatnama.com/assets/gulistan/beyond.webp"
 };
 
 const DEFAULT_BRAND = {
@@ -197,6 +199,21 @@ function resolveMetadata(url) {
     };
   }
 
+  // 3g. Gulistan Theme Demo
+  if (
+    pathLower === "/gulistan" ||
+    pathLower === "/gulistan.html" ||
+    pathLower === "/demo-gulistan" ||
+    pathLower === "/rose-garden" ||
+    pathLower === "/theme/gulistan"
+  ) {
+    return {
+      title: "Dr. Junaid & Dr. Ayesha — Gulistan & Royal Rose Garden Wedding Invitation",
+      desc: "Untie the royal silk ribbon to enter Gulistan — an enchanted rose garden digital wedding invitation with 3D flippable luggage tags, wax-sealed letter, and live countdown.",
+      image: THEME_IMAGES.gulistan
+    };
+  }
+
   // 3e. Maroon Romance Theme Demo
   if (
     pathLower === "/maroon-romance" ||
@@ -310,11 +327,12 @@ const RESERVED_FIRST_SEGMENTS = new Set([
   "royal-grace", "demo-royal-grace", "demo-grace", "grace", "nikkah-royal-grace",
   "burgundy-romance", "burgundy", "demo-burgundy", "velvet-romance", "theme",
   "noor-e-nikkah", "noor-nikkah", "ivory-gold", "ivory",
-  "shahi-farman", "farman", "assets", "api", "favicon.ico", "robots.txt", "sitemap.xml"
+  "shahi-farman", "farman", "gulistan", "demo-gulistan", "rose-garden", "assets", "api", "favicon.ico", "robots.txt", "sitemap.xml"
 ]);
 
 function getThemeAssetPath(themeKey) {
   const t = (themeKey || "").toLowerCase().trim();
+  if (t === "gulistan" || t === "rose-garden" || t === "garden") return "/gulistan";
   if (t === "royal-grace" || t === "grace") return "/royal-grace";
   if (t === "maroon" || t === "maroon-romance") return "/maroon-romance";
   if (t === "burgundy" || t === "burgundy-romance" || t === "velvet-romance") return "/burgundy-romance";
@@ -394,7 +412,9 @@ export default {
 
       // 1b. Direct asset fetch for standalone pages and theme aliases
       let targetAsset = "";
-      if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
+      if (lower === "/gulistan" || lower === "/demo-gulistan" || lower === "/rose-garden" || lower === "/theme/gulistan") {
+        targetAsset = "/gulistan";
+      } else if (lower === "/royal-grace" || lower === "/demo-royal-grace" || lower === "/demo-grace" || lower === "/grace" || lower === "/nikkah-royal-grace" || lower === "/zayan-and-rania-nikkah" || lower === "/zayan-&-rania-nikkah") {
         targetAsset = "/royal-grace";
       } else if (lower === "/maroon-romance" || lower === "/maroon" || lower === "/demo-maroon" || lower === "/theme/maroon-romance" || lower === "/theme/maroon") {
         targetAsset = "/maroon-romance";
