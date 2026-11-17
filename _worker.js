@@ -424,6 +424,21 @@ export default {
         targetAsset = "/noor-e-nikkah";
       } else if (lower === "/shahi-farman" || lower === "/farman") {
         targetAsset = "/shahi-farman";
+      } else if (
+        lower.includes("usama") ||
+        lower.includes("bissal") ||
+        lower === "/mehndi-walima" ||
+        lower === "/walima" ||
+        lower === "/mehndi" ||
+        lower === "/baraat"
+      ) {
+        targetAsset = "/usama-and-bissal";
+      } else if (
+        lower.includes("ahmed") ||
+        lower === "/demo" ||
+        lower === "/demo-template"
+      ) {
+        targetAsset = "/ahmed-and-ayesha";
       } else if (lower === "/demos" || lower === "/samples" || lower === "/templates") {
         targetAsset = "/demos";
       } else if (lower === "/about") {
