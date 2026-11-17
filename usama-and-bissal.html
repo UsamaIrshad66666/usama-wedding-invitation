@@ -3018,25 +3018,12 @@
           routeSlug = pathSegments.length ? pathSegments[pathSegments.length - 1] : "";
         }
 
-        const isFarmanTheme = routeSlug.includes("farman") ||
-                              routeSlug.includes("shahi") ||
-                              params.get("theme") === "farman";
-
         const isDemoSlug = routeSlug.includes("ahmed") ||
                            routeSlug.includes("ayesha") ||
                            routeSlug.includes("demo");
 
-        const isExplicitUsama = routeSlug.includes("usama-&-bissal") ||
-                                routeSlug.includes("usama-and-bissal") ||
-                                routeSlug.includes("usama-bissal") ||
-                                routeSlug === "mehndi-walima" ||
-                                routeSlug === "walima";
-
-        if (isFarmanTheme || isDemoSlug || (!isExplicitUsama && params.get("theme"))) {
+        if (isDemoSlug) {
           cfg = JSON.parse(JSON.stringify(WEDDING_DATA_DEMO));
-          if (isFarmanTheme) {
-            cfg.theme = "farman";
-          }
         } else {
           cfg = JSON.parse(JSON.stringify(WEDDING_DATA_USAMA));
         }
@@ -3560,12 +3547,10 @@
       if (window.location.protocol !== "file:") {
         // Keep clean single-segment slug matching the current wedding config
         const decoded = decodeURIComponent(targetPath);
-        if (decoded.includes("Usama-&-Bissal") || decoded.includes("Usama-and-Bissal") || decoded.includes("usama-bissal")) {
-          targetPath = "/Usama-and-Bissal-wedding-invitation";
-        } else if (decoded.includes("Ahmed-&-Ayesha") || decoded.includes("Ahmed-and-Ayesha") || decoded.includes("demo")) {
+        if (decoded.includes("Ahmed-&-Ayesha") || decoded.includes("Ahmed-and-Ayesha") || decoded.includes("demo")) {
           targetPath = "/Ahmed-and-Ayesha-wedding-invitation";
         } else {
-          targetPath = `/${WEDDING.slug}`;
+          targetPath = "/Usama-and-Bissal-wedding-invitation";
         }
       }
       const newUrl = qs ? `${targetPath}?${qs}` : targetPath;

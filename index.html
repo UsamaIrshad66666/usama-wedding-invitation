@@ -3530,11 +3530,12 @@
                            routeSlug.includes("ayesha") ||
                            routeSlug.includes("demo");
 
-        const isExplicitUsama = routeSlug.includes("usama-&-bissal") ||
-                                routeSlug.includes("usama-and-bissal") ||
-                                routeSlug.includes("usama-bissal") ||
+        const isExplicitUsama = routeSlug.includes("usama") ||
+                                routeSlug.includes("bissal") ||
                                 routeSlug === "mehndi-walima" ||
-                                routeSlug === "walima";
+                                routeSlug === "walima" ||
+                                routeSlug === "mehndi" ||
+                                routeSlug === "baraat";
 
         const rawThemeP = (params.get("theme") || "").toLowerCase().trim();
         const pTheme = rawThemeP.replace(/[_\s]+/g, "-");
