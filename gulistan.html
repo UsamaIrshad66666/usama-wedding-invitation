@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="is-shut is-arriving">
+<html lang="en" class="is-shut is-arriving is-preloading">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -16,6 +16,89 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <style id="loader-css">
+    #loader {
+      --p: 0;
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 24px;
+      background: #f6ece6;
+      color: #5b3a3d;
+      transition: opacity 0.85s ease, visibility 0.85s ease;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #loader.is-done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #loader .ld-art {
+      width: min(56vw, 220px);
+      height: min(56vw, 220px);
+    }
+    #loader svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    #loader .ld-bud, #loader .ld-leaf, #loader .ld-fall {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    #loader .ld-draw {
+      fill: none;
+      stroke-dasharray: 1 1;
+      stroke-dashoffset: calc(1 - var(--p));
+    }
+    #loader .ld-in {
+      opacity: calc(0.05 + 0.95 * clamp(0, var(--p) * var(--n, 1.5) - var(--i, 0), 1));
+    }
+    #loader .ld-leaf {
+      animation: ld-leaf 3.2s ease-in-out infinite;
+    }
+    @keyframes ld-leaf {
+      0%, 100% { transform: rotate(-3.5deg); }
+      50% { transform: rotate(3.5deg); }
+    }
+    #loader .ld-fall {
+      opacity: 0;
+      animation: ld-fall 5.5s linear infinite;
+    }
+    @keyframes ld-fall {
+      0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+      15% { opacity: 0.85; }
+      85% { opacity: 0.6; }
+      100% { opacity: 0; transform: translate(var(--x, 18px), 170px) rotate(280deg); }
+    }
+    #loader .ld-words {
+      margin: 8px 0 0;
+      font: italic 500 21px/1.3 'Cormorant Garamond', Georgia, serif;
+      letter-spacing: 0.02em;
+      text-align: center;
+      color: #8a4e54;
+    }
+    #loader .ld-pct {
+      margin: 0;
+      font: 600 11px/1 'Cormorant Garamond', Georgia, serif;
+      letter-spacing: 0.32em;
+      text-indent: 0.32em;
+      opacity: 0.6;
+      font-variant-numeric: tabular-nums;
+      color: #8a4e54;
+    }
+    html.is-preloading, html.is-preloading body {
+      overflow: hidden;
+    }
+  </style>
   <!-- Bundled Gulistan Theme Stylesheet -->
   <link rel="stylesheet" href="assets/gulistan/gulistan.css">
 
@@ -373,6 +456,58 @@
 </head>
 <body>
 
+  <!-- ========================================================================
+       STEP 0: BOTANICAL ROSE DOODLE PRELOADER (#loader)
+       ======================================================================== -->
+  <div id="loader" aria-live="polite">
+    <div class="ld-art">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <!-- Falling rose petals -->
+        <path class="ld-fall" style="--x:-22px; animation-delay:0.4s;" d="M72 64c4-5 9-2 7 4-2 5-8 3-7-4z" fill="#e2a9a4"/>
+        <path class="ld-fall" style="--x:24px; animation-delay:2.1s;" d="M128 58c5-4 9 0 6 5-3 5-9 1-6-5z" fill="#dba09b"/>
+
+        <!-- Soft watercolor rose bud fill -->
+        <g class="ld-in" style="--n:1.6; --i:0.55;">
+          <ellipse cx="100" cy="76" rx="28" ry="25" fill="#f3d6d2" opacity="0.72"/>
+          <ellipse cx="96" cy="74" rx="18" ry="16" fill="#e5b3ae" opacity="0.55"/>
+        </g>
+
+        <!-- Stem & thorns -->
+        <path class="ld-draw" pathLength="1" stroke="#6f8264" stroke-width="2.1" stroke-linecap="round"
+          d="M100 176 C100 152, 98 128, 100 100"/>
+        <path class="ld-draw" pathLength="1" stroke="#6f8264" stroke-width="1.6" stroke-linecap="round"
+          d="M99 138 L92 133 M100 120 L106 115"/>
+
+        <!-- Swaying Leaves -->
+        <g class="ld-leaf">
+          <path class="ld-in" style="--n:1.8; --i:0.4;" d="M99 144 C82 140, 68 128, 70 118 C82 120, 94 130, 99 144 Z" fill="#b7c4a8" opacity="0.55"/>
+          <path class="ld-draw" pathLength="1" stroke="#6f8264" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+            d="M99 144 C82 140, 68 128, 70 118 C82 120, 94 130, 99 144 M99 144 C87 134, 79 127, 72 120"/>
+        </g>
+        <g class="ld-leaf" style="animation-delay:-1.4s;">
+          <path class="ld-in" style="--n:1.8; --i:0.5;" d="M100 130 C116 125, 130 114, 128 104 C116 106, 104 116, 100 130 Z" fill="#b7c4a8" opacity="0.55"/>
+          <path class="ld-draw" pathLength="1" stroke="#6f8264" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+            d="M100 130 C116 125, 130 114, 128 104 C116 106, 104 116, 100 130 M100 130 C111 120, 119 113, 126 106"/>
+        </g>
+
+        <!-- Sepals -->
+        <path class="ld-draw" pathLength="1" stroke="#6f8264" stroke-width="1.7" stroke-linecap="round"
+          d="M100 100 C90 98, 82 91, 80 84 M100 100 C110 98, 118 91, 120 84"/>
+
+        <!-- Botanical Rose Doodle Petals (Outer -> Inner Spiral) -->
+        <path class="ld-draw" pathLength="1" stroke="#8a4e54" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+          d="M100 99 C76 98, 66 78, 74 62 C82 48, 100 46, 100 46 C100 46, 118 48, 126 62 C134 78, 124 98, 100 99 Z"/>
+        <path class="ld-draw" pathLength="1" stroke="#8a4e54" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+          d="M78 72 C78 58, 94 52, 104 56 C116 60, 120 74, 112 86 C104 94, 88 92, 82 82"/>
+        <path class="ld-draw" pathLength="1" stroke="#9e5f65" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"
+          d="M88 76 C86 66, 96 60, 105 63 C112 66, 113 76, 106 82 C99 87, 90 83, 91 75 C92 69, 100 67, 103 72 C105 76, 100 79, 96 76"/>
+      </svg>
+    </div>
+    <p class="ld-words" id="tLoaderWords">Unfolding your invitation…</p>
+    <p class="ld-pct" id="ldPct">0%</p>
+  </div>
+
+
   <!-- Top Left Floating Controls: Language Toggle & Music FAB -->
   <div class="gulistan-top-nav">
     <button type="button" id="langToggleBtn" class="glass-nav-btn lang-pill-btn" aria-label="Switch Language">
@@ -708,11 +843,14 @@
           <div class="g-leaf g-leaf-l"><div class="g-leaf-art"></div></div>
           <div class="g-leaf g-leaf-r"><div class="g-leaf-art"></div></div>
           <div class="g-seam"></div>
-          <div class="g-flies" id="gFlies" style="--fly: 53.8px;">
+          <div class="g-flies" id="gFlies" style="--fly: 48px;">
             <i class="g-fly" id="fly1">
               <span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span>
             </i>
             <i class="g-fly" id="fly2">
+              <span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span>
+            </i>
+            <i class="g-fly" id="fly3">
               <span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span>
             </i>
           </div>
@@ -940,32 +1078,149 @@
       window.addEventListener("pagehide", stopAllAudio);
       window.addEventListener("blur", stopAllAudio);
 
-      // 5. Gate Butterflies & Petals Animation
+      // 5. Step 0 Loader (Rose Doodle) + Step 1 Butterflies (Random Fly -> Sit -> Fly -> Sit + Wing Flap + Fly Inside)
       let flyRaf = null;
-      function animateButterflies() {
-        const f1 = document.getElementById("fly1");
-        const f2 = document.getElementById("fly2");
-        const stage = document.querySelector(".garden .stage");
-        if (!f1 || !f2 || !stage) return;
+      let butterfliesFlyingInside = false;
 
-        let t0 = performance.now();
-        function frame(now) {
-          if (document.documentElement.classList.contains("is-open")) return;
-          const dt = (now - t0) * 0.001;
+      function getShapeKey() {
+        const w = window.innerWidth, h = window.innerHeight;
+        const ratio = w / Math.max(1, h);
+        return (ratio >= 1.2) ? "land" : (ratio >= 0.625 ? "tab" : "phone");
+      }
+
+      function animateButterflies() {
+        const stage = document.querySelector(".garden .stage");
+        const els = [document.getElementById("fly1"), document.getElementById("fly2"), document.getElementById("fly3")].filter(Boolean);
+        if (!stage || !els.length) return;
+
+        const shapeKey = getShapeKey();
+        const spots = (GARDEN_CONFIG.shapes[shapeKey] && GARDEN_CONFIG.shapes[shapeKey].spots) || [[0.18,0.22],[0.82,0.28],[0.15,0.58],[0.85,0.55],[0.36,0.14],[0.72,0.18]];
+        const pickSpot = () => spots[Math.floor(Math.random() * spots.length)];
+
+        // Initialize each butterfly entering from outside random edges -> landing on a random spot
+        const flies = els.map((el, idx) => {
           const w = stage.clientWidth || 360;
           const h = stage.clientHeight || 640;
+          const startEdges = [[-0.12, 0.25], [1.12, 0.35], [0.5, -0.1]];
+          const edge = startEdges[idx % startEdges.length];
+          const firstSpot = pickSpot();
+          return {
+            el,
+            wl: el.querySelector(".g-wing-l"),
+            wr: el.querySelector(".g-wing-r"),
+            state: "fly", // "fly" | "sit" | "inside"
+            x: edge[0] * w,
+            y: edge[1] * h,
+            sx: edge[0] * w,
+            sy: edge[1] * h,
+            tx: firstSpot[0] * w,
+            ty: firstSpot[1] * h,
+            cx: (edge[0] * 0.5 + firstSpot[0] * 0.5 + (Math.random() - 0.5) * 0.25) * w,
+            cy: (edge[1] * 0.5 + firstSpot[1] * 0.5 - 0.12) * h,
+            angle: idx === 1 ? -45 : 25,
+            tStart: performance.now() + idx * 320,
+            dur: 2100 + Math.random() * 1100,
+            sitUntil: 0,
+            flapPhase: Math.random() * Math.PI * 2,
+            scale: 0.9 + (idx % 2) * 0.14,
+            opacity: 1
+          };
+        });
 
-          const x1 = w * (0.28 + 0.16 * Math.sin(dt * 0.75));
-          const y1 = h * (0.26 + 0.08 * Math.cos(dt * 1.1));
-          const r1 = -12 + 22 * Math.cos(dt * 0.75);
-          f1.style.transform = `translate(${x1.toFixed(1)}px, ${y1.toFixed(1)}px) rotate(${r1.toFixed(1)}deg)`;
+        function quadBezier(p0, p1, p2, t) {
+          const u = 1 - t;
+          return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+        }
 
-          const x2 = w * (0.72 + 0.15 * Math.cos(dt * 0.62));
-          const y2 = h * (0.58 + 0.09 * Math.sin(dt * 0.95));
-          const r2 = -45 + 20 * Math.sin(dt * 0.62);
-          f2.style.transform = `translate(${x2.toFixed(1)}px, ${y2.toFixed(1)}px) rotate(${r2.toFixed(1)}deg)`;
+        function frame(now) {
+          const w = stage.clientWidth || 360;
+          const h = stage.clientHeight || 640;
+          let anyVisible = false;
 
-          flyRaf = requestAnimationFrame(frame);
+          flies.forEach((f, idx) => {
+            if (butterfliesFlyingInside && f.state !== "inside") {
+              f.state = "inside";
+              f.sx = f.x;
+              f.sy = f.y;
+              // Target inside the open center arch
+              f.tx = w * (0.44 + Math.random() * 0.12);
+              f.ty = h * (0.40 + Math.random() * 0.14);
+              f.cx = (f.sx + f.tx) * 0.5 + (Math.random() - 0.5) * 60;
+              f.cy = Math.min(f.sy, f.ty) - 45;
+              f.tStart = now + idx * 70;
+              f.dur = 850 + idx * 110;
+            }
+
+            if (f.state === "fly" || f.state === "inside") {
+              if (now < f.tStart) {
+                f.el.style.opacity = "0";
+                anyVisible = true;
+                return;
+              }
+              const rawP = Math.min(1, (now - f.tStart) / f.dur);
+              // Smooth ease in-out
+              const p = rawP < 0.5 ? 2 * rawP * rawP : 1 - Math.pow(-2 * rawP + 2, 2) / 2;
+
+              const prevX = f.x, prevY = f.y;
+              f.x = quadBezier(f.sx, f.cx, f.tx, p);
+              f.y = quadBezier(f.sy, f.cy, f.ty, p);
+
+              const dx = f.x - prevX, dy = f.y - prevY;
+              if (Math.hypot(dx, dy) > 0.25) {
+                f.angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+              }
+
+              // Rapid wing flapping during flight
+              const flap = Math.sin(now * 0.045 + f.flapPhase) * 62;
+              if (f.wl) f.wl.style.transform = `rotateY(${flap.toFixed(1)}deg)`;
+              if (f.wr) f.wr.style.transform = `rotateY(${(-flap).toFixed(1)}deg)`;
+
+              if (f.state === "inside") {
+                f.scale = Math.max(0.28, (1 - rawP * 0.72));
+                f.opacity = rawP > 0.65 ? Math.max(0, 1 - (rawP - 0.65) / 0.35) : 1;
+              } else {
+                f.opacity = Math.min(1, rawP * 5);
+              }
+
+              f.el.style.opacity = f.opacity.toFixed(2);
+              f.el.style.transform = `translate(${f.x.toFixed(1)}px, ${f.y.toFixed(1)}px) rotate(${f.angle.toFixed(1)}deg) scale(${f.scale.toFixed(2)})`;
+
+              if (rawP >= 1) {
+                if (f.state === "inside") {
+                  f.el.style.opacity = "0";
+                } else {
+                  f.state = "sit";
+                  f.sitUntil = now + 1800 + Math.random() * 2200;
+                }
+              }
+              anyVisible = true;
+            } else if (f.state === "sit") {
+              // Resting butterfly: gentle slow wing breathing while perched on rose
+              const restFlap = 22 + Math.sin(now * 0.0032 + f.flapPhase) * 18;
+              if (f.wl) f.wl.style.transform = `rotateY(${restFlap.toFixed(1)}deg)`;
+              if (f.wr) f.wr.style.transform = `rotateY(${(-restFlap).toFixed(1)}deg)`;
+              f.el.style.opacity = "1";
+              f.el.style.transform = `translate(${f.x.toFixed(1)}px, ${f.y.toFixed(1)}px) rotate(${f.angle.toFixed(1)}deg) scale(${f.scale.toFixed(2)})`;
+
+              if (now >= f.sitUntil) {
+                const nextSpot = pickSpot();
+                f.state = "fly";
+                f.sx = f.x;
+                f.sy = f.y;
+                f.tx = nextSpot[0] * w;
+                f.ty = nextSpot[1] * h;
+                f.cx = (f.sx + f.tx) * 0.5 + (Math.random() - 0.5) * w * 0.35;
+                f.cy = (f.sy + f.ty) * 0.5 - h * (0.08 + Math.random() * 0.14);
+                f.tStart = now;
+                f.dur = 1900 + Math.random() * 1300;
+              }
+              anyVisible = true;
+            }
+          });
+
+          if (anyVisible && !document.getElementById("gate").classList.contains("is-gone")) {
+            flyRaf = requestAnimationFrame(frame);
+          }
         }
         flyRaf = requestAnimationFrame(frame);
       }
@@ -1047,22 +1302,58 @@
       const cardMain = document.getElementById("card");
       let isGateOpened = false;
 
+      function runPreloader(onFinish) {
+        const loader = document.getElementById("loader");
+        const pctEl = document.getElementById("ldPct");
+        if (!loader) {
+          document.documentElement.classList.remove("is-preloading");
+          if (onFinish) onFinish();
+          return;
+        }
+        const wordsEl = document.getElementById("tLoaderWords");
+        if (wordsEl) {
+          wordsEl.textContent = (params.get("lang") === "ur") ? "دعوت نامہ کھل رہا ہے…" : "Unfolding your invitation…";
+        }
+
+        const start = performance.now();
+        const minDur = 1450;
+        function step(now) {
+          const p = Math.min(1, (now - start) / minDur);
+          const eased = 1 - Math.pow(1 - p, 2);
+          loader.style.setProperty("--p", eased.toFixed(3));
+          if (pctEl) pctEl.textContent = Math.round(eased * 100) + "%";
+          if (p < 1) {
+            requestAnimationFrame(step);
+          } else {
+            loader.classList.add("is-done");
+            document.documentElement.classList.remove("is-preloading");
+            setTimeout(() => { loader.style.display = "none"; }, 850);
+            if (onFinish) onFinish();
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
       function openGate(instant = false) {
         if (isGateOpened) return;
         isGateOpened = true;
-        if (flyRaf) cancelAnimationFrame(flyRaf);
 
         if (!instant) {
+          butterfliesFlyingInside = true;
           playSfx(sfxOpen);
           startMusic();
+        } else {
+          if (flyRaf) cancelAnimationFrame(flyRaf);
         }
+
         if (gate) gate.classList.add("is-opening");
-        document.documentElement.classList.remove("is-shut", "is-arriving");
+        document.documentElement.classList.remove("is-shut", "is-arriving", "is-preloading");
         document.documentElement.classList.add("is-open", "is-revealed");
         if (cardMain) cardMain.setAttribute("aria-hidden", "false");
 
-        const delay = instant ? 20 : 1150;
+        const delay = instant ? 20 : 1280;
         setTimeout(() => {
+          if (flyRaf) cancelAnimationFrame(flyRaf);
           if (gate) gate.classList.add("is-gone");
           if (!instant) playSfx(sfxBloom);
           initAndBloomHeroRoses();
@@ -1071,11 +1362,15 @@
       }
 
       if (isSpecificEventVariant) {
+        const loaderEl = document.getElementById("loader");
+        if (loaderEl) loaderEl.style.display = "none";
         openGate(true);
       } else {
-        setTimeout(() => document.documentElement.classList.remove("is-arriving"), 1200);
-        animateButterflies();
-        spawnPetals("gatePetals", 6);
+        runPreloader(() => {
+          setTimeout(() => document.documentElement.classList.remove("is-arriving"), 1200);
+          animateButterflies();
+          spawnPetals("gatePetals", 6);
+        });
         if (ribbon) ribbon.addEventListener("click", () => openGate(false));
       }
 
