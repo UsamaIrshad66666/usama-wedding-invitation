@@ -204,17 +204,265 @@
       display: none !important;
     }
 
-    /* Hero Words Smooth Reveal */
-    html.is-revealed .h-words > :is(.h-bism, .h-kicker, .h-names, .h-line) {
-      animation: hero-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    /* ======================================================================
+       STEP 2: HERO ARCH PAVILION & CALLIGRAPHIC LIQUID FOIL WIPE TRANSITION
+       ====================================================================== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      height: 100svh;
+      min-height: 480px;
+      overflow: hidden;
+      container-type: size;
+      background: #fbf7f2;
+      isolation: isolate;
+      -webkit-tap-highlight-color: transparent;
+      --pav-r: .56545;
+      --arch-l: 29.074%;
+      --arch-r: 71.389%;
+      --arch-t: 35.131%;
+      --arch-s: 50.157%;
+      --arch-b: 79.529%;
+      --shape: phone;
     }
-    html.is-revealed .h-bism { animation-delay: 0.1s; }
-    html.is-revealed .h-kicker { animation-delay: 0.28s; }
-    html.is-revealed .h-names { animation-delay: 0.44s; }
-    html.is-revealed .h-line { animation-delay: 0.65s; }
-    @keyframes hero-rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (min-aspect-ratio: 5/8) {
+      .hero {
+        --pav-r: .74672;
+        --arch-l: 34.31%;
+        --arch-r: 66.146%;
+        --arch-t: 35.246%;
+        --arch-s: 50.17%;
+        --arch-b: 79.436%;
+        --shape: tab;
+      }
+    }
+    @media (min-aspect-ratio: 6/5) {
+      .hero {
+        --pav-r: 1.33944;
+        --arch-l: 41.772%;
+        --arch-r: 58.594%;
+        --arch-t: 36.037%;
+        --arch-s: 50.425%;
+        --arch-b: 79.071%;
+        --shape: land;
+      }
+    }
+    .h-scene {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100cqw, 100cqh * var(--pav-r));
+      height: max(100cqh, 100cqw / var(--pav-r));
+      translate: -50% -50%;
+      transform-origin: 50% calc(var(--arch-t) / 2 + var(--arch-b) / 2);
+      touch-action: manipulation;
+    }
+    .h-pav, .h-roses, .h-petals {
+      position: absolute;
+      inset: 0;
+    }
+    .h-pav {
+      background-color: #fbf7f2;
+      background-image: url("assets/gulistan/pavilion.webp");
+      background-position: center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+    @media (min-aspect-ratio: 5/8) {
+      .h-pav { background-image: url("assets/gulistan/pavilion-tab.webp"); }
+    }
+    @media (min-aspect-ratio: 6/5) {
+      .h-pav { background-image: url("assets/gulistan/pavilion-land.webp"); }
+    }
+    .h-pav:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 42% at 50% 18%, rgba(255, 252, 244, 0.55), transparent 70%);
+      mix-blend-mode: soft-light;
+      animation: h-breathe 9s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes h-breathe {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.85; }
+    }
+    .h-roses, .h-petals {
+      pointer-events: none;
+    }
+    .h-rose {
+      position: absolute;
+      width: 9.077%;
+      aspect-ratio: 1;
+      translate: -50% -42%;
+      filter: saturate(0.85) brightness(1.02) sepia(0.06) drop-shadow(0 2px 4px rgba(110, 60, 55, 0.22));
+      -webkit-mask-image: linear-gradient(#000 58%, transparent 78%);
+      mask-image: linear-gradient(#000 58%, transparent 78%);
+      pointer-events: none;
+    }
+    .h-rose img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.22s ease-out;
+    }
+    .h-rose img:first-child {
+      opacity: 1;
+    }
+
+    /* Hero Typography Hierarchy inside Pavilion Arch */
+    .h-words {
+      position: absolute;
+      left: calc(var(--arch-l) + (var(--arch-r) - var(--arch-l)) * 0.04);
+      right: calc(100% - var(--arch-r) + (var(--arch-r) - var(--arch-l)) * 0.04);
+      top: calc(var(--arch-t) + (var(--arch-s) - var(--arch-t)) * 0.3);
+      bottom: calc(100% - var(--arch-b) + (var(--arch-b) - var(--arch-s)) * 0.06);
+      container-type: size;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .h-words > * {
+      margin: 0;
+    }
+    .h-bism {
+      --bism-w: min(82cqw, 44cqh);
+      font-family: 'Amiri', serif;
+      font-size: calc(var(--bism-w) / 11.4);
+      line-height: 1.7;
+      white-space: nowrap;
+      padding: 0 0.3em;
+      background: linear-gradient(180deg, #a3646a 0%, #762834 55%, #5e2631 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      opacity: 0;
+      transform: translateY(-8px);
+      filter: blur(4px);
+      transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.3, 1), 
+                  transform 0.9s cubic-bezier(0.2, 0.8, 0.3, 1),
+                  filter 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .h-kicker {
+      margin-top: auto !important;
+      padding-top: 0.5em;
+      font: 600 min(6.2cqw, 3.4cqh)/1.35 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.12em;
+      padding-left: 0.2em;
+      text-transform: uppercase;
+      color: #4a6358;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.3, 1), 
+                  transform 0.9s cubic-bezier(0.2, 0.8, 0.3, 1),
+                  letter-spacing 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .h-names {
+      margin: min(3cqw, 1.8cqh) 0 min(2cqw, 1.2cqh) !important;
+      font: 700 1em/.9 Corinthia, cursive;
+      width: 100%;
+    }
+    .h-name, .h-amp {
+      display: block;
+      width: fit-content;
+      max-width: none;
+      margin-inline: auto;
+      padding: 0.08em 0.3em 0.16em;
+      background: linear-gradient(180deg, #b86270 0%, #872e3d 45%, #4a1520 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      --wipe: 0%;
+      -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--wipe) - 18%), transparent var(--wipe));
+      mask-image: linear-gradient(90deg, #000 calc(var(--wipe) - 18%), transparent var(--wipe));
+      filter: drop-shadow(0 2px 4px rgba(90, 40, 40, 0.25));
+      white-space: nowrap;
+      opacity: 0;
+    }
+    html[dir="rtl"] .h-name,
+    html[dir="rtl"] .h-amp {
+      -webkit-mask-image: linear-gradient(270deg, #000 calc(var(--wipe) - 18%), transparent var(--wipe));
+      mask-image: linear-gradient(270deg, #000 calc(var(--wipe) - 18%), transparent var(--wipe));
+    }
+    .h-name {
+      font-size: calc(min(46cqw, 21cqh) * var(--fit, 0.58));
+      line-height: 0.95;
+    }
+    .h-amp {
+      font-size: min(22cqw, 10cqh);
+      margin-block: -0.2em -0.16em;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      background: linear-gradient(180deg, #c58646 0%, #ecd09f 40%, #a86230 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .h-line {
+      margin-bottom: auto !important;
+      max-width: 94cqw;
+      font: italic 500 min(8.6cqw, 4.8cqh)/1.3 "Cormorant Garamond", Georgia, serif;
+      color: #6d4b52;
+      text-wrap: balance;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.3, 1), 
+                  transform 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+
+    /* Active Revealed State */
+    .hero.is-text-revealed .h-bism {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+    .hero.is-text-revealed .h-kicker {
+      opacity: 1;
+      transform: translateY(0);
+      letter-spacing: 0.22em;
+    }
+    .hero.is-text-revealed .h-line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .h-scroll {
+      position: absolute;
+      left: 50%;
+      bottom: max(16px, 3cqh);
+      translate: -50% 0;
+      margin: 0;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s cubic-bezier(0.2, 0.8, 0.3, 1);
+      z-index: 10;
+    }
+    .h-scroll i {
+      width: 11px;
+      height: 11px;
+      border-right: 1.8px solid #a8646a;
+      border-bottom: 1.8px solid #a8646a;
+      rotate: 45deg;
+      filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.8));
+      animation: h-bob 2.4s ease-in-out infinite;
+    }
+    .hero.is-revealed .h-scroll {
+      opacity: 0.85;
+      transition-delay: 2.2s;
+    }
+    @keyframes h-bob {
+      0%, 100% { transform: translateY(-3px); }
+      50% { transform: translateY(4px); }
     }
 
     /* Hero Tagline Pill */
@@ -1246,7 +1494,7 @@
       }
 
       // 6. Hero Rose Bloom Sequence (from roses.json)
-      function initAndBloomHeroRoses() {
+      function initAndBloomHeroRoses(instant = false) {
         const container = document.getElementById("heroRoses");
         if (!container) return;
         const w = window.innerWidth;
@@ -1263,15 +1511,17 @@
           const rot = ((i * 37) % 44) - 22;
           const sizePct = (cfg.size * 145).toFixed(2);
           el.style.cssText = `left:${(pt[0] * 100).toFixed(2)}%; top:${(pt[1] * 100).toFixed(2)}%; width:${sizePct}%; rotate:${rot}deg;`;
-          el.innerHTML = [0,1,2,3,4].map(f => `<img src="assets/gulistan/rose-${f}.webp" alt="" draggable="false" style="opacity:${f===0?1:0};">`).join("");
+          el.innerHTML = [0,1,2,3,4].map(f => `<img src="assets/gulistan/rose-${f}.webp" alt="" draggable="false" style="opacity:${instant ? (f===4?1:0) : (f===0?1:0)};">`).join("");
           container.appendChild(el);
           return el;
         });
 
-        // Staggered bloom from frame 0 -> 4
+        if (instant) return;
+
+        // Staggered bloom from bud (frame 0) to full blossom (frame 4)
         roseEls.forEach((el, idx) => {
           const imgs = el.querySelectorAll("img");
-          const startDelay = 180 + idx * 38;
+          const startDelay = 120 + idx * 35;
           setTimeout(() => {
             let step = 0;
             const iv = setInterval(() => {
@@ -1279,9 +1529,74 @@
               if (imgs[step]) imgs[step].style.opacity = "1";
               step++;
               if (step >= 5) clearInterval(iv);
-            }, 130);
+            }, 115);
           }, startDelay);
         });
+      }
+
+      // 6b. Calligraphic Liquid Foil Shimmer Wipe Animation
+      function startHeroTextSequence(instant = false) {
+        const heroEl = document.getElementById("hero");
+        if (!heroEl) return;
+        heroEl.classList.add("is-revealed");
+
+        const groomEl = document.getElementById("tHeroGroom");
+        const ampEl = heroEl.querySelector(".h-amp");
+        const brideEl = document.getElementById("tHeroBride");
+
+        if (instant) {
+          heroEl.classList.add("is-text-revealed");
+          if (groomEl) { groomEl.style.setProperty("--wipe", "130%"); groomEl.style.opacity = "1"; }
+          if (ampEl) { ampEl.style.setProperty("--wipe", "130%"); ampEl.style.opacity = "1"; }
+          if (brideEl) { brideEl.style.setProperty("--wipe", "130%"); brideEl.style.opacity = "1"; }
+          initAndBloomHeroRoses(true);
+          spawnPetals("heroPetals", 12);
+          return;
+        }
+
+        // 1. Reveal Bismillah and Kicker softly
+        setTimeout(() => {
+          heroEl.classList.add("is-text-revealed");
+        }, 150);
+
+        function animateWipe(el, startDelay, duration = 1100, onDone = null) {
+          if (!el) { if (onDone) onDone(); return; }
+          el.style.setProperty("--wipe", "-2%");
+          el.style.opacity = "1";
+          setTimeout(() => {
+            const start = performance.now();
+            function tick(now) {
+              const p = Math.min(1, (now - start) / duration);
+              // Smooth cubic bezier easing
+              const ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+              const val = -2 + (124 * ease);
+              el.style.setProperty("--wipe", `${val.toFixed(1)}%`);
+              if (p < 1) {
+                requestAnimationFrame(tick);
+              } else {
+                el.style.setProperty("--wipe", "130%");
+                if (onDone) onDone();
+              }
+            }
+            requestAnimationFrame(tick);
+          }, startDelay);
+        }
+
+        // 2. Wipe Groom Name across screen
+        animateWipe(groomEl, 650, 1100);
+
+        // 3. Wipe Ampersand &
+        animateWipe(ampEl, 1200, 600);
+
+        // 4. Wipe Bride Name across screen
+        animateWipe(brideEl, 1500, 1100);
+
+        // 5. Bloom 40 Roses on Trellis Arch after names are revealed
+        setTimeout(() => {
+          playSfx(sfxBloom);
+          initAndBloomHeroRoses(false);
+          spawnPetals("heroPetals", 12);
+        }, 2150);
       }
 
       function bloomSingleRose(el) {
@@ -1348,16 +1663,15 @@
 
         if (gate) gate.classList.add("is-opening");
         document.documentElement.classList.remove("is-shut", "is-arriving", "is-preloading");
-        document.documentElement.classList.add("is-open", "is-revealed");
+        document.documentElement.classList.add("is-open");
         if (cardMain) cardMain.setAttribute("aria-hidden", "false");
 
-        const delay = instant ? 20 : 1280;
+        const delay = instant ? 20 : 1240;
         setTimeout(() => {
           if (flyRaf) cancelAnimationFrame(flyRaf);
           if (gate) gate.classList.add("is-gone");
-          if (!instant) playSfx(sfxBloom);
-          initAndBloomHeroRoses();
-          spawnPetals("heroPetals", 10);
+          document.documentElement.classList.add("is-revealed");
+          startHeroTextSequence(instant);
         }, delay);
       }
 
