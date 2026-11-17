@@ -66,33 +66,54 @@
       font-family: 'Noto Nastaliq Urdu', 'Cormorant Garamond', serif;
     }
 
-    /* Gate Opening 3D Leaf Swing & Ribbon Untie */
+    /* Gate Opening: Ribbon Unravel + 3D Door Swing + Camera Push-Through */
     .gate {
-      transition: opacity 0.9s ease 0.5s, visibility 0.9s ease 0.5s;
+      transition: opacity 0.85s ease 0.65s, visibility 0.85s ease 0.65s;
     }
     .gate.is-opening {
       pointer-events: none;
     }
+    .gate .stage {
+      transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .gate.is-opening .stage {
+      transform: scale(1.22);
+    }
+    .gate .rb-band-l, .gate .rb-band-r, .gate .rb-bow {
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease 0.1s;
+    }
+    .gate.is-opening .rb-band-l {
+      transform: translateX(-45%) rotate(-14deg);
+      opacity: 0;
+    }
+    .gate.is-opening .rb-band-r {
+      transform: translateX(45%) rotate(14deg);
+      opacity: 0;
+    }
+    .gate.is-opening .rb-bow {
+      transform: translateY(22px) scale(0.82);
+      opacity: 0;
+    }
     .gate.is-opening .g-leaf-l {
       transform-origin: 19% 50%;
-      transition: transform 1.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease 0.35s;
-      transform: perspective(1200px) rotateY(-95deg) translateX(-18%);
+      transition: transform 1.35s cubic-bezier(0.22, 1, 0.36, 1) 0.18s, opacity 0.9s ease 0.5s;
+      transform: perspective(1200px) rotateY(-98deg) translateX(-18%);
       opacity: 0;
     }
     .gate.is-opening .g-leaf-r {
       transform-origin: 81% 50%;
-      transition: transform 1.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease 0.35s;
-      transform: perspective(1200px) rotateY(95deg) translateX(18%);
+      transition: transform 1.35s cubic-bezier(0.22, 1, 0.36, 1) 0.18s, opacity 0.9s ease 0.5s;
+      transform: perspective(1200px) rotateY(98deg) translateX(18%);
       opacity: 0;
     }
-    .gate.is-opening .ribbon {
-      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease;
-      transform: translate(-50%, -50%) scale(1.18);
-      opacity: 0;
+    .gate.is-opening .g-light {
+      opacity: 1;
+      transition: opacity 0.8s ease 0.25s;
     }
     .gate.is-opening .g-flood {
       opacity: 1;
-      transition: opacity 0.8s ease 0.2s;
+      transition: opacity 0.75s ease 0.35s;
     }
     .gate.is-gone {
       opacity: 0;
@@ -174,12 +195,13 @@
       letter-spacing: 0.05em;
     }
 
-    /* Letter Open/Close State Animations */
+    /* Letter Pocket Pull-Out Choreography */
     .lt-letter {
-      transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+      transition: transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+      transform-origin: 50% 85%;
     }
     .letter:not(.is-open) .lt-letter {
-      transform: translateY(38%) scale(0.92);
+      transform: translateY(56%) scale(0.86);
       opacity: 0;
       pointer-events: none;
     }
@@ -188,9 +210,12 @@
       opacity: 1;
       pointer-events: auto;
     }
+    .lt-env {
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
     .lt-env .e-flap {
       transform-origin: top center;
-      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease 0.15s;
     }
     .lt-env.is-open .e-flap {
       transform: rotateX(180deg);
@@ -198,35 +223,56 @@
     }
     .lt-env.is-open .e-flap-open {
       opacity: 1;
+      transition: opacity 0.4s ease 0.2s;
     }
     .lt-env.is-open .e-seal {
       opacity: 0;
-      transform: scale(1.25);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: scale(1.3);
+      transition: opacity 0.35s ease, transform 0.35s ease;
     }
 
-    /* 3D Modal Flip Animation (.ev-lift / .ev-turn) */
+    /* 3D Tag-to-Modal Flight & Flip (.ev-lift / .ev-card / .ev-turn) */
     .ev-lift {
-      transition: opacity 0.35s ease;
+      transition: opacity 0.4s ease;
+    }
+    .ev-veil {
+      transition: opacity 0.5s ease;
+    }
+    .ev-card {
+      transition: transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
     }
     .ev-turn {
       transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
       transform: rotateY(0deg);
+      will-change: transform;
     }
     .ev-lift.is-flipped .ev-turn {
       transform: rotateY(180deg);
     }
 
-    /* Drifting Petals Animation */
+    /* Countdown Rolling Odometer Strip Transition */
+    .cd-strip {
+      transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .cd-shadow {
+      transition: transform 0.9s linear;
+    }
+
+    /* 3D Tumbling Petals Animation */
     @keyframes petal-fall {
       0% {
-        transform: translate3d(0, -10vh, 0) rotate(0deg);
+        transform: perspective(500px) translate3d(0, -10vh, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
         opacity: 0;
       }
-      12% { opacity: 0.88; }
-      85% { opacity: 0.88; }
+      12% { opacity: 0.9; }
+      50% {
+        transform: perspective(500px) translate3d(calc(var(--drift-x, 36px) * 0.45), 48vh, 20px) rotateX(140deg) rotateY(90deg) rotateZ(calc(var(--rot, 240deg) * 0.5));
+      }
+      86% { opacity: 0.9; }
       100% {
-        transform: translate3d(var(--drift-x, 36px), 105vh, 0) rotate(var(--rot, 240deg));
+        transform: perspective(500px) translate3d(var(--drift-x, 36px), 105vh, 0) rotateX(280deg) rotateY(180deg) rotateZ(var(--rot, 240deg));
         opacity: 0;
       }
     }
@@ -457,7 +503,8 @@
       <div class="fm-scene">
         <div class="fm-art" aria-hidden="true">
           <i class="fm-veil"></i>
-          <img class="fm-vines-still" src="assets/gulistan/vines-phone.webp" alt="" draggable="false" style="display:block;">
+          <img class="fm-vines-still" id="famVinesStill" src="assets/gulistan/vines-phone.webp" alt="" draggable="false">
+          <canvas class="fm-vines" id="famVinesCanvas"></canvas>
           <span class="fm-rose" id="famRose">
             <img src="assets/gulistan/rose-0.webp" alt="" draggable="false">
             <img src="assets/gulistan/rose-1.webp" alt="" draggable="false">
@@ -593,7 +640,10 @@
           <i class="cl-glow cl-lamp2"></i>
           <i class="cl-glow cl-pav"></i>
           <i class="cl-veil"></i>
-          <div class="cl-flies"></div>
+          <div class="cl-flies" id="clFlies" style="--fly: 42px;">
+            <i class="g-fly" id="clFly1"><span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span></i>
+            <i class="g-fly" id="clFly2"><span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span></i>
+          </div>
           <div class="cl-petals" id="clPetals"></div>
           <div id="clSparks" style="position:absolute; inset:0; pointer-events:none;"></div>
         </div>
@@ -1041,14 +1091,20 @@
           if (isEnvOpen) {
             playSfx(sfxLetter);
             envelope.classList.add("is-open");
-            if (letterSection) { letterSection.classList.add("is-open", "is-read"); }
-            if (letterSheet) letterSheet.classList.add("is-open");
             envelope.setAttribute("aria-expanded", "true");
+            if (letterSection) letterSection.classList.add("is-open");
+            setTimeout(() => {
+              if (letterSection) letterSection.classList.add("is-read");
+              if (letterSheet) letterSheet.classList.add("is-open");
+            }, 240);
           } else {
-            envelope.classList.remove("is-open");
-            if (letterSection) { letterSection.classList.remove("is-open", "is-read"); }
             if (letterSheet) letterSheet.classList.remove("is-open");
-            envelope.setAttribute("aria-expanded", "false");
+            if (letterSection) letterSection.classList.remove("is-read");
+            setTimeout(() => {
+              envelope.classList.remove("is-open");
+              if (letterSection) letterSection.classList.remove("is-open");
+              envelope.setAttribute("aria-expanded", "false");
+            }, 350);
           }
         });
       }
@@ -1062,11 +1118,13 @@
             sec.classList.add("is-seen");
 
             if (sec.id === "families") {
-              sec.classList.add("is-played");
               if (!sec.dataset.played) {
                 sec.dataset.played = "1";
                 playSfx(sfxFamilies);
-                bloomSingleRose(document.getElementById("famRose"));
+                growFamiliesVines(() => {
+                  sec.classList.add("is-played");
+                  bloomSingleRose(document.getElementById("famRose"));
+                });
                 spawnPetals("famPetals", 7);
               }
             } else if (sec.id === "letter") {
@@ -1094,6 +1152,7 @@
                 sec.dataset.sparks = "1";
                 spawnClosingSparks();
                 spawnPetals("clPetals", 6);
+                animateClosingFlies();
               }
             }
           }
@@ -1101,6 +1160,71 @@
       }, { threshold: 0.14 });
 
       document.querySelectorAll("[data-section]").forEach(sec => sectionObserver.observe(sec));
+
+      function growFamiliesVines(onDone) {
+        const famSec = document.getElementById("families");
+        const canvas = document.getElementById("famVinesCanvas");
+        const stillImg = document.getElementById("famVinesStill");
+        if (!famSec || !canvas || !stillImg) { if (onDone) onDone(); return; }
+
+        const w = window.innerWidth, h = window.innerHeight;
+        const ratio = w / Math.max(1, h);
+        const suffix = (ratio >= 1.2) ? "land" : (ratio >= 0.625 ? "tab" : "phone");
+        stillImg.src = `assets/gulistan/vines-${suffix}.webp`;
+
+        famSec.classList.add("is-growing");
+        const img = new Image();
+        img.src = stillImg.src;
+        img.onload = () => {
+          const cw = canvas.width = img.naturalWidth || 540;
+          const ch = canvas.height = img.naturalHeight || 723;
+          const ctx = canvas.getContext("2d");
+          const start = performance.now();
+          const dur = 1600;
+          function step(now) {
+            const p = Math.min(1, (now - start) / dur);
+            const ease = 1 - Math.pow(1 - p, 2.2);
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.save();
+            // Grow upward from both marble urns at bottom toward top arch
+            const revealTop = ch * (1 - ease);
+            ctx.beginPath();
+            ctx.rect(0, revealTop, cw, ch - revealTop);
+            ctx.clip();
+            ctx.drawImage(img, 0, 0, cw, ch);
+            ctx.restore();
+            if (p < 1) {
+              requestAnimationFrame(step);
+            } else {
+              famSec.classList.remove("is-growing");
+              famSec.classList.add("is-grown");
+              if (onDone) onDone();
+            }
+          }
+          requestAnimationFrame(step);
+        };
+        img.onerror = () => {
+          famSec.classList.add("is-grown");
+          if (onDone) onDone();
+        };
+      }
+
+      function animateClosingFlies() {
+        const f1 = document.getElementById("clFly1");
+        const f2 = document.getElementById("clFly2");
+        const box = document.getElementById("clFlies");
+        if (!f1 || !f2 || !box) return;
+        const t0 = performance.now();
+        function frame(now) {
+          const dt = (now - t0) * 0.001;
+          const w = box.clientWidth || 360;
+          const h = box.clientHeight || 640;
+          f1.style.transform = `translate(${(w*(0.28 + 0.18*Math.sin(dt*0.7))).toFixed(1)}px, ${(h*(0.35 + 0.1*Math.cos(dt*1.05))).toFixed(1)}px) rotate(${(-10 + 22*Math.cos(dt*0.7)).toFixed(1)}deg)`;
+          f2.style.transform = `translate(${(w*(0.68 + 0.16*Math.cos(dt*0.58))).toFixed(1)}px, ${(h*(0.62 + 0.09*Math.sin(dt*0.92))).toFixed(1)}px) rotate(${(-42 + 18*Math.sin(dt*0.58)).toFixed(1)}deg)`;
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
 
       function spawnClosingSparks() {
         const container = document.getElementById("clSparks");
@@ -1138,8 +1262,10 @@
       const evModalBackImg = document.getElementById("evModalBackImg");
       const evModalBackContent = document.getElementById("evModalBackContent");
 
-      function openEventModal(evData, isUr) {
+      let activeSourceTagBtn = null;
+      function openEventModal(evData, isUr, sourceBtn) {
         if (!evLift) return;
+        activeSourceTagBtn = sourceBtn || null;
         const typeKey = (evData.type || evData.key || "walima").toLowerCase();
         const evCssClass = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "baraat" : "walima";
         const artPrefix = "tag-" + evCssClass;
@@ -1182,11 +1308,27 @@
           </div>
         `;
 
+        const evCardEl2 = document.getElementById("evCard");
         evLift.hidden = false;
         evLift.classList.remove("is-flipped");
+
+        if (evCardEl2 && activeSourceTagBtn) {
+          const srcRect = activeSourceTagBtn.getBoundingClientRect();
+          evCardEl2.style.transition = "none";
+          evCardEl2.style.transform = "none";
+          const dstRect = evCardEl2.getBoundingClientRect();
+          const dx = (srcRect.left + srcRect.width / 2) - (dstRect.left + dstRect.width / 2);
+          const dy = (srcRect.top + srcRect.height / 2) - (dstRect.top + dstRect.height / 2);
+          const sc = Math.max(0.25, srcRect.width / Math.max(1, dstRect.width));
+          evCardEl2.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+          evCardEl2.offsetHeight; // force reflow
+          evCardEl2.style.transition = "";
+        }
+
         playSfx(sfxTurn);
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
+            if (evCardEl2) evCardEl2.style.transform = "translate(0px, 0px) scale(1)";
             evLift.classList.add("is-flipped");
           });
         });
@@ -1194,8 +1336,20 @@
 
       function closeEventModal() {
         if (!evLift) return;
+        const evCardEl2 = document.getElementById("evCard");
         evLift.classList.remove("is-flipped");
-        setTimeout(() => { evLift.hidden = true; }, 450);
+        if (evCardEl2 && activeSourceTagBtn) {
+          const srcRect = activeSourceTagBtn.getBoundingClientRect();
+          const dstRect = evCardEl2.getBoundingClientRect();
+          const dx = (srcRect.left + srcRect.width / 2) - (dstRect.left + dstRect.width / 2);
+          const dy = (srcRect.top + srcRect.height / 2) - (dstRect.top + dstRect.height / 2);
+          const sc = Math.max(0.25, srcRect.width / Math.max(1, dstRect.width));
+          evCardEl2.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+        }
+        setTimeout(() => {
+          evLift.hidden = true;
+          if (evCardEl2) evCardEl2.style.transform = "";
+        }, 550);
       }
 
       if (evClose) evClose.addEventListener("click", closeEventModal);
@@ -1247,21 +1401,39 @@
             </button>
           `;
 
-          artEl.querySelector(".ev-tag").addEventListener("click", () => openEventModal(ev, isUr));
+          const tagBtn = artEl.querySelector(".ev-tag");
+          tagBtn.addEventListener("click", () => openEventModal(ev, isUr, tagBtn));
           stage.insertBefore(artEl, petalsDiv);
         });
       }
 
-      // 12. Sundial Odometer Countdown (Rolling Digit Strips)
-      function buildDigitStrip(digit) {
-        const nums = [0,1,2,3,4,5,6,7,8,9].map(n => `<b>${n}</b>`).join("");
-        return `<span class="cd-dg"><span class="cd-strip" style="transform: translateY(-${digit}em);">${nums}</span></span>`;
+      // 12. Sundial Odometer Countdown (Persistent Rolling Digit Strips)
+      function ensureDigitStrips(containerEl, count = 2) {
+        if (!containerEl || containerEl.dataset.built === String(count)) return;
+        const nums = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].map(n => `<b>${n}</b>`).join("");
+        containerEl.innerHTML = Array.from({ length: count }).map(() => `<span class="cd-dg"><span class="cd-strip" style="transform: translateY(-10em);">${nums}</span></span>`).join("");
+        containerEl.dataset.built = String(count);
+      }
+
+      function updateDigitStrips(containerEl, strVal) {
+        if (!containerEl) return;
+        ensureDigitStrips(containerEl, strVal.length);
+        const strips = containerEl.querySelectorAll(".cd-strip");
+        for (let i = 0; i < strVal.length; i++) {
+          const digit = parseInt(strVal[i], 10) || 0;
+          if (strips[i]) strips[i].style.transform = `translateY(-${10 + digit}em)`;
+        }
       }
 
       let cdInterval = null;
       function renderCountdown(targetIso, isUr) {
         if (cdInterval) clearInterval(cdInterval);
         const targetTime = new Date(targetIso).getTime();
+
+        const daysEl = document.getElementById("cdDaysNum");
+        const hoursEl = document.getElementById("cdHoursNum");
+        const minsEl = document.getElementById("cdMinsNum");
+        const secsEl = document.getElementById("cdSecsNum");
 
         function tick() {
           const now = Date.now();
@@ -1272,17 +1444,10 @@
           const s = Math.floor(diff / 1000);
 
           const pad = n => String(n).padStart(2, "0");
-          const ds = pad(d), hs = pad(h), ms = pad(m), ss = pad(s);
-
-          const daysEl = document.getElementById("cdDaysNum");
-          const hoursEl = document.getElementById("cdHoursNum");
-          const minsEl = document.getElementById("cdMinsNum");
-          const secsEl = document.getElementById("cdSecsNum");
-
-          if (daysEl) daysEl.innerHTML = buildDigitStrip(ds[0]) + buildDigitStrip(ds[1]);
-          if (hoursEl) hoursEl.innerHTML = buildDigitStrip(hs[0]) + buildDigitStrip(hs[1]);
-          if (minsEl) minsEl.innerHTML = buildDigitStrip(ms[0]) + buildDigitStrip(ms[1]);
-          if (secsEl) secsEl.innerHTML = buildDigitStrip(ss[0]) + buildDigitStrip(ss[1]);
+          updateDigitStrips(daysEl, pad(d));
+          updateDigitStrips(hoursEl, pad(h));
+          updateDigitStrips(minsEl, pad(m));
+          updateDigitStrips(secsEl, pad(s));
 
           const shadow = document.getElementById("cdShadow");
           if (shadow) shadow.style.setProperty("--sun", `${(s * 6) % 360}deg`);
