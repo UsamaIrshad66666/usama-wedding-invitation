@@ -401,7 +401,7 @@
 
       <div class="lt-stage">
         <div class="lt-slot">
-          <article class="lt-letter" id="letterSheet" aria-label="Your letter">
+          <article class="lt-letter" id="letterSheet" data-from="groom" aria-label="Your letter">
             <p class="lt-verse" id="tQuranVerseAr" lang="ar" dir="rtl">وَمِنْ ءَايَـٰتِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
             <p class="lt-verse-en" id="tQuranVerseEn">“And of His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy.”</p>
             <p class="lt-verse-ref" id="tQuranRef">Surah Ar-Rum · 30:21</p>
@@ -1062,6 +1062,7 @@
             sec.classList.add("is-seen");
 
             if (sec.id === "families") {
+              sec.classList.add("is-played");
               if (!sec.dataset.played) {
                 sec.dataset.played = "1";
                 playSfx(sfxFamilies);
@@ -1297,6 +1298,8 @@
         const isUr = lang === "ur";
         document.documentElement.dir = isUr ? "rtl" : "ltr";
         const isBride = WEDDING.cardSide === "bride";
+        const lsEl = document.getElementById("letterSheet");
+        if (lsEl) lsEl.setAttribute("data-from", isBride ? "bride" : "groom");
 
         const langBtnText = document.getElementById("langBtnText");
         if (langBtnText) langBtnText.textContent = isUr ? "English" : "اردو";
