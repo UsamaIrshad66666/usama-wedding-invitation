@@ -526,40 +526,337 @@
       letter-spacing: 0.05em;
     }
 
-    /* Letter Pocket Pull-Out Choreography */
-    .lt-letter {
-      transition: transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
-      transform-origin: 50% 85%;
+    /* ======================================================================
+       STEP 3: 3D TRI-FOLD LETTER UNFOLD & ROYAL WAX-SEALED ENVELOPE
+       ====================================================================== */
+    .letter {
+      --env-r: .84919;
+      --env-l: 3.125%;
+      --env-r-edge: 96.875%;
+      --env-t: 45.113%;
+      --env-b: 97.346%;
+      --env-tip-x: 49.466%;
+      --env-tip-y: 85.696%;
+      --env-flap-top: 2.654%;
+      --env-t-n: .45113;
+      --seal-r: .7313;
+      --seal-cx: 48.152%;
+      --seal-cy: 73.609%;
+      --seal-d: .7087;
+      --ivory-slice: 36;
+      --blush-slice: 36;
+      --ivory-paper: rgb(229, 219, 203);
+      --blush-paper: rgb(224, 194, 187);
+      --sage-paper: rgb(148, 150, 125);
+      --garland-r: 4.4017;
+      --corner-r: .797;
+      --paper-slice: 54;
+      --spray-w: 47.704%;
+      --spray-x: 2.335%;
+      --spray-y: .0353;
+      --spray-r: 1.2824;
+      --bud-w: 13.619%;
+      --bud-r: .8929;
+      --bud-right: 3.035%;
+      --bud-bottom: .0265;
+      --in: calc(clamp(8px, 2.3%, 26px) + clamp(9px, 2.2%, 24px));
+      --garland-h: calc(min((100% - 2 * var(--in)) * .88, 600px) / var(--garland-r, 4.4));
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: calc(var(--in) + 1.2% + var(--garland-h) + 2px) calc(var(--in) + 6px) calc(var(--in) + max(40px, 7%));
+      background: var(--sage-paper, #94967d) url("assets/gulistan/sage.webp") 0 0 / 540px repeat;
+      color: var(--ink, #322523);
+      container-type: inline-size;
+      overflow-anchor: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .letter:not(.is-open) .lt-letter {
-      transform: translateY(56%) scale(0.86);
-      opacity: 0;
+    .letter.is-open {
+      justify-content: flex-start;
+    }
+    .lt-papers {
+      position: absolute;
+      inset: 0;
       pointer-events: none;
     }
-    .letter.is-open .lt-letter {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-      pointer-events: auto;
+    .lp-blush, .lp-ivory {
+      position: absolute;
+    }
+    .lp-blush {
+      --m1: clamp(6px, 1.8%, 18px);
+      --edge: clamp(8px, 2.3%, 26px);
+      inset: var(--m1);
+      border: var(--edge) solid transparent;
+      border-image: url("assets/gulistan/sheet-blush.webp") var(--blush-slice) / var(--edge) round;
+      background: var(--blush-paper) padding-box;
+      filter: drop-shadow(0 1px 2px rgba(60,50,40,.22)) drop-shadow(0 3px 8px rgba(60,50,40,.12));
+    }
+    .lp-ivory {
+      --m2: calc(clamp(6px, 1.8%, 18px) + clamp(8px, 2.3%, 26px));
+      --edge: clamp(9px, 2.2%, 24px);
+      inset: var(--m2);
+      border: var(--edge) solid transparent;
+      border-image: url("assets/gulistan/sheet-ivory.webp") var(--ivory-slice) fill / var(--edge) round;
+      filter: drop-shadow(0 1px 2px rgba(90,60,55,.2)) drop-shadow(0 3px 7px rgba(90,60,55,.1));
+    }
+    .lp-garland {
+      position: absolute;
+      left: 50%;
+      top: calc(clamp(15px, 4%, 42px) + 1.2cqi);
+      width: min((100cqi - 2 * clamp(15px, 4%, 42px)) * .88, 600px);
+      aspect-ratio: var(--garland-r);
+      translate: -50% 0;
+      background: url("assets/gulistan/garland.webp") center / 100% 100% no-repeat;
+      pointer-events: none;
+    }
+    .lp-corner {
+      position: absolute;
+      left: calc(clamp(15px, 4%, 42px) + .6cqi);
+      bottom: calc(clamp(15px, 4%, 42px) + .6cqi);
+      width: min(32cqi, 240px);
+      aspect-ratio: var(--corner-r);
+      background: url("assets/gulistan/corner.webp") center / 100% 100% no-repeat;
+      pointer-events: none;
+    }
+    .lp-corner-r {
+      left: auto;
+      right: calc(clamp(15px, 4%, 42px) + .6cqi);
+      transform: scaleX(-1);
+    }
+    .lt-shade:before {
+      content: "";
+      position: absolute;
+      left: -8%;
+      top: -6%;
+      width: max(125cqi, 70svh);
+      aspect-ratio: 1;
+      background: url("assets/gulistan/shade.webp") 0 0 / 100% 100% no-repeat;
+      opacity: .24;
+      transform-origin: 0 0;
+      animation: lt-sway 7.5s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes lt-sway {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(2.8deg); }
+    }
+
+    /* Letter Slot & Sheet Presentation */
+    .lt-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      perspective: 1400px;
+    }
+    .lt-slot {
+      width: 100%;
+      display: none;
+      justify-content: center;
+    }
+    .letter.is-open .lt-slot {
+      display: flex;
+    }
+    .lt-letter {
+      --pb: clamp(12px, 3.4cqi, 20px);
+      position: relative;
+      width: min(100%, 560px);
+      margin: 0;
+      padding: calc(var(--pb) * .4 + min(100cqi, 560px) * .16) clamp(14px, 5cqi, 36px) clamp(28px, 8cqi, 48px);
+      border: var(--pb) solid transparent;
+      border-image: url("assets/gulistan/paper.webp") var(--paper-slice) fill / var(--pb) round;
+      filter: drop-shadow(0 10px 14px rgba(90, 64, 52, .2)) drop-shadow(0 1px 2px rgba(90, 64, 52, .2));
+      text-align: center;
+      container-type: inline-size;
+      font: 500 clamp(15.5px, 5.2cqi, 20px)/1.55 "Cormorant Garamond", Georgia, serif;
+      color: var(--ink, #322523);
+      background-clip: padding-box;
+    }
+    .letter:not(.is-read) .lt-slot .lt-letter {
+      visibility: hidden;
+    }
+    .letter.is-read .lt-slot .lt-letter {
+      visibility: visible;
+    }
+    .lt-letter:before, .lt-letter:after {
+      content: "";
+      position: absolute;
+      background: center / 100% 100% no-repeat;
+      pointer-events: none;
+    }
+    .lt-letter:before {
+      left: calc(var(--pb) * -.2);
+      top: calc(var(--pb) * -.2);
+      width: 36%;
+      aspect-ratio: var(--spray-r);
+      background-image: url("assets/gulistan/paper-spray.webp");
+    }
+    .lt-letter:after {
+      right: calc(var(--pb) * -.1);
+      bottom: calc(var(--pb) * -.1);
+      width: 11%;
+      aspect-ratio: var(--bud-r);
+      background-image: url("assets/gulistan/paper-bud.webp");
+    }
+
+    /* 3D Tri-Fold Letter Packet */
+    .lt-packet {
+      position: absolute;
+      z-index: 20;
+      transform-style: preserve-3d;
+      pointer-events: none;
+      transform-origin: 50% 50%;
+    }
+    .pk-panel {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+    .pk-mid {
+      top: 0;
+    }
+    .pk-top {
+      bottom: 100%;
+      transform-origin: 50% 100%;
+    }
+    .pk-bottom {
+      top: 100%;
+      transform-origin: 50% 0%;
+    }
+    .pk-face, .pk-back {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    .pk-face > .lt-letter {
+      position: absolute;
+      left: 0;
+      filter: none;
+      width: 100%;
+    }
+    .pk-back {
+      transform: rotateX(180deg);
+      background: linear-gradient(180deg, rgba(120, 100, 80, .1), transparent 18%, transparent 82%, rgba(120, 100, 80, .1)), #f4efe6;
+      box-shadow: inset 0 0 0 1px rgba(150, 130, 110, 0.28);
+    }
+    .pk-mid .pk-face {
+      filter: drop-shadow(0 10px 14px rgba(90, 64, 52, .26));
+    }
+
+    /* Envelope Layers & Realistic Flap 3D Swing */
+    .lt-keep {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      transition: margin 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .letter.is-open .lt-keep {
+      margin-top: clamp(18px, 5cqi, 34px);
     }
     .lt-env {
-      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      display: block;
+      width: min(96cqi, 500px);
+      aspect-ratio: var(--env-r);
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      perspective: 1200px;
+      transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      -webkit-tap-highlight-color: transparent;
     }
-    .lt-env .e-flap {
-      transform-origin: top center;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease 0.15s;
+    .letter:not(.is-open) .lt-env {
+      margin-top: calc(min(96cqi, 500px) / var(--env-r) * var(--env-t-n) * -.86);
     }
-    .lt-env.is-open .e-flap {
-      transform: rotateX(180deg);
+    .letter.is-open .lt-env {
+      width: min(62cqi, 320px);
+      cursor: default;
+    }
+    :where(.lt-env) > span {
+      position: absolute;
+      inset: 0;
+      background: center / 100% 100% no-repeat;
+      pointer-events: none;
+    }
+    .e-back {
+      z-index: 1;
+      background-image: url("assets/gulistan/env-back.webp");
+      filter: drop-shadow(0 9px 12px rgba(90, 64, 52, .22)) drop-shadow(0 1px 2px rgba(90, 64, 52, .2));
+    }
+    .e-flap-open {
+      z-index: 2;
+      background-image: url("assets/gulistan/env-flap-open.webp");
+      transform-origin: 50% var(--env-t);
       opacity: 0;
     }
-    .lt-env.is-open .e-flap-open {
+    .e-pocket {
+      z-index: 4;
+      background-image: url("assets/gulistan/env-pocket.webp");
+    }
+    .e-flap-shadow {
+      z-index: 5;
+      background-image: url("assets/gulistan/env-flap-shadow.webp");
+    }
+    .e-flap {
+      z-index: 6;
+      background-image: url("assets/gulistan/env-flap.webp");
+      transform-origin: 50% var(--env-t);
+    }
+    .letter.is-open .e-flap,
+    .letter.is-open .e-flap-shadow {
+      opacity: 0;
+    }
+    .letter.is-open .e-flap-open {
       opacity: 1;
-      transition: opacity 0.4s ease 0.2s;
     }
-    .lt-env.is-open .e-seal {
+    .letter.is-open .e-seal {
       opacity: 0;
-      transform: scale(1.3);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .lt-env > .e-seal {
+      z-index: 7;
+      inset: auto;
+      left: var(--env-tip-x);
+      top: var(--env-tip-y);
+      width: calc((var(--env-r-edge) - var(--env-l)) * .15 / var(--seal-d));
+      aspect-ratio: var(--seal-r);
+      margin-top: -3.2%;
+      translate: calc(-1 * var(--seal-cx)) calc(-1 * var(--seal-cy));
+      background-image: url("assets/gulistan/seal.webp");
+      filter: drop-shadow(0 3px 3px rgba(90, 45, 45, .3)) drop-shadow(0 1px 1px rgba(90, 45, 45, .25));
+    }
+    .gl-seal-ring {
+      position: absolute;
+      left: var(--seal-cx);
+      top: var(--seal-cy);
+      width: calc(var(--seal-d) * 118%);
+      aspect-ratio: 1;
+      translate: -50% -50%;
+      border-radius: 50%;
+      border: 1.5px solid rgba(168, 100, 106, .75);
+      opacity: 0;
+      animation: lt-ring 2.8s cubic-bezier(.2, .6, .3, 1) 1.2s infinite;
+    }
+    @keyframes lt-ring {
+      0% { transform: scale(0.9); opacity: 0; }
+      30% { opacity: 0.9; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .letter.is-open .gl-seal-ring,
+    .letter.is-open .lt-hint {
+      display: none;
     }
 
     /* 3D Tag-to-Modal Flight & Flip (.ev-lift / .ev-card / .ev-turn) */
@@ -1688,32 +1985,183 @@
         if (ribbon) ribbon.addEventListener("click", () => openGate(false));
       }
 
-      // 8. Interactive Envelope & Unfolding Letter
+      // 8. Interactive Envelope & 3D Tri-Fold Letter Unfolding Engine
       const envelope = document.getElementById("envelope");
       const letterSection = document.getElementById("letter");
       const letterSheet = document.getElementById("letterSheet");
       let isEnvOpen = false;
+      let isEnvAnimating = false;
+
+      function openEnvelopeAndUnfoldLetter(instant = false) {
+        if (isEnvOpen || isEnvAnimating) return;
+        isEnvAnimating = true;
+        isEnvOpen = true;
+
+        if (!letterSection || !envelope || !letterSheet) return;
+        envelope.setAttribute("aria-expanded", "true");
+
+        if (instant) {
+          envelope.classList.add("is-open");
+          letterSection.classList.add("is-open", "is-read");
+          isEnvAnimating = false;
+          return;
+        }
+
+        playSfx(sfxLetter);
+
+        // 1. Wax Seal Pop & Flap 3D Rotation
+        const eSeal = envelope.querySelector(".e-seal");
+        const eFlap = envelope.querySelector(".e-flap");
+        const eFlapOpen = envelope.querySelector(".e-flap-open");
+        const sealRing = envelope.querySelector(".gl-seal-ring");
+
+        if (sealRing) sealRing.style.display = "none";
+
+        if (eSeal) {
+          eSeal.animate([
+            { transform: "none", opacity: 1 },
+            { transform: "scale(1.08) rotate(-3deg)", opacity: 1, offset: 0.2 },
+            { transform: "translateY(-26%) scale(1.1) rotate(-8deg)", opacity: 0.8, offset: 0.5 },
+            { transform: "translateY(-40%) scale(1.15) rotate(-14deg)", opacity: 0 }
+          ], { duration: 420, easing: "cubic-bezier(.4, 0, .2, 1)", fill: "forwards" });
+        }
+
+        if (eFlap) {
+          eFlap.animate([
+            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 },
+            { transform: "perspective(1100px) rotateX(86deg)", opacity: 1, offset: 0.92 },
+            { transform: "perspective(1100px) rotateX(90deg)", opacity: 0 }
+          ], { duration: 320, delay: 200, easing: "cubic-bezier(.45, 0, .9, .6)", fill: "both" });
+        }
+
+        if (eFlapOpen) {
+          eFlapOpen.animate([
+            { transform: "perspective(1100px) rotateX(-90deg)", opacity: 0 },
+            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 }
+          ], { duration: 340, delay: 480, easing: "cubic-bezier(.2, .6, .3, 1)", fill: "forwards" });
+        }
+
+        // 2. Measure & Build 3D Tri-Fold Packet
+        letterSection.classList.add("is-open");
+        const letterWidth = letterSheet.offsetWidth || 560;
+        const totalHeight = letterSheet.offsetHeight || 680;
+        const panelHeight = totalHeight / 3;
+        letterSection.classList.remove("is-open");
+
+        const envRect = envelope.getBoundingClientRect();
+        const secRect = letterSection.getBoundingClientRect();
+
+        const packet = document.createElement("div");
+        packet.className = "lt-packet";
+        packet.style.width = letterWidth + "px";
+        packet.style.height = panelHeight + "px";
+        packet.style.left = "50%";
+        packet.style.top = (envRect.top - secRect.top + envRect.height * 0.44) + "px";
+        packet.style.translate = "-50% 0";
+        letterSection.appendChild(packet);
+
+        const panels = {};
+        [
+          { name: "top", idx: 0 },
+          { name: "mid", idx: 1 },
+          { name: "bottom", idx: 2 }
+        ].forEach(({ name, idx }) => {
+          const p = document.createElement("div");
+          p.className = `pk-panel pk-${name}`;
+
+          const face = document.createElement("div");
+          face.className = "pk-face";
+
+          const clone = letterSheet.cloneNode(true);
+          clone.removeAttribute("id");
+          clone.style.width = letterWidth + "px";
+          clone.style.position = "absolute";
+          clone.style.left = "0";
+          clone.style.top = `-${idx * panelHeight}px`;
+          clone.style.visibility = "visible";
+          face.appendChild(clone);
+          p.appendChild(face);
+
+          if (name !== "mid") {
+            const back = document.createElement("div");
+            back.className = "pk-back";
+            p.appendChild(back);
+          }
+
+          packet.appendChild(p);
+          panels[name] = p;
+        });
+
+        panels.top.style.transform = "translateZ(2px) rotateX(-180deg)";
+        panels.bottom.style.transform = "translateZ(1px) rotateX(180deg)";
+
+        // 3. Packet Slides Up out of Pocket into Air
+        const targetScale = Math.min(1, (window.innerWidth * 0.92) / letterWidth);
+        const riseDistance = envRect.height * 0.7 + panelHeight * 0.45;
+
+        packet.animate([
+          { transform: "translateY(0) scale(0.68)", opacity: 0.95 },
+          { transform: `translateY(-${riseDistance}px) scale(${targetScale})`, opacity: 1 }
+        ], {
+          duration: 720,
+          delay: 720,
+          easing: "cubic-bezier(.3, .1, .3, 1)",
+          fill: "forwards"
+        });
+
+        // 4. Envelope transitions to open layout & letter lands
+        setTimeout(() => {
+          letterSection.classList.add("is-open");
+          envelope.classList.add("is-open");
+          if (eFlap) eFlap.style.opacity = "0";
+          if (eFlapOpen) eFlapOpen.style.opacity = "1";
+          if (eSeal) eSeal.style.opacity = "0";
+
+          const slotRect = letterSection.querySelector(".lt-slot").getBoundingClientRect();
+          const landY = slotRect.top - secRect.top + panelHeight;
+          packet.style.top = landY + "px";
+          packet.style.transform = `translateY(0) scale(1)`;
+
+          // 5. Unfold Top Fold in 3D upwards
+          setTimeout(() => {
+            panels.top.animate([
+              { transform: "translateZ(2px) rotateX(-180deg)" },
+              { transform: "translateZ(0) rotateX(0deg)" }
+            ], {
+              duration: 520,
+              easing: "cubic-bezier(.45, .05, .35, 1)",
+              fill: "forwards"
+            });
+          }, 350);
+
+          // 6. Unfold Bottom Fold in 3D downwards
+          setTimeout(() => {
+            panels.bottom.animate([
+              { transform: "translateZ(1px) rotateX(180deg)" },
+              { transform: "translateZ(0) rotateX(0deg)" }
+            ], {
+              duration: 520,
+              easing: "cubic-bezier(.45, .05, .35, 1)",
+              fill: "forwards"
+            });
+          }, 780);
+
+          // 7. Hand off seamlessly to real interactive letter
+          setTimeout(() => {
+            letterSection.classList.add("is-read");
+            if (packet && packet.parentNode) {
+              packet.parentNode.removeChild(packet);
+            }
+            isEnvAnimating = false;
+          }, 1450);
+
+        }, 1440);
+      }
 
       if (envelope) {
         envelope.addEventListener("click", () => {
-          isEnvOpen = !isEnvOpen;
-          if (isEnvOpen) {
-            playSfx(sfxLetter);
-            envelope.classList.add("is-open");
-            envelope.setAttribute("aria-expanded", "true");
-            if (letterSection) letterSection.classList.add("is-open");
-            setTimeout(() => {
-              if (letterSection) letterSection.classList.add("is-read");
-              if (letterSheet) letterSheet.classList.add("is-open");
-            }, 240);
-          } else {
-            if (letterSheet) letterSheet.classList.remove("is-open");
-            if (letterSection) letterSection.classList.remove("is-read");
-            setTimeout(() => {
-              envelope.classList.remove("is-open");
-              if (letterSection) letterSection.classList.remove("is-open");
-              envelope.setAttribute("aria-expanded", "false");
-            }, 350);
+          if (!isEnvOpen) {
+            openEnvelopeAndUnfoldLetter(false);
           }
         });
       }
