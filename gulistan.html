@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Corinthia:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style id="loader-css">
     #loader {
@@ -1198,8 +1198,8 @@
       <div class="fm-scene">
         <div class="fm-art" aria-hidden="true">
           <i class="fm-veil"></i>
-          <img class="fm-vines-still" id="famVinesStill" src="assets/gulistan/vines-phone.webp" alt="" draggable="false">
-          <canvas class="fm-vines" id="famVinesCanvas"></canvas>
+          <i class="fm-vines-still" id="famVinesStill"></i>
+          <canvas class="fm-vines" id="famVinesCanvas" width="540" height="723"></canvas>
           <span class="fm-rose" id="famRose">
             <img src="assets/gulistan/rose-0.webp" alt="" draggable="false">
             <img src="assets/gulistan/rose-1.webp" alt="" draggable="false">
@@ -1452,8 +1452,8 @@
         hostUrdu: "جناب و محترمہ طارق محمود",
         groomParents: "Mr. & Mrs. Tariq Mehmood",
         groomParentsUrdu: "جناب و محترمہ طارق محمود",
-        brideParents: "Mr. & Mrs. Farooq Ahmed",
-        brideParentsUrdu: "جناب و محترمہ فاروق احمد",
+        brideParents: "",
+        brideParentsUrdu: "",
         taglineRoman: "Two souls, one blessed beginning",
         taglineUrdu: "دو دلوں کا ایک بابرکت آغاز",
         eventsList: [
@@ -2466,7 +2466,408 @@
         }
       }
 
-      // 9. Scroll-Driven IntersectionObserver & Parallax
+      // 9. Step 4: Families WebGL Organic Vine Growth Engine + Section Observers (Exact 1:1 9ee21480f6.js)
+      const famSec = document.getElementById("families");
+      const famScene = famSec ? famSec.querySelector(".fm-scene") : null;
+      const famWords = famSec ? famSec.querySelector(".fm-words") : null;
+      const famVinesCanvas = document.getElementById("famVinesCanvas");
+      const famVinesStill = document.getElementById("famVinesStill");
+      const famRose = document.getElementById("famRose");
+      const famPetalsBox = document.getElementById("famPetals");
+
+      const FAM_TIMING = {
+        grown: 3000,   // 0xbb8
+        head: 650,     // 0x28a
+        groom: 1250,   // 0x4e2
+        amp: 1700,     // 0x6a4
+        bride: 2050,   // 0x802
+        bloom: 2600,   // 0xa28
+        open: 1500,    // 0x5dc
+        dua: 3000,     // 0xbb8
+        duaEn: 3350,   // 0xd16
+        ref: 3650      // 0xe42
+      };
+      const FAM_SOFT_W = 0.035;
+
+      let famGl = null;
+      let famUniforms = {};
+      let famTexVines = null;
+      let famTexGrow = null;
+      let famShapeLoaded = "";
+      let famTexReady = false;
+      let famPlayed = false;
+      let famVisible = false;
+      let famDone = false;
+      let famStartTime = 0;
+      let famRafActive = false;
+      let famLastProgress = -1;
+      let famAutoTimer = null;
+      let famActivePetals = 0;
+      let famPetalTimer = null;
+
+      function getFamShape() {
+        if (!famSec) return "phone";
+        return (getComputedStyle(famSec).getPropertyValue("--shape") || "").trim() || "phone";
+      }
+
+      function initFamiliesWebGL() {
+        if (!famVinesCanvas) return false;
+        try {
+          famGl = famVinesCanvas.getContext("webgl", { premultipliedAlpha: true, alpha: true, antialias: false }) ||
+                  famVinesCanvas.getContext("experimental-webgl", { premultipliedAlpha: true, alpha: true });
+        } catch (err) {
+          famGl = null;
+        }
+        if (!famGl) return false;
+
+        function compileShader(type, src) {
+          const sh = famGl.createShader(type);
+          famGl.shaderSource(sh, src);
+          famGl.compileShader(sh);
+          return famGl.getShaderParameter(sh, famGl.COMPILE_STATUS) ? sh : null;
+        }
+
+        const vs = compileShader(
+          famGl.VERTEX_SHADER,
+          "attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}"
+        );
+        const fs = compileShader(
+          famGl.FRAGMENT_SHADER,
+          "precision mediump float;uniform sampler2D v;uniform sampler2D g;uniform float t;uniform float w;varying vec2 uv;void main(){vec4 c=texture2D(v,uv);float k=texture2D(g,uv).r;gl_FragColor=c*clamp((t-k)/w,0.,1.);}"
+        );
+        if (!vs || !fs) { famGl = null; return false; }
+
+        const prog = famGl.createProgram();
+        famGl.attachShader(prog, vs);
+        famGl.attachShader(prog, fs);
+        famGl.linkProgram(prog);
+        if (!famGl.getProgramParameter(prog, famGl.LINK_STATUS)) { famGl = null; return false; }
+        famGl.useProgram(prog);
+
+        const buf = famGl.createBuffer();
+        famGl.bindBuffer(famGl.ARRAY_BUFFER, buf);
+        famGl.bufferData(famGl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), famGl.STATIC_DRAW);
+        const pLoc = famGl.getAttribLocation(prog, "p");
+        famGl.enableVertexAttribArray(pLoc);
+        famGl.vertexAttribPointer(pLoc, 2, famGl.FLOAT, false, 0, 0);
+
+        famUniforms.t = famGl.getUniformLocation(prog, "t");
+        famUniforms.w = famGl.getUniformLocation(prog, "w");
+        famGl.uniform1i(famGl.getUniformLocation(prog, "v"), 0);
+        famGl.uniform1i(famGl.getUniformLocation(prog, "g"), 1);
+        famTexVines = famGl.createTexture();
+        famTexGrow = famGl.createTexture();
+        return true;
+      }
+
+      function uploadFamTexture(unit, tex, img, premultiply) {
+        famGl.activeTexture(famGl.TEXTURE0 + unit);
+        famGl.bindTexture(famGl.TEXTURE_2D, tex);
+        famGl.pixelStorei(famGl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiply);
+        famGl.texImage2D(famGl.TEXTURE_2D, 0, famGl.RGBA, famGl.RGBA, famGl.UNSIGNED_BYTE, img);
+        famGl.texParameteri(famGl.TEXTURE_2D, famGl.TEXTURE_MIN_FILTER, famGl.LINEAR);
+        famGl.texParameteri(famGl.TEXTURE_2D, famGl.TEXTURE_MAG_FILTER, famGl.LINEAR);
+        famGl.texParameteri(famGl.TEXTURE_2D, famGl.TEXTURE_WRAP_S, famGl.CLAMP_TO_EDGE);
+        famGl.texParameteri(famGl.TEXTURE_2D, famGl.TEXTURE_WRAP_T, famGl.CLAMP_TO_EDGE);
+      }
+
+      function loadFamTextures(shape) {
+        if (!famGl || famShapeLoaded === shape) return;
+        famShapeLoaded = shape;
+        famTexReady = false;
+        let pending = 2;
+        const imgVines = new Image();
+        const imgGrow = new Image();
+        const onBothLoaded = () => {
+          if (--pending || famShapeLoaded !== shape) return;
+          uploadFamTexture(0, famTexVines, imgVines, true);
+          uploadFamTexture(1, famTexGrow, imgGrow, false);
+          famTexReady = true;
+          resizeFamCanvas();
+          renderFamVines();
+        };
+        imgVines.onload = imgGrow.onload = onBothLoaded;
+        imgVines.onerror = imgGrow.onerror = () => {
+          if (famSec) famSec.classList.remove("has-gl");
+          famGl = null;
+        };
+        imgVines.src = `assets/gulistan/vines-${shape}.webp`;
+        imgGrow.src = `assets/gulistan/grow-${shape}.png`;
+      }
+
+      function resizeFamCanvas() {
+        if (!famGl || famDone || !famScene || !famVinesCanvas) return;
+        const rect = famScene.getBoundingClientRect();
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        const cw = Math.round(rect.width * dpr);
+        const ch = Math.round(rect.height * dpr);
+        if (famVinesCanvas.width !== cw || famVinesCanvas.height !== ch) {
+          famVinesCanvas.width = cw;
+          famVinesCanvas.height = ch;
+          famGl.viewport(0, 0, cw, ch);
+        }
+      }
+
+      function getFamProgress() {
+        if (!famPlayed) return 0;
+        if (!famStartTime) return 1;
+        const elapsed = performance.now() - famStartTime;
+        const raw = Math.min(1, Math.max(0, elapsed / FAM_TIMING.grown));
+        if (raw >= 1) return 1;
+        return 0.5 - 0.5 * Math.cos(Math.PI * raw);
+      }
+
+      function renderFamVines() {
+        if (!famGl || !famTexReady || famDone) return;
+        const p = getFamProgress();
+        famLastProgress = p;
+        famGl.clearColor(0, 0, 0, 0);
+        famGl.clear(famGl.COLOR_BUFFER_BIT);
+        famGl.uniform1f(famUniforms.t, p * (1 + FAM_SOFT_W));
+        famGl.uniform1f(famUniforms.w, FAM_SOFT_W);
+        famGl.drawArrays(famGl.TRIANGLES, 0, 6);
+      }
+
+      function stepFamVines() {
+        const p = getFamProgress();
+        if (p !== famLastProgress) renderFamVines();
+        if (famVisible && famPlayed && famStartTime && !famDone && p < 1) {
+          requestAnimationFrame(stepFamVines);
+        } else {
+          famRafActive = false;
+          if (p >= 1 && famStartTime) {
+            famStartTime = 0;
+            renderFamVines();
+            if (!famVisible) finalizeFamVines();
+          }
+        }
+      }
+
+      function startFamRaf() {
+        if (!famRafActive && famGl && famPlayed && famStartTime && !famDone) {
+          famRafActive = true;
+          requestAnimationFrame(stepFamVines);
+        }
+      }
+
+      function finalizeFamVines() {
+        if (famDone || !famGl || !famPlayed || famStartTime) return;
+        famDone = true;
+        if (famSec) {
+          famSec.classList.remove("is-growing");
+          famSec.classList.add("is-grown");
+        }
+        if (famVinesCanvas) {
+          famVinesCanvas.width = famVinesCanvas.height = 0;
+        }
+      }
+
+      function fitFamWords() {
+        if (!famWords) return;
+        famWords.style.setProperty("--fit", 1);
+        famWords.style.justifyContent = "flex-start";
+        let fit = 1;
+        for (let i = 0; i < 10 && famWords.scrollHeight > famWords.clientHeight + 1; i++) {
+          fit *= 0.94;
+          famWords.style.setProperty("--fit", fit.toFixed(3));
+        }
+        famWords.style.justifyContent = "";
+      }
+
+      function bloomFamApexRose(delayMs) {
+        if (!famRose) return;
+        const imgs = Array.from(famRose.querySelectorAll("img"));
+        const n = imgs.length;
+        if (!n) return;
+        const step = 1 / (n - 1);
+
+        famRose.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, delay: delayMs, fill: "both" });
+
+        imgs.forEach((img, idx) => {
+          if (idx === 0) {
+            img.animate([
+              { opacity: 1 },
+              { opacity: 1, offset: step * 0.9 },
+              { opacity: 0, offset: step * 1.3 },
+              { opacity: 0 }
+            ], { duration: FAM_TIMING.open, delay: delayMs, fill: "both" });
+            return;
+          }
+          const oStart = step * (idx - 1) * 0.92;
+          const oPeak = step * idx * 0.92;
+          const kf = [
+            { opacity: 0 },
+            { opacity: 0, offset: oStart },
+            { opacity: 1, offset: oPeak }
+          ];
+          if (idx < n - 1) {
+            kf.push(
+              { opacity: 1, offset: Math.min(1, oPeak + step * 0.5) },
+              { opacity: 0, offset: Math.min(1, oPeak + step * 0.8) },
+              { opacity: 0 }
+            );
+          } else {
+            kf.push({ opacity: 1 });
+          }
+          img.animate(kf, { duration: FAM_TIMING.open, delay: delayMs, easing: "ease-in-out", fill: "both" });
+        });
+
+        famRose.animate([
+          { transform: "scale(.7) rotate(-14deg)" },
+          { transform: "scale(1.05) rotate(3deg)", offset: 0.8 },
+          { transform: "scale(1) rotate(0deg)" }
+        ], { duration: FAM_TIMING.open + 300, delay: delayMs, easing: "cubic-bezier(.3,.6,.3,1)", fill: "both" });
+      }
+
+      function driftFamPetal() {
+        if (!famScene || !famSec || !famPetalsBox) return;
+        const w = famScene.offsetWidth;
+        const h = famScene.offsetHeight;
+        const cs = getComputedStyle(famSec);
+        const outL = parseFloat(cs.getPropertyValue("--out-l-n")) || 0.1;
+        const outR = parseFloat(cs.getPropertyValue("--out-r-n")) || 0.9;
+        const apexY = (parseFloat(cs.getPropertyValue("--apex-y")) || 8) / 100;
+
+        const el = document.createElement("i");
+        el.className = "fm-petal";
+        el.innerHTML = '<b><img alt="" draggable="false"></b>';
+        el.querySelector("img").src = `assets/gulistan/petal-${Math.floor(Math.random() * 9)}.webp`;
+        const size = Math.min(w, h) * randRange(0.028, 0.045);
+        el.style.width = size.toFixed(1) + "px";
+        famPetalsBox.appendChild(el);
+
+        const x0 = randRange(outL + 0.04, outR - 0.04) * w;
+        const y0 = randRange(apexY + 0.02, apexY + 0.3) * h;
+        const x1 = x0 + randRange(-0.06, 0.16) * w;
+        const sway = randRange(0.02, 0.05) * w;
+        const y1 = h + size * 2;
+        const kf = [];
+        for (let s = 0; s <= 8; s++) {
+          const t = s / 8;
+          kf.push({
+            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 8 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(140, 280)).toFixed(0)}deg)`,
+            opacity: t < 0.1 ? t / 0.1 : 1
+          });
+        }
+        const anim = el.animate(kf, { duration: randRange(7000, 10000), fill: "both" });
+        el.firstChild.animate([
+          { transform: "rotateX(0) rotateY(0)" },
+          { transform: `rotateX(${randRange(120, 240).toFixed(0)}deg) rotateY(${randRange(60, 160).toFixed(0)}deg)` }
+        ], { duration: randRange(2600, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+        famActivePetals++;
+        anim.onfinish = () => {
+          el.remove();
+          famActivePetals--;
+        };
+      }
+
+      function scheduleFamPetals() {
+        if (famPetalTimer) return;
+        famPetalTimer = setTimeout(() => {
+          famPetalTimer = null;
+          if (famVisible && famActivePetals < 4 && !document.hidden) driftFamPetal();
+          if (famVisible) scheduleFamPetals();
+        }, randRange(2200, 4200));
+      }
+
+      function playFamiliesSequence() {
+        if (famPlayed || !famSec) return;
+        famPlayed = true;
+        if (famAutoTimer) { clearTimeout(famAutoTimer); famAutoTimer = null; }
+
+        fitFamWords();
+        famSec.classList.add("is-played");
+        playSfx(sfxFamilies);
+
+        famStartTime = performance.now();
+        if (famGl) {
+          famSec.classList.add("is-growing");
+          famLastProgress = -1;
+          startFamRaf();
+          setTimeout(() => {
+            famStartTime = 0;
+            renderFamVines();
+            finalizeFamVines();
+          }, FAM_TIMING.grown + 60);
+        } else if (famVinesStill) {
+          famVinesStill.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FAM_TIMING.grown, easing: "ease-in", fill: "both" });
+        }
+
+        const animTargets = [
+          [".fm-kicker", "head"],
+          [".fm-title", "head"],
+          ["#famPrimaryBlock", "groom"],
+          ["#famSecondaryBlock", "bride"],
+          [".fm-both", "bride"],
+          [".fm-dua-ar", "dua"],
+          [".fm-dua-en", "duaEn"],
+          [".fm-dua-ref", "ref"]
+        ];
+
+        animTargets.forEach(([sel, key]) => {
+          const el = famSec.querySelector(sel);
+          if (!el || el.style.display === "none") return;
+          if (el.classList.contains("fm-title")) {
+            el.animate([
+              { opacity: 1, "--wipe": "-2%" },
+              { opacity: 1, "--wipe": "130%" }
+            ], { duration: 1400, delay: FAM_TIMING.head + 150, easing: "cubic-bezier(.4,0,.3,1)", fill: "both" });
+            return;
+          }
+          el.animate([
+            { opacity: 0, transform: "translateY(12px)" },
+            { opacity: 1, transform: "none" }
+          ], { duration: 900, delay: FAM_TIMING[key], easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
+        });
+
+        bloomFamApexRose(FAM_TIMING.bloom);
+        setTimeout(scheduleFamPetals, FAM_TIMING.bloom + FAM_TIMING.open);
+      }
+
+      if (famSec) {
+        if (initFamiliesWebGL()) famSec.classList.add("has-gl");
+        let curFamShape = getFamShape();
+        loadFamTextures(curFamShape);
+
+        window.addEventListener("resize", () => {
+          const nextShape = getFamShape();
+          if (nextShape !== curFamShape) {
+            curFamShape = nextShape;
+            loadFamTextures(nextShape);
+          }
+          resizeFamCanvas();
+          renderFamVines();
+          if (famPlayed) fitFamWords();
+        });
+
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver((entries) => {
+            const entry = entries[entries.length - 1];
+            const visRatio = entry.isIntersecting
+              ? entry.intersectionRect.height / Math.min(entry.boundingClientRect.height || 1, window.innerHeight)
+              : 0;
+            famVisible = entry.isIntersecting;
+            if (famVisible) {
+              famSec.classList.remove("is-away", "is-far");
+              famSec.classList.add("is-seen");
+              famLastProgress = -1;
+              startFamRaf();
+            } else {
+              finalizeFamVines();
+            }
+            if (visRatio >= 0.5 && !famPlayed && !famAutoTimer) {
+              famAutoTimer = setTimeout(() => {
+                famAutoTimer = null;
+                playFamiliesSequence();
+              }, 1000);
+            } else if (visRatio < 0.5 && famAutoTimer) {
+              clearTimeout(famAutoTimer);
+              famAutoTimer = null;
+            }
+          }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], rootMargin: "-1px 0px" }).observe(famSec);
+        }
+      }
+
       const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           const sec = entry.target;
@@ -2474,17 +2875,7 @@
             sec.classList.remove("is-away", "is-far");
             sec.classList.add("is-seen");
 
-            if (sec.id === "families") {
-              if (!sec.dataset.played) {
-                sec.dataset.played = "1";
-                playSfx(sfxFamilies);
-                growFamiliesVines(() => {
-                  sec.classList.add("is-played");
-                  bloomSingleRose(document.getElementById("famRose"));
-                });
-                spawnPetals("famPetals", 7);
-              }
-            } else if (sec.id === "letter") {
+            if (sec.id === "letter") {
               isLetterVisible = true;
               scheduleLetterPetals();
             } else if (sec.id === "events") {
@@ -2517,54 +2908,6 @@
       }, { threshold: 0.14 });
 
       document.querySelectorAll("[data-section]").forEach(sec => sectionObserver.observe(sec));
-
-      function growFamiliesVines(onDone) {
-        const famSec = document.getElementById("families");
-        const canvas = document.getElementById("famVinesCanvas");
-        const stillImg = document.getElementById("famVinesStill");
-        if (!famSec || !canvas || !stillImg) { if (onDone) onDone(); return; }
-
-        const w = window.innerWidth, h = window.innerHeight;
-        const ratio = w / Math.max(1, h);
-        const suffix = (ratio >= 1.2) ? "land" : (ratio >= 0.625 ? "tab" : "phone");
-        stillImg.src = `assets/gulistan/vines-${suffix}.webp`;
-
-        famSec.classList.add("is-growing");
-        const img = new Image();
-        img.src = stillImg.src;
-        img.onload = () => {
-          const cw = canvas.width = img.naturalWidth || 540;
-          const ch = canvas.height = img.naturalHeight || 723;
-          const ctx = canvas.getContext("2d");
-          const start = performance.now();
-          const dur = 1600;
-          function step(now) {
-            const p = Math.min(1, (now - start) / dur);
-            const ease = 1 - Math.pow(1 - p, 2.2);
-            ctx.clearRect(0, 0, cw, ch);
-            ctx.save();
-            // Grow upward from both marble urns at bottom toward top arch
-            const revealTop = ch * (1 - ease);
-            ctx.beginPath();
-            ctx.rect(0, revealTop, cw, ch - revealTop);
-            ctx.clip();
-            ctx.drawImage(img, 0, 0, cw, ch);
-            ctx.restore();
-            if (p < 1) {
-              requestAnimationFrame(step);
-            } else {
-              famSec.classList.remove("is-growing");
-              famSec.classList.add("is-grown");
-              if (onDone) onDone();
-            }
-          }
-          requestAnimationFrame(step);
-        };
-        img.onerror = () => {
-          famSec.classList.add("is-grown");
-          if (onDone) onDone();
-        };
-      }
 
       function animateClosingFlies() {
         const f1 = document.getElementById("clFly1");
