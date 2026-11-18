@@ -528,6 +528,7 @@
 
     /* ======================================================================
        STEP 3: 3D TRI-FOLD LETTER UNFOLD & ROYAL WAX-SEALED ENVELOPE
+       (Exact 1:1 match with reference 6bc7234901.css & 9cd3de02c1.css)
        ====================================================================== */
     .letter {
       --env-r: .84919;
@@ -550,15 +551,6 @@
       --sage-paper: rgb(148, 150, 125);
       --garland-r: 4.4017;
       --corner-r: .797;
-      --paper-slice: 54;
-      --spray-w: 47.704%;
-      --spray-x: 2.335%;
-      --spray-y: .0353;
-      --spray-r: 1.2824;
-      --bud-w: 13.619%;
-      --bud-r: .8929;
-      --bud-right: 3.035%;
-      --bud-bottom: .0265;
       --in: calc(clamp(8px, 2.3%, 26px) + clamp(9px, 2.2%, 24px));
       --garland-h: calc(min((100% - 2 * var(--in)) * .88, 600px) / var(--garland-r, 4.4));
       position: relative;
@@ -570,7 +562,7 @@
       min-height: 100svh;
       padding: calc(var(--in) + 1.2% + var(--garland-h) + 2px) calc(var(--in) + 6px) calc(var(--in) + max(40px, 7%));
       background: var(--sage-paper, #94967d) url("assets/gulistan/sage.webp") 0 0 / 540px repeat;
-      color: var(--ink, #322523);
+      color: var(--ink);
       container-type: inline-size;
       overflow-anchor: none;
       -webkit-tap-highlight-color: transparent;
@@ -579,16 +571,19 @@
       justify-content: flex-start;
     }
     .lt-papers {
+      --m1: clamp(8px, 2.3cqi, 26px);
+      --m2: calc(var(--m1) + clamp(9px, 2.2cqi, 24px));
+      --edge: clamp(13px, 3.4cqi, 30px);
       position: absolute;
       inset: 0;
+      z-index: -1;
       pointer-events: none;
     }
-    .lp-blush, .lp-ivory {
+    .lt-papers > i {
       position: absolute;
+      display: block;
     }
     .lp-blush {
-      --m1: clamp(6px, 1.8%, 18px);
-      --edge: clamp(8px, 2.3%, 26px);
       inset: var(--m1);
       border: var(--edge) solid transparent;
       border-image: url("assets/gulistan/sheet-blush.webp") var(--blush-slice) / var(--edge) round;
@@ -596,36 +591,43 @@
       filter: drop-shadow(0 1px 2px rgba(60,50,40,.22)) drop-shadow(0 3px 8px rgba(60,50,40,.12));
     }
     .lp-ivory {
-      --m2: calc(clamp(6px, 1.8%, 18px) + clamp(8px, 2.3%, 26px));
-      --edge: clamp(9px, 2.2%, 24px);
       inset: var(--m2);
       border: var(--edge) solid transparent;
       border-image: url("assets/gulistan/sheet-ivory.webp") var(--ivory-slice) fill / var(--edge) round;
       filter: drop-shadow(0 1px 2px rgba(90,60,55,.2)) drop-shadow(0 3px 7px rgba(90,60,55,.1));
     }
     .lp-garland {
-      position: absolute;
       left: 50%;
-      top: calc(clamp(15px, 4%, 42px) + 1.2cqi);
-      width: min((100cqi - 2 * clamp(15px, 4%, 42px)) * .88, 600px);
+      top: calc(var(--m2) + 1.2cqi);
+      width: min((100cqi - 2 * var(--m2)) * .88, 600px);
       aspect-ratio: var(--garland-r);
       translate: -50% 0;
-      background: url("assets/gulistan/garland.webp") center / 100% 100% no-repeat;
-      pointer-events: none;
+      background: url("assets/gulistan/letter-garland.webp") center / 100% 100% no-repeat;
     }
     .lp-corner {
-      position: absolute;
-      left: calc(clamp(15px, 4%, 42px) + .6cqi);
-      bottom: calc(clamp(15px, 4%, 42px) + .6cqi);
+      left: calc(var(--m2) + .6cqi);
+      bottom: calc(var(--m2) + .6cqi);
       width: min(32cqi, 240px);
       aspect-ratio: var(--corner-r);
       background: url("assets/gulistan/corner.webp") center / 100% 100% no-repeat;
-      pointer-events: none;
     }
     .lp-corner-r {
       left: auto;
-      right: calc(clamp(15px, 4%, 42px) + .6cqi);
-      transform: scaleX(-1);
+      right: calc(var(--m2) + .6cqi);
+      scale: -1 1;
+    }
+    .lt-shade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      z-index: 8;
+      overflow: hidden;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(#000 35%, transparent 95%);
+      mask-image: linear-gradient(#000 35%, transparent 95%);
     }
     .lt-shade:before {
       content: "";
@@ -638,14 +640,33 @@
       opacity: .24;
       transform-origin: 0 0;
       animation: lt-sway 7.5s ease-in-out infinite alternate;
-      pointer-events: none;
     }
     @keyframes lt-sway {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(2.8deg); }
+      0% { transform: rotate(-1.1deg) translate(-.8%, .2%) skew(.8deg); }
+      45% { transform: rotate(.5deg) translate(.6%, -.3%) skew(-.4deg); }
+      to { transform: rotate(1.2deg) translate(1.1%, .5%) skew(-1deg); }
     }
-
-    /* Letter Slot & Sheet Presentation */
+    .lt-petals {
+      position: absolute;
+      inset: 0;
+      z-index: 9;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .lt-petal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      perspective: 300px;
+    }
+    .lt-petal b {
+      display: block;
+      transform-style: preserve-3d;
+    }
+    .lt-petal img {
+      width: 100%;
+      height: auto;
+    }
     .lt-stage {
       position: relative;
       display: flex;
@@ -654,7 +675,6 @@
       width: 100%;
       max-width: 1120px;
       margin: 0 auto;
-      perspective: 1400px;
     }
     .lt-slot {
       width: 100%;
@@ -665,25 +685,30 @@
       display: flex;
     }
     .lt-letter {
+      --paper-slice: 54;
+      --spray-w: 47.704%;
+      --spray-x: 2.335%;
+      --spray-y: .0353;
+      --spray-r: 1.2824;
+      --bud-w: 13.619%;
+      --bud-r: .8929;
+      --bud-right: 3.035%;
+      --bud-bottom: .0265;
       --pb: clamp(12px, 3.4cqi, 20px);
       position: relative;
       width: min(100%, 560px);
       margin: 0;
-      padding: calc(var(--pb) * .4 + min(100cqi, 560px) * .16) clamp(14px, 5cqi, 36px) clamp(28px, 8cqi, 48px);
+      padding: calc(var(--pb) * .4 + min(100cqi, 560px) * .2) clamp(14px, 5cqi, 36px) clamp(28px, 8cqi, 48px);
       border: var(--pb) solid transparent;
       border-image: url("assets/gulistan/paper.webp") var(--paper-slice) fill / var(--pb) round;
       filter: drop-shadow(0 10px 14px rgba(90, 64, 52, .2)) drop-shadow(0 1px 2px rgba(90, 64, 52, .2));
       text-align: center;
       container-type: inline-size;
       font: 500 clamp(15.5px, 5.2cqi, 20px)/1.55 "Cormorant Garamond", Georgia, serif;
-      color: var(--ink, #322523);
-      background-clip: padding-box;
+      color: var(--ink);
     }
     .letter:not(.is-read) .lt-slot .lt-letter {
       visibility: hidden;
-    }
-    .letter.is-read .lt-slot .lt-letter {
-      visibility: visible;
     }
     .lt-letter:before, .lt-letter:after {
       content: "";
@@ -705,11 +730,9 @@
       aspect-ratio: var(--bud-r);
       background-image: url("assets/gulistan/paper-bud.webp");
     }
-
-    /* 3D Tri-Fold Letter Packet */
     .lt-packet {
       position: absolute;
-      z-index: 20;
+      z-index: 3;
       transform-style: preserve-3d;
       pointer-events: none;
       transform-origin: 50% 50%;
@@ -730,7 +753,7 @@
     }
     .pk-bottom {
       top: 100%;
-      transform-origin: 50% 0%;
+      transform-origin: 50% 0;
     }
     .pk-face, .pk-back {
       position: absolute;
@@ -743,24 +766,20 @@
       position: absolute;
       left: 0;
       filter: none;
-      width: 100%;
     }
     .pk-back {
       transform: rotateX(180deg);
       background: linear-gradient(180deg, rgba(120, 100, 80, .1), transparent 18%, transparent 82%, rgba(120, 100, 80, .1)), #f4efe6;
-      box-shadow: inset 0 0 0 1px rgba(150, 130, 110, 0.28);
+      box-shadow: inset 0 0 0 1px #96826e47;
     }
     .pk-mid .pk-face {
       filter: drop-shadow(0 10px 14px rgba(90, 64, 52, .26));
     }
-
-    /* Envelope Layers & Realistic Flap 3D Swing */
     .lt-keep {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
-      transition: margin 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .letter.is-open .lt-keep {
       margin-top: clamp(18px, 5cqi, 34px);
@@ -774,8 +793,6 @@
       border: 0;
       background: none;
       cursor: pointer;
-      perspective: 1200px;
-      transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
       -webkit-tap-highlight-color: transparent;
     }
     .letter:not(.is-open) .lt-env {
@@ -850,9 +867,8 @@
       animation: lt-ring 2.8s cubic-bezier(.2, .6, .3, 1) 1.2s infinite;
     }
     @keyframes lt-ring {
-      0% { transform: scale(0.9); opacity: 0; }
-      30% { opacity: 0.9; }
-      100% { transform: scale(1.6); opacity: 0; }
+      0% { opacity: .9; transform: scale(.8); }
+      to { opacity: 0; transform: scale(1.35); }
     }
     .letter.is-open .gl-seal-ring,
     .letter.is-open .lt-hint {
@@ -1985,185 +2001,456 @@
         if (ribbon) ribbon.addEventListener("click", () => openGate(false));
       }
 
-      // 8. Interactive Envelope & 3D Tri-Fold Letter Unfolding Engine
+      // 8. Interactive Envelope & 3D Tri-Fold Letter Unfolding Engine (Exact 1:1 51f736619c.js)
       const envelope = document.getElementById("envelope");
       const letterSection = document.getElementById("letter");
       const letterSheet = document.getElementById("letterSheet");
+      const ltHead = letterSection ? letterSection.querySelector(".lt-head") : null;
+      const ltKeep = letterSection ? letterSection.querySelector(".lt-keep") : null;
+      const ltPetalsBox = document.getElementById("letterPetals");
       let isEnvOpen = false;
       let isEnvAnimating = false;
+      let envAutoTimer = null;
+
+      const LETTER_TIMING = {
+        crack: 0,      // 0ms
+        flap: 220,     // 0xdc
+        flapUp: 520,   // 0x208
+        flapDone: 820, // 0x334
+        rise: 820,     // 0x334
+        risen: 1500,   // 0x5dc
+        land: 2200,    // 0x898
+        top: 2300,     // 0x8fc
+        bottom: 2730,  // 0xaaa
+        open: 3250     // 0xcb2
+      };
+
+      function fitLetterCoupleNames() {
+        if (!letterSection) return;
+        letterSection.querySelectorAll(".lp-couple").forEach(el => {
+          el.style.fontSize = "";
+          el.style.whiteSpace = "nowrap";
+          const fs = parseFloat(getComputedStyle(el).fontSize);
+          const cw = el.clientWidth;
+          if (!cw) { el.style.whiteSpace = ""; return; }
+          if (el.scrollWidth <= cw) return;
+          const scaled = Math.floor(fs * cw / el.scrollWidth * 0.98);
+          if (scaled >= 26) {
+            el.style.fontSize = scaled + "px";
+            return;
+          }
+          el.style.whiteSpace = "";
+        });
+      }
+
+      // 3D Landing Petals on Letter Paper (exact L() / N() from 51f736619c.js)
+      const landedPetals = [];
+      const activePetals = [];
+      const PETAL_INDICES = [0, 1, 4, 5, 6, 8];
+      let petalSpawnTimer = null;
+      let isLetterVisible = false;
+
+      function randRange(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function fadeOutLetterPetal(el, dur) {
+        if (!el || !el.animate) { if (el) el.remove(); return; }
+        el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur, easing: "ease-in", fill: "forwards" }).onfinish = () => el.remove();
+      }
+
+      function clearLetterPetals() {
+        landedPetals.splice(0).concat(activePetals.splice(0)).forEach(p => fadeOutLetterPetal(p, 500));
+      }
+
+      function pickLetterPetalSpot(size) {
+        if (!letterSection) return null;
+        const secRect = letterSection.getBoundingClientRect();
+        const visTop = Math.max(0, -secRect.top);
+        const visBot = Math.min(secRect.height, window.innerHeight - secRect.top);
+        if (visBot - visTop < 160) return null;
+        const avoidEls = [
+          ltHead && ltHead.querySelector(".lt-for"),
+          letterSection.querySelector(".lt-hint"),
+          letterSection.querySelector(".e-seal")
+        ];
+        if (letterSection.classList.contains("is-open")) avoidEls.push(letterSheet);
+        const boxes = avoidEls.map(el => el && el.getBoundingClientRect()).filter(r => r && r.width);
+        const pad = size * 1.3;
+        for (let i = 0; i < 16; i++) {
+          const x = randRange(0.08, 0.92) * secRect.width;
+          const y = visTop + randRange(0.1, 0.9) * (visBot - visTop);
+          const ok = boxes.every(b =>
+            x < b.left - secRect.left - pad ||
+            x > b.right - secRect.left + pad ||
+            y < b.top - secRect.top - pad ||
+            y > b.bottom - secRect.top + pad
+          );
+          if (ok) return { x, y, w: secRect.width, h: visBot - visTop };
+        }
+        return null;
+      }
+
+      function driftLetterPetal() {
+        if (!ltPetalsBox || !letterSection) return;
+        if (isEnvOpen && !letterSection.classList.contains("is-read")) return;
+        const size = Math.min(letterSection.offsetWidth || 390, window.innerHeight) * randRange(0.042, 0.06);
+        const spot = pickLetterPetalSpot(size);
+        if (!spot) return;
+
+        const el = document.createElement("i");
+        el.className = "lt-petal";
+        el.innerHTML = '<b><img alt="" draggable="false"></b>';
+        const img = el.querySelector("img");
+        const pIdx = PETAL_INDICES[Math.floor(Math.random() * PETAL_INDICES.length)];
+        img.src = `assets/gulistan/petal-${pIdx}.webp`;
+        el.style.width = size.toFixed(1) + "px";
+        ltPetalsBox.appendChild(el);
+        activePetals.push(el);
+
+        const dx = randRange(0.25, 0.5) * spot.w;
+        const dy = randRange(0.2, 0.4) * spot.h;
+        const sway = randRange(0.03, 0.06) * spot.w;
+        const r0 = randRange(-180, 180);
+        const r1 = r0 + randRange(90, 240) * (Math.random() < 0.5 ? -1 : 1);
+        const kfPos = [];
+        const kfShadow = [];
+
+        for (let s = 0; s <= 10; s++) {
+          const t = s / 10;
+          const ease = 1 - Math.pow(1 - t, 2.2);
+          const rem = 1 - ease;
+          const px = spot.x - size / 2 - dx * rem + Math.sin(t * 7.5) * sway * rem;
+          const py = spot.y - size / 2 - dy * rem;
+          kfPos.push({
+            transform: `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) rotate(${(r0 + (r1 - r0) * ease).toFixed(0)}deg) scale(${(1 + 0.55 * rem).toFixed(3)})`,
+            opacity: t < 0.12 ? t / 0.12 : 1
+          });
+          kfShadow.push({
+            filter: `drop-shadow(${(1 + 16 * rem).toFixed(1)}px ${(2 + 22 * rem).toFixed(1)}px ${(1.5 + 9 * rem).toFixed(1)}px rgba(80, 55, 45, ${(0.34 - 0.18 * rem).toFixed(2)}))`
+          });
+        }
+
+        const dur = randRange(4200, 6200);
+        const anim = el.animate(kfPos, { duration: dur, fill: "both" });
+        img.animate(kfShadow, { duration: dur, fill: "both" });
+        const rx = randRange(100, 200), ry = randRange(40, 120);
+        el.firstChild.animate([
+          { transform: "rotateX(0) rotateY(0)" },
+          { transform: `rotateX(${rx}deg) rotateY(${ry}deg)`, offset: 0.3 },
+          { transform: `rotateX(${rx * 0.3}deg) rotateY(${-ry * 0.4}deg)`, offset: 0.62 },
+          { transform: `rotateX(${-rx * 0.12}deg) rotateY(${ry * 0.1}deg)`, offset: 0.85 },
+          { transform: "rotateX(0) rotateY(0)" }
+        ], { duration: dur, easing: "ease-in-out", fill: "both" });
+
+        anim.onfinish = () => {
+          const idx = activePetals.indexOf(el);
+          if (idx !== -1) activePetals.splice(idx, 1);
+          landedPetals.push(el);
+          if (landedPetals.length > 4) fadeOutLetterPetal(landedPetals.shift(), 1600);
+          el.style.transform = kfPos[10].transform;
+          img.style.filter = kfShadow[10].filter;
+          if (el.getAnimations) el.getAnimations({ subtree: true }).forEach(a => a.cancel());
+        };
+      }
+
+      function scheduleLetterPetals() {
+        if (petalSpawnTimer || !isLetterVisible) return;
+        petalSpawnTimer = setTimeout(() => {
+          petalSpawnTimer = null;
+          if (!isLetterVisible) return;
+          if (activePetals.length < 2 && !document.hidden) driftLetterPetal();
+          scheduleLetterPetals();
+        }, randRange(3200, 6000));
+      }
+
+      function relRect(r, base) {
+        return {
+          left: r.left - base.left,
+          top: r.top - base.top,
+          width: r.width,
+          height: r.height
+        };
+      }
+
+      function getPctVar(name) {
+        return parseFloat(getComputedStyle(letterSection).getPropertyValue(name)) / 100;
+      }
 
       function openEnvelopeAndUnfoldLetter(instant = false) {
         if (isEnvOpen || isEnvAnimating) return;
         isEnvAnimating = true;
         isEnvOpen = true;
+        if (envAutoTimer) { clearTimeout(envAutoTimer); envAutoTimer = null; }
 
         if (!letterSection || !envelope || !letterSheet) return;
         envelope.setAttribute("aria-expanded", "true");
+        letterSection.classList.remove("is-away", "is-far");
+        letterSection.classList.add("is-seen");
+        fitLetterCoupleNames();
 
-        if (instant) {
+        const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (instant || prefersReduced) {
           envelope.classList.add("is-open");
           letterSection.classList.add("is-open", "is-read");
           isEnvAnimating = false;
           return;
         }
 
+        // Ensure .lt-head and .lt-keep have no pending entrance translate so .lt-keep does not form a stacking context before risen (1500ms)
+        if (ltHead) { ltHead.style.transition = "none"; ltHead.style.translate = "none"; ltHead.style.opacity = "1"; }
+        if (ltKeep) { ltKeep.style.transition = "none"; ltKeep.style.translate = "none"; ltKeep.style.opacity = "1"; }
+
         playSfx(sfxLetter);
+        clearLetterPetals();
 
-        // 1. Wax Seal Pop & Flap 3D Rotation
-        const eSeal = envelope.querySelector(".e-seal");
-        const eFlap = envelope.querySelector(".e-flap");
-        const eFlapOpen = envelope.querySelector(".e-flap-open");
-        const sealRing = envelope.querySelector(".gl-seal-ring");
+        // 1. Measure closed state vs final .is-open state (FLIP coordinates)
+        const secRect0 = letterSection.getBoundingClientRect();
+        const envClosed = relRect(envelope.getBoundingClientRect(), secRect0);
+        const headClosed = relRect(ltHead.getBoundingClientRect(), secRect0);
 
-        if (sealRing) sealRing.style.display = "none";
-
-        if (eSeal) {
-          eSeal.animate([
-            { transform: "none", opacity: 1 },
-            { transform: "scale(1.08) rotate(-3deg)", opacity: 1, offset: 0.2 },
-            { transform: "translateY(-26%) scale(1.1) rotate(-8deg)", opacity: 0.8, offset: 0.5 },
-            { transform: "translateY(-40%) scale(1.15) rotate(-14deg)", opacity: 0 }
-          ], { duration: 420, easing: "cubic-bezier(.4, 0, .2, 1)", fill: "forwards" });
-        }
-
-        if (eFlap) {
-          eFlap.animate([
-            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 },
-            { transform: "perspective(1100px) rotateX(86deg)", opacity: 1, offset: 0.92 },
-            { transform: "perspective(1100px) rotateX(90deg)", opacity: 0 }
-          ], { duration: 320, delay: 200, easing: "cubic-bezier(.45, 0, .9, .6)", fill: "both" });
-        }
-
-        if (eFlapOpen) {
-          eFlapOpen.animate([
-            { transform: "perspective(1100px) rotateX(-90deg)", opacity: 0 },
-            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 }
-          ], { duration: 340, delay: 480, easing: "cubic-bezier(.2, .6, .3, 1)", fill: "forwards" });
-        }
-
-        // 2. Measure & Build 3D Tri-Fold Packet
         letterSection.classList.add("is-open");
-        const letterWidth = letterSheet.offsetWidth || 560;
-        const totalHeight = letterSheet.offsetHeight || 680;
-        const panelHeight = totalHeight / 3;
+        const sheetOpen = relRect(letterSheet.getBoundingClientRect(), letterSection.getBoundingClientRect());
+        const letterW = letterSheet.offsetWidth;
+        const letterH = letterSheet.offsetHeight;
+        const panelH = letterH / 3;
         letterSection.classList.remove("is-open");
 
-        const envRect = envelope.getBoundingClientRect();
-        const secRect = letterSection.getBoundingClientRect();
+        const pocket = {
+          l: envClosed.left + envClosed.width * getPctVar("--env-l"),
+          r: envClosed.left + envClosed.width * getPctVar("--env-r-edge"),
+          t: envClosed.top + envClosed.height * getPctVar("--env-t"),
+          b: envClosed.top + envClosed.height * getPctVar("--env-b")
+        };
 
+        // 2. Build 3D Tri-Fold Packet at its final .is-open middle-panel slot
         const packet = document.createElement("div");
         packet.className = "lt-packet";
-        packet.style.width = letterWidth + "px";
-        packet.style.height = panelHeight + "px";
-        packet.style.left = "50%";
-        packet.style.top = (envRect.top - secRect.top + envRect.height * 0.44) + "px";
-        packet.style.translate = "-50% 0";
+        packet.style.left = sheetOpen.left + "px";
+        packet.style.top = (sheetOpen.top + panelH) + "px";
+        packet.style.width = letterW + "px";
+        packet.style.height = panelH + "px";
         letterSection.appendChild(packet);
 
         const panels = {};
-        [
-          { name: "top", idx: 0 },
-          { name: "mid", idx: 1 },
-          { name: "bottom", idx: 2 }
-        ].forEach(({ name, idx }) => {
-          const p = document.createElement("div");
-          p.className = `pk-panel pk-${name}`;
-
+        [["top", 0], ["mid", 1], ["bottom", 2]].forEach(([name, idx]) => {
+          const panel = document.createElement("div");
+          panel.className = `pk-panel pk-${name}`;
           const face = document.createElement("div");
           face.className = "pk-face";
 
           const clone = letterSheet.cloneNode(true);
           clone.removeAttribute("id");
-          clone.style.width = letterWidth + "px";
-          clone.style.position = "absolute";
-          clone.style.left = "0";
-          clone.style.top = `-${idx * panelHeight}px`;
+          clone.removeAttribute("aria-label");
+          clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+          clone.style.width = letterW + "px";
+          clone.style.top = (-idx * panelH) + "px";
           clone.style.visibility = "visible";
           face.appendChild(clone);
-          p.appendChild(face);
+          panel.appendChild(face);
 
           if (name !== "mid") {
             const back = document.createElement("div");
             back.className = "pk-back";
-            p.appendChild(back);
+            panel.appendChild(back);
           }
-
-          packet.appendChild(p);
-          panels[name] = p;
+          packet.appendChild(panel);
+          panels[name] = panel;
         });
 
         panels.top.style.transform = "translateZ(2px) rotateX(-180deg)";
         panels.bottom.style.transform = "translateZ(1px) rotateX(180deg)";
 
-        // 3. Packet Slides Up out of Pocket into Air
-        const targetScale = Math.min(1, (window.innerWidth * 0.92) / letterWidth);
-        const riseDistance = envRect.height * 0.7 + panelHeight * 0.45;
+        // 3. Header nudge if open flap tip overlaps header
+        const flapTopY = envClosed.top + envClosed.height * getPctVar("--env-flap-top");
+        const overlapY = Math.max(0, headClosed.top + headClosed.height - flapTopY + 6);
+        const garlandEl = letterSection.querySelector(".lp-garland");
+        const garlandRect = garlandEl ? relRect(garlandEl.getBoundingClientRect(), secRect0) : { top: 0, height: 0 };
+        const nudgeY = Math.min(overlapY, Math.max(0, headClosed.top - (garlandRect.top + garlandRect.height + 4)));
+        const headFade = overlapY > nudgeY + 4 ? 0.12 : 1;
+        const headAnim = (nudgeY || headFade < 1) && ltHead.animate([
+          { transform: "none", opacity: 1 },
+          { transform: `translateY(${-nudgeY}px)`, opacity: headFade }
+        ], { duration: 520, delay: LETTER_TIMING.flap, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" });
+
+        // 4. Wax Seal Crack, Wiggle, Pop & Drop (760ms) + Flap 3D Swing
+        const eSeal = envelope.querySelector(".e-seal");
+        const eFlapShadow = envelope.querySelector(".e-flap-shadow");
+        const eFlap = envelope.querySelector(".e-flap");
+        const eFlapOpen = envelope.querySelector(".e-flap-open");
+
+        if (eSeal) {
+          eSeal.animate([
+            { transform: "none", opacity: 1 },
+            { transform: "scale(1.06) rotate(-3deg)", opacity: 1, offset: 0.12 },
+            { transform: "scale(1.02) rotate(4deg)", opacity: 1, offset: 0.22 },
+            { transform: "translateY(-26%) scale(1.08) rotate(-8deg)", opacity: 1, offset: 0.45 },
+            { transform: "translateY(90%) scale(.9) rotate(24deg)", opacity: 0 }
+          ], { duration: 760, easing: "cubic-bezier(.4,0,.6,1)", fill: "forwards" });
+        }
+
+        if (eFlapShadow) {
+          eFlapShadow.animate([
+            { opacity: 1 },
+            { opacity: 0 }
+          ], { duration: 160, delay: LETTER_TIMING.flap, easing: "ease-out", fill: "both" });
+        }
+
+        if (eFlap) {
+          eFlap.animate([
+            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 },
+            { transform: "perspective(1100px) rotateX(86deg)", opacity: 1, offset: 0.94 },
+            { transform: "perspective(1100px) rotateX(90deg)", opacity: 0 }
+          ], {
+            duration: LETTER_TIMING.flapUp - LETTER_TIMING.flap,
+            delay: LETTER_TIMING.flap,
+            easing: "cubic-bezier(.45,0,.9,.6)",
+            fill: "both"
+          });
+        }
+
+        if (eFlapOpen) {
+          eFlapOpen.animate([
+            { transform: "perspective(1100px) rotateX(-90deg)", opacity: 0 },
+            { transform: "perspective(1100px) rotateX(-86deg)", opacity: 1, offset: 0.06 },
+            { transform: "perspective(1100px) rotateX(4deg)", opacity: 1, offset: 0.8, easing: "ease-in-out" },
+            { transform: "perspective(1100px) rotateX(0deg)", opacity: 1 }
+          ], {
+            duration: LETTER_TIMING.flapDone - LETTER_TIMING.flapUp,
+            delay: LETTER_TIMING.flapUp,
+            easing: "cubic-bezier(.2,.6,.3,1)",
+            fill: "both"
+          });
+        }
+
+        // 5. Packet Tucked in Pocket (aj) -> Rises Up Out of Pocket (al) (820ms - 1500ms)
+        const ah = { x: sheetOpen.left + letterW / 2, y: sheetOpen.top + panelH * 1.5 };
+        const ai = Math.min((pocket.r - pocket.l) * 0.82 / letterW, (pocket.b - pocket.t) * 0.84 / panelH);
+        const aj = {
+          x: (pocket.l + pocket.r) / 2,
+          y: pocket.t + (pocket.b - pocket.t) * 0.08 + panelH * ai / 2,
+          s: ai
+        };
+        const ak = Math.min(1, ai * 1.08);
+        const al = {
+          x: aj.x,
+          y: pocket.t - panelH * ak * 0.62,
+          s: ak
+        };
+        const pktTransform = (pt) => `translate(${(pt.x - ah.x).toFixed(1)}px,${(pt.y - ah.y).toFixed(1)}px) scale(${pt.s.toFixed(4)})`;
 
         packet.animate([
-          { transform: "translateY(0) scale(0.68)", opacity: 0.95 },
-          { transform: `translateY(-${riseDistance}px) scale(${targetScale})`, opacity: 1 }
+          { transform: pktTransform(aj) },
+          { transform: pktTransform(al) }
         ], {
-          duration: 720,
-          delay: 720,
-          easing: "cubic-bezier(.3, .1, .3, 1)",
+          duration: LETTER_TIMING.risen - LETTER_TIMING.rise,
+          delay: LETTER_TIMING.rise,
+          easing: "cubic-bezier(.3,.1,.3,1)",
+          fill: "both"
+        });
+
+        // 6. Risen (1500ms) -> Land (2200ms): Synchronized FLIP of Header, Keepsake Envelope, and Packet
+        setTimeout(() => {
+          const secRect1 = letterSection.getBoundingClientRect();
+          const prevPktAnim = packet.getAnimations()[0];
+          letterSection.classList.add("is-open");
+
+          const envOpen = relRect(envelope.getBoundingClientRect(), secRect1);
+          const keepOpen = relRect(ltKeep.getBoundingClientRect(), secRect1);
+          const headOpen = relRect(ltHead.getBoundingClientRect(), secRect1);
+
+          if (headAnim) headAnim.cancel();
+          ltHead.animate([
+            { transform: `translateY(${headClosed.top - nudgeY - headOpen.top}px)`, opacity: headFade },
+            { transform: "none", opacity: 1 }
+          ], { duration: LETTER_TIMING.land - LETTER_TIMING.risen, easing: "cubic-bezier(.4,0,.2,1)" });
+
+          const scaleEnv = envClosed.width / envOpen.width;
+          const dxKeep = envClosed.left - keepOpen.left - scaleEnv * (envOpen.left - keepOpen.left);
+          const dyKeep = envClosed.top - keepOpen.top - scaleEnv * (envOpen.top - keepOpen.top);
+          ltKeep.style.transformOrigin = "0 0";
+          ltKeep.animate([
+            { transform: `translate(${dxKeep}px,${dyKeep}px) scale(${scaleEnv})` },
+            { transform: "none" }
+          ], { duration: LETTER_TIMING.land - LETTER_TIMING.risen, easing: "cubic-bezier(.4,0,.2,1)" });
+
+          if (prevPktAnim) prevPktAnim.cancel();
+          packet.animate([
+            { transform: pktTransform(al) },
+            { transform: "none" }
+          ], {
+            duration: LETTER_TIMING.land - LETTER_TIMING.risen,
+            easing: "cubic-bezier(.5,0,.2,1)",
+            fill: "both"
+          });
+
+          const sheetBox = letterSheet.getBoundingClientRect();
+          let scrollDelta = 0;
+          if (sheetBox.top < 12) {
+            scrollDelta = sheetBox.top - 12;
+          } else if (sheetBox.top + sheetBox.height * 2 / 3 > window.innerHeight - 8) {
+            scrollDelta = Math.min(sheetBox.top - 12, sheetBox.top + sheetBox.height * 2 / 3 - window.innerHeight + 8);
+          }
+          if (scrollDelta) window.scrollBy({ top: scrollDelta, behavior: "smooth" });
+        }, LETTER_TIMING.risen);
+
+        // 7. Unfold Top Panel (2300ms - 2820ms) & Bottom Panel (2730ms - 3250ms)
+        panels.top.animate([
+          { transform: "translateZ(2px) rotateX(-180deg)" },
+          { transform: "translateZ(0) rotateX(0deg)" }
+        ], {
+          duration: 520,
+          delay: LETTER_TIMING.top,
+          easing: "cubic-bezier(.45,.05,.35,1)",
           fill: "forwards"
         });
 
-        // 4. Envelope transitions to open layout & letter lands
+        panels.bottom.animate([
+          { transform: "translateZ(1px) rotateX(180deg)" },
+          { transform: "translateZ(0) rotateX(0deg)" }
+        ], {
+          duration: 520,
+          delay: LETTER_TIMING.bottom,
+          easing: "cubic-bezier(.45,.05,.35,1)",
+          fill: "forwards"
+        });
+
+        // 8. Complete (3250ms): Reveal real interactive letter & clean up packet
         setTimeout(() => {
-          letterSection.classList.add("is-open");
-          envelope.classList.add("is-open");
-          if (eFlap) eFlap.style.opacity = "0";
-          if (eFlapOpen) eFlapOpen.style.opacity = "1";
-          if (eSeal) eSeal.style.opacity = "0";
-
-          const slotRect = letterSection.querySelector(".lt-slot").getBoundingClientRect();
-          const landY = slotRect.top - secRect.top + panelHeight;
-          packet.style.top = landY + "px";
-          packet.style.transform = `translateY(0) scale(1)`;
-
-          // 5. Unfold Top Fold in 3D upwards
-          setTimeout(() => {
-            panels.top.animate([
-              { transform: "translateZ(2px) rotateX(-180deg)" },
-              { transform: "translateZ(0) rotateX(0deg)" }
-            ], {
-              duration: 520,
-              easing: "cubic-bezier(.45, .05, .35, 1)",
-              fill: "forwards"
+          letterSection.classList.add("is-read");
+          packet.remove();
+          [eSeal, eFlap, eFlapShadow, eFlapOpen].forEach(el => {
+            if (!el || !el.getAnimations) return;
+            el.getAnimations().forEach(anim => {
+              if (!(window.CSSAnimation && anim instanceof CSSAnimation)) anim.cancel();
             });
-          }, 350);
-
-          // 6. Unfold Bottom Fold in 3D downwards
-          setTimeout(() => {
-            panels.bottom.animate([
-              { transform: "translateZ(1px) rotateX(180deg)" },
-              { transform: "translateZ(0) rotateX(0deg)" }
-            ], {
-              duration: 520,
-              easing: "cubic-bezier(.45, .05, .35, 1)",
-              fill: "forwards"
-            });
-          }, 780);
-
-          // 7. Hand off seamlessly to real interactive letter
-          setTimeout(() => {
-            letterSection.classList.add("is-read");
-            if (packet && packet.parentNode) {
-              packet.parentNode.removeChild(packet);
-            }
-            isEnvAnimating = false;
-          }, 1450);
-
-        }, 1440);
+          });
+          letterSheet.setAttribute("tabindex", "-1");
+          if (document.activeElement === envelope) letterSheet.focus({ preventScroll: true });
+          isEnvAnimating = false;
+        }, LETTER_TIMING.open);
       }
 
       if (envelope) {
-        envelope.addEventListener("click", () => {
-          if (!isEnvOpen) {
-            openEnvelopeAndUnfoldLetter(false);
-          }
-        });
+        envelope.addEventListener("click", () => openEnvelopeAndUnfoldLetter(false));
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver((entries) => {
+            const entry = entries[entries.length - 1];
+            if (entry.isIntersecting && letterSection) {
+              letterSection.classList.remove("is-away", "is-far");
+              letterSection.classList.add("is-seen");
+            }
+            if (entry.intersectionRatio >= 0.6 && !isEnvOpen && !envAutoTimer) {
+              envAutoTimer = setTimeout(() => {
+                envAutoTimer = null;
+                openEnvelopeAndUnfoldLetter(false);
+              }, 1000);
+            } else if (entry.intersectionRatio < 0.6 && envAutoTimer) {
+              clearTimeout(envAutoTimer);
+              envAutoTimer = null;
+            }
+          }, { threshold: [0, 0.25, 0.6] }).observe(envelope);
+        }
       }
 
       // 9. Scroll-Driven IntersectionObserver & Parallax
@@ -2185,10 +2472,8 @@
                 spawnPetals("famPetals", 7);
               }
             } else if (sec.id === "letter") {
-              if (!sec.dataset.petals) {
-                sec.dataset.petals = "1";
-                spawnPetals("letterPetals", 6);
-              }
+              isLetterVisible = true;
+              scheduleLetterPetals();
             } else if (sec.id === "events") {
               document.querySelectorAll("#evStage .ev").forEach((tagEl, idx) => {
                 setTimeout(() => tagEl.classList.add("is-hung"), 150 + idx * 180);
@@ -2212,6 +2497,8 @@
                 animateClosingFlies();
               }
             }
+          } else if (sec.id === "letter") {
+            isLetterVisible = false;
           }
         });
       }, { threshold: 0.14 });
@@ -2598,6 +2885,7 @@
           : "Your love and your duas have helped it grow. Our joy will not be complete without you.";
         document.getElementById("tLetterClosing").textContent = isUr ? "دعاؤں اور محبتوں کے ساتھ،" : "With love and duas,";
         document.getElementById("tMonogram").innerHTML = `${firstName.charAt(0)}<i>&amp;</i>${secondName.charAt(0)}`;
+        fitLetterCoupleNames();
 
         // Family Section
         document.getElementById("tFamKicker").textContent = isUr ? "خاندانی دعاؤں کے سائے میں" : "With the blessings of";
