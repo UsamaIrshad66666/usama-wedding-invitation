@@ -100,7 +100,7 @@
     }
   </style>
   <!-- Bundled Gulistan Theme Stylesheet -->
-  <link rel="stylesheet" href="assets/gulistan/gulistan.css">
+  <link rel="stylesheet" href="assets/gulistan/gulistan.css?v=20261119">
 
   <style>
     :root {
@@ -481,40 +481,39 @@
       letter-spacing: 0.04em;
     }
 
-    /* 3-Tier Host Header & Couple Credentials inside Letter */
+    /* 3-Tier Host Header & Couple Credentials inside Letter (Aligned with 6bc7234901.css) */
     .lt-parents {
-      margin: 12px 0 14px;
       text-align: center;
     }
-    .host-prefix-line {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.26em;
+    .lt-parents > .lp-mr {
+      margin: .3em 0 0 !important;
+      font: 600 clamp(12px, 3.4cqi, 15px)/1.3 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: .22em;
+      padding-left: .22em;
       text-transform: uppercase;
-      color: #8a4e54;
-      margin-bottom: 2px;
+      color: var(--sage-ink);
     }
-    .host-name-line {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(19px, 4.8cqi, 24px);
-      font-weight: 700;
-      color: #4a2c2f;
-      margin: 0 0 4px;
-      line-height: 1.2;
+    .lt-parents > .lp-name {
+      margin: 0 !important;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 600;
+      font-size: 1.2em;
+      line-height: 1.25;
+      color: var(--ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
     }
-    .host-invite-line {
-      font-family: 'Cormorant Garamond', Georgia, serif;
+    .lt-parents > .lp-line {
+      margin: 1em 0 0 !important;
+      font-family: "Cormorant Garamond", Georgia, serif;
       font-style: italic;
-      font-size: clamp(13.5px, 3.6cqi, 15.5px);
-      color: #5b3c40;
-      margin: 0 0 10px;
-      line-height: 1.4;
+      color: var(--ink);
+      text-wrap: balance;
     }
     .couple-cred-badge {
-      display: inline-block;
+      display: none;
       margin-top: 2px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       padding: 2px 10px;
       border-radius: 999px;
       background: rgba(200, 157, 88, 0.14);
@@ -800,7 +799,7 @@
     }
     .letter.is-open .lt-env {
       width: min(62cqi, 320px);
-      cursor: default;
+      cursor: pointer;
     }
     :where(.lt-env) > span {
       position: absolute;
@@ -1153,17 +1152,17 @@
 
             <!-- 3-Tier Split Host Header -->
             <div class="lt-parents" id="hostBlock">
-              <div class="host-prefix-line" id="tHostPrefix">MR. &amp; MRS.</div>
-              <h3 class="host-name-line" id="tHostNames">Tariq Mehmood</h3>
-              <p class="host-invite-line" id="tHostIntro">invite you to the wedding ceremony of their beloved son</p>
+              <p class="lp-mr host-prefix-line" id="tHostPrefix" data-lp="host-mr">Mr &amp; Mrs</p>
+              <p class="lp-name host-name-line" id="tHostNames" data-lp="host-name">Tariq Mehmood</p>
+              <p class="lp-line host-invite-line" id="tHostIntro">invite you to the wedding ceremony of their beloved son</p>
 
-              <p class="lp-couple" id="tLetterGroom">Hamza Tariq</p>
-              <span class="couple-cred-badge" id="tGroomCred">Software Architect</span>
+              <p class="lp-couple" id="tLetterGroom" data-lp="own">Hamza Tariq</p>
+              <span class="couple-cred-badge" id="tGroomCred" style="display:none;"></span>
 
               <p class="lp-with" id="tWithWord">with</p>
 
-              <p class="lp-couple" id="tLetterBride">Zoya Farooq</p>
-              <span class="couple-cred-badge" id="tBrideCred">Interior Designer</span>
+              <p class="lp-couple" id="tLetterBride" data-lp="other">Zoya Farooq</p>
+              <span class="couple-cred-badge" id="tBrideCred" style="display:none;"></span>
             </div>
 
             <p id="tLetterPara1">We are getting married! Like a garden that grows quietly and then blooms all at once, our story has come to this happy day, and it would mean the world to us to have you with us as we begin our life together.</p>
@@ -1443,12 +1442,12 @@
         cardSide: "groom",
         groom: "Hamza Tariq",
         groomUrdu: "حمزہ طارق",
-        groomOccupation: "Software Architect",
-        groomOccupationUrdu: "سافٹ ویئر آرکیٹیکٹ",
+        groomOccupation: "",
+        groomOccupationUrdu: "",
         bride: "Zoya Farooq",
         brideUrdu: "زویا فاروق",
-        brideOccupation: "Interior Designer",
-        brideOccupationUrdu: "انٹیریئر ڈیزائنر",
+        brideOccupation: "",
+        brideOccupationUrdu: "",
         host: "Mr. & Mrs. Tariq Mehmood",
         hostUrdu: "جناب و محترمہ طارق محمود",
         groomParents: "Mr. & Mrs. Tariq Mehmood",
@@ -1988,7 +1987,8 @@
         }, delay);
       }
 
-      if (isSpecificEventVariant) {
+      const skipCoverOnly = params.get("skipCover") === "1";
+      if (skipCoverOnly) {
         const loaderEl = document.getElementById("loader");
         if (loaderEl) loaderEl.style.display = "none";
         openGate(true);
@@ -2432,7 +2432,20 @@
       }
 
       if (envelope) {
-        envelope.addEventListener("click", () => openEnvelopeAndUnfoldLetter(false));
+        envelope.addEventListener("click", () => {
+          if (isEnvAnimating) return;
+          if (isEnvOpen && letterSection) {
+            // Allow tapping the keepsake envelope at the bottom to replay the 3D envelope opening & tri-fold letter unfolding
+            letterSection.classList.remove("is-open", "is-read");
+            envelope.classList.remove("is-open");
+            envelope.setAttribute("aria-expanded", "false");
+            isEnvOpen = false;
+            letterSection.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(() => openEnvelopeAndUnfoldLetter(false), 380);
+            return;
+          }
+          openEnvelopeAndUnfoldLetter(false);
+        });
         if ("IntersectionObserver" in window) {
           new IntersectionObserver((entries) => {
             const entry = entries[entries.length - 1];
@@ -2584,13 +2597,16 @@
 
       // 10. 3-Tier Split Host Header Parser (Rule 2)
       function parseHostHeader(hostStr, isUrdu) {
-        if (!hostStr) return { prefix: isUrdu ? "جناب و محترمہ" : "MR. & MRS.", name: "" };
+        if (!hostStr) return { prefix: isUrdu ? "جناب و محترمہ" : "Mr & Mrs", name: "" };
         const raw = hostStr.trim();
         const enMatch = raw.match(/^(Mr\.\s*&\s*Mrs\.?|Mr\s*&\s*Mrs\.?|Mr\.?|Mrs\.?)\s*(.*)$/i);
-        if (enMatch && !isUrdu) return { prefix: enMatch[1].toUpperCase(), name: enMatch[2].trim() };
+        if (enMatch && !isUrdu) {
+          const cleanPrefix = enMatch[1].replace(/\./g, "").replace(/\s+/g, " ").trim();
+          return { prefix: cleanPrefix, name: enMatch[2].trim() };
+        }
         const urMatch = raw.match(/^(جناب و محترمہ|جناب|محترمہ)\s*(.*)$/);
         if (urMatch && isUrdu) return { prefix: urMatch[1].trim(), name: urMatch[2].trim() };
-        return { prefix: isUrdu ? "جناب و محترمہ" : "MR. & MRS.", name: raw };
+        return { prefix: isUrdu ? "جناب و محترمہ" : "Mr & Mrs", name: raw };
       }
 
       function toUrduDigits(str) {
