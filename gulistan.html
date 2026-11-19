@@ -883,63 +883,358 @@
       display: none;
     }
 
-    /* Countdown Rolling Odometer Strip Transition */
-    .cd-strip {
-      transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-    .cd-shadow {
-      transition: transform 0.9s linear;
-    }
-
-    /* 3D Tumbling Petals Animation */
-    @keyframes petal-fall {
-      0% {
-        transform: perspective(500px) translate3d(0, -10vh, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-        opacity: 0;
-      }
-      12% { opacity: 0.9; }
-      50% {
-        transform: perspective(500px) translate3d(calc(var(--drift-x, 36px) * 0.45), 48vh, 20px) rotateX(140deg) rotateY(90deg) rotateZ(calc(var(--rot, 240deg) * 0.5));
-      }
-      86% { opacity: 0.9; }
-      100% {
-        transform: perspective(500px) translate3d(var(--drift-x, 36px), 105vh, 0) rotateX(280deg) rotateY(180deg) rotateZ(var(--rot, 240deg));
-        opacity: 0;
-      }
-    }
-    .dyn-petal {
-      position: absolute;
-      top: -8%;
-      pointer-events: none;
-      will-change: transform, opacity;
-      animation: petal-fall var(--dur, 10s) linear var(--delay, 0s) infinite;
-    }
-    .dyn-petal img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Closing Night Garden Firefly Sparkles */
-    @keyframes spark-twinkle {
-      0%, 100% { opacity: 0.15; transform: translateY(0) scale(0.7); }
-      50% { opacity: 0.95; transform: translateY(-14px) scale(1.25); }
-    }
-    .cl-spark {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fff3c4 0%, #f5c364 55%, transparent 100%);
-      box-shadow: 0 0 10px rgba(245, 195, 100, 0.85);
-      pointer-events: none;
-      animation: spark-twinkle var(--sdur, 4s) ease-in-out var(--sdel, 0s) infinite;
-    }
-
     /* Back face sub-schedule lines (.eb-note > .eb-line) */
     .eb-note > .eb-line {
       display: block;
+    }
+
+    /* ========================================================================
+       STEP 6: CLOCK & SUNDIAL COUNTDOWN ENHANCEMENTS
+       - Thin golden seconds needle rotating smoothly around gnomon pivot
+       - Static sundial shadow at 58deg (no weird rotating shadow)
+       - Compact countdown fitted comfortably inside the inner marble dial ring
+       ======================================================================== */
+    .countdown .cd-shadow {
+      --sun: 58deg !important;
+      transition: opacity 1.1s ease;
+    }
+    .cd-sec-needle {
+      position: absolute;
+      left: var(--gx, 50.4%);
+      top: var(--gy, 47.9%);
+      width: 0;
+      height: 0;
+      z-index: 4;
+      pointer-events: none;
+      transform: rotate(var(--sec-rot, 0deg));
+      transition: transform 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .cd-sec-needle::before {
+      content: "";
+      position: absolute;
+      left: -1.1px;
+      bottom: -14px;
+      width: 2.2px;
+      height: calc(var(--d) * 0.375);
+      background: linear-gradient(180deg, #fff6d1 0%, #e5c158 25%, #b88a28 78%, #7a5812 100%);
+      border-radius: 2px 2px 1px 1px;
+      box-shadow: 0 1px 3px rgba(55, 32, 8, 0.38);
+    }
+    .cd-sec-needle::after {
+      content: "";
+      position: absolute;
+      left: -5px;
+      top: -5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 32%, #fff8dc 0%, #e0b84e 52%, #7d5714 100%);
+      box-shadow: 0 1px 3px rgba(40, 20, 5, 0.5), inset 0 0 1.5px rgba(255, 255, 255, 0.8);
+    }
+    .countdown.is-armed:not(.is-lit) .cd-sec-needle {
+      opacity: 0;
+    }
+    /* Fit countdown digits neatly inside the inner marble circle */
+    .countdown .cd-count {
+      top: 53.5% !important;
+      width: 65cqw;
+      justify-content: center;
+      gap: 1.15cqw !important;
+    }
+    .countdown .cd-num {
+      font-size: 7.5cqw !important;
+    }
+    .countdown .cd-sep {
+      width: 0.72cqw !important;
+      margin-top: 3.3cqw !important;
+    }
+    .countdown .cd-label {
+      font-size: max(8px, 2.15cqw) !important;
+      letter-spacing: 0.08em !important;
+      padding-left: 0.08em !important;
+      margin-top: 0.45cqw !important;
+    }
+
+    /* ========================================================================
+       STEP 7: CLOSING NIGHT GARDEN — FLOATING LANTERNS, CHANDNI SPARKS & RSVP
+       ======================================================================== */
+    .cl-lanterns {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .cl-lantern {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--lw, 26px);
+      height: calc(var(--lw, 26px) * 1.38);
+      pointer-events: none;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 0 10px rgba(255, 185, 85, 0.65)) drop-shadow(0 0 22px rgba(255, 145, 45, 0.35));
+    }
+    .cl-lantern svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+    .cl-chandni-burst {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--sz, 5px);
+      height: var(--sz, 5px);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 4;
+      background: radial-gradient(circle, #ffffff 0%, #fff1b8 42%, #ffbe4d 78%, rgba(255, 175, 60, 0) 100%);
+      box-shadow: 0 0 8px 2px rgba(255, 220, 125, 0.85), 0 0 16px 4px rgba(255, 175, 70, 0.45);
+      mix-blend-mode: screen;
+    }
+    .cl-chandni-ring {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.2px solid rgba(255, 232, 165, 0.75);
+      box-shadow: 0 0 12px rgba(255, 205, 110, 0.5);
+      pointer-events: none;
+      z-index: 4;
+      translate: -50% -50%;
+      mix-blend-mode: screen;
+    }
+
+    /* Closing RSVP Trigger Button */
+    .cl-rsvp-wrap {
+      margin-top: calc(var(--u) * 0.015);
+      display: flex;
+      justify-content: center;
+      pointer-events: auto;
+      position: relative;
+      z-index: 5;
+    }
+    .cl-rsvp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55em;
+      padding: 9px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(242, 205, 191, 0.65);
+      background: linear-gradient(135deg, rgba(255, 246, 235, 0.16) 0%, rgba(215, 160, 140, 0.24) 100%);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 18px rgba(6, 10, 28, 0.55), 0 0 16px rgba(242, 205, 191, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      color: #fdf5ef;
+      font: 700 max(13.5px, calc(var(--u) * 0.044))/1.1 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cl-rsvp-btn:hover {
+      transform: translateY(-1.5px);
+      border-color: #f7d9c4;
+      background: linear-gradient(135deg, rgba(255, 246, 235, 0.26) 0%, rgba(215, 160, 140, 0.36) 100%);
+      box-shadow: 0 6px 22px rgba(6, 10, 28, 0.65), 0 0 22px rgba(255, 215, 165, 0.35);
+    }
+    .cl-rsvp-btn svg {
+      width: 1.15em;
+      height: 1.15em;
+      fill: none;
+      stroke: #f5d0b8;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Luxury RSVP Panel Modal (.rsvp-modal) */
+    .rsvp-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+    .rsvp-modal[hidden] {
+      display: none;
+    }
+    .rsvp-veil {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 45%, rgba(18, 24, 52, 0.72), rgba(8, 11, 26, 0.88));
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+    }
+    .rsvp-dialog {
+      position: relative;
+      width: min(92vw, 410px);
+      max-height: 88svh;
+      overflow-y: auto;
+      padding: 28px 24px 24px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(201, 168, 106, 0.55);
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255, 240, 230, 0.9), transparent 70%),
+        linear-gradient(180deg, #fcf7f1 0%, #f5eae2 100%);
+      box-shadow: 0 20px 50px rgba(5, 8, 22, 0.6), inset 0 0 0 4px rgba(255, 251, 246, 0.75), inset 0 0 0 5px rgba(168, 100, 106, 0.25);
+      color: var(--ink);
+      text-align: center;
+      font-family: "Cormorant Garamond", Georgia, serif;
+    }
+    .rsvp-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 100, 106, 0.35);
+      background: rgba(255, 251, 246, 0.85);
+      color: var(--rose-ink);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .rsvp-close svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+    }
+    .rsvp-kicker {
+      margin: 0;
+      font: 600 11.5px/1.3 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--sage-ink);
+    }
+    .rsvp-title {
+      margin: 2px 0 4px;
+      font: 700 44px/1 "Corinthia", cursive;
+      color: var(--rose-ink);
+    }
+    .rsvp-sub {
+      margin: 0 0 16px;
+      font: italic 500 15px/1.35 "Cormorant Garamond", Georgia, serif;
+      color: var(--ink-soft);
+    }
+    .rsvp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    html[dir="rtl"] .rsvp-form {
+      text-align: right;
+    }
+    .rsvp-field label {
+      display: block;
+      margin-bottom: 4px;
+      font: 700 13px/1.2 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sage-ink);
+    }
+    .rsvp-input,
+    .rsvp-select,
+    .rsvp-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(168, 100, 106, 0.4);
+      background: rgba(255, 253, 250, 0.92);
+      color: var(--ink);
+      font: 600 15.5px/1.35 "Cormorant Garamond", Georgia, serif;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .rsvp-input:focus,
+    .rsvp-select:focus,
+    .rsvp-textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(168, 100, 106, 0.16);
+    }
+    .rsvp-row {
+      display: grid;
+      grid-template-columns: 1.75fr 0.85fr;
+      gap: 10px;
+    }
+    .rsvp-submit {
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(122, 53, 66, 0.7);
+      background: linear-gradient(135deg, #8e414e 0%, #6d2b38 100%);
+      color: #fffaf5;
+      font: 700 15px/1.2 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(109, 43, 56, 0.32);
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .rsvp-submit:hover {
+      filter: brightness(1.07);
+      transform: translateY(-1px);
+    }
+    .rsvp-submit svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+    }
+    .rsvp-hosts {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(168, 100, 106, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rsvp-hosts-lbl {
+      margin: 0 0 2px;
+      font: 600 11.5px/1.2 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-ink);
+    }
+    .rsvp-host-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+    .rsvp-host-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(168, 100, 106, 0.4);
+      background: #fffdf9;
+      color: var(--ink);
+      font: 600 13.5px/1.2 "Cormorant Garamond", Georgia, serif;
+      text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .rsvp-host-chip:hover {
+      background: #f8ebe6;
+      border-color: var(--rose);
     }
 
     /* Urdu Nastaliq RTL Overrides */
@@ -1261,21 +1556,22 @@
     <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
 
     <!-- ======================================================================
-         SECTION 5: SUNDIAL COUNTDOWN (ROLLING DIGIT STRIPS)
+         SECTION 5: SUNDIAL COUNTDOWN (ROLLING DIGIT STRIPS & GOLDEN NEEDLE)
          ====================================================================== -->
     <section class="countdown is-count is-armed is-away is-far" id="countdown" data-section="countdown" aria-labelledby="cdTitle">
       <div class="cd-pave" aria-hidden="true"><i class="cd-shade"></i></div>
       <div class="cd-inner">
         <header class="cd-head">
-          <p class="cd-kicker" id="tCdKicker">Counting down to</p>
+          <p class="cd-kicker" id="tCdKicker" data-count="Counting down to" data-today="Today is the day" data-now="Today is the day" data-married="Alhamdulillah">Counting down to</p>
           <h2 class="cd-title" id="cdTitle">Our Wedding Day</h2>
         </header>
 
-        <div class="cd-dial" id="cdDial">
+        <div class="cd-dial" id="cdDial" data-event="walima" data-target="2026-12-06T19:00:00+05:00" data-end="2026-12-06T22:00:00+05:00">
           <span class="cd-dial-art" aria-hidden="true"></span>
-          <span class="cd-shadow" id="cdShadow" aria-hidden="true" style="--sun: 45deg;"><i></i></span>
+          <span class="cd-shadow" id="cdShadow" aria-hidden="true" style="--sun: 58deg;"><i></i></span>
           <span class="cd-dial-art cd-gnomon" aria-hidden="true"></span>
-          <div class="cd-count" role="timer" id="cdCount">
+          <span class="cd-sec-needle" id="cdSecNeedle" aria-hidden="true" style="--sec-rot: 0deg;"></span>
+          <div class="cd-count" role="timer" id="cdCount" aria-labelledby="cdSr">
             <!-- Days -->
             <div class="cd-unit cd-days">
               <span class="cd-num" id="cdDaysNum" aria-hidden="true"></span>
@@ -1299,46 +1595,46 @@
               <span class="cd-num" id="cdSecsNum" aria-hidden="true"></span>
               <span class="cd-label" id="tCdSecs">Seconds</span>
             </div>
+            <p class="cd-sr" id="cdSr"></p>
           </div>
+          <p class="cd-day-words" id="cdDayWords" data-married="Happily Married" data-now="Today!" hidden></p>
         </div>
 
-        <p class="cd-foot">
-          <span class="cd-when" id="tCdTargetDate">Sunday 6 December 2026</span>
-          <span class="cd-event-time" id="tCdTargetTime">7:00 pm · The Walima</span>
-          <span class="cd-until" id="tCdUntil">until our garden is in full bloom</span>
-        </p>
-
-        <p class="cd-cal">
-          <a class="ev-btn" id="tSaveDateBtn" href="#" target="_blank" rel="noopener">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><rect height="14.5" rx="2" width="16" x="4" y="5.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13v4M10 15h4"/></svg>
-            <span id="tSaveDateText">Save the date</span>
-          </a>
-        </p>
+        <div class="cd-foot" id="cdFoot">
+          <p class="cd-date">
+            <span class="cd-dmy" id="tCdTargetDate">Sunday 6 December 2026</span>
+            <span class="cd-when" id="tCdTargetTime">7:00 pm · the Walima</span>
+          </p>
+          <p class="cd-line" id="tCdUntil" data-count="until our garden is in full bloom" data-today="The celebrations begin tonight" data-now="The celebrations have begun" data-married="Thank you for your duas and your love">until our garden is in full bloom</p>
+          <div class="cd-save-wrap" id="cdSaveWrap">
+            <button class="ev-btn cd-save" id="tSaveDateBtn" type="button" aria-expanded="false" aria-haspopup="true">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect height="14.5" rx="2" width="16" x="4" y="5.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13v4M10 15h4"/></svg>
+              <span id="tSaveDateText">Save the date</span>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
     <div class="seam" aria-hidden="true"><i class="seam-g"></i><i class="seam-p"></i></div>
 
     <!-- ======================================================================
-         SECTION 6: CLOSING NIGHT GARDEN (SHUKRIYA & AL-FURQAN 25:74)
+         SECTION 6: CLOSING NIGHT GARDEN (SHUKRIYA, LANTERNS, CHANDNI & RSVP)
          ====================================================================== -->
     <section class="closing is-armed is-away is-far" id="closing" data-section="closing" aria-labelledby="clTitle">
-      <div class="cl-scene">
+      <div class="cl-scene" id="clScene">
         <div class="cl-art" aria-hidden="true">
-          <i class="cl-moon"></i>
+          <i class="cl-moon" id="clMoon"></i>
           <i class="cl-glow cl-lamp1"></i>
           <i class="cl-glow cl-lamp2"></i>
           <i class="cl-glow cl-pav"></i>
           <i class="cl-veil"></i>
-          <div class="cl-flies" id="clFlies" style="--fly: 42px;">
-            <i class="g-fly" id="clFly1"><span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span></i>
-            <i class="g-fly" id="clFly2"><span class="g-fly-in"><b class="g-wing g-wing-l"></b><b class="g-wing g-wing-r"></b></span></i>
-          </div>
+          <div class="cl-flies" id="clFlies"></div>
+          <div class="cl-lanterns" id="clLanterns"></div>
           <div class="cl-petals" id="clPetals"></div>
-          <div id="clSparks" style="position:absolute; inset:0; pointer-events:none;"></div>
         </div>
 
-        <div class="cl-words">
+        <div class="cl-words" id="clWords">
           <div class="cl-thanks">
             <p class="cl-kicker cl-anim" id="tClosingKicker">With love and gratitude</p>
             <h2 class="cl-title cl-anim" id="clTitle">Shukriya</h2>
@@ -1348,11 +1644,21 @@
               <span class="cl-amp" aria-hidden="true">&amp;</span>
               <span class="cl-n">Family</span>
             </p>
+            <p class="cl-fams cl-anim"></p>
           </div>
           <div class="cl-dua">
             <p class="cl-dua-ar cl-anim" lang="ar" dir="rtl">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
             <p class="cl-dua-en cl-anim" id="tClosingDuaEn">“Our Lord, grant us from among our spouses and offspring comfort to our eyes, and make us an example for the righteous.”</p>
             <p class="cl-dua-ref cl-anim" id="tClosingDuaRef">Al-Furqan · 25:74</p>
+            <div class="cl-rsvp-wrap cl-anim" id="clRsvpWrap">
+              <button type="button" class="cl-rsvp-btn" id="openRsvpBtn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2"/>
+                  <path d="M3 7l9 6 9-6"/>
+                </svg>
+                <span id="tOpenRsvpText">RSVP · Confirm Attendance</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1363,6 +1669,62 @@
       <a href="/about" target="_self" id="tBrandFooter">✦ Crafted by E-dawatnama.com ✦</a>
     </footer>
   </main>
+
+  <!-- ========================================================================
+       LUXURY RSVP MODAL PANEL (#rsvpModal)
+       ======================================================================== -->
+  <div class="rsvp-modal" id="rsvpModal" hidden role="dialog" aria-modal="true" aria-labelledby="rsvpModalTitle">
+    <div class="rsvp-veil" id="rsvpVeil"></div>
+    <div class="rsvp-dialog">
+      <button type="button" class="rsvp-close" id="rsvpCloseBtn" aria-label="Close RSVP panel">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <p class="rsvp-kicker" id="tRsvpKicker">Kindly respond</p>
+      <h3 class="rsvp-title" id="rsvpModalTitle">R.S.V.P</h3>
+      <p class="rsvp-sub" id="tRsvpSub">We would be honoured by your presence and prayers</p>
+
+      <form class="rsvp-form" id="gulistanRsvpForm">
+        <div class="rsvp-field">
+          <label for="rsvpGuestName" id="tRsvpNameLbl">Your Name *</label>
+          <input type="text" class="rsvp-input" id="rsvpGuestName" placeholder="Enter your full name" required>
+        </div>
+        <div class="rsvp-row">
+          <div class="rsvp-field">
+            <label for="rsvpAttendSelect" id="tRsvpAttendLbl">Attendance</label>
+            <select class="rsvp-select" id="rsvpAttendSelect">
+              <option value="Joyfully Attending (Insha'Allah)" id="tRsvpOptYes">Joyfully Attending (Insha'Allah)</option>
+              <option value="Sending Duas & Warm Wishes" id="tRsvpOptNo">Sending Duas &amp; Wishes</option>
+            </select>
+          </div>
+          <div class="rsvp-field">
+            <label for="rsvpGuestsSelect" id="tRsvpGuestsLbl">Guests</label>
+            <select class="rsvp-select" id="rsvpGuestsSelect">
+              <option value="1 Person">1</option>
+              <option value="2 Persons" selected>2</option>
+              <option value="3 Persons">3</option>
+              <option value="4 Persons">4</option>
+              <option value="Family (5+)">5+</option>
+            </select>
+          </div>
+        </div>
+        <div class="rsvp-field">
+          <label for="rsvpNotesInput" id="tRsvpMsgLbl">Message or Duas for the Couple</label>
+          <textarea class="rsvp-textarea" id="rsvpNotesInput" rows="2" placeholder="Write a warm blessing or note..."></textarea>
+        </div>
+        <button type="submit" class="rsvp-submit" id="rsvpSubmitBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67Z"/>
+          </svg>
+          <span id="tRsvpSubmitText">Send RSVP via WhatsApp</span>
+        </button>
+      </form>
+
+      <div class="rsvp-hosts" id="rsvpHostsBox" style="display:none;">
+        <p class="rsvp-hosts-lbl" id="tRsvpHostsLbl">Or contact family hosts directly</p>
+        <div class="rsvp-host-chips" id="rsvpHostChips"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        COVER GATE (#gate): BUTTERFLIES, PETALS & UNTIE RIBBON
@@ -1765,23 +2127,64 @@
         flyRaf = requestAnimationFrame(frame);
       }
 
-      function spawnPetals(containerId, count = 8) {
+      const DECENT_PETALS = [0, 1, 4, 5, 6, 8];
+      function pickDecentPetalSrc() {
+        const idx = DECENT_PETALS[Math.floor(Math.random() * DECENT_PETALS.length)];
+        return `assets/gulistan/petal-${idx}.webp`;
+      }
+
+      function spawnPetals(containerId, count = 7) {
         const container = document.getElementById(containerId);
         if (!container) return;
         container.innerHTML = "";
-        for (let i = 0; i < count; i++) {
-          const idx = i % 9;
-          const el = document.createElement("div");
-          el.className = "dyn-petal";
-          const left = 5 + Math.random() * 90;
-          const width = 14 + Math.random() * 14;
-          const dur = 7 + Math.random() * 6;
-          const delay = -Math.random() * 8;
-          const drift = (Math.random() - 0.5) * 80;
-          const rot = (Math.random() > 0.5 ? 1 : -1) * (160 + Math.random() * 180);
-          el.style.cssText = `left:${left}%; width:${width}px; --dur:${dur}s; --delay:${delay}s; --drift-x:${drift}px; --rot:${rot}deg;`;
-          el.innerHTML = `<img src="assets/gulistan/petal-${idx}.webp" alt="" draggable="false">`;
+        const isGate = containerId === "gatePetals";
+        const cls = isGate ? "g-petal" : "h-petal";
+        const hostEl = container.parentElement || container;
+        const w = hostEl.offsetWidth || 390;
+        const h = hostEl.offsetHeight || 780;
+
+        function createDriftingPetal(initialProgress = 0) {
+          if (!document.body.contains(container)) return;
+          const el = document.createElement("i");
+          el.className = cls;
+          el.innerHTML = '<b><img alt="" draggable="false"></b>';
+          el.querySelector("img").src = pickDecentPetalSrc();
+          const size = Math.min(w, h) * (0.028 + Math.random() * 0.016);
+          el.style.width = size.toFixed(1) + "px";
           container.appendChild(el);
+
+          const x0 = (-0.04 + Math.random() * 0.94) * w;
+          const x1 = x0 + (-0.08 + Math.random() * 0.24) * w;
+          const sway = (0.025 + Math.random() * 0.04) * w;
+          const rotEnd = (Math.random() < 0.5 ? -1 : 1) * (110 + Math.random() * 140);
+          const kf = [];
+          for (let s = 0; s <= 8; s++) {
+            const t = s / 8;
+            const px = x0 + (x1 - x0) * t + Math.sin(t * 7.5 + x0) * sway;
+            const py = -size * 1.6 + (h + size * 3.2) * t;
+            kf.push({
+              transform: `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) rotate(${(t * rotEnd).toFixed(0)}deg)`,
+              opacity: t < 0.1 ? t / 0.1 : (t > 0.86 ? (1 - t) / 0.14 : 0.92)
+            });
+          }
+          const dur = 8500 + Math.random() * 4500;
+          const anim = el.animate(kf, { duration: dur, fill: "both" });
+          if (initialProgress > 0) anim.currentTime = dur * initialProgress;
+          const rx = 50 + Math.random() * 55;
+          const ry = 35 + Math.random() * 45;
+          el.firstChild.animate([
+            { transform: "rotateX(0deg) rotateY(0deg)" },
+            { transform: `rotateX(${rx.toFixed(0)}deg) rotateY(${ry.toFixed(0)}deg)` }
+          ], { duration: 2800 + Math.random() * 1600, iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+
+          anim.onfinish = () => {
+            el.remove();
+            if (!document.hidden) createDriftingPetal(0);
+          };
+        }
+
+        for (let i = 0; i < count; i++) {
+          createDriftingPetal((i + 0.15) / count);
         }
       }
 
@@ -2698,29 +3101,29 @@
         const el = document.createElement("i");
         el.className = "fm-petal";
         el.innerHTML = '<b><img alt="" draggable="false"></b>';
-        el.querySelector("img").src = `assets/gulistan/petal-${Math.floor(Math.random() * 9)}.webp`;
-        const size = Math.min(w, h) * randRange(0.028, 0.045);
+        el.querySelector("img").src = pickDecentPetalSrc();
+        const size = Math.min(w, h) * randRange(0.025, 0.036);
         el.style.width = size.toFixed(1) + "px";
         famPetalsBox.appendChild(el);
 
         const x0 = randRange(outL + 0.04, outR - 0.04) * w;
         const y0 = randRange(apexY + 0.02, apexY + 0.3) * h;
         const x1 = x0 + randRange(-0.06, 0.16) * w;
-        const sway = randRange(0.02, 0.05) * w;
+        const sway = randRange(0.02, 0.045) * w;
         const y1 = h + size * 2;
         const kf = [];
         for (let s = 0; s <= 8; s++) {
           const t = s / 8;
           kf.push({
-            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 8 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(140, 280)).toFixed(0)}deg)`,
+            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 7.5 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(110, 210)).toFixed(0)}deg)`,
             opacity: t < 0.1 ? t / 0.1 : 1
           });
         }
-        const anim = el.animate(kf, { duration: randRange(7000, 10000), fill: "both" });
+        const anim = el.animate(kf, { duration: randRange(7500, 10500), fill: "both" });
         el.firstChild.animate([
           { transform: "rotateX(0) rotateY(0)" },
-          { transform: `rotateX(${randRange(120, 240).toFixed(0)}deg) rotateY(${randRange(60, 160).toFixed(0)}deg)` }
-        ], { duration: randRange(2600, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+          { transform: `rotateX(${randRange(50, 95).toFixed(0)}deg) rotateY(${randRange(35, 75).toFixed(0)}deg)` }
+        ], { duration: randRange(2800, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
         famActivePetals++;
         anim.onfinish = () => {
           el.remove();
@@ -2845,20 +3248,6 @@
             if (sec.id === "letter") {
               isLetterVisible = true;
               scheduleLetterPetals();
-            } else if (sec.id === "countdown") {
-              sec.classList.add("is-lit");
-              if (!sec.dataset.played) {
-                sec.dataset.played = "1";
-                playSfx(sfxDial);
-              }
-            } else if (sec.id === "closing") {
-              sec.classList.add("is-played");
-              if (!sec.dataset.sparks) {
-                sec.dataset.sparks = "1";
-                spawnClosingSparks();
-                spawnPetals("clPetals", 6);
-                animateClosingFlies();
-              }
             }
           } else if (sec.id === "letter") {
             isLetterVisible = false;
@@ -2868,33 +3257,61 @@
 
       document.querySelectorAll("[data-section]").forEach(sec => sectionObserver.observe(sec));
 
-      function animateClosingFlies() {
-        const f1 = document.getElementById("clFly1");
-        const f2 = document.getElementById("clFly2");
-        const box = document.getElementById("clFlies");
-        if (!f1 || !f2 || !box) return;
-        const t0 = performance.now();
-        function frame(now) {
-          const dt = (now - t0) * 0.001;
-          const w = box.clientWidth || 360;
-          const h = box.clientHeight || 640;
-          f1.style.transform = `translate(${(w*(0.28 + 0.18*Math.sin(dt*0.7))).toFixed(1)}px, ${(h*(0.35 + 0.1*Math.cos(dt*1.05))).toFixed(1)}px) rotate(${(-10 + 22*Math.cos(dt*0.7)).toFixed(1)}deg)`;
-          f2.style.transform = `translate(${(w*(0.68 + 0.16*Math.cos(dt*0.58))).toFixed(1)}px, ${(h*(0.62 + 0.09*Math.sin(dt*0.92))).toFixed(1)}px) rotate(${(-42 + 18*Math.sin(dt*0.58)).toFixed(1)}deg)`;
-          requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
-      }
+      const evPrefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const evCanAnimate = !evPrefersReduced && !!Element.prototype.animate;
 
-      function spawnClosingSparks() {
-        const container = document.getElementById("clSparks");
-        if (!container) return;
-        container.innerHTML = "";
-        for (let i = 0; i < 22; i++) {
-          const s = document.createElement("i");
-          s.className = "cl-spark";
-          s.style.cssText = `left:${(5 + Math.random()*90).toFixed(1)}%; top:${(15 + Math.random()*75).toFixed(1)}%; --sdur:${(2.5 + Math.random()*3.5).toFixed(2)}s; --sdel:${(-Math.random()*4).toFixed(2)}s;`;
-          container.appendChild(s);
-        }
+      // 9b. Seam Garland Falling Petals (fb6e3362c1.js — gentle, compact, non-stretchy)
+      if ("IntersectionObserver" in window && evCanAnimate) {
+        const seamObs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const seamEl = entry.target.parentNode;
+            if (!seamEl) return;
+            if (!entry.isIntersecting) {
+              seamEl._seamSeen = false;
+              return;
+            }
+            if (seamEl._seamSeen || document.hidden || document.documentElement.classList.contains("is-lite")) return;
+            seamEl._seamSeen = true;
+            const dropSeamPetal = () => {
+              const pBox = seamEl.querySelector(".seam-p");
+              const gBox = seamEl.querySelector(".seam-g");
+              if (!pBox || !gBox) return;
+              const w = seamEl.offsetWidth || 390;
+              const gh = gBox.offsetHeight || 48;
+              const el = document.createElement("i");
+              el.className = "seam-petal";
+              el.innerHTML = '<b><img alt="" draggable="false"></b>';
+              el.querySelector("img").src = pickDecentPetalSrc();
+              const size = Math.min(20, gh * randRange(0.28, 0.36));
+              el.style.width = size.toFixed(1) + "px";
+              pBox.appendChild(el);
+
+              const x0 = randRange(0.08, 0.92) * w - size / 2;
+              const y0 = randRange(0, 0.3) * gh;
+              const x1 = x0 + randRange(-0.1, 0.1) * w;
+              const sway = randRange(0.02, 0.04) * w;
+              const y1 = y0 + gh * randRange(3.5, 5.2);
+              const rotEnd = randRange(90, 180) * (Math.random() < 0.5 ? -1 : 1);
+              const kf = [];
+              for (let s = 0; s <= 8; s++) {
+                const t = s / 8;
+                kf.push({
+                  transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 7 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * rotEnd).toFixed(0)}deg)`,
+                  opacity: t < 0.08 ? t / 0.08 : (t > 0.72 ? (1 - t) / 0.28 : 0.92)
+                });
+              }
+              const anim = el.animate(kf, { duration: randRange(5200, 7200), fill: "both" });
+              el.firstChild.animate([
+                { transform: "rotateX(0) rotateY(0)" },
+                { transform: `rotateX(${randRange(45, 85).toFixed(0)}deg) rotateY(${randRange(30, 65).toFixed(0)}deg)` }
+              ], { duration: randRange(2400, 3600), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+              anim.onfinish = () => el.remove();
+            };
+            setTimeout(dropSeamPetal, randRange(250, 700));
+            if (Math.random() < 0.55) setTimeout(dropSeamPetal, randRange(1300, 2200));
+          });
+        }, { rootMargin: "-22% 0px -22% 0px" });
+        document.querySelectorAll(".seam .seam-g").forEach(g => seamObs.observe(g));
       }
 
       // 10. 3-Tier Split Host Header Parser (Rule 2)
@@ -2934,8 +3351,6 @@
         ring: 2800    // 0xaf0
       };
 
-      const evPrefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const evCanAnimate = !evPrefersReduced && !!Element.prototype.animate;
 
       let evList = [];
       let evHeadSeen = false;
@@ -3482,8 +3897,8 @@
         const el = document.createElement("i");
         el.className = "ev-petal";
         el.innerHTML = '<b><img alt="" draggable="false"></b>';
-        el.querySelector("img").src = `assets/gulistan/petal-${Math.floor(Math.random() * 9)}.webp`;
-        const size = secW * randRange(0.028, 0.042) * (isHoriz ? 0.6 : 1);
+        el.querySelector("img").src = pickDecentPetalSrc();
+        const size = secW * randRange(0.024, 0.035) * (isHoriz ? 0.65 : 1);
         el.style.width = size.toFixed(1) + "px";
         evPetalsBox.appendChild(el);
 
@@ -3491,21 +3906,21 @@
         const y0 = spot[1] * brH;
         const fallDist = Math.min(evPetalsBox.offsetHeight - y0, secW * randRange(0.45, 0.7));
         const x1 = x0 + randRange(-0.05, 0.14) * secW;
-        const sway = randRange(0.02, 0.045) * secW;
+        const sway = randRange(0.02, 0.04) * secW;
         const y1 = y0 + fallDist;
         const kf = [];
         for (let s = 0; s <= 8; s++) {
           const t = s / 8;
           kf.push({
-            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 8 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(140, 280)).toFixed(0)}deg)`,
+            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 7.5 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(110, 210)).toFixed(0)}deg)`,
             opacity: t < 0.1 ? t / 0.1 : (t > 0.78 ? Math.max(0, (1 - t) / 0.22) : 1)
           });
         }
-        const anim = el.animate(kf, { duration: randRange(6500, 9000), fill: "both" });
+        const anim = el.animate(kf, { duration: randRange(7000, 9500), fill: "both" });
         el.firstChild.animate([
           { transform: "rotateX(0) rotateY(0)" },
-          { transform: `rotateX(${randRange(120, 240).toFixed(0)}deg) rotateY(${randRange(60, 160).toFixed(0)}deg)` }
-        ], { duration: randRange(2600, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+          { transform: `rotateX(${randRange(50, 95).toFixed(0)}deg) rotateY(${randRange(35, 75).toFixed(0)}deg)` }
+        ], { duration: randRange(2800, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
         evActivePetals++;
         anim.onfinish = () => {
           el.remove();
@@ -3723,53 +4138,783 @@
         hangAll: () => { revealEventsHeader(); evList.forEach(hangEventTag); }
       };
 
-      // 12. Sundial Odometer Countdown (Persistent Rolling Digit Strips)
-      function ensureDigitStrips(containerEl, count = 2) {
-        if (!containerEl || containerEl.dataset.built === String(count)) return;
-        const nums = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].map(n => `<b>${n}</b>`).join("");
-        containerEl.innerHTML = Array.from({ length: count }).map(() => `<span class="cd-dg"><span class="cd-strip" style="transform: translateY(-10em);">${nums}</span></span>`).join("");
-        containerEl.dataset.built = String(count);
-      }
+      // 12. Step 6: Sundial Odometer Countdown & Thin Golden Seconds Needle (716613ad5d.js + Golden Needle)
+      const cdSec = document.getElementById("countdown");
+      const cdHead = cdSec ? cdSec.querySelector(".cd-head") : null;
+      const cdDial = document.getElementById("cdDial");
+      const cdShadow = document.getElementById("cdShadow");
+      const cdSecNeedle = document.getElementById("cdSecNeedle");
+      const cdCount = document.getElementById("cdCount");
+      const cdDayWords = document.getElementById("cdDayWords");
+      const cdFoot = document.getElementById("cdFoot");
 
-      function updateDigitStrips(containerEl, strVal) {
-        if (!containerEl) return;
-        ensureDigitStrips(containerEl, strVal.length);
-        const strips = containerEl.querySelectorAll(".cd-strip");
-        for (let i = 0; i < strVal.length; i++) {
-          const digit = parseInt(strVal[i], 10) || 0;
-          if (strips[i]) strips[i].style.transform = `translateY(-${10 + digit}em)`;
-        }
-      }
+      const CD_TIMING = {
+        sun: 2600,    // 0xa28
+        roll: 500,    // 0x1f4
+        rolled: 1500, // 0x5dc
+        foot: 1900    // 0x76c
+      };
 
+      const cdUnits = {
+        d: document.getElementById("cdDaysNum"),
+        h: document.getElementById("cdHoursNum"),
+        m: document.getElementById("cdMinsNum"),
+        s: document.getElementById("cdSecsNum")
+      };
+      const cdShown = { d: null, h: null, m: null, s: null };
+      let cdLit = false;
+      let cdAutoTimer = null;
       let cdInterval = null;
-      function renderCountdown(targetIso, isUr) {
-        if (cdInterval) clearInterval(cdInterval);
-        const targetTime = new Date(targetIso).getTime();
+      let cdTargetTimeMs = new Date("2026-12-06T19:00:00+05:00").getTime();
+      let cdNeedleUnwoundDeg = 0;
+      let cdLastSecVal = null;
 
-        const daysEl = document.getElementById("cdDaysNum");
-        const hoursEl = document.getElementById("cdHoursNum");
-        const minsEl = document.getElementById("cdMinsNum");
-        const secsEl = document.getElementById("cdSecsNum");
-
-        function tick() {
-          const now = Date.now();
-          let diff = Math.max(0, targetTime - now);
-          const d = Math.floor(diff / 86400000); diff %= 86400000;
-          const h = Math.floor(diff / 3600000); diff %= 3600000;
-          const m = Math.floor(diff / 60000); diff %= 60000;
-          const s = Math.floor(diff / 1000);
-
-          const pad = n => String(n).padStart(2, "0");
-          updateDigitStrips(daysEl, pad(d));
-          updateDigitStrips(hoursEl, pad(h));
-          updateDigitStrips(minsEl, pad(m));
-          updateDigitStrips(secsEl, pad(s));
-
-          const shadow = document.getElementById("cdShadow");
-          if (shadow) shadow.style.setProperty("--sun", `${(s * 6) % 360}deg`);
+      function ensureCdStrips(containerEl, len) {
+        if (!containerEl) return;
+        if (containerEl.children.length === len) return;
+        containerEl.innerHTML = "";
+        for (let i = 0; i < len; i++) {
+          const dg = document.createElement("span");
+          dg.className = "cd-dg";
+          const strip = document.createElement("span");
+          strip.className = "cd-strip";
+          for (let n = 0; n < 30; n++) {
+            const b = document.createElement("b");
+            b.textContent = String(n % 10);
+            strip.appendChild(b);
+          }
+          dg.appendChild(strip);
+          containerEl.appendChild(dg);
         }
-        tick();
-        cdInterval = setInterval(tick, 1000);
+      }
+
+      function setCdUnitValue(key, val, mode, baseDelay = 0) {
+        const box = cdUnits[key];
+        if (!box) return;
+        let str = String(val);
+        if (str.length < 2) str = "0" + str;
+        const prev = cdShown[key];
+        const lenChanged = !prev || prev.length !== str.length;
+        ensureCdStrips(box, str.length);
+
+        Array.from(box.children).forEach((dg, idx) => {
+          const strip = dg.firstChild;
+          if (!strip) return;
+          const digit = +str[idx] || 0;
+          const targetEm = 10 + digit;
+          strip.style.transform = `translateY(${-targetEm}em)`;
+
+          if (!evCanAnimate || !mode) return;
+          let fromEm;
+          if (mode === "in" || lenChanged) {
+            fromEm = 29 - idx * 3;
+          } else {
+            const prevDigit = +prev[idx];
+            if (prevDigit === digit) return;
+            fromEm = 10 + prevDigit;
+            if (digit > prevDigit) fromEm += 10;
+          }
+          strip.animate([
+            { transform: `translateY(${-fromEm}em)` },
+            { transform: `translateY(${-targetEm}em)` }
+          ], {
+            duration: mode === "in" ? CD_TIMING.rolled + idx * 180 : 700,
+            delay: baseDelay,
+            easing: "cubic-bezier(.2,.65,.15,1)",
+            fill: "backwards"
+          });
+        });
+        cdShown[key] = str;
+      }
+
+      function computeCdParts() {
+        const diff = Math.max(0, cdTargetTimeMs - Date.now());
+        const totalSecs = Math.floor(diff / 1000);
+        const totalMins = Math.floor(totalSecs / 60);
+        return {
+          d: Math.floor(totalMins / 1440),
+          h: Math.floor(totalMins / 60) % 24,
+          m: totalMins % 60,
+          s: totalSecs % 60
+        };
+      }
+
+      function updateCdDisplay(mode, baseDelay = 0) {
+        const parts = computeCdParts();
+        setCdUnitValue("d", parts.d, mode, baseDelay);
+        setCdUnitValue("h", parts.h, mode, baseDelay + (mode === "in" ? 160 : 0));
+        setCdUnitValue("m", parts.m, mode, baseDelay + (mode === "in" ? 320 : 0));
+        setCdUnitValue("s", parts.s, mode, baseDelay + (mode === "in" ? 480 : 0));
+
+        // Thin golden seconds needle rotation (continuous forward ticking without 360->0 snap back)
+        if (cdSecNeedle) {
+          if (cdLastSecVal === null) {
+            cdNeedleUnwoundDeg = parts.s * 6;
+          } else if (parts.s !== cdLastSecVal) {
+            cdNeedleUnwoundDeg += 6;
+          }
+          cdLastSecVal = parts.s;
+          cdSecNeedle.style.setProperty("--sec-rot", `${cdNeedleUnwoundDeg}deg`);
+        }
+      }
+
+      function lightCountdownSection() {
+        if (cdLit || !cdSec) return;
+        cdLit = true;
+        if (cdAutoTimer) { clearTimeout(cdAutoTimer); cdAutoTimer = null; }
+        cdSec.classList.add("is-lit");
+
+        if (!evCanAnimate) {
+          updateCdDisplay(false);
+          return;
+        }
+
+        playSfx(sfxDial, 0.7, 1);
+
+        if (cdHead) {
+          const kids = cdHead.children;
+          if (kids[0]) {
+            kids[0].animate([
+              { opacity: 0, transform: "translateY(10px)" },
+              { opacity: 1, transform: "none" }
+            ], { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
+          }
+          if (kids[1]) {
+            kids[1].animate([
+              { opacity: 1, "--wipe": "-2%" },
+              { opacity: 1, "--wipe": "130%" }
+            ], { duration: 1500, delay: 200, easing: "cubic-bezier(.4,0,.3,1)", fill: "both" });
+          }
+        }
+
+        if (cdShadow) {
+          cdShadow.animate([
+            { opacity: 0 },
+            { opacity: 0.42 }
+          ], { duration: 1400, easing: "ease-out", fill: "backwards" });
+        }
+
+        if (cdSecNeedle) {
+          const targetDeg = cdNeedleUnwoundDeg;
+          cdSecNeedle.animate([
+            { opacity: 0, transform: `rotate(${targetDeg - 95}deg)` },
+            { opacity: 1, offset: 0.35 },
+            { opacity: 1, transform: `rotate(${targetDeg}deg)` }
+          ], { duration: 1500, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" });
+        }
+
+        [cdCount, cdDayWords].forEach(el => {
+          if (!el) return;
+          el.animate([
+            { opacity: 0 },
+            { opacity: 1 }
+          ], { duration: 500, delay: CD_TIMING.roll, fill: "backwards" });
+        });
+
+        updateCdDisplay("in", CD_TIMING.roll);
+
+        if (cdFoot) {
+          Array.from(cdFoot.children).forEach((child, idx) => {
+            child.animate([
+              { opacity: 0, transform: "translateY(8px)" },
+              { opacity: 1, transform: "none" }
+            ], {
+              duration: 900,
+              delay: CD_TIMING.foot + idx * 220,
+              easing: "cubic-bezier(.2,.7,.2,1)",
+              fill: "backwards"
+            });
+          });
+        }
+      }
+
+      function renderCountdown(targetIso, isUr) {
+        cdTargetTimeMs = new Date(targetIso).getTime();
+        if (cdInterval) clearInterval(cdInterval);
+        updateCdDisplay(false);
+        cdInterval = setInterval(() => {
+          updateCdDisplay(cdLit ? "by" : false);
+        }, 1000);
+
+        const saveBtn = document.getElementById("tSaveDateBtn");
+        const firstArt = document.querySelector(".ev");
+        if (saveBtn && firstArt) {
+          const oldMenu = saveBtn.parentNode.querySelector(".ev-cal-menu");
+          if (oldMenu) oldMenu.remove();
+          const cleanBtn = saveBtn.cloneNode(true);
+          saveBtn.parentNode.replaceChild(cleanBtn, saveBtn);
+          attachInviteCalendar(cleanBtn, firstArt, isUr);
+        }
+      }
+
+      if (cdSec) {
+        if (evCanAnimate) cdSec.classList.add("is-armed");
+        if ("IntersectionObserver" in window && evCanAnimate) {
+          new IntersectionObserver((entries) => {
+            const entry = entries[entries.length - 1];
+            const visRatio = entry.isIntersecting
+              ? entry.intersectionRect.height / Math.min(entry.boundingClientRect.height || 1, window.innerHeight)
+              : 0;
+            if (entry.isIntersecting) {
+              cdSec.classList.remove("is-away", "is-far");
+            }
+            if (visRatio >= 0.42 && !cdLit && !cdAutoTimer) {
+              cdAutoTimer = setTimeout(() => {
+                cdAutoTimer = null;
+                lightCountdownSection();
+              }, 450);
+            } else if (visRatio < 0.42 && cdAutoTimer) {
+              clearTimeout(cdAutoTimer);
+              cdAutoTimer = null;
+            }
+          }, { threshold: [0, 0.2, 0.42, 0.6, 0.8, 1] }).observe(cdSec);
+        } else {
+          lightCountdownSection();
+        }
+      }
+
+      window.__countdown = {
+        T: CD_TIMING,
+        light: lightCountdownSection
+      };
+
+      // 12b. Step 7: Closing Night Garden — Moon Rise, Calligraphic Wipe, Floating Lanterns, Chandni Touch Burst & RSVP Panel (a1d8721971.js + enhancements)
+      const clSec = document.getElementById("closing");
+      const clScene = document.getElementById("clScene");
+      const clWords = document.getElementById("clWords");
+      const clMoon = document.getElementById("clMoon");
+      const clFliesBox = document.getElementById("clFlies");
+      const clLanternsBox = document.getElementById("clLanterns");
+      const clPetalsBox = document.getElementById("clPetals");
+
+      const CL_TIMING = {
+        moon: 2800,    // 0xaf0
+        kicker: 900,   // 0x384
+        title: 1200,   // 0x4b0
+        msg: 2000,     // 0x7d0
+        sign: 2500,    // 0x9c4
+        fams: 2750,    // 0xabe
+        ar: 3300,      // 0xce4
+        en: 3800,      // 0xed8
+        ref: 4200,     // 0x1068
+        rsvp: 4550,    // RSVP button reveal
+        flies: 1600    // 0x640
+      };
+
+      let clPlayed = false;
+      let clVisible = false;
+      let clAutoTimer = null;
+      let clActivePetals = 0;
+      let clPetalTimer = null;
+      const clActiveSparks = [];
+      const CL_MAX_SPARKS = 36;
+      let clActiveLanterns = 0;
+      let clLanternTimer = null;
+
+      function fitClosingWords() {
+        if (!clWords) return;
+        clWords.style.setProperty("--fit", 1);
+        clWords.style.justifyContent = "flex-start";
+        let fit = 1;
+        for (let i = 0; i < 12 && (clWords.scrollHeight > clWords.clientHeight + 1 || clWords.scrollWidth > clWords.clientWidth + 1); i++) {
+          fit *= 0.94;
+          clWords.style.setProperty("--fit", fit.toFixed(3));
+        }
+        clWords.style.justifyContent = "";
+      }
+
+      function pickClosingSparkSpot() {
+        if (!clSec) return [0.2, 0.5];
+        const cs = getComputedStyle(clSec);
+        const inL = parseFloat(cs.getPropertyValue("--in-l-n")) || 0.16;
+        const inR = parseFloat(cs.getPropertyValue("--in-r-n")) || 0.84;
+        const r = Math.random();
+        if (r < 0.35) return [randRange(0.03, inL), randRange(0.12, 0.88)];
+        if (r < 0.70) return [randRange(inR, 0.97), randRange(0.12, 0.88)];
+        return [randRange(inL + 0.04, inR - 0.04), randRange(0.64, 0.9)];
+      }
+
+      function spawnAmbientChandniFly(nx, ny, isWake = false) {
+        if (!clScene || !clFliesBox) return;
+        const w = clScene.offsetWidth || 390;
+        const h = clScene.offsetHeight || 780;
+        const el = document.createElement("i");
+        el.className = "cl-fly";
+        el.innerHTML = "<b></b>";
+        const sz = Math.min(w, h) * randRange(0.011, 0.017);
+        el.style.setProperty("--fly", sz.toFixed(1) + "px");
+        clFliesBox.appendChild(el);
+        clActiveSparks.push(el);
+
+        if (clActiveSparks.length > CL_MAX_SPARKS) {
+          const old = clActiveSparks.shift();
+          if (old && old.animate) {
+            old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 800, fill: "forwards" }).onfinish = () => old.remove();
+          } else if (old) {
+            old.remove();
+          }
+        }
+
+        const x0 = nx * w;
+        const y0 = ny * h;
+        if (!evCanAnimate) {
+          el.style.transform = `translate(${x0.toFixed(1)}px,${y0.toFixed(1)}px)`;
+          return;
+        }
+
+        const pts = [];
+        const rad = Math.min(w, h) * randRange(0.05, 0.12);
+        for (let i = 0; i < 5; i++) {
+          pts.push([x0 + randRange(-rad, rad), y0 + randRange(-rad * 0.8, rad * 0.6)]);
+        }
+        pts.push(pts[0]);
+        const kf = pts.map(p => ({ transform: `translate(${p[0].toFixed(1)}px,${p[1].toFixed(1)}px)` }));
+
+        const loopWander = () => {
+          el.animate(kf, { duration: randRange(11000, 18000), iterations: Infinity, easing: "ease-in-out" });
+        };
+
+        if (isWake) {
+          el.animate([
+            { transform: `translate(${x0.toFixed(1)}px,${y0.toFixed(1)}px) scale(.3)` },
+            { transform: kf[0].transform }
+          ], { duration: 900, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = loopWander;
+          el.firstChild.animate([
+            { opacity: 0 },
+            { opacity: 1, offset: 0.2 },
+            { opacity: 0.6 }
+          ], { duration: 900 });
+        } else {
+          loopWander();
+        }
+
+        el.firstChild.animate([
+          { opacity: 0.15 },
+          { opacity: 1, offset: 0.35 },
+          { opacity: 0.45, offset: 0.6 },
+          { opacity: 0.95, offset: 0.8 },
+          { opacity: 0.12 }
+        ], {
+          duration: randRange(2200, 4200),
+          delay: isWake ? 900 : 0,
+          iterations: Infinity,
+          direction: "alternate",
+          easing: "ease-in-out",
+          fill: "backwards"
+        });
+      }
+
+      function startAmbientChandniFlies() {
+        if (!clScene) return;
+        const total = clScene.offsetWidth > clScene.offsetHeight ? 16 : 12;
+        let count = 0;
+        function step() {
+          if (count++ >= total) return;
+          const spot = pickClosingSparkSpot();
+          spawnAmbientChandniFly(spot[0], spot[1], false);
+          setTimeout(step, randRange(220, 520));
+        }
+        step();
+      }
+
+      // Floating Glowing Sky Lanterns (Fanous) Rising Gently into the Night Sky
+      const LANTERN_SVG = `
+        <svg viewBox="0 0 36 50" aria-hidden="true">
+          <defs>
+            <radialGradient id="lanternGlow" cx="50%" cy="58%" r="52%">
+              <stop offset="0%" stop-color="#fffdf0"/>
+              <stop offset="38%" stop-color="#ffd97d"/>
+              <stop offset="78%" stop-color="#e8852e"/>
+              <stop offset="100%" stop-color="#9e3d12" stop-opacity="0.85"/>
+            </radialGradient>
+          </defs>
+          <!-- Top brass crown & ring -->
+          <circle cx="18" cy="4" r="2.2" fill="none" stroke="#f3c86b" stroke-width="1.2"/>
+          <path d="M12 10 Q18 5 24 10 Z" fill="#b87d2b" stroke="#f5d17e" stroke-width="0.8"/>
+          <!-- Warm paper lantern body -->
+          <path d="M9 10 C6 19, 7 31, 11 39 L25 39 C29 31, 30 19, 27 10 Z" fill="url(#lanternGlow)" stroke="#f6cf77" stroke-width="1"/>
+          <!-- Delicate golden lattice ribs -->
+          <path d="M14 10 C12.5 20, 13 30, 14.5 39 M22 10 C23.5 20, 23 30, 21.5 39 M8 24.5 L28 24.5" stroke="#b35918" stroke-width="0.65" stroke-opacity="0.55" fill="none"/>
+          <!-- Inner candle flame core -->
+          <ellipse cx="18" cy="28" rx="3.8" ry="5.5" fill="#fffbe6" opacity="0.92"/>
+          <!-- Base rim & tassel -->
+          <rect x="11" y="38.5" width="14" height="2.4" rx="1" fill="#a86c22" stroke="#f5d17e" stroke-width="0.7"/>
+          <path d="M18 41 L18 47 M16.5 44.5 L18 47.5 L19.5 44.5" stroke="#f3c25f" stroke-width="1" stroke-linecap="round" fill="none"/>
+        </svg>
+      `;
+
+      function spawnFloatingLantern(initialProgress = 0) {
+        if (!clScene || !clLanternsBox) return;
+        const w = clScene.offsetWidth || 390;
+        const h = clScene.offsetHeight || 780;
+        const cs = getComputedStyle(clSec);
+        const inL = parseFloat(cs.getPropertyValue("--in-l-n")) || 0.16;
+        const inR = parseFloat(cs.getPropertyValue("--in-r-n")) || 0.84;
+
+        const el = document.createElement("i");
+        el.className = "cl-lantern";
+        el.innerHTML = LANTERN_SVG;
+        // Depth layers: some slightly closer, some deeper in the night garden
+        const depth = randRange(0.68, 1.12);
+        const lw = Math.min(w, h) * 0.056 * depth;
+        el.style.setProperty("--lw", lw.toFixed(1) + "px");
+        clLanternsBox.appendChild(el);
+
+        // Spawn predominantly along the left/right garden arches or lower pavilion reflection pool
+        const sidePick = Math.random();
+        let x0;
+        if (sidePick < 0.42) {
+          x0 = randRange(0.04, Math.max(0.18, inL + 0.03)) * w;
+        } else if (sidePick < 0.84) {
+          x0 = randRange(Math.min(0.82, inR - 0.03), 0.94) * w;
+        } else {
+          x0 = randRange(0.25, 0.75) * w;
+        }
+
+        const y0 = randRange(0.76, 0.95) * h;
+        const y1 = randRange(0.04, 0.18) * h;
+        const x1 = x0 + randRange(-0.14, 0.14) * w;
+        const sway = randRange(0.025, 0.05) * w;
+        const kf = [];
+        for (let s = 0; s <= 10; s++) {
+          const t = s / 10;
+          const px = x0 + (x1 - x0) * t + Math.sin(t * 6.2 + x0) * sway;
+          const py = y0 + (y1 - y0) * t;
+          const tilt = Math.cos(t * 6.2 + x0) * 5.5;
+          const sc = (1 - t * 0.24).toFixed(3);
+          const op = t < 0.12 ? (t / 0.12) * 0.92 : (t > 0.82 ? ((1 - t) / 0.18) * 0.92 : 0.92);
+          kf.push({
+            transform: `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) rotate(${tilt.toFixed(1)}deg) scale(${sc})`,
+            opacity: Math.max(0, Math.min(0.95, op))
+          });
+        }
+
+        const dur = randRange(13500, 19500);
+        const anim = el.animate(kf, { duration: dur, fill: "both" });
+        if (initialProgress > 0) anim.currentTime = dur * initialProgress;
+        clActiveLanterns++;
+        anim.onfinish = () => {
+          el.remove();
+          clActiveLanterns--;
+        };
+      }
+
+      function scheduleClosingLanterns() {
+        if (!evCanAnimate || clLanternTimer || document.documentElement.classList.contains("is-lite")) return;
+        // Seed initial warm sky lanterns when the closing garden comes to life
+        if (clActiveLanterns === 0 && clVisible) {
+          for (let i = 0; i < 5; i++) {
+            spawnFloatingLantern(i * 0.18);
+          }
+        }
+        clLanternTimer = setTimeout(() => {
+          clLanternTimer = null;
+          if (clVisible && clActiveLanterns < 6 && !document.hidden) {
+            spawnFloatingLantern(0);
+          }
+          if (clVisible) scheduleClosingLanterns();
+        }, randRange(2600, 4400));
+      }
+
+      // Interactive Chandni Spark Burst on Touch / Tap anywhere on Closing Scene
+      function burstChandniAtPoint(clientX, clientY) {
+        if (!clScene || !clFliesBox) return;
+        const rect = clScene.getBoundingClientRect();
+        const cx = clientX - rect.left;
+        const cy = clientY - rect.top;
+        if (cx < 0 || cx > rect.width || cy < 0 || cy > rect.height) return;
+
+        // Expanding golden chandni ripple ring
+        const ring = document.createElement("i");
+        ring.className = "cl-chandni-ring";
+        ring.style.left = cx.toFixed(1) + "px";
+        ring.style.top = cy.toFixed(1) + "px";
+        clFliesBox.appendChild(ring);
+        ring.animate([
+          { transform: "scale(0.3)", opacity: 0.95 },
+          { transform: "scale(3.4)", opacity: 0 }
+        ], { duration: 750, easing: "cubic-bezier(.2,.7,.2,1)", fill: "forwards" }).onfinish = () => ring.remove();
+
+        // 16 radial Chandni (silver-gold moonlight) particles bursting outward with soft gravity
+        const count = 16;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("i");
+          p.className = "cl-chandni-burst";
+          const sz = randRange(3.2, 6.8);
+          p.style.setProperty("--sz", sz.toFixed(1) + "px");
+          clFliesBox.appendChild(p);
+
+          const angle = (i / count) * Math.PI * 2 + randRange(-0.22, 0.22);
+          const dist = randRange(32, 96);
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist;
+          const gravityY = randRange(14, 34);
+
+          p.animate([
+            { transform: `translate(${(cx - sz / 2).toFixed(1)}px, ${(cy - sz / 2).toFixed(1)}px) scale(0.4)`, opacity: 1 },
+            { transform: `translate(${(cx + dx * 0.65).toFixed(1)}px, ${(cy + dy * 0.65 - 6).toFixed(1)}px) scale(1.25)`, opacity: 1, offset: 0.38 },
+            { transform: `translate(${(cx + dx).toFixed(1)}px, ${(cy + dy + gravityY).toFixed(1)}px) scale(0.15)`, opacity: 0 }
+          ], {
+            duration: randRange(720, 1180),
+            easing: "cubic-bezier(.18,.72,.28,1)",
+            fill: "forwards"
+          }).onfinish = () => p.remove();
+        }
+
+        // Also wake 2 lingering glowing chandni fireflies from the tap spot
+        const nx = Math.min(0.98, Math.max(0.02, cx / rect.width));
+        const ny = Math.min(0.98, Math.max(0.02, cy / rect.height));
+        for (let k = 0; k < 2; k++) {
+          spawnAmbientChandniFly(
+            Math.min(0.98, Math.max(0.02, nx + randRange(-0.025, 0.025))),
+            Math.min(0.98, Math.max(0.02, ny + randRange(-0.025, 0.025))),
+            true
+          );
+        }
+        playSfx(sfxBloom, 0.24, randRange(1.45, 1.75));
+      }
+
+      if (clSec) {
+        clSec.addEventListener("pointerdown", (e) => {
+          if (e.button > 0) return;
+          if (e.target.closest("button, a, input, select, textarea")) return;
+          burstChandniAtPoint(e.clientX, e.clientY);
+        });
+      }
+
+      function driftClosingPetal() {
+        if (!clScene || !clSec || !clPetalsBox) return;
+        const w = clScene.offsetWidth || 390;
+        const h = clScene.offsetHeight || 780;
+        const cs = getComputedStyle(clSec);
+        const inL = parseFloat(cs.getPropertyValue("--in-l-n")) || 0.16;
+        const inR = parseFloat(cs.getPropertyValue("--in-r-n")) || 0.84;
+
+        const el = document.createElement("i");
+        el.className = "cl-petal";
+        el.innerHTML = '<b><img alt="" draggable="false"></b>';
+        el.querySelector("img").src = pickDecentPetalSrc();
+        const size = Math.min(w, h) * randRange(0.025, 0.036);
+        el.style.width = size.toFixed(1) + "px";
+        clPetalsBox.appendChild(el);
+
+        const pick = Math.random();
+        const x0 = (pick < 0.5 ? randRange(inL, inR) : (pick < 0.75 ? randRange(0.03, inL) : randRange(inR, 0.97))) * w;
+        const y0 = (pick < 0.5 ? randRange(0.04, 0.12) : randRange(0.15, 0.5)) * h;
+        const x1 = x0 + randRange(-0.08, 0.14) * w;
+        const sway = randRange(0.02, 0.045) * w;
+        const y1 = Math.min(h + size * 2, y0 + randRange(0.45, 0.8) * h);
+        const kf = [];
+        for (let s = 0; s <= 8; s++) {
+          const t = s / 8;
+          kf.push({
+            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 7.5 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(110, 210)).toFixed(0)}deg)`,
+            opacity: t < 0.1 ? t / 0.1 : (t > 0.85 ? (1 - t) / 0.15 : 0.9)
+          });
+        }
+        const anim = el.animate(kf, { duration: randRange(8000, 11000), fill: "both" });
+        el.firstChild.animate([
+          { transform: "rotateX(0) rotateY(0)" },
+          { transform: `rotateX(${randRange(50, 95).toFixed(0)}deg) rotateY(${randRange(35, 75).toFixed(0)}deg)` }
+        ], { duration: randRange(2800, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+        clActivePetals++;
+        anim.onfinish = () => {
+          el.remove();
+          clActivePetals--;
+        };
+      }
+
+      function scheduleClosingPetals() {
+        if (!evCanAnimate || clPetalTimer || document.documentElement.classList.contains("is-lite")) return;
+        clPetalTimer = setTimeout(() => {
+          clPetalTimer = null;
+          if (clVisible && clActivePetals < 3 && !document.hidden) driftClosingPetal();
+          if (clVisible) scheduleClosingPetals();
+        }, randRange(3000, 5200));
+      }
+
+      function playClosingSequence() {
+        if (clPlayed || !clSec) return;
+        clPlayed = true;
+        if (clAutoTimer) { clearTimeout(clAutoTimer); clAutoTimer = null; }
+
+        fitClosingWords();
+        clSec.classList.add("is-played");
+
+        if (!evCanAnimate) {
+          startAmbientChandniFlies();
+          return;
+        }
+
+        playSfx(sfxBloom, 0.5, 0.72);
+
+        if (clMoon) {
+          clMoon.animate([
+            { opacity: 0, transform: "translateY(16%) scale(.94)" },
+            { opacity: 1, offset: 0.45 },
+            { opacity: 1, transform: "none" }
+          ], { duration: CL_TIMING.moon, easing: "cubic-bezier(.25,.6,.3,1)", fill: "backwards" });
+        }
+
+        const animTargets = [
+          [".cl-kicker", "kicker"],
+          [".cl-title", "title"],
+          [".cl-msg", "msg"],
+          [".cl-sign", "sign"],
+          [".cl-fams", "fams"],
+          [".cl-dua-ar", "ar"],
+          [".cl-dua-en", "en"],
+          [".cl-dua-ref", "ref"],
+          ["#clRsvpWrap", "rsvp"]
+        ];
+
+        animTargets.forEach(([sel, key]) => {
+          const el = clSec.querySelector(sel);
+          if (!el) return;
+          if (key === "title") {
+            el.animate([
+              { opacity: 1, "--wipe": "-2%" },
+              { opacity: 1, "--wipe": "130%" }
+            ], { duration: 1500, delay: CL_TIMING.title, easing: "cubic-bezier(.4,0,.3,1)", fill: "both" });
+            return;
+          }
+          el.animate([
+            { opacity: 0, transform: "translateY(10px)" },
+            { opacity: 1, transform: "none" }
+          ], { duration: 1000, delay: CL_TIMING[key], easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
+        });
+
+        setTimeout(startAmbientChandniFlies, CL_TIMING.flies);
+        setTimeout(scheduleClosingLanterns, 700);
+        setTimeout(scheduleClosingPetals, CL_TIMING.ref + 1200);
+      }
+
+      if (clSec) {
+        if (evCanAnimate) clSec.classList.add("is-armed");
+        window.addEventListener("resize", () => { if (clPlayed) fitClosingWords(); });
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => { if (clPlayed) fitClosingWords(); });
+        }
+
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver((entries) => {
+            const entry = entries[entries.length - 1];
+            const visRatio = entry.isIntersecting
+              ? entry.intersectionRect.height / Math.min(entry.boundingClientRect.height || 1, window.innerHeight)
+              : 0;
+            clVisible = entry.isIntersecting;
+            if (clVisible) {
+              clSec.classList.remove("is-away", "is-far");
+              if (clPlayed) {
+                scheduleClosingLanterns();
+                scheduleClosingPetals();
+              }
+            }
+            if (visRatio >= 0.42 && !clPlayed && !clAutoTimer) {
+              clAutoTimer = setTimeout(() => {
+                clAutoTimer = null;
+                playClosingSequence();
+              }, 450);
+            } else if (visRatio < 0.42 && clAutoTimer) {
+              clearTimeout(clAutoTimer);
+              clAutoTimer = null;
+            }
+          }, { threshold: [0, 0.2, 0.42, 0.6, 0.8, 1], rootMargin: "-1px 0px" }).observe(clSec);
+        } else {
+          playClosingSequence();
+        }
+      }
+
+      window.__closing = {
+        T: CL_TIMING,
+        play: playClosingSequence,
+        fit: fitClosingWords,
+        burst: burstChandniAtPoint
+      };
+
+      // 12c. Luxury RSVP Modal Panel Controller
+      const rsvpModal = document.getElementById("rsvpModal");
+      const rsvpVeil = document.getElementById("rsvpVeil");
+      const rsvpCloseBtn = document.getElementById("rsvpCloseBtn");
+      const openRsvpBtn = document.getElementById("openRsvpBtn");
+      const gulistanRsvpForm = document.getElementById("gulistanRsvpForm");
+
+      function getPrimaryRsvpPhone() {
+        if (WEDDING.rsvpPhone) return WEDDING.rsvpPhone;
+        if (WEDDING.clientPhone) return WEDDING.clientPhone;
+        const evs = getFilteredEvents();
+        for (const ev of evs) {
+          if (ev.rsvpPhone) return ev.rsvpPhone;
+        }
+        if (Array.isArray(WEDDING.welcomeHosts) && WEDDING.welcomeHosts.length && WEDDING.welcomeHosts[0].phone) {
+          return WEDDING.welcomeHosts[0].phone;
+        }
+        return "+923298120981";
+      }
+
+      function cleanWhatsAppDigits(raw) {
+        let digits = String(raw || "").replace(/\D/g, "");
+        if (digits.startsWith("03") && digits.length === 11) {
+          digits = "92" + digits.slice(1);
+        }
+        return digits || "923298120981";
+      }
+
+      function openRsvpModal() {
+        if (!rsvpModal) return;
+        rsvpModal.hidden = false;
+        playSfx(sfxTurn, 0.55, 1.05);
+        const dlg = rsvpModal.querySelector(".rsvp-dialog");
+        if (dlg && evCanAnimate) {
+          dlg.animate([
+            { opacity: 0, transform: "translateY(18px) scale(0.94)" },
+            { opacity: 1, transform: "none" }
+          ], { duration: 420, easing: "cubic-bezier(.22,1,.36,1)" });
+        }
+      }
+
+      function closeRsvpModal() {
+        if (!rsvpModal || rsvpModal.hidden) return;
+        rsvpModal.hidden = true;
+      }
+
+      if (openRsvpBtn) openRsvpBtn.addEventListener("click", openRsvpModal);
+      if (rsvpCloseBtn) rsvpCloseBtn.addEventListener("click", closeRsvpModal);
+      if (rsvpVeil) rsvpVeil.addEventListener("click", closeRsvpModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && rsvpModal && !rsvpModal.hidden) closeRsvpModal();
+      });
+
+      if (gulistanRsvpForm) {
+        gulistanRsvpForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const isUr = currentLang === "ur";
+          const guestName = (document.getElementById("rsvpGuestName")?.value || "").trim();
+          const attendStatus = document.getElementById("rsvpAttendSelect")?.value || "";
+          const guestCount = document.getElementById("rsvpGuestsSelect")?.value || "2";
+          const guestNotes = (document.getElementById("rsvpNotesInput")?.value || "").trim();
+
+          const gName = isUr ? (WEDDING.groomUrdu || WEDDING.groom) : WEDDING.groom;
+          const bName = isUr ? (WEDDING.brideUrdu || WEDDING.bride) : WEDDING.bride;
+          const targetPhone = cleanWhatsAppDigits(getPrimaryRsvpPhone());
+
+          let msg = isUr
+            ? `*تقریبِ شادی RSVP — ${gName} اور ${bName}*\n\n` +
+              `*مہمان کا نام:* ${guestName}\n` +
+              `*شرکت:* ${attendStatus}\n` +
+              `*افراد کی تعداد:* ${guestCount}\n`
+            : `*Wedding RSVP — ${WEDDING.groom} & ${WEDDING.bride}*\n\n` +
+              `*Guest Name:* ${guestName}\n` +
+              `*Status:* ${attendStatus}\n` +
+              `*Number of Guests:* ${guestCount}\n`;
+
+          if (guestNotes) {
+            msg += isUr ? `*پیغام و دعائیں:* ${guestNotes}\n` : `*Message & Duas:* ${guestNotes}\n`;
+          }
+
+          window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+          closeRsvpModal();
+        });
       }
 
       // 13. Dual-Language Translation & Perspective Engine (Rule 4 & 5)
@@ -3905,17 +5050,14 @@
         document.getElementById("tCdMins").textContent = isUr ? "منٹ" : "Minutes";
         document.getElementById("tCdSecs").textContent = isUr ? "سیکنڈ" : "Seconds";
         document.getElementById("tCdUntil").textContent = isUr ? "جب تک ہمارا گلستان مکمل کھِل نہ جائے" : "until our garden is in full bloom";
-        document.getElementById("tSaveDateText").textContent = isUr ? "تاریخ محفوظ کریں" : "Save the date";
+        const saveTextEl = document.getElementById("tSaveDateText");
+        if (saveTextEl) saveTextEl.textContent = isUr ? "تاریخ محفوظ کریں" : "Save the date";
 
         if (firstEv) {
-          document.getElementById("tCdTargetDate").textContent = isUr ? (firstEv.displayDateUrdu || toUrduDigits(firstEv.displayDate || "")) : (firstEv.displayDate || "");
-          document.getElementById("tCdTargetTime").textContent = `${isUr ? toUrduDigits(firstEv.time || "") : (firstEv.time || "")} · ${isUr ? (firstEv.titleUr || firstEv.titleEn) : firstEv.titleEn}`;
-          renderCountdown(`${firstEv.date || "2026-12-06"}T19:00:00+05:00`, isUr);
-
-          const saveBtn = document.getElementById("tSaveDateBtn");
-          if (saveBtn) {
-            saveBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(firstName + " & " + secondName + " Wedding")}&location=${encodeURIComponent(firstEv.venue || "")}`;
-          }
+          document.getElementById("tCdTargetDate").textContent = isUr ? (firstEv.displayDateUrdu || toUrduDigits(firstEv.displayDate || "")) : (firstEv.displayDate || "").replace(",", "");
+          document.getElementById("tCdTargetTime").textContent = `${isUr ? toUrduDigits(firstEv.time || "") : (firstEv.time || "")} · ${isUr ? (firstEv.titleUr || firstEv.titleEn) : "the " + firstEv.titleEn}`;
+          const pT = parseTime24(firstEv.time || "7:00 pm", 19);
+          renderCountdown(`${firstEv.date || "2026-12-06"}T${pad2(pT.h)}:${pad2(pT.m)}:00+05:00`, isUr);
         }
 
         // Closing
@@ -3924,11 +5066,56 @@
         document.getElementById("tClosingMsg").textContent = isUr
           ? "ہماری کہانی کا حصہ بننے کا شکریہ۔ آپ کی آمد، آپ کی محبت اور دعائیں ہمارے لیے دنیا کی سب سے بڑی دولت ہیں۔"
           : "for being a part of our story. Your presence, your love and your duas mean the world to us.";
-        document.getElementById("tClosingFamily").innerHTML = `${parsedHost.name} <span class="cl-amp">&amp;</span> ${isUr ? "اہلِ خانہ" : "Family"}`;
+        document.getElementById("tClosingFamily").innerHTML = `<span class="cl-n">${parsedHost.name}</span><span class="cl-amp" aria-hidden="true">&amp;</span><span class="cl-n">${isUr ? "اہلِ خانہ" : "Family"}</span>`;
         document.getElementById("tClosingDuaEn").textContent = isUr
           ? "اے ہمارے رب! ہمیں ہماری بیویوں اور اولاد سے آنکھوں کی ٹھنڈک عطا فرما اور ہمیں پرہیزگاروں کا امام بنا۔"
           : "“Our Lord, grant us from among our spouses and offspring comfort to our eyes, and make us an example for the righteous.”";
         document.getElementById("tBrandFooter").textContent = isUr ? "✦ ای-دعوت نامہ (E-dawatnama.com) کی شاہی پیشکش ✦" : "✦ Crafted by E-dawatnama.com ✦";
+
+        // RSVP Button & Modal Translations
+        const tOpenRsvpText = document.getElementById("tOpenRsvpText");
+        if (tOpenRsvpText) tOpenRsvpText.textContent = isUr ? "شرکت کی تصدیق کریں · RSVP" : "RSVP · Confirm Attendance";
+        const tRsvpKicker = document.getElementById("tRsvpKicker");
+        if (tRsvpKicker) tRsvpKicker.textContent = isUr ? "برائے کرم مطلع فرمائیں" : "Kindly respond";
+        const rsvpModalTitle = document.getElementById("rsvpModalTitle");
+        if (rsvpModalTitle) rsvpModalTitle.textContent = isUr ? "شرکت کی تصدیق" : "R.S.V.P";
+        const tRsvpSub = document.getElementById("tRsvpSub");
+        if (tRsvpSub) tRsvpSub.textContent = isUr ? "آپ کی تشریف آوری اور دعائیں ہمارے لیے باعثِ مسرت ہوں گی" : "We would be honoured by your presence and prayers";
+        const tRsvpNameLbl = document.getElementById("tRsvpNameLbl");
+        if (tRsvpNameLbl) tRsvpNameLbl.textContent = isUr ? "آپ کا اسمِ گرامی *" : "Your Name *";
+        const rsvpGuestName = document.getElementById("rsvpGuestName");
+        if (rsvpGuestName) rsvpGuestName.placeholder = isUr ? "اپنا مکمل نام درج کریں" : "Enter your full name";
+        const tRsvpAttendLbl = document.getElementById("tRsvpAttendLbl");
+        if (tRsvpAttendLbl) tRsvpAttendLbl.textContent = isUr ? "شرکت" : "Attendance";
+        const tRsvpOptYes = document.getElementById("tRsvpOptYes");
+        if (tRsvpOptYes) tRsvpOptYes.textContent = isUr ? "ان شاء اللہ ضرور شرکت کریں گے" : "Joyfully Attending";
+        const tRsvpOptNo = document.getElementById("tRsvpOptNo");
+        if (tRsvpOptNo) tRsvpOptNo.textContent = isUr ? "معذرت، نیک تمنائیں اور دعائیں" : "Sending Duas & Wishes";
+        const tRsvpGuestsLbl = document.getElementById("tRsvpGuestsLbl");
+        if (tRsvpGuestsLbl) tRsvpGuestsLbl.textContent = isUr ? "افراد کی تعداد" : "Guests";
+        const tRsvpMsgLbl = document.getElementById("tRsvpMsgLbl");
+        if (tRsvpMsgLbl) tRsvpMsgLbl.textContent = isUr ? "جوڑے کے لیے دعائیہ پیغام" : "Message or Duas for the Couple";
+        const rsvpNotesInput = document.getElementById("rsvpNotesInput");
+        if (rsvpNotesInput) rsvpNotesInput.placeholder = isUr ? "اپنی نیک تمنائیں اور دعائیں تحریر کریں..." : "Write a warm blessing or note...";
+        const tRsvpSubmitText = document.getElementById("tRsvpSubmitText");
+        if (tRsvpSubmitText) tRsvpSubmitText.textContent = isUr ? "واٹس ایپ پر تصدیق بھیجیں" : "Send RSVP via WhatsApp";
+        const tRsvpHostsLbl = document.getElementById("tRsvpHostsLbl");
+        if (tRsvpHostsLbl) tRsvpHostsLbl.textContent = isUr ? "یا میزبان سے براہِ راست رابطہ کریں" : "Or contact family hosts directly";
+
+        const hostsBox = document.getElementById("rsvpHostsBox");
+        const hostChips = document.getElementById("rsvpHostChips");
+        const hostsList = Array.isArray(WEDDING.welcomeHosts) && WEDDING.welcomeHosts.length
+          ? WEDDING.welcomeHosts
+          : [{ name: parsedHost.name || "Tariq Mehmood", nameUrdu: parsedHost.name || "طارق محمود", phone: getPrimaryRsvpPhone() }];
+        if (hostsBox && hostChips) {
+          hostChips.innerHTML = hostsList.filter(h => h && (h.phone || h.name)).map(h => {
+            const hName = isUr ? (h.nameUrdu || h.name) : (h.name || h.nameUrdu);
+            const hDigits = cleanWhatsAppDigits(h.phone || getPrimaryRsvpPhone());
+            return `<a class="rsvp-host-chip" href="https://wa.me/${hDigits}" target="_blank" rel="noopener"><span>💬 ${hName}</span></a>`;
+          }).join("");
+          hostsBox.style.display = hostChips.innerHTML ? "flex" : "none";
+        }
+        if (clPlayed) fitClosingWords();
       }
 
       applyTranslations(currentLang);
