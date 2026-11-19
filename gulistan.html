@@ -107,6 +107,15 @@
       --font-nastaliq: 'Noto Nastaliq Urdu', serif;
     }
 
+    /* Mobile Section Scroll-Snap (Exact 1:1 9ce6a602cb.js) */
+    html.is-open {
+      scroll-snap-type: y mandatory;
+    }
+    #card [data-section] {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
     /* Top Floating Controls: Language Toggle & Music FAB */
     .gulistan-top-nav {
       position: fixed;
@@ -799,7 +808,7 @@
     }
     .letter.is-open .lt-env {
       width: min(62cqi, 320px);
-      cursor: pointer;
+      cursor: default;
     }
     :where(.lt-env) > span {
       position: absolute;
@@ -2432,20 +2441,7 @@
       }
 
       if (envelope) {
-        envelope.addEventListener("click", () => {
-          if (isEnvAnimating) return;
-          if (isEnvOpen && letterSection) {
-            // Allow tapping the keepsake envelope at the bottom to replay the 3D envelope opening & tri-fold letter unfolding
-            letterSection.classList.remove("is-open", "is-read");
-            envelope.classList.remove("is-open");
-            envelope.setAttribute("aria-expanded", "false");
-            isEnvOpen = false;
-            letterSection.scrollIntoView({ behavior: "smooth", block: "center" });
-            setTimeout(() => openEnvelopeAndUnfoldLetter(false), 380);
-            return;
-          }
-          openEnvelopeAndUnfoldLetter(false);
-        });
+        envelope.addEventListener("click", () => openEnvelopeAndUnfoldLetter(false));
         if ("IntersectionObserver" in window) {
           new IntersectionObserver((entries) => {
             const entry = entries[entries.length - 1];
