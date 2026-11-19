@@ -883,26 +883,6 @@
       display: none;
     }
 
-    /* 3D Tag-to-Modal Flight & Flip (.ev-lift / .ev-card / .ev-turn) */
-    .ev-lift {
-      transition: opacity 0.4s ease;
-    }
-    .ev-veil {
-      transition: opacity 0.5s ease;
-    }
-    .ev-card {
-      transition: transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-    .ev-turn {
-      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-      transform: rotateY(0deg);
-      will-change: transform;
-    }
-    .ev-lift.is-flipped .ev-turn {
-      transform: rotateY(180deg);
-    }
-
     /* Countdown Rolling Odometer Strip Transition */
     .cd-strip {
       transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
@@ -955,6 +935,11 @@
       box-shadow: 0 0 10px rgba(245, 195, 100, 0.85);
       pointer-events: none;
       animation: spark-twinkle var(--sdur, 4s) ease-in-out var(--sdel, 0s) infinite;
+    }
+
+    /* Back face sub-schedule lines (.eb-note > .eb-line) */
+    .eb-note > .eb-line {
+      display: block;
     }
 
     /* Urdu Nastaliq RTL Overrides */
@@ -1098,6 +1083,7 @@
   <audio id="sfxBloom" src="assets/gulistan/sfx-bloom.mp3" preload="auto"></audio>
   <audio id="sfxLetter" src="assets/gulistan/sfx-letter.mp3" preload="auto"></audio>
   <audio id="sfxFamilies" src="assets/gulistan/sfx-families.mp3" preload="auto"></audio>
+  <audio id="sfxTag" src="assets/gulistan/sfx-tag.mp3" preload="auto"></audio>
   <audio id="sfxTurn" src="assets/gulistan/sfx-turn.mp3" preload="auto"></audio>
   <audio id="sfxDial" src="assets/gulistan/sfx-dial.mp3" preload="auto"></audio>
 
@@ -1261,7 +1247,7 @@
 
       <header class="ev-head">
         <p class="ev-kicker" id="tEvKicker">Please join us for</p>
-        <h2 class="ev-title" id="evTitle">The Wedding Ceremonies</h2>
+        <h2 class="ev-title" id="evTitle">The Celebrations</h2>
         <p class="ev-hint" id="tEvHint">Touch a tag to turn it over</p>
       </header>
 
@@ -1377,27 +1363,6 @@
       <a href="/about" target="_self" id="tBrandFooter">✦ Crafted by E-dawatnama.com ✦</a>
     </footer>
   </main>
-
-  <!-- ========================================================================
-       FULL-SCREEN 3D FLIPPING LUGGAGE TAG MODAL (.ev-lift)
-       ======================================================================== -->
-  <div class="ev-lift" id="evLift" hidden role="dialog" aria-modal="true" aria-labelledby="evModalTitle">
-    <div class="ev-veil" id="evVeil"></div>
-    <div class="ev-card" id="evCard">
-      <div class="ev-turn" id="evTurn">
-        <div class="ev-face ev-face-front">
-          <img id="evModalFrontImg" src="assets/gulistan/tag-walima.webp" alt="">
-        </div>
-        <div class="ev-face ev-face-back">
-          <img id="evModalBackImg" src="assets/gulistan/tag-walima-back.webp" alt="">
-          <div class="ev-back" id="evModalBackContent"></div>
-        </div>
-      </div>
-    </div>
-    <button class="ev-close" id="evClose" type="button" aria-label="Close event details">
-      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-  </div>
 
   <!-- ========================================================================
        COVER GATE (#gate): BUTTERFLIES, PETALS & UNTIE RIBBON
@@ -1605,6 +1570,7 @@
       const sfxBloom = document.getElementById("sfxBloom");
       const sfxLetter = document.getElementById("sfxLetter");
       const sfxFamilies = document.getElementById("sfxFamilies");
+      const sfxTag = document.getElementById("sfxTag");
       const sfxTurn = document.getElementById("sfxTurn");
       const sfxDial = document.getElementById("sfxDial");
       const musicToggleBtn = document.getElementById("musicToggleBtn");
@@ -1619,9 +1585,14 @@
         musicIconOn.style.display = playing ? "block" : "none";
         musicIconOff.style.display = playing ? "none" : "block";
       }
-      function playSfx(el) {
+      function playSfx(el, vol = 1, rate = 1) {
         if (!el || userMuted) return;
-        try { el.currentTime = 0; el.play().catch(() => {}); } catch (e) {}
+        try {
+          el.volume = Math.min(1, Math.max(0, vol));
+          el.playbackRate = rate;
+          el.currentTime = 0;
+          el.play().catch(() => {});
+        } catch (e) {}
       }
       function startMusic() {
         if (!bgMusic || userMuted) return;
@@ -1632,7 +1603,7 @@
       }
       function stopAllAudio() {
         if (bgMusic && !bgMusic.paused) bgMusic.pause();
-        [sfxOpen, sfxBloom, sfxLetter, sfxFamilies, sfxTurn, sfxDial].forEach(s => { if (s && !s.paused) s.pause(); });
+        [sfxOpen, sfxBloom, sfxLetter, sfxFamilies, sfxTag, sfxTurn, sfxDial].forEach(s => { if (s && !s.paused) s.pause(); });
         updateMusicUI(false);
       }
 
@@ -2874,14 +2845,6 @@
             if (sec.id === "letter") {
               isLetterVisible = true;
               scheduleLetterPetals();
-            } else if (sec.id === "events") {
-              document.querySelectorAll("#evStage .ev").forEach((tagEl, idx) => {
-                setTimeout(() => tagEl.classList.add("is-hung"), 150 + idx * 180);
-              });
-              if (!sec.dataset.petals) {
-                sec.dataset.petals = "1";
-                spawnPetals("evPetals", 6);
-              }
             } else if (sec.id === "countdown") {
               sec.classList.add("is-lit");
               if (!sec.dataset.played) {
@@ -2953,142 +2916,696 @@
         return String(str).replace(/\d/g, d => map[parseInt(d, 10)]);
       }
 
-      // 11. Hanging Luggage Tags & 3D Flipping Modal (.ev-lift)
-      const evLift = document.getElementById("evLift");
-      const evVeil = document.getElementById("evVeil");
-      const evClose = document.getElementById("evClose");
-      const evModalFrontImg = document.getElementById("evModalFrontImg");
-      const evModalBackImg = document.getElementById("evModalBackImg");
-      const evModalBackContent = document.getElementById("evModalBackContent");
+      // 11. Step 5: Hanging Luggage Tags, Auto-Preview Tour, 3D FLIP Flight & InviteCalendar (Exact 1:1 8ab3d7224b.js + 7aa79b27ad.js)
+      const evSec = document.getElementById("events");
+      const evHead = evSec ? evSec.querySelector(".ev-head") : null;
+      const evStage = document.getElementById("evStage");
+      const evBranch = evSec ? evSec.querySelector(".ev-branch") : null;
+      const evPetalsBox = document.getElementById("evPetals");
+      const cardMainEl = document.getElementById("card");
 
-      let activeSourceTagBtn = null;
-      function openEventModal(evData, isUr, sourceBtn) {
-        if (!evLift) return;
-        activeSourceTagBtn = sourceBtn || null;
-        const typeKey = (evData.type || evData.key || "walima").toLowerCase();
-        const evCssClass = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "baraat" : "walima";
-        const artPrefix = "tag-" + evCssClass;
-        const evCardEl = document.getElementById("evCard");
-        if (evCardEl) evCardEl.className = "ev-card ev-" + evCssClass;
+      const EV_TIMING = {
+        gap: 420,     // 0x1a4
+        hang: 1900,   // 0x76c
+        lift: 950,    // 0x3b6
+        back: 800,    // 0x320
+        auto: 1000,   // 0x3e8
+        hold: 4600,   // 0x11f8
+        ring: 2800    // 0xaf0
+      };
 
-        evModalFrontImg.src = `assets/gulistan/${artPrefix}.webp`;
-        evModalBackImg.src = `assets/gulistan/${artPrefix}-back.webp`;
+      const evPrefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const evCanAnimate = !evPrefersReduced && !!Element.prototype.animate;
 
-        const title = isUr ? (evData.titleUr || evData.titleEn) : (evData.titleEn || typeKey);
-        const dateStr = isUr ? (evData.displayDateUrdu || toUrduDigits(evData.displayDate || evData.date || "")) : (evData.displayDate || evData.date || "");
-        const timeStr = isUr ? toUrduDigits(evData.time || "") : (evData.time || "");
-        const venue = isUr ? (evData.venueUrdu || evData.venue || "") : (evData.venue || "");
-        const addr = evData.address || "";
-        const mapUrl = evData.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(venue + " " + addr)}`;
+      let evList = [];
+      let evHeadSeen = false;
+      let evHangNextTime = 0;
+      let evHungCount = 0;
+      const evSwayMap = new Map();
+      const evVis60Map = new Map();
 
-        const subLines = (evData.subSchedule || []).map(s => `<span class="eb-line">${s.title || s.label} ${s.time || ""}</span>`).join("");
+      let evLiftEl = null, evVeilEl = null, evCardEl = null, evTurnEl = null;
+      let evFrontFaceEl = null, evBackFaceEl = null, evFrontImgEl = null, evBackImgEl = null, evCloseBtnEl = null;
+      let evLiftedArticle = null;
+      let evBusy = false;
+      let evActiveAnims = [];
+      let evByItself = false;
+      let evLiftScrollY = 0;
+      let evCloseQueuedOnScroll = false;
+      let evHoldTimer = null;
+      let evTouring = evCanAnimate;
+      let evAutoTimer = null;
+      let evAutoTarget = null;
+      let evRingTimer = null;
+      let evRingIdx = 0;
+      let evPetalTimer = null;
+      let evActivePetals = 0;
+      let evSectionIntersecting = false;
+      let evTagHangObserver = null;
+      let evTagAutoObserver = null;
 
-        const calTitle = encodeURIComponent(`${title} · ${WEDDING.groom} & ${WEDDING.bride}`);
-        const calLoc = encodeURIComponent(`${venue}, ${addr}`);
-        const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&location=${calLoc}`;
-
-        evModalBackContent.innerHTML = `
-          <p class="eb-name" id="evModalTitle">${title}</p>
-          <p class="eb-when">${dateStr}<span>${timeStr}</span></p>
-          ${subLines ? `<p class="eb-note">${subLines}</p>` : ""}
-          <p class="ev-venue">
-            <span class="ev-place">${venue}</span>
-            <span class="ev-addr">${addr}</span>
-          </p>
-          <div class="ev-actions">
-            <a class="ev-btn" href="${mapUrl}" target="_blank" rel="noopener">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.8-6.5-11A6.5 6.5 0 0 1 18.5 10c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
-              ${isUr ? "مقام دیکھیں" : "Directions"}
-            </a>
-            <a class="ev-btn" href="${gCalUrl}" target="_blank" rel="noopener">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><rect height="14.5" rx="2" width="16" x="4" y="5.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13v4M10 15h4"/></svg>
-              ${isUr ? "کیلنڈر میں شامل کریں" : "Add to calendar"}
-            </a>
-          </div>
-        `;
-
-        const evCardEl2 = document.getElementById("evCard");
-        evLift.hidden = false;
-        evLift.classList.remove("is-flipped");
-
-        if (evCardEl2 && activeSourceTagBtn) {
-          const srcRect = activeSourceTagBtn.getBoundingClientRect();
-          evCardEl2.style.transition = "none";
-          evCardEl2.style.transform = "none";
-          const dstRect = evCardEl2.getBoundingClientRect();
-          const dx = (srcRect.left + srcRect.width / 2) - (dstRect.left + dstRect.width / 2);
-          const dy = (srcRect.top + srcRect.height / 2) - (dstRect.top + dstRect.height / 2);
-          const sc = Math.max(0.25, srcRect.width / Math.max(1, dstRect.width));
-          evCardEl2.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sc.toFixed(3)})`;
-          evCardEl2.offsetHeight; // force reflow
-          evCardEl2.style.transition = "";
+      // InviteCalendar (Exact 1:1 7aa79b27ad.js)
+      let activeCalMenuState = null;
+      function closeActiveCalMenu() {
+        if (!activeCalMenuState) return;
+        activeCalMenuState.menu.hidden = true;
+        activeCalMenuState.button.setAttribute("aria-expanded", "false");
+        activeCalMenuState = null;
+      }
+      document.addEventListener("click", (e) => {
+        if (activeCalMenuState && !activeCalMenuState.menu.contains(e.target)) closeActiveCalMenu();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && activeCalMenuState) {
+          const btn = activeCalMenuState.button;
+          closeActiveCalMenu();
+          btn.focus();
         }
+      });
 
-        playSfx(sfxTurn);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            if (evCardEl2) evCardEl2.style.transform = "translate(0px, 0px) scale(1)";
-            evLift.classList.add("is-flipped");
-          });
+      function pad2(n) { return (n < 10 ? "0" : "") + n; }
+      function formatUtcIcsDate(d) {
+        return d.getUTCFullYear() + pad2(d.getUTCMonth() + 1) + pad2(d.getUTCDate()) + "T" +
+               pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + "Z";
+      }
+      function escapeIcsText(s) {
+        return String(s || "").replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+      }
+      function attachInviteCalendar(btn, artEl, isUr) {
+        if (!btn || !artEl) return;
+        const evName = (artEl.querySelector(".ev-name")?.textContent || "").replace(/\s+/g, " ").trim();
+        const startIso = (artEl.dataset.start || "2026-12-06T19:00") + ":00" + (artEl.dataset.tz || "+05:00");
+        const endIso = (artEl.dataset.end || "2026-12-06T22:00") + ":00" + (artEl.dataset.tz || "+05:00");
+        const dtStart = new Date(startIso);
+        const dtEnd = new Date(endIso);
+        const place = (artEl.querySelector(".ev-place")?.textContent || "").replace(/\s+/g, " ").trim();
+        const addr = (artEl.querySelector(".ev-addr")?.textContent || "").replace(/\s+/g, " ").trim();
+        const loc = [place, addr].filter(Boolean).join(", ");
+        const coupleNames = Array.from(document.querySelectorAll(".h-name")).map(n => n.textContent.trim()).filter(Boolean).join(" & ");
+        const summary = evName + (coupleNames ? " · " + coupleNames : "");
+        const gCalUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(summary) +
+                        "&dates=" + formatUtcIcsDate(dtStart) + "/" + formatUtcIcsDate(dtEnd) +
+                        "&details=&location=" + encodeURIComponent(loc);
+        const icsLines = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//Gulistan//Invitation//EN",
+          "CALSCALE:GREGORIAN",
+          "METHOD:PUBLISH",
+          "BEGIN:VEVENT",
+          "UID:" + (artEl.dataset.event || "walima") + "-" + formatUtcIcsDate(dtStart) + "@gulistan",
+          "DTSTAMP:" + formatUtcIcsDate(new Date()),
+          "DTSTART:" + formatUtcIcsDate(dtStart),
+          "DTEND:" + formatUtcIcsDate(dtEnd),
+          "SUMMARY:" + escapeIcsText(summary),
+          "LOCATION:" + escapeIcsText(loc),
+          "DESCRIPTION:",
+          "END:VEVENT",
+          "END:VCALENDAR"
+        ].join("\r\n");
+        const icsBlobUrl = URL.createObjectURL(new Blob([icsLines], { type: "text/calendar;charset=utf-8" }));
+        const menu = document.createElement("div");
+        menu.className = "ev-cal-menu";
+        menu.hidden = true;
+        menu.setAttribute("role", "menu");
+        menu.innerHTML = `<a role="menuitem" target="_blank" rel="noopener">${isUr ? "گوگل کیلنڈر" : "Google Calendar"}</a>` +
+                         `<a role="menuitem">${isUr ? "ایپل یا آؤٹ لک" : "Apple or Outlook"}<small>${isUr ? "کیلنڈر فائل ڈاؤن لوڈ کریں" : "downloads a calendar file"}</small></a>`;
+        menu.children[0].href = gCalUrl;
+        menu.children[1].href = icsBlobUrl;
+        menu.children[1].download = (artEl.dataset.event || "event") + ".ics";
+        btn.parentNode.appendChild(menu);
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const wasSame = activeCalMenuState && activeCalMenuState.menu === menu;
+          closeActiveCalMenu();
+          if (wasSame) return;
+          menu.hidden = false;
+          btn.setAttribute("aria-expanded", "true");
+          activeCalMenuState = { menu, button: btn };
+          menu.querySelector("a")?.focus({ preventScroll: true });
         });
+        menu.addEventListener("click", () => setTimeout(closeActiveCalMenu, 0));
       }
 
-      function closeEventModal() {
-        if (!evLift) return;
-        const evCardEl2 = document.getElementById("evCard");
-        evLift.classList.remove("is-flipped");
-        if (evCardEl2 && activeSourceTagBtn) {
-          const srcRect = activeSourceTagBtn.getBoundingClientRect();
-          const dstRect = evCardEl2.getBoundingClientRect();
-          const dx = (srcRect.left + srcRect.width / 2) - (dstRect.left + dstRect.width / 2);
-          const dy = (srcRect.top + srcRect.height / 2) - (dstRect.top + dstRect.height / 2);
-          const sc = Math.max(0.25, srcRect.width / Math.max(1, dstRect.width));
-          evCardEl2.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+      function revealEventsHeader() {
+        if (evHeadSeen || !evSec) return;
+        evHeadSeen = true;
+        evSec.classList.add("is-seen");
+        if (!evCanAnimate || !evHead) return;
+        const kids = evHead.children;
+        if (kids[0]) {
+          kids[0].animate([
+            { opacity: 0, transform: "translateY(10px)" },
+            { opacity: 1, transform: "none" }
+          ], { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
         }
-        setTimeout(() => {
-          evLift.hidden = true;
-          if (evCardEl2) evCardEl2.style.transform = "";
-        }, 550);
+        if (kids[1]) {
+          kids[1].animate([
+            { opacity: 1, "--wipe": "-2%" },
+            { opacity: 1, "--wipe": "130%" }
+          ], { duration: 1500, delay: 250, easing: "cubic-bezier(.4,0,.3,1)", fill: "both" });
+        }
+        if (kids[2]) {
+          kids[2].animate([
+            { opacity: 0 },
+            { opacity: 1 }
+          ], { duration: 1000, delay: 2200, fill: "both" });
+        }
       }
 
-      if (evClose) evClose.addEventListener("click", closeEventModal);
-      if (evVeil) evVeil.addEventListener("click", closeEventModal);
+      function startTagSway(artEl, idx) {
+        if (document.documentElement.classList.contains("is-lite")) return;
+        const swayEl = artEl.querySelector(".tg-sway");
+        if (!swayEl) return;
+        const dur = 3300 + idx * 470;
+        const anim = swayEl.animate([
+          { transform: "rotate(-1.2deg)" },
+          { transform: "rotate(1.2deg)" }
+        ], {
+          duration: dur,
+          iterations: Infinity,
+          direction: "alternate",
+          easing: "ease-in-out",
+          delay: -randRange(0, dur)
+        });
+        evSwayMap.set(artEl, anim);
+      }
+
+      function hangEventTag(artEl) {
+        if (!artEl || artEl.classList.contains("is-hung") || artEl.dataset.queued) return;
+        if (!evCanAnimate) {
+          artEl.classList.add("is-hung");
+          artEl.setAttribute("data-rest", "");
+          return;
+        }
+        artEl.dataset.queued = "1";
+        const now = performance.now();
+        const waitMs = Math.max(0, evHangNextTime - now);
+        evHangNextTime = Math.max(now, evHangNextTime) + EV_TIMING.gap;
+
+        setTimeout(() => {
+          const idx = evList.indexOf(artEl);
+          artEl.classList.add("is-hung");
+          const dir = (idx % 2) ? -1 : 1;
+          const swingEl = artEl.querySelector(".tg-swing");
+          if (swingEl) {
+            const anim = swingEl.animate([
+              { transform: `translateY(-9%) rotate(${-22 * dir}deg)`, opacity: 0 },
+              { opacity: 1, offset: 0.14 },
+              { transform: `translateY(0) rotate(${12 * dir}deg)`, offset: 0.36 },
+              { transform: `rotate(${-6.5 * dir}deg)`, offset: 0.56 },
+              { transform: `rotate(${3.2 * dir}deg)`, offset: 0.74 },
+              { transform: `rotate(${-1.2 * dir}deg)`, offset: 0.88 },
+              { transform: "rotate(0deg)" }
+            ], { duration: EV_TIMING.hang, easing: "ease-in-out" });
+            anim.onfinish = () => {
+              artEl.setAttribute("data-rest", "");
+              scheduleAutoTagPreview();
+            };
+          }
+          playSfx(sfxTag, 0.55, randRange(0.92, 1.08));
+          startTagSway(artEl, Math.max(0, idx));
+          if (++evHungCount === 1) {
+            scheduleEventPetals();
+            scheduleEventRingPulse();
+          }
+        }, waitMs);
+      }
+
+      function ensureEvLiftOverlay() {
+        if (evLiftEl) return;
+        evLiftEl = document.createElement("div");
+        evLiftEl.className = "ev-lift";
+        evLiftEl.hidden = true;
+        evLiftEl.innerHTML =
+          '<div class="ev-veil"></div>' +
+          '<div class="ev-card" role="dialog" aria-modal="true" tabindex="-1">' +
+            '<div class="ev-turn">' +
+              '<div class="ev-face ev-face-front" aria-hidden="true"><img alt="" draggable="false"></div>' +
+              '<div class="ev-face ev-face-back"><img alt="" draggable="false"></div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="ev-close" type="button" aria-label="Hang the tag back on the branch">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+          '</button>';
+        document.body.appendChild(evLiftEl);
+        evVeilEl = evLiftEl.querySelector(".ev-veil");
+        evCardEl = evLiftEl.querySelector(".ev-card");
+        evTurnEl = evLiftEl.querySelector(".ev-turn");
+        evFrontFaceEl = evLiftEl.querySelector(".ev-face-front");
+        evBackFaceEl = evLiftEl.querySelector(".ev-face-back");
+        evFrontImgEl = evFrontFaceEl.querySelector("img");
+        evBackImgEl = evBackFaceEl.querySelector("img");
+        evCloseBtnEl = evLiftEl.querySelector(".ev-close");
+
+        evVeilEl.addEventListener("click", handleManualCloseLift);
+        evCloseBtnEl.addEventListener("click", handleManualCloseLift);
+        evCardEl.addEventListener("click", claimAutoLiftedCard);
+      }
+
+      function measureHangingTagPose(artEl) {
+        const tagBtn = artEl.querySelector(".ev-tag");
+        const rect = tagBtn.getBoundingClientRect();
+        let angle = 0;
+        [artEl.querySelector(".tg-sway"), artEl.querySelector(".tg-swing")].forEach(el => {
+          if (!el) return;
+          const tr = getComputedStyle(el).transform;
+          if (tr && tr !== "none") {
+            const m = tr.match(/matrix\(([^)]+)\)/);
+            if (m) {
+              const vals = m[1].split(",").map(parseFloat);
+              angle += Math.atan2(vals[1], vals[0]) * 180 / Math.PI;
+            }
+          }
+        });
+        const rad = angle * Math.PI / 180;
+        const h = tagBtn.offsetHeight;
+        const cx = rect.left + rect.width / 2 - Math.sin(rad) * h * 0.49;
+        const cy = rect.top + h * 0.01 + Math.cos(rad) * h * 0.49;
+        return { cx, cy, w: rect.width, angle };
+      }
+
+      function computeFlipTransformFromBranch(artEl) {
+        const pose = measureHangingTagPose(artEl);
+        const cardRect = evCardEl.getBoundingClientRect();
+        const scale = pose.w / Math.max(1, cardRect.width);
+        const dx = pose.cx - (cardRect.left + cardRect.width / 2);
+        const dy = pose.cy - (cardRect.top + cardRect.height / 2);
+        return `translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) rotate(${pose.angle.toFixed(2)}deg) scale(${scale.toFixed(4)})`;
+      }
+
+      function cancelActiveEvAnims() {
+        evActiveAnims.forEach(a => { try { a.cancel(); } catch (e) {} });
+        evActiveAnims = [];
+      }
+
+      function lockDocumentForLiftedTag() {
+        document.documentElement.classList.add("ev-lifted");
+        if (cardMainEl) cardMainEl.inert = true;
+      }
+
+      function liftAndFlipTag(artEl, byItself = false) {
+        if (!artEl || evLiftedArticle || evBusy) return;
+        ensureEvLiftOverlay();
+        evLiftedArticle = artEl;
+        evByItself = !!byItself;
+        evCloseQueuedOnScroll = false;
+        evLiftScrollY = window.scrollY;
+        if (!byItself) artEl.setAttribute("data-lifted", "");
+
+        const evType = artEl.dataset.event || "walima";
+        const cs = getComputedStyle(artEl);
+        ["--tag-r", "--tag-pl", "--tag-pr", "--tag-pf", "--tag-pb"].forEach(prop => {
+          evCardEl.style.setProperty(prop, cs.getPropertyValue(prop));
+        });
+
+        const artSrc = artEl.querySelector(".tg-art").getAttribute("src");
+        evFrontImgEl.src = artSrc;
+        evBackImgEl.src = artSrc.replace(".webp", "-back.webp");
+
+        const wordsClone = artEl.querySelector(".tg-words").cloneNode(true);
+        wordsClone.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
+        evFrontFaceEl.querySelectorAll(".tg-words").forEach(n => n.remove());
+        evFrontFaceEl.appendChild(wordsClone);
+
+        const backEl = artEl.querySelector(".ev-back");
+        backEl.hidden = false;
+        evBackFaceEl.appendChild(backEl);
+
+        evCardEl.setAttribute("aria-labelledby", `ev-${evType}-title`);
+        evLiftEl.hidden = false;
+        if (!byItself) lockDocumentForLiftedTag();
+
+        const tagBtn = artEl.querySelector(".ev-tag");
+        tagBtn.setAttribute("aria-expanded", "true");
+        cancelActiveEvAnims();
+
+        const fromTransform = computeFlipTransformFromBranch(artEl);
+        tagBtn.style.opacity = "0";
+        playSfx(sfxTurn, 0.75, 1);
+
+        if (!evCanAnimate) {
+          evTurnEl.style.transform = "rotateY(180deg)";
+          if (!byItself) evCloseBtnEl.focus({ preventScroll: true });
+          return;
+        }
+
+        evBusy = true;
+        evTurnEl.style.transform = "rotateY(180deg)";
+        evActiveAnims.push(
+          evCardEl.animate([
+            { transform: fromTransform },
+            { transform: "translateY(-1.5%) scale(1.03)", offset: 0.55 },
+            { transform: "none" }
+          ], { duration: EV_TIMING.lift, easing: "cubic-bezier(.3,.7,.25,1)" })
+        );
+        evActiveAnims.push(
+          evTurnEl.animate([
+            { transform: "rotateY(0deg)" },
+            { transform: "rotateY(8deg)", offset: 0.22 },
+            { transform: "rotateY(180deg)" }
+          ], { duration: EV_TIMING.lift, easing: "cubic-bezier(.5,.05,.3,1)" })
+        );
+        evActiveAnims.push(
+          evVeilEl.animate([
+            { opacity: 0 },
+            { opacity: 1 }
+          ], { duration: 500, easing: "ease-out" })
+        );
+        evActiveAnims.push(
+          evCloseBtnEl.animate([
+            { opacity: 0 },
+            { opacity: 0, offset: 0.6 },
+            { opacity: 1 }
+          ], { duration: EV_TIMING.lift })
+        );
+
+        evActiveAnims[0].onfinish = () => {
+          cancelActiveEvAnims();
+          evBusy = false;
+          if (!evByItself) {
+            evCloseBtnEl.focus({ preventScroll: true });
+            return;
+          }
+          if (evCloseQueuedOnScroll) {
+            closeLiftedTag();
+            return;
+          }
+          evHoldTimer = setTimeout(() => {
+            evHoldTimer = null;
+            if (evByItself) closeLiftedTag();
+          }, EV_TIMING.hold);
+        };
+      }
+
+      function closeLiftedTag() {
+        if (!evLiftedArticle || evBusy) return;
+        const artEl = evLiftedArticle;
+        const tagBtn = artEl.querySelector(".ev-tag");
+        const wasByItself = evByItself;
+        if (evHoldTimer) { clearTimeout(evHoldTimer); evHoldTimer = null; }
+        closeActiveCalMenu();
+
+        function finalizeClose() {
+          cancelActiveEvAnims();
+          evBusy = false;
+          evLiftedArticle = null;
+          evByItself = false;
+          evTurnEl.style.transform = "";
+          evLiftEl.hidden = true;
+          const backEl = evBackFaceEl.querySelector(".ev-back");
+          if (backEl) {
+            backEl.hidden = true;
+            artEl.appendChild(backEl);
+          }
+          document.documentElement.classList.remove("ev-lifted");
+          if (cardMainEl) cardMainEl.inert = false;
+          tagBtn.style.opacity = "";
+          tagBtn.setAttribute("aria-expanded", "false");
+          if (!wasByItself) tagBtn.focus({ preventScroll: true });
+          scheduleAutoTagPreview();
+          if (evCanAnimate) {
+            const swingEl = artEl.querySelector(".tg-swing");
+            if (swingEl) {
+              swingEl.animate([
+                { transform: "rotate(4deg)" },
+                { transform: "rotate(-2deg)", offset: 0.4 },
+                { transform: "rotate(.8deg)", offset: 0.75 },
+                { transform: "rotate(0deg)" }
+              ], { duration: 1200, easing: "ease-in-out" });
+            }
+          }
+        }
+
+        playSfx(sfxTurn, 0.5, 1.12);
+        if (!evCanAnimate) {
+          finalizeClose();
+          return;
+        }
+
+        evBusy = true;
+        cancelActiveEvAnims();
+        const toTransform = computeFlipTransformFromBranch(artEl);
+        evActiveAnims.push(
+          evCardEl.animate([
+            { transform: "none" },
+            { transform: "translateY(-1.5%) scale(1.03)", offset: 0.35 },
+            { transform: toTransform }
+          ], { duration: EV_TIMING.back, easing: "cubic-bezier(.5,0,.35,1)", fill: "forwards" })
+        );
+        evActiveAnims.push(
+          evTurnEl.animate([
+            { transform: "rotateY(180deg)" },
+            { transform: "rotateY(0deg)", offset: 0.8 },
+            { transform: "rotateY(0deg)" }
+          ], { duration: EV_TIMING.back, easing: "cubic-bezier(.4,0,.3,1)", fill: "forwards" })
+        );
+        evActiveAnims.push(
+          evVeilEl.animate([
+            { opacity: 1 },
+            { opacity: 0 }
+          ], { duration: EV_TIMING.back, easing: "ease-in", fill: "forwards" })
+        );
+        evActiveAnims.push(
+          evCloseBtnEl.animate([
+            { opacity: 1 },
+            { opacity: 0 }
+          ], { duration: 250, fill: "forwards" })
+        );
+        evActiveAnims[0].onfinish = finalizeClose;
+      }
+
+      function stopAutoTagTour() {
+        evTouring = false;
+        if (evAutoTimer) {
+          clearTimeout(evAutoTimer);
+          evAutoTimer = null;
+          evAutoTarget = null;
+        }
+      }
+
+      function scheduleAutoTagPreview() {
+        if (!evTouring || evLiftedArticle || evBusy || evAutoTimer) return;
+        const candidate = evList.find(artEl =>
+          !artEl.hasAttribute("data-turned") &&
+          artEl.hasAttribute("data-rest") &&
+          evVis60Map.get(artEl)
+        );
+        if (!candidate) return;
+        evAutoTarget = candidate;
+        evAutoTimer = setTimeout(() => {
+          evAutoTimer = null;
+          evAutoTarget = null;
+          if (!evTouring || evLiftedArticle || evBusy || !evVis60Map.get(candidate) || document.hidden) {
+            scheduleAutoTagPreview();
+            return;
+          }
+          candidate.setAttribute("data-turned", "");
+          liftAndFlipTag(candidate, true);
+        }, EV_TIMING.auto);
+      }
+
+      function claimAutoLiftedCard() {
+        if (!evByItself) return;
+        evByItself = false;
+        if (evHoldTimer) { clearTimeout(evHoldTimer); evHoldTimer = null; }
+        if (evLiftedArticle) evLiftedArticle.setAttribute("data-lifted", "");
+        stopAutoTagTour();
+        lockDocumentForLiftedTag();
+      }
+
+      function handleManualCloseLift() {
+        if (evByItself) stopAutoTagTour();
+        closeLiftedTag();
+      }
+
+      window.addEventListener("scroll", () => {
+        if (!evLiftedArticle || !evByItself || Math.abs(window.scrollY - evLiftScrollY) < 40) return;
+        stopAutoTagTour();
+        if (evBusy) evCloseQueuedOnScroll = true;
+        else closeLiftedTag();
+      }, { passive: true });
+
+      document.addEventListener("keydown", (e) => {
+        if (!evLiftedArticle) return;
+        if (e.key === "Escape") {
+          if (evLiftEl && evLiftEl.querySelector(".ev-cal-menu:not([hidden])")) return;
+          handleManualCloseLift();
+        }
+      }, true);
+
+      function pulseEventTagRing() {
+        if (!evSectionIntersecting || evLiftedArticle || evBusy || evAutoTimer || document.hidden) return;
+        const candidates = evList.filter(artEl =>
+          artEl.hasAttribute("data-rest") &&
+          !artEl.hasAttribute("data-lifted") &&
+          evVis60Map.get(artEl)
+        );
+        if (!candidates.length) return;
+        const target = candidates[evRingIdx++ % candidates.length];
+        const ring = document.createElement("i");
+        ring.className = "tg-ring";
+        ring.setAttribute("aria-hidden", "true");
+        target.querySelector(".tg-swing")?.appendChild(ring);
+        ring.animate([
+          { opacity: 0.95, transform: "scale(.8)" },
+          { opacity: 0, transform: "scale(1.35)" }
+        ], { duration: EV_TIMING.ring, easing: "cubic-bezier(.2,.6,.3,1)" }).onfinish = () => ring.remove();
+      }
+
+      function scheduleEventRingPulse() {
+        if (!evCanAnimate || evRingTimer || !evHungCount) return;
+        evRingTimer = setTimeout(() => {
+          evRingTimer = null;
+          if (!evSectionIntersecting) return;
+          pulseEventTagRing();
+          scheduleEventRingPulse();
+        }, randRange(3800, 5600));
+      }
+
+      const EV_BRANCH_SPOTS = {
+        v: [[0.17, 0.2], [0.73, 0.42], [0.33, 0.6], [0.72, 0.8], [0.62, 0.07]],
+        h: [[0.15, 0.25], [0.33, 0.55], [0.47, 0.45], [0.58, 0.3], [0.71, 0.45], [0.82, 0.72]]
+      };
+
+      function driftEventPetal() {
+        if (!evSec || !evBranch || !evPetalsBox) return;
+        const secW = evSec.offsetWidth;
+        const brL = evBranch.offsetLeft;
+        const brW = evBranch.offsetWidth;
+        const brH = evBranch.offsetHeight;
+        const isHoriz = (brW / Math.max(1, brH)) > 1.5;
+        const spots = EV_BRANCH_SPOTS[isHoriz ? "h" : "v"];
+        const spot = spots[Math.floor(Math.random() * spots.length)];
+
+        const el = document.createElement("i");
+        el.className = "ev-petal";
+        el.innerHTML = '<b><img alt="" draggable="false"></b>';
+        el.querySelector("img").src = `assets/gulistan/petal-${Math.floor(Math.random() * 9)}.webp`;
+        const size = secW * randRange(0.028, 0.042) * (isHoriz ? 0.6 : 1);
+        el.style.width = size.toFixed(1) + "px";
+        evPetalsBox.appendChild(el);
+
+        const x0 = brL + spot[0] * brW + randRange(-0.03, 0.03) * brW;
+        const y0 = spot[1] * brH;
+        const fallDist = Math.min(evPetalsBox.offsetHeight - y0, secW * randRange(0.45, 0.7));
+        const x1 = x0 + randRange(-0.05, 0.14) * secW;
+        const sway = randRange(0.02, 0.045) * secW;
+        const y1 = y0 + fallDist;
+        const kf = [];
+        for (let s = 0; s <= 8; s++) {
+          const t = s / 8;
+          kf.push({
+            transform: `translate(${(x0 + (x1 - x0) * t + Math.sin(t * 8 + x0) * sway).toFixed(1)}px,${(y0 + (y1 - y0) * t).toFixed(1)}px) rotate(${(t * randRange(140, 280)).toFixed(0)}deg)`,
+            opacity: t < 0.1 ? t / 0.1 : (t > 0.78 ? Math.max(0, (1 - t) / 0.22) : 1)
+          });
+        }
+        const anim = el.animate(kf, { duration: randRange(6500, 9000), fill: "both" });
+        el.firstChild.animate([
+          { transform: "rotateX(0) rotateY(0)" },
+          { transform: `rotateX(${randRange(120, 240).toFixed(0)}deg) rotateY(${randRange(60, 160).toFixed(0)}deg)` }
+        ], { duration: randRange(2600, 4200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+        evActivePetals++;
+        anim.onfinish = () => {
+          el.remove();
+          evActivePetals--;
+        };
+      }
+
+      function scheduleEventPetals() {
+        if (!evCanAnimate || evPetalTimer || document.documentElement.classList.contains("is-lite")) return;
+        evPetalTimer = setTimeout(() => {
+          evPetalTimer = null;
+          if (evSectionIntersecting && evActivePetals < 3 && !document.hidden && !evLiftedArticle) {
+            driftEventPetal();
+          }
+          if (evSectionIntersecting) scheduleEventPetals();
+        }, randRange(2500, 4500));
+      }
+
+      function parseTime24(timeStr, fallbackHour = 19) {
+        const m = String(timeStr || "").match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+        if (!m) return { h: fallbackHour, m: 0 };
+        let h = parseInt(m[1], 10);
+        const mins = parseInt(m[2] || "0", 10);
+        const ampm = (m[3] || "").toLowerCase();
+        if (ampm === "pm" && h < 12) h += 12;
+        if (ampm === "am" && h === 12) h = 0;
+        return { h, m: mins };
+      }
 
       function renderEventTags(lang) {
         const isUr = lang === "ur";
-        const stage = document.getElementById("evStage");
-        const evSec = document.getElementById("events");
-        if (!stage || !evSec) return;
+        if (!evStage || !evSec) return;
+
+        if (evLiftedArticle) closeLiftedTag();
+        if (evTagHangObserver) evTagHangObserver.disconnect();
+        if (evTagAutoObserver) evTagAutoObserver.disconnect();
+        evSwayMap.forEach(a => { try { a.cancel(); } catch (e) {} });
+        evSwayMap.clear();
+        evVis60Map.clear();
 
         const filtered = getFilteredEvents();
+        const wasAlreadyHung = evHungCount > 0;
         evSec.setAttribute("data-n", String(filtered.length));
         evSec.style.setProperty("--cards", String(filtered.length));
+        if (evCanAnimate) evSec.classList.add("is-armed");
 
-        // Remove old .ev nodes
-        stage.querySelectorAll(".ev").forEach(n => n.remove());
+        evStage.querySelectorAll(".ev").forEach(n => n.remove());
+        evList = [];
 
-        const petalsDiv = document.getElementById("evPetals");
         filtered.forEach((ev, idx) => {
           const typeKey = (ev.type || ev.key || "walima").toLowerCase();
-          const artName = typeKey.includes("mehndi") ? "tag-mehndi.webp" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "tag-baraat.webp" : "tag-walima.webp";
+          const evCss = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "baraat" : (typeKey.includes("nikah") || typeKey.includes("nikkah")) ? "nikah" : "walima";
+          const artName = `tag-${evCss}.webp`;
           const title = isUr ? (ev.titleUr || ev.titleEn) : (ev.titleEn || typeKey);
-          const dateParts = (ev.displayDate || "").split(",");
-          const dayStr = dateParts[0] ? dateParts[0].trim() : "";
-          const dmyStr = dateParts[1] ? dateParts[1].trim().replace(/202\d/, "").trim() : (ev.date || "");
-          const timeStr = isUr ? toUrduDigits(ev.time || "") : (ev.time || "");
+
+          const rawDate = (ev.displayDate || "").trim();
+          let dayStr = "";
+          let dmyStr = "";
+          if (rawDate.includes(",")) {
+            const parts = rawDate.split(",");
+            dayStr = parts[0].trim();
+            dmyStr = parts[1].trim().replace(/\s+20\d\d$/, "").trim();
+          } else {
+            const m = rawDate.match(/^([A-Za-z]+)\s+(\d+\s+[A-Za-z]+)/);
+            if (m) { dayStr = m[1]; dmyStr = m[2]; }
+            else { dayStr = rawDate; dmyStr = ev.date || ""; }
+          }
+          const fullBackDate = rawDate.replace(",", "");
+          const timeClean = (ev.time || "7:00 pm").replace(/\s*onwards$/i, "").trim();
+          const timeStr = isUr ? toUrduDigits(timeClean) : timeClean;
+          const timeOnwardsStr = isUr ? `${timeStr} سے` : `${timeClean} onwards`;
+
+          const dateIso = ev.date || "2026-12-06";
+          const parsedT = parseTime24(timeClean, 19);
+          const startIso = `${dateIso}T${pad2(parsedT.h)}:${pad2(parsedT.m)}`;
+          const endIso = `${dateIso}T${pad2(Math.min(23, parsedT.h + 3))}:${pad2(parsedT.m)}`;
+
+          const venue = isUr ? (ev.venueUrdu || ev.venue || "") : (ev.venue || "");
+          const addr = ev.address || "";
+          const mapUrl = ev.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(venue + " " + addr)}`;
+          const subLines = (ev.subSchedule || []).map(s => `<span class="eb-line">${s.title || s.label} ${s.time || ""}</span>`).join("");
 
           const artEl = document.createElement("article");
-          const evCss = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "baraat" : "walima";
-          artEl.className = `ev ev-${evCss} is-hung ${idx === filtered.length - 1 ? "is-odd-last" : ""}`;
+          const isOddLast = (filtered.length % 2 === 1) && (idx === filtered.length - 1);
+          artEl.className = `ev ev-${evCss}${isOddLast ? " is-odd-last" : ""}`;
+          artEl.setAttribute("aria-labelledby", `ev-${evCss}`);
+          artEl.setAttribute("data-event", evCss);
           artEl.setAttribute("data-slot", String(idx));
+          artEl.setAttribute("data-start", startIso);
+          artEl.setAttribute("data-end", endIso);
+          artEl.setAttribute("data-tz", "+05:00");
+
           artEl.innerHTML = `
-            <button class="ev-tag" type="button" aria-label="View details for ${title}">
+            <button class="ev-tag" type="button" aria-controls="ev-${evCss}-back" aria-describedby="ev-${evCss}-when" aria-expanded="false" aria-haspopup="dialog">
               <span class="tg-sway">
                 <span class="tg-swing">
-                  <img class="tg-art" src="assets/gulistan/${artName}" alt="" draggable="false">
+                  <img class="tg-art" src="assets/gulistan/${artName}" width="621" height="1588" alt="" draggable="false" decoding="async">
                   <span class="tg-words">
-                    <span class="ev-name">${title}</span>
-                    <span class="tg-when">
+                    <span class="ev-name" id="ev-${evCss}">${title}</span>
+                    <span class="tg-when" id="ev-${evCss}-when">
                       <span class="ev-day">${isUr ? (ev.displayDateUrdu || dayStr) : dayStr}</span>
                       <span class="ev-dmy">${isUr ? "" : dmyStr}</span>
                       <span class="ev-time">${timeStr}</span>
@@ -3098,13 +3615,113 @@
                 </span>
               </span>
             </button>
+            <div class="ev-back" id="ev-${evCss}-back" hidden>
+              <p class="eb-name" id="ev-${evCss}-title">${title}</p>
+              <p class="eb-when">${isUr ? (ev.displayDateUrdu || toUrduDigits(fullBackDate)) : fullBackDate}<span>${timeOnwardsStr}</span></p>
+              ${subLines ? `<p class="eb-note">${subLines}</p>` : ""}
+              <p class="ev-venue">
+                <span class="ev-place">${venue}</span>
+                <span class="ev-addr">${addr}</span>
+              </p>
+              <div class="ev-actions">
+                <a class="ev-btn" href="${mapUrl}" target="_blank" rel="noopener">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.8-6.5-11A6.5 6.5 0 0 1 18.5 10c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                  ${isUr ? "مقام دیکھیں" : "Directions"}
+                </a>
+                <button class="ev-btn ev-btn-cal" type="button" aria-expanded="false" aria-haspopup="true">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><rect height="14.5" rx="2" width="16" x="4" y="5.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13v4M10 15h4"/></svg>
+                  ${isUr ? "کیلنڈر میں شامل کریں" : "Add to calendar"}
+                </button>
+              </div>
+            </div>
           `;
 
           const tagBtn = artEl.querySelector(".ev-tag");
-          tagBtn.addEventListener("click", () => openEventModal(ev, isUr, tagBtn));
-          stage.insertBefore(artEl, petalsDiv);
+          tagBtn.addEventListener("click", () => {
+            stopAutoTagTour();
+            hangEventTag(artEl);
+            liftAndFlipTag(artEl, false);
+          });
+
+          const calBtn = artEl.querySelector(".ev-btn-cal");
+          attachInviteCalendar(calBtn, artEl, isUr);
+
+          evStage.insertBefore(artEl, evPetalsBox);
+          evList.push(artEl);
+
+          if (wasAlreadyHung) {
+            artEl.classList.add("is-hung");
+            artEl.setAttribute("data-rest", "");
+            startTagSway(artEl, idx);
+          }
         });
+
+        if ("IntersectionObserver" in window) {
+          evTagHangObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting) return;
+              evTagHangObserver.unobserve(entry.target);
+              const artEl = entry.target.closest(".ev");
+              if (artEl) hangEventTag(artEl);
+            });
+          }, { threshold: 0.45 });
+
+          evTagAutoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const artEl = entry.target.closest(".ev");
+              if (!artEl) return;
+              const vis = entry.intersectionRatio >= 0.6;
+              evVis60Map.set(artEl, vis);
+              if (artEl === evAutoTarget && !vis && evAutoTimer) {
+                clearTimeout(evAutoTimer);
+                evAutoTimer = null;
+                evAutoTarget = null;
+              }
+            });
+            scheduleAutoTagPreview();
+          }, { threshold: [0, 0.6] });
+
+          evList.forEach(artEl => {
+            const btn = artEl.querySelector(".ev-tag");
+            if (btn) {
+              if (!wasAlreadyHung) evTagHangObserver.observe(btn);
+              evTagAutoObserver.observe(btn);
+            }
+          });
+        } else {
+          revealEventsHeader();
+          evList.forEach(hangEventTag);
+        }
       }
+
+      if (evSec && "IntersectionObserver" in window) {
+        new IntersectionObserver((entries) => {
+          const entry = entries[entries.length - 1];
+          evSectionIntersecting = entry.isIntersecting;
+          if (evSectionIntersecting) {
+            evSec.classList.remove("is-away", "is-far");
+            scheduleEventRingPulse();
+            scheduleEventPetals();
+          }
+        }, { threshold: 0, rootMargin: "-1px 0px" }).observe(evSec);
+
+        if (evHead) {
+          new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) revealEventsHeader();
+            });
+          }, { threshold: 0.6 }).observe(evHead);
+        }
+      }
+
+      window.__events = {
+        T: EV_TIMING,
+        close: closeLiftedTag,
+        drift: driftEventPetal,
+        ring: pulseEventTagRing,
+        open: (artEl) => { stopAutoTagTour(); liftAndFlipTag(artEl, false); },
+        hangAll: () => { revealEventsHeader(); evList.forEach(hangEventTag); }
+      };
 
       // 12. Sundial Odometer Countdown (Persistent Rolling Digit Strips)
       function ensureDigitStrips(containerEl, count = 2) {
@@ -3275,7 +3892,7 @@
         if (activeEvents.length === 1) {
           evTitle.textContent = isUr ? (activeEvents[0].titleUr || activeEvents[0].titleEn) : `The ${activeEvents[0].titleEn}`;
         } else {
-          evTitle.textContent = isUr ? "شادی کی تقریبات" : "The Wedding Ceremonies";
+          evTitle.textContent = isUr ? "شادی کی تقریبات" : "The Celebrations";
         }
         renderEventTags(lang);
 
