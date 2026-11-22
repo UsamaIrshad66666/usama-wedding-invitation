@@ -2898,7 +2898,7 @@
         </button>
       </div>
       <div class="top-controls-right" style="display: flex; gap: 6px; align-items: center;">
-        <button class="ctrl-btn" id="mughalAudioBtn" type="button" aria-label="Toggle background music">
+        <button class="ctrl-btn" id="mughalAudioBtn" type="button" aria-label="Toggle background music" style="display:none;">
           <span id="mughalAudioIcon">🔊</span>
           <span id="mughalAudioText">Music: Off</span>
         </button>
@@ -4843,6 +4843,11 @@
 
     function updateNavigationControls(viewName) {
       const homeNavBtn = document.getElementById("homeNavBtn");
+      const mughalAudioBtn = document.getElementById("mughalAudioBtn");
+      const isUsamaCard = WEDDING && (WEDDING.slug === "Usama-and-Bissal-wedding-invitation" || (WEDDING.groom && WEDDING.groom.includes("Usama")));
+      if (mughalAudioBtn && isUsamaCard) {
+        mughalAudioBtn.style.display = "none";
+      }
       const homeNavIcon = document.getElementById("homeNavIcon");
       const homeNavText = document.getElementById("homeNavText");
       if (!homeNavBtn) return;
@@ -8472,7 +8477,8 @@ function renderAboutPage(animateGlide = false) {
         }
         if (!env || env.classList.contains("open")) return;
         env.classList.add("open");
-        if (typeof playMughalAudio === "function") playMughalAudio();
+        const isUsamaCard = WEDDING && (WEDDING.slug === "Usama-and-Bissal-wedding-invitation" || (WEDDING.groom && WEDDING.groom.includes("Usama")));
+        if (!isUsamaCard && typeof playMughalAudio === "function") playMughalAudio();
         if (btn) {
           btn.disabled = true;
           btn.textContent = t.openingBtn;
@@ -9236,9 +9242,19 @@ function renderAboutPage(animateGlide = false) {
     const mughalAudioText = document.getElementById("mughalAudioText");
     let isMughalAudioPlaying = false;
 
+    function isUsamaWedding() {
+      return !!(WEDDING && (WEDDING.slug === "Usama-and-Bissal-wedding-invitation" || (WEDDING.groom && WEDDING.groom.includes("Usama"))));
+    }
+
     function updateAudioUi(playing) {
+      if (isUsamaWedding()) {
+        if (mughalAudioBtn) mughalAudioBtn.style.display = "none";
+        if (mughalAudio && !mughalAudio.paused) mughalAudio.pause();
+        return;
+      }
       isMughalAudioPlaying = playing;
       if (mughalAudioBtn) {
+        mughalAudioBtn.style.display = "inline-flex";
         if (playing) {
           mughalAudioBtn.classList.add("playing");
           if (mughalAudioIcon) mughalAudioIcon.textContent = "🔊";
@@ -9252,6 +9268,7 @@ function renderAboutPage(animateGlide = false) {
     }
 
     function playMughalAudio() {
+      if (isUsamaWedding()) return;
       if (!mughalAudio) return;
       mughalAudio.muted = false;
       const p = mughalAudio.play();
