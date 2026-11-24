@@ -1028,6 +1028,7 @@
       .invite-card { flex: 0 0 82vw; max-width: 315px; }
       .carousel-nav-arrows { display: none; }
       .how-grid, .foot-grid { grid-template-columns: 1fr; }
+      .dv-device-seg { display: none; }
       .dv-frame { width: 100%; border-radius: 0; padding: 0; max-height: none; }
       .dv-iframe { border-radius: 0; }
     }
@@ -1659,9 +1660,9 @@
         });
       });
 
-      // Live Preview Studio Modal
+      // Live Preview Studio Modal (Intelligent Back-Button & Zero History Pollution)
       const modal = document.getElementById("mainDemoModal");
-      const iframe = document.getElementById("dvIframe");
+      let iframe = document.getElementById("dvIframe");
       const dvTitle = document.getElementById("dvTitle");
       const dvSub = document.getElementById("dvSub");
       const dvOpenTabLink = document.getElementById("dvOpenTabLink");
@@ -1671,6 +1672,22 @@
       const dvFrame = document.getElementById("dvFrame");
       const dvPhoneBtn = document.getElementById("dvPhoneBtn");
       const dvIpadBtn = document.getElementById("dvIpadBtn");
+      let isDemoModalOpen = false;
+      let pushedDemoHistoryState = false;
+
+      // Replace the iframe DOM node so changing themes NEVER pollutes the browser's Back stack!
+      function mountCleanIframe(url) {
+        if (!dvFrame) return;
+        const oldFrame = document.getElementById("dvIframe");
+        if (oldFrame) oldFrame.remove();
+        const fresh = document.createElement("iframe");
+        fresh.id = "dvIframe";
+        fresh.className = "dv-iframe";
+        fresh.title = "Live Theme Preview";
+        if (url) fresh.src = url;
+        dvFrame.appendChild(fresh);
+        iframe = fresh;
+      }
 
       function syncModalBars(themeKey) {
         const isMughal = isMughalKey(themeKey) || themeKey === "mughal";
@@ -1705,14 +1722,39 @@
         const isMughal = isMughalKey(themeKey) || themeKey === "mughal";
         const resolved = isMughal ? (isMughalKey(themeKey) ? themeKey : activeMughalColor) : themeKey;
         syncModalBars(resolved);
-        if (iframe) iframe.src = getDemoUrl(resolved);
+        mountCleanIframe(getDemoUrl(resolved));
         if (modal) modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+        if (!isDemoModalOpen) {
+          isDemoModalOpen = true;
+          try {
+            window.history.pushState({ edawatModal: "demo", theme: resolved }, "");
+            pushedDemoHistoryState = true;
+          } catch (e) {}
+        }
       }
 
-      function closeLiveDemoModal() {
+      function closeLiveDemoModal(fromPopState = false) {
+        if (!isDemoModalOpen) return;
+        isDemoModalOpen = false;
         if (modal) modal.classList.remove("show");
-        if (iframe) iframe.src = "about:blank";
+        document.body.style.overflow = "";
+        const oldFrame = document.getElementById("dvIframe");
+        if (oldFrame) oldFrame.remove();
+        iframe = null;
+        if (!fromPopState && pushedDemoHistoryState) {
+          pushedDemoHistoryState = false;
+          try { window.history.back(); } catch (e) {}
+        } else {
+          pushedDemoHistoryState = false;
+        }
       }
+
+      window.addEventListener("popstate", () => {
+        if (isDemoModalOpen) {
+          closeLiveDemoModal(true);
+        }
+      });
 
       document.querySelectorAll("[data-open-demo]").forEach(el => {
         el.addEventListener("click", (e) => {
@@ -1721,8 +1763,8 @@
         });
       });
 
-      document.getElementById("dvCloseBtn")?.addEventListener("click", closeLiveDemoModal);
-      document.getElementById("dvBackAllBtn")?.addEventListener("click", closeLiveDemoModal);
+      document.getElementById("dvCloseBtn")?.addEventListener("click", () => closeLiveDemoModal(false));
+      document.getElementById("dvBackAllBtn")?.addEventListener("click", () => closeLiveDemoModal(false));
 
       if (dvPhoneBtn && dvIpadBtn && dvFrame) {
         dvPhoneBtn.addEventListener("click", () => {
@@ -1754,7 +1796,7 @@
               }
             } catch (err) {}
           }
-          if (iframe) iframe.src = getDemoUrl(resolved);
+          mountCleanIframe(getDemoUrl(resolved));
         });
       });
 

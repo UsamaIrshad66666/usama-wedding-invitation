@@ -3964,6 +3964,27 @@
       }
     }
 
+    let isOrderPreviewModalOpen = false;
+    let pushedOrderPreviewHistory = false;
+    let activeWizardStepId = "stepStage1";
+
+    function mountOrderPreviewIframe(url) {
+      const frameBox = document.getElementById("demoViewPhoneFrame");
+      if (!frameBox) return;
+      const existing = document.getElementById("previewModalIframe");
+      if (existing) existing.remove();
+      const fresh = document.createElement("iframe");
+      fresh.id = "previewModalIframe";
+      fresh.className = "preview-modal-iframe";
+      fresh.title = "Theme Live Demo";
+      if (url) fresh.src = url;
+      frameBox.appendChild(fresh);
+    }
+
+    function getActivePreviewIframe() {
+      return document.getElementById("previewModalIframe");
+    }
+
     function openThemeLivePreview(themeKey) {
       const isMughal = isMughalColorKey(themeKey) || themeKey === "mughal";
       const resolvedKey = isMughal ? (isMughalColorKey(themeKey) ? themeKey : currentMughalColor) : themeKey;
@@ -3971,13 +3992,31 @@
       const demoUrl = getThemeLiveDemoUrl(resolvedKey, side);
 
       updateModalExplorerBars(resolvedKey);
-      if (previewModalIframe) previewModalIframe.src = demoUrl;
+      mountOrderPreviewIframe(demoUrl);
       if (themePreviewModal) themePreviewModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      if (!isOrderPreviewModalOpen) {
+        isOrderPreviewModalOpen = true;
+        try {
+          window.history.pushState({ wizardStep: activeWizardStepId, edawatModal: "preview" }, "");
+          pushedOrderPreviewHistory = true;
+        } catch (e) {}
+      }
     }
 
-    function closeThemeLivePreview() {
+    function closeThemeLivePreview(fromPopState = false) {
+      if (!isOrderPreviewModalOpen) return;
+      isOrderPreviewModalOpen = false;
       if (themePreviewModal) themePreviewModal.classList.remove("show");
-      if (previewModalIframe) previewModalIframe.src = "about:blank";
+      document.body.style.overflow = "";
+      const existing = document.getElementById("previewModalIframe");
+      if (existing) existing.remove();
+      if (!fromPopState && pushedOrderPreviewHistory) {
+        pushedOrderPreviewHistory = false;
+        try { window.history.back(); } catch (e) {}
+      } else {
+        pushedOrderPreviewHistory = false;
+      }
     }
 
     document.querySelectorAll("[data-preview-theme]").forEach(btn => {
@@ -3989,7 +4028,7 @@
       });
     });
 
-    // Switch between the 7 Main Themes right inside the Explorer Modal
+    // Switch between the 7 Main Themes right inside the Explorer Modal (zero history pollution)
     document.querySelectorAll("#previewModalThemeSwitcher .preview-theme-chip").forEach(chip => {
       chip.addEventListener("click", () => {
         const targetTheme = chip.getAttribute("data-modal-switch-theme");
@@ -3999,17 +4038,17 @@
         const nowMughal = isMughalColorKey(resolved);
 
         updateModalExplorerBars(resolved);
-        if (wasMughal && nowMughal && previewModalIframe && previewModalIframe.contentWindow) {
-          // Already on Mughal demo: switch color in-place!
+        const curIframe = getActivePreviewIframe();
+        if (wasMughal && nowMughal && curIframe && curIframe.contentWindow) {
           try {
-            if (typeof previewModalIframe.contentWindow.setMughalColorInPlace === "function") {
-              previewModalIframe.contentWindow.setMughalColorInPlace(resolved);
+            if (typeof curIframe.contentWindow.setMughalColorInPlace === "function") {
+              curIframe.contentWindow.setMughalColorInPlace(resolved);
               return;
             }
           } catch (err) {}
         }
         const side = hiddenSideInput ? hiddenSideInput.value : "groom";
-        if (previewModalIframe) previewModalIframe.src = getThemeLiveDemoUrl(resolved, side);
+        mountOrderPreviewIframe(getThemeLiveDemoUrl(resolved, side));
       });
     });
 
@@ -4020,17 +4059,18 @@
         setUnifiedMughalCardColor(newColor, false);
         updateModalExplorerBars(newColor);
 
-        if (previewModalIframe && previewModalIframe.contentWindow) {
+        const curIframe = getActivePreviewIframe();
+        if (curIframe && curIframe.contentWindow) {
           try {
-            if (typeof previewModalIframe.contentWindow.setMughalColorInPlace === "function") {
-              previewModalIframe.contentWindow.setMughalColorInPlace(newColor);
-              showToast(`🎨 Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor} (current page preserved)!`);
+            if (typeof curIframe.contentWindow.setMughalColorInPlace === "function") {
+              curIframe.contentWindow.setMughalColorInPlace(newColor);
+              showToast(`Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor} (current page preserved)`);
               return;
             }
           } catch (err) {}
           try {
-            previewModalIframe.contentWindow.postMessage({ type: "SET_MUGHAL_COLOR", color: newColor }, "*");
-            showToast(`🎨 Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor}!`);
+            curIframe.contentWindow.postMessage({ type: "SET_MUGHAL_COLOR", color: newColor }, "*");
+            showToast(`Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor}`);
             return;
           } catch (err2) {}
         }
@@ -4049,11 +4089,11 @@
       }
     });
 
-    if (previewModalCloseBtn) previewModalCloseBtn.addEventListener("click", closeThemeLivePreview);
-    if (previewModalBackBtn) previewModalBackBtn.addEventListener("click", closeThemeLivePreview);
+    if (previewModalCloseBtn) previewModalCloseBtn.addEventListener("click", () => closeThemeLivePreview(false));
+    if (previewModalBackBtn) previewModalBackBtn.addEventListener("click", () => closeThemeLivePreview(false));
     if (themePreviewModal) {
       themePreviewModal.addEventListener("click", (e) => {
-        if (e.target === themePreviewModal) closeThemeLivePreview();
+        if (e.target === themePreviewModal) closeThemeLivePreview(false);
       });
     }
     if (previewModalSelectBtn) {
@@ -4070,17 +4110,24 @@
             }
           }
         }
-        closeThemeLivePreview();
+        closeThemeLivePreview(true);
         updateProgressBarFill();
-        scrollToConciergeStep("stepStage4");
+        scrollToConciergeStep("stepStage4", false);
       });
     }
 
-    // Hook up Smooth Step Navigation Buttons & Sticky Stepper Pills
-    function scrollToConciergeStep(stepId) {
+    // Hook up Smooth Step Navigation Buttons & Sticky Stepper Pills (with Intelligent Browser Back Support)
+    try {
+      window.history.replaceState({ wizardStep: "stepStage1" }, "");
+    } catch (e) {}
+
+    function scrollToConciergeStep(stepId, fromPopState = false) {
       if (stepId === "stepStage2") userInteractedSide = true;
       if (stepId === "stepStage3") { userInteractedSide = true; userInteractedEvents = true; }
       if (stepId === "stepStage4") { userInteractedSide = true; userInteractedEvents = true; userInteractedTheme = true; }
+
+      const changed = activeWizardStepId !== stepId;
+      activeWizardStepId = stepId;
 
       document.querySelectorAll(".concierge-step-stage").forEach(sec => {
         sec.classList.toggle("active-wizard-step", sec.id === stepId);
@@ -4090,7 +4137,28 @@
       });
       updateProgressBarFill();
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (!fromPopState && changed) {
+        try {
+          window.history.pushState({ wizardStep: stepId }, "");
+        } catch (e) {}
+      }
     }
+
+    window.addEventListener("popstate", (e) => {
+      if (isOrderPreviewModalOpen) {
+        closeThemeLivePreview(true);
+        return;
+      }
+      const orderModalEl = document.getElementById("orderModal");
+      if (orderModalEl && orderModalEl.classList.contains("show")) {
+        orderModalEl.classList.remove("show");
+        return;
+      }
+      if (e.state && e.state.wizardStep) {
+        scrollToConciergeStep(e.state.wizardStep, true);
+      }
+    });
 
     // Phone vs iPad frame switcher in DemoView modal
     const btnDevicePhone = document.getElementById("btnDevicePhone");
