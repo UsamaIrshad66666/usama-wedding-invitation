@@ -8,33 +8,33 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --serif: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
-      --sans: "Jost", "Segoe UI", system-ui, sans-serif;
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
       --urdu: "Noto Nastaliq Urdu", serif;
-      --paper: #f8fbf4;
-      --blush: #f6e7df;
-      --clay: #d37a62;
-      --clay-deep: #b5563f;
-      --clay-ink: #9c4834;
-      --clay-light: #e3957f;
-      --charcoal: #231f20;
-      --muted: #5a504c;
-      --mehndi: #2d5a43;
-      --line: rgba(35, 31, 32, 0.12);
+      --paper: #faf8f4;
+      --blush: #f4e6dc;
+      --clay: #c85c47;
+      --clay-deep: #b0412e;
+      --clay-ink: #8f3121;
+      --clay-light: #e89f8e;
+      --charcoal: #1a1514;
+      --muted: #4b413d;
+      --mehndi: #1f4e3d;
+      --line: rgba(26, 21, 20, 0.14);
       --card: #ffffff;
-      --card-line: rgba(35, 31, 32, 0.09);
-      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.14 0 0 0 0 0.12 0 0 0 0 0.12 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+      --card-line: rgba(26, 21, 20, 0.12);
+      --grain: none;
       --ease: cubic-bezier(0.22, 0.7, 0.2, 1);
-      --transition: all 0.3s cubic-bezier(0.22, 0.7, 0.2, 1);
+      --transition: all 0.25s cubic-bezier(0.22, 0.7, 0.2, 1);
       /* Compatibility aliases for dynamic JS cards */
-      --gold-primary: #b5563f;
-      --gold-light: #231f20;
-      --gold-line: rgba(35, 31, 32, 0.15);
-      --cream: #231f20;
-      --cream-muted: #5a504c;
+      --gold-primary: #b0412e;
+      --gold-light: #1a1514;
+      --gold-line: rgba(26, 21, 20, 0.18);
+      --cream: #1a1514;
+      --cream-muted: #4b413d;
     }
 
     *, *::before, *::after {
@@ -226,12 +226,22 @@
       text-overflow: ellipsis;
     }
     @media (max-width: 640px) {
+      .concierge-stepper {
+        gap: 6px;
+      }
+      .stepper-pill {
+        gap: 4px;
+      }
+      .stepper-num {
+        font-size: 12px;
+      }
       .stepper-sub {
         display: none;
       }
       .stepper-title {
-        font-size: 10px;
-        letter-spacing: 0.12em;
+        font-size: 9px;
+        letter-spacing: 0.05em;
+        font-weight: 700;
       }
     }
 
@@ -287,23 +297,25 @@
     }
     .step-h1 {
       font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(34px, 4.4vw, 54px);
-      line-height: 1.06;
-      letter-spacing: -0.01em;
+      font-weight: 700;
+      font-size: clamp(32px, 4.4vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
       color: var(--charcoal);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .step-h1 i {
       color: var(--clay-deep);
       font-style: italic;
+      font-weight: 600;
     }
     .step-lede {
       max-width: 600px;
       color: var(--muted);
       font-size: 16px;
+      font-weight: 500;
       line-height: 1.65;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     /* Subtle Editorial Anticipation Note in Steps 1 & 2 */
