@@ -323,7 +323,7 @@ function resolveMetadata(url) {
 }
 
 const RESERVED_FIRST_SEGMENTS = new Set([
-  "about", "admin", "order", "form", "demos", "samples", "templates",
+  "about", "admin", "mughal-card", "order", "form", "demos", "samples", "templates",
   "royal-grace", "demo-royal-grace", "demo-grace", "grace", "nikkah-royal-grace",
   "burgundy-romance", "burgundy", "demo-burgundy", "velvet-romance", "theme",
   "noor-e-nikkah", "noor-nikkah", "ivory-gold", "ivory",
@@ -338,7 +338,7 @@ function getThemeAssetPath(themeKey) {
   if (t === "burgundy" || t === "burgundy-romance" || t === "velvet-romance") return "/burgundy-romance";
   if (t === "noor-e-nikkah" || t === "noor-nikkah" || t === "ivory" || t === "ivory-gold") return "/noor-e-nikkah";
   if (t === "shahi-farman" || t === "farman") return "/shahi-farman";
-  return "/index.html";
+  return "/mughal-card";
 }
 
 function extractThemeFromRequest(url) {
