@@ -2117,8 +2117,7 @@
         <div class="demoview-title-wrap">
           <button type="button" id="previewModalCloseBtn" class="demoview-close-round" title="Back to Studio">←</button>
           <div>
-            <div class="demoview-name" id="previewModalTitle">Sheesh Mahal</div>
-            <div class="demoview-tag" id="previewModalSub">Live interactive demo</div>
+            <div class="demoview-name" id="previewModalTitle">Royal Mughal</div>
           </div>
         </div>
 
@@ -2127,27 +2126,24 @@
           <button type="button" class="demoview-device-btn" id="btnDeviceIpad">iPad</button>
         </div>
 
-        <div style="display:flex; align-items:center; gap:10px;">
-          <a id="previewModalOpenTabBtn" href="/demos" target="_blank" rel="noopener" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.3); min-height:38px; padding:0 14px; font-size:10px;">Open in Tab ↗</a>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <select id="previewModalThemeSwitcher" aria-label="Switch theme" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.82); font-size:11.5px; font-weight:500; padding:6px 10px; border-radius:6px; outline:none; cursor:pointer;">
+            <option value="mughal" style="background:#1f1b1a; color:#fff;">Switch: Royal Mughal</option>
+            <option value="gulistan" style="background:#1f1b1a; color:#fff;">Switch: Gulistan</option>
+            <option value="maroon" style="background:#1f1b1a; color:#fff;">Switch: Maroon Romance</option>
+            <option value="burgundy" style="background:#1f1b1a; color:#fff;">Switch: Burgundy Romance</option>
+            <option value="royal-grace" style="background:#1f1b1a; color:#fff;">Switch: Royal Grace</option>
+            <option value="ivory" style="background:#1f1b1a; color:#fff;">Switch: Noor-e-Nikkah</option>
+            <option value="farman" style="background:#1f1b1a; color:#fff;">Switch: Shahi Farman</option>
+          </select>
+          <a id="previewModalOpenTabBtn" href="/demos" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.75); font-size:11.5px; font-weight:600; text-decoration:underline; white-space:nowrap;">Open in New Tab ↗</a>
         </div>
       </div>
 
-      <!-- Switch Design & Exclusive Mughal In-Place Colour Bar -->
-      <div class="preview-explorer-toolbar">
-        <div class="preview-switch-theme-row" id="previewModalThemeSwitcher">
-          <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--clay-light); white-space:nowrap;">Switch design:</span>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="mughal">Royal Mughal (7 Colours)</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="gulistan">Gulistan</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="maroon">Maroon Romance</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="burgundy">Burgundy Romance</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="royal-grace">Royal Grace</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="ivory">Noor-e-Nikkah</button>
-          <button type="button" class="preview-theme-chip" data-modal-switch-theme="farman">Shahi Farman</button>
-        </div>
-
-        <!-- Shown ONLY when viewing Royal Mughal Darbar: Changes colour in-place while keeping current opened page (e.g. Mehndi stays Mehndi) -->
+      <!-- Exclusive Mughal Colour Bar -->
+      <div class="preview-explorer-toolbar" id="orderPreviewToolbarWrap">
         <div class="preview-mughal-colors-bar" id="previewModalMughalColorBar">
-          <span style="font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#f8fbf4; opacity:0.8; white-space:nowrap;">Change colour (keeps current page):</span>
+          <span style="font-size:11px; font-weight:600; color:rgba(255,255,255,0.75); white-space:nowrap;">Colour:</span>
           <button type="button" class="mughal-color-pill active" data-modal-mughal-color="emerald"><span class="mughal-pill-dot" style="background:#173b2e;"></span><span>Emerald</span></button>
           <button type="button" class="mughal-color-pill" data-modal-mughal-color="ruby"><span class="mughal-pill-dot" style="background:#691024;"></span><span>Ruby</span></button>
           <button type="button" class="mughal-color-pill" data-modal-mughal-color="sapphire"><span class="mughal-pill-dot" style="background:#152d58;"></span><span>Sapphire</span></button>
@@ -3946,14 +3942,13 @@
         previewModalSelectBtn.innerHTML = `✓ Select ${(THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "")} &amp; Fill Details ➔`;
       }
 
-      // Highlight active theme chip in Switch Theme bar
-      document.querySelectorAll("#previewModalThemeSwitcher .preview-theme-chip").forEach(chip => {
-        const chipTheme = chip.getAttribute("data-modal-switch-theme");
-        const active = isMughal ? (chipTheme === "mughal") : (chipTheme === resolvedKey);
-        chip.classList.toggle("active", active);
-      });
+      // Sync subtle Switch Theme dropdown
+      const modalThemeSel = document.getElementById("previewModalThemeSwitcher");
+      if (modalThemeSel) modalThemeSel.value = isMughal ? "mughal" : resolvedKey;
 
       // Show Mughal Color Bar ONLY when viewing Royal Mughal Darbar
+      const orderTbWrap = document.getElementById("orderPreviewToolbarWrap");
+      if (orderTbWrap) orderTbWrap.style.display = isMughal ? "flex" : "none";
       if (previewModalMughalColorBar) {
         previewModalMughalColorBar.classList.toggle("show", isMughal);
       }
@@ -4029,9 +4024,10 @@
     });
 
     // Switch between the 7 Main Themes right inside the Explorer Modal (zero history pollution)
-    document.querySelectorAll("#previewModalThemeSwitcher .preview-theme-chip").forEach(chip => {
-      chip.addEventListener("click", () => {
-        const targetTheme = chip.getAttribute("data-modal-switch-theme");
+    const previewModalThemeSel = document.getElementById("previewModalThemeSwitcher");
+    if (previewModalThemeSel) {
+      previewModalThemeSel.addEventListener("change", () => {
+        const targetTheme = previewModalThemeSel.value;
         if (!targetTheme) return;
         const resolved = targetTheme === "mughal" ? currentMughalColor : targetTheme;
         const wasMughal = isMughalColorKey(currentPreviewThemeKey);
@@ -4050,7 +4046,7 @@
         const side = hiddenSideInput ? hiddenSideInput.value : "groom";
         mountOrderPreviewIframe(getThemeLiveDemoUrl(resolved, side));
       });
-    });
+    }
 
     // In-Place Mughal Color Switching inside the Explorer Modal (Keeps Current Opened Page, e.g. Mehndi stays Mehndi!)
     document.querySelectorAll("#previewModalMughalColorBar .mughal-color-pill").forEach(pill => {

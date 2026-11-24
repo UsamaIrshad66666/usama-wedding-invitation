@@ -6325,7 +6325,7 @@
 
       const mughalRowHtml = isMughal ? `
         <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap; margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed rgba(212,173,93,0.3);">
-          <span style="font-size:0.72rem; font-weight:700; color:#ffe082; margin-right:3px;">🎨 Change Color (Keeps Current Page):</span>
+          <span style="font-size:0.72rem; font-weight:700; color:#ffe082; margin-right:3px;">🎨 Colour:</span>
           ${MUGHAL_COLOR_META.map(c => {
             const act = c.key === curTheme;
             return `<button type="button" data-live-mughal-color="${c.key}" style="display:inline-flex; align-items:center; gap:4px; padding:4px 9px; border-radius:999px; font-size:0.71rem; cursor:pointer; border:1px solid ${act ? '#ffe082' : 'rgba(212,173,93,0.35)'}; background:${act ? 'linear-gradient(135deg, #fcedc5, #d4ad5d)' : 'rgba(15, 40, 30, 0.9)'}; color:${act ? '#071912' : '#f7e7be'}; font-weight:${act ? '800' : '600'};">

@@ -923,38 +923,39 @@
     .dv-toolbar {
       background: #181414;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 8px 20px;
+      padding: 6px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
-    .dv-switch-row {
+    .dv-topbar-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
-      overflow-x: auto;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .dv-theme-chip {
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      white-space: nowrap;
+    .dv-switch-select {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.8);
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 5px 10px;
       border-radius: 6px;
+      outline: none;
+      cursor: pointer;
     }
-    .dv-theme-chip.active {
-      background: var(--accent);
-      border-color: var(--accent);
+    .dv-switch-select option {
+      background: #1f1b1a;
+      color: #ffffff;
     }
     .dv-mughal-bar {
       display: none;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       overflow-x: auto;
-      padding-top: 6px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2px 0;
     }
     .dv-mughal-bar.show { display: flex; }
     .dv-color-pill {
@@ -1485,7 +1486,6 @@
         <button type="button" class="dv-back-round" id="dvCloseBtn" title="Close Preview">←</button>
         <div>
           <div class="dv-name" id="dvTitle">Royal Mughal</div>
-          <div class="dv-sub" id="dvSub">Interactive Live Demo</div>
         </div>
       </div>
 
@@ -1494,24 +1494,24 @@
         <button type="button" class="dv-device-btn" id="dvIpadBtn">iPad</button>
       </div>
 
-      <a href="/demos" target="_blank" rel="noopener" id="dvOpenTabLink" style="font-size:12px; font-weight:600; color:#f0b6a6; text-decoration:underline;">Open in Tab ↗</a>
+      <div class="dv-topbar-actions">
+        <select id="dvThemeSelect" class="dv-switch-select" aria-label="Switch theme">
+          <option value="mughal">Switch: Royal Mughal</option>
+          <option value="gulistan">Switch: Gulistan</option>
+          <option value="maroon">Switch: Maroon Romance</option>
+          <option value="burgundy">Switch: Burgundy Romance</option>
+          <option value="royal-grace">Switch: Royal Grace</option>
+          <option value="ivory">Switch: Noor-e-Nikkah</option>
+          <option value="farman">Switch: Shahi Farman</option>
+        </select>
+        <a href="/demos" target="_blank" rel="noopener" id="dvOpenTabLink" style="font-size:11.5px; font-weight:600; color:rgba(255,255,255,0.72); text-decoration:underline; white-space:nowrap;">Open in New Tab ↗</a>
+      </div>
     </div>
 
-    <div class="dv-toolbar">
-      <div class="dv-switch-row" id="dvThemeSwitcher">
-        <span style="font-size:11px; font-weight:700; color:#f0b6a6; white-space:nowrap;">Switch Theme:</span>
-        <button type="button" class="dv-theme-chip active" data-dv-theme="mughal">Royal Mughal (7 Colours)</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="gulistan">Gulistan</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="maroon">Maroon Romance</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="burgundy">Burgundy Romance</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="royal-grace">Royal Grace</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="ivory">Noor-e-Nikkah</button>
-        <button type="button" class="dv-theme-chip" data-dv-theme="farman">Shahi Farman</button>
-      </div>
-
-      <!-- Exclusively shown for Royal Mughal Darbar: changes colour in-place while preserving current opened page (e.g. Mehndi stays Mehndi) -->
+    <div class="dv-toolbar" id="dvToolbarWrap">
+      <!-- Exclusively shown for Royal Mughal Darbar -->
       <div class="dv-mughal-bar show" id="dvMughalColorBar">
-        <span style="font-size:11px; font-weight:700; color:rgba(255,255,255,0.8); white-space:nowrap;">Change Colour (keeps current page):</span>
+        <span style="font-size:11px; font-weight:600; color:rgba(255,255,255,0.72); white-space:nowrap;">Colour:</span>
         <button type="button" class="dv-color-pill active" data-dv-color="emerald"><span class="dv-dot" style="background:#173b2e;"></span><span>Emerald</span></button>
         <button type="button" class="dv-color-pill" data-dv-color="ruby"><span class="dv-dot" style="background:#691024;"></span><span>Ruby</span></button>
         <button type="button" class="dv-color-pill" data-dv-color="sapphire"><span class="dv-dot" style="background:#152d58;"></span><span>Sapphire</span></button>
@@ -1696,20 +1696,15 @@
 
         const demoUrl = getDemoUrl(resolved);
         if (dvTitle) dvTitle.textContent = THEME_NAMES[resolved] || "Live Preview";
-        if (dvSub) {
-          dvSub.textContent = isMughal
-            ? "Tap any colour below to switch palette while staying on your current page"
-            : "Use Switch Theme above to compare other designs";
-        }
         if (dvOpenTabLink) dvOpenTabLink.href = demoUrl;
         if (dvSelectOrderBtn) dvSelectOrderBtn.href = "/order?theme=" + resolved;
         if (dvSelectOrderText) dvSelectOrderText.textContent = "Select " + (THEME_NAMES[resolved] || "This Theme") + " →";
 
-        document.querySelectorAll("#dvThemeSwitcher .dv-theme-chip").forEach(chip => {
-          const cKey = chip.getAttribute("data-dv-theme");
-          chip.classList.toggle("active", isMughal ? cKey === "mughal" : cKey === resolved);
-        });
+        const themeSel = document.getElementById("dvThemeSelect");
+        if (themeSel) themeSel.value = isMughal ? "mughal" : resolved;
 
+        const tbWrap = document.getElementById("dvToolbarWrap");
+        if (tbWrap) tbWrap.style.display = isMughal ? "flex" : "none";
         if (dvMughalColorBar) dvMughalColorBar.classList.toggle("show", isMughal);
         if (isMughal) {
           document.querySelectorAll("#dvMughalColorBar .dv-color-pill").forEach(p => {
@@ -1779,9 +1774,10 @@
         });
       }
 
-      document.querySelectorAll("#dvThemeSwitcher .dv-theme-chip").forEach(chip => {
-        chip.addEventListener("click", () => {
-          const target = chip.getAttribute("data-dv-theme");
+      const dvThemeSelect = document.getElementById("dvThemeSelect");
+      if (dvThemeSelect) {
+        dvThemeSelect.addEventListener("change", () => {
+          const target = dvThemeSelect.value;
           if (!target) return;
           const resolved = target === "mughal" ? activeMughalColor : target;
           const wasMughal = isMughalKey(activePreviewKey);
@@ -1798,7 +1794,7 @@
           }
           mountCleanIframe(getDemoUrl(resolved));
         });
-      });
+      }
 
       document.querySelectorAll("#dvMughalColorBar .dv-color-pill").forEach(pill => {
         pill.addEventListener("click", () => {
