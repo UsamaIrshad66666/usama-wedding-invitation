@@ -249,17 +249,7 @@
 
     /* Status & Promise Banner */
     .progress-status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px 18px;
-      background: var(--blush);
-      border-left: 2px solid var(--clay-deep);
-      margin-bottom: 36px;
-      font-size: 13px;
-      color: var(--charcoal);
+      display: none;
     }
 
     /* Focused Wizard Stage — Only Active Step Visible to Eliminate Clutter! */
@@ -2214,6 +2204,110 @@
     }
 
     // =========================================================================
+    // 4-STEP GUIDED CONCIERGE CONSTANTS & STATE (Top of Script)
+    // =========================================================================
+    var currentMughalColor = "emerald";
+    var activeThemeCategoryFilter = "recommended";
+    var currentPreviewThemeKey = null;
+    var userInteractedSide = false;
+    var userInteractedEvents = false;
+    var userInteractedTheme = false;
+
+    var MUGHAL_PALETTES = {
+      emerald: {
+        key: "emerald",
+        shortEn: "Emerald & Gold",
+        fullEn: "Royal Mughal (Emerald & Gold)",
+        ur: "شاہی مغل — زمرد و گولڈ",
+        img: "assets/baraat-scene.jpg",
+        bg: "#0d241c",
+        swatches: ["#0b2019", "#173b2e", "#d4ad5d"],
+        desc: "Mughal palace arches, rich emerald green velvet, 3D wax-seal envelope & animated ceremony scenes."
+      },
+      ruby: {
+        key: "ruby",
+        shortEn: "Crimson Ruby & Rose Gold",
+        fullEn: "Royal Mughal (Crimson Ruby)",
+        ur: "شاہی مغل — روبی و روز گولڈ",
+        img: "assets/romantic-baraat.jpg",
+        bg: "#2d0b14",
+        swatches: ["#22070e", "#45131f", "#e6a782"],
+        desc: "Deep crimson ruby velvet paired with warm rose gold foil and romantic petal showers."
+      },
+      sapphire: {
+        key: "sapphire",
+        shortEn: "Midnight Sapphire",
+        fullEn: "Royal Mughal (Midnight Sapphire)",
+        ur: "شاہی مغل — نیلم و ستارہ گولڈ",
+        img: "assets/celestial-baraat.jpg",
+        bg: "#091730",
+        swatches: ["#08142a", "#152d58", "#e0b862"],
+        desc: "Starlit midnight sapphire navy with celestial gold constellations and crystal chandeliers."
+      },
+      plum: {
+        key: "plum",
+        shortEn: "Majestic Plum",
+        fullEn: "Royal Mughal (Majestic Plum)",
+        ur: "شاہی مغل — جامنی و شیمپین گولڈ",
+        img: "assets/blossom-baraat.jpg",
+        bg: "#270e38",
+        swatches: ["#190924", "#37164e", "#dcb06b"],
+        desc: "Regal amethyst plum velvet with pastel floral blossoms and warm champagne gold highlights."
+      },
+      obsidian: {
+        key: "obsidian",
+        shortEn: "Obsidian & 24K Gold",
+        fullEn: "Royal Mughal (Obsidian & 24K Gold)",
+        ur: "شاہی مغل — شاہی سیاہ و گولڈ",
+        img: "assets/obsidian-baraat.jpg",
+        bg: "#0d0c0e",
+        swatches: ["#08080a", "#1b191d", "#f0c05a"],
+        desc: "Jet black obsidian marble paired with gleaming 24K gold foil arabesques."
+      },
+      marble: {
+        key: "marble",
+        shortEn: "Carrara Marble & Sage",
+        fullEn: "Royal Mughal (Carrara Marble & Sage)",
+        ur: "شاہی مغل — سنگِ مرمر و سیج",
+        img: "assets/marble-baraat.jpg",
+        bg: "#183025",
+        swatches: ["#0b1612", "#183025", "#7ea88f"],
+        desc: "Italian Carrara marble textures with botanical sage foliage and brushed antique gold."
+      },
+      lilac: {
+        key: "lilac",
+        shortEn: "Kashmiri Lilac",
+        fullEn: "Royal Mughal (Kashmiri Lilac)",
+        ur: "شاہی مغل — کشمیری لائلک",
+        img: "assets/lilac-baraat.jpg",
+        bg: "#281545",
+        swatches: ["#120921", "#281545", "#cbb2e8"],
+        desc: "Springtime Kashmiri lilac and cascading wisteria florals with soft golden filigree."
+      }
+    };
+
+    var THEME_DISPLAY_NAMES = {
+      optional: "Designer's Choice",
+      gulistan: "Gulistan (Rose Garden)",
+      maroon: "Maroon Romance",
+      burgundy: "Burgundy Romance",
+      "royal-grace": "Royal Grace (Sage & Pearl)",
+      ivory: "Noor-e-Nikkah (Ivory & Gold)",
+      farman: "Shahi Farman (Imperial Scroll)",
+      emerald: MUGHAL_PALETTES.emerald.fullEn,
+      ruby: MUGHAL_PALETTES.ruby.fullEn,
+      sapphire: MUGHAL_PALETTES.sapphire.fullEn,
+      plum: MUGHAL_PALETTES.plum.fullEn,
+      obsidian: MUGHAL_PALETTES.obsidian.fullEn,
+      marble: MUGHAL_PALETTES.marble.fullEn,
+      lilac: MUGHAL_PALETTES.lilac.fullEn
+    };
+
+    function isMughalColorKey(k) {
+      return Boolean(k && MUGHAL_PALETTES[k]);
+    }
+
+    // =========================================================================
     // WELCOMING HOSTS STATE (English Name & Phone only)
     // =========================================================================
     let clientHosts = [
@@ -3229,12 +3323,6 @@
       }
     });
 
-    // Initialize Default Starter Events (Mehndi, Barat, Walima)
-    createEventCard("mehndi");
-    createEventCard("barat");
-    createEventCard("walima");
-    syncPresetHighlight();
-
     // =========================================================================
     // SIDE SELECTOR (Bride vs Groom)
     // =========================================================================
@@ -3252,18 +3340,24 @@
     const labelHostEn = document.getElementById("labelHostEn");
     const labelHostUr = document.getElementById("labelHostUr");
 
+    // Initialize Default Starter Events (Mehndi, Barat, Walima)
+    createEventCard("mehndi");
+    createEventCard("barat");
+    createEventCard("walima");
+    syncPresetHighlight();
+
     function setFormSide(side) {
       hiddenSideInput.value = side;
       if (side === "bride") {
         tabBride.classList.add("active");
         tabGroom.classList.remove("active");
 
-        coupleSectionTitle.textContent = "👑 1. Bride & Groom Names";
+        coupleSectionTitle.textContent = "01 · Bride & Groom Names";
         coupleNamesContainer.insertBefore(brideNameGroup, groomNameGroup);
         brideNameGroup.style.marginBottom = "14px";
         groomNameGroup.style.marginBottom = "0";
 
-        hostSectionTitle.textContent = "🏛️ 2. Bride's Parents & Main Hosts";
+        hostSectionTitle.textContent = "02 · Bride's Parents & Main Hosts";
         hostSectionTitleUr.textContent = "والدینِ دلہن و میزبان";
         labelHostEn.textContent = "Bride's Parents / Inviting Hosts";
         labelHostUr.textContent = "والدینِ دلہن و میزبان";
@@ -3289,12 +3383,12 @@
         tabGroom.classList.add("active");
         tabBride.classList.remove("active");
 
-        coupleSectionTitle.textContent = "👑 1. Groom & Bride Names";
+        coupleSectionTitle.textContent = "01 · Groom & Bride Names";
         coupleNamesContainer.insertBefore(groomNameGroup, brideNameGroup);
         groomNameGroup.style.marginBottom = "14px";
         brideNameGroup.style.marginBottom = "0";
 
-        hostSectionTitle.textContent = "🏛️ 2. Groom's Parents & Main Hosts";
+        hostSectionTitle.textContent = "02 · Groom's Parents & Main Hosts";
         hostSectionTitleUr.textContent = "والدینِ دولہا و میزبان";
         labelHostEn.textContent = "Groom's Parents / Inviting Hosts";
         labelHostUr.textContent = "والدینِ دولہا و میزبان";
@@ -3356,112 +3450,6 @@
         }
       });
     });
-
-
-    // =========================================================================
-    // 4-STEP GUIDED CONCIERGE ENGINE (WITH SEGMENTED PROGRESS FILL BAR,
-    // UNIFIED MUGHAL 7-COLOR PALETTE CARD & IN-PLACE LIVE EXPLORER)
-    // =========================================================================
-    const MUGHAL_PALETTES = {
-      emerald: {
-        key: "emerald",
-        shortEn: "Emerald & Gold",
-        fullEn: "👑 Royal Mughal Darbar (Emerald & Gold)",
-        ur: "شاہی مغل دربار — زمرد و گولڈ",
-        img: "assets/baraat-scene.jpg",
-        bg: "#0d241c",
-        swatches: ["#0b2019", "#173b2e", "#d4ad5d"],
-        desc: "Classic Mughal palace arches, rich emerald green velvet, 3D wax-seal envelope & animated ceremony scenes."
-      },
-      ruby: {
-        key: "ruby",
-        shortEn: "Crimson Ruby & Rose Gold",
-        fullEn: "👑 Royal Mughal Darbar (Crimson Ruby & Rose Gold)",
-        ur: "شاہی مغل دربار — روبی و روز گولڈ",
-        img: "assets/romantic-baraat.jpg",
-        bg: "#2d0b14",
-        swatches: ["#22070e", "#45131f", "#e6a782"],
-        desc: "Deep crimson ruby velvet paired with warm rose gold foil, cascading rose canopies & romantic petal showers."
-      },
-      sapphire: {
-        key: "sapphire",
-        shortEn: "Midnight Sapphire",
-        fullEn: "👑 Royal Mughal Darbar (Midnight Sapphire)",
-        ur: "شاہی مغل دربار — نیلم و ستارہ گولڈ",
-        img: "assets/celestial-baraat.jpg",
-        bg: "#091730",
-        swatches: ["#08142a", "#152d58", "#e0b862"],
-        desc: "Starlit midnight sapphire navy with celestial gold constellations, crystal chandeliers & regal night glow."
-      },
-      plum: {
-        key: "plum",
-        shortEn: "Majestic Plum Blossom",
-        fullEn: "👑 Royal Mughal Darbar (Majestic Plum)",
-        ur: "شاہی مغل دربار — جامنی و شیمپین گولڈ",
-        img: "assets/blossom-baraat.jpg",
-        bg: "#270e38",
-        swatches: ["#190924", "#37164e", "#dcb06b"],
-        desc: "Regal amethyst plum velvet with pastel floral blossoms, jasmine garlands & warm champagne gold highlights."
-      },
-      obsidian: {
-        key: "obsidian",
-        shortEn: "Obsidian & 24K Gold",
-        fullEn: "👑 Royal Mughal Darbar (Obsidian & 24K Gold)",
-        ur: "شاہی مغل دربار — شاہی سیاہ و ۲۴ قیراط گولڈ",
-        img: "assets/obsidian-baraat.jpg",
-        bg: "#0d0c0e",
-        swatches: ["#08080a", "#1b191d", "#f0c05a"],
-        desc: "Ultra-luxury jet black obsidian paired with gleaming 24K gold foil arabesques & grand reception lighting."
-      },
-      marble: {
-        key: "marble",
-        shortEn: "Carrara Marble & Sage",
-        fullEn: "👑 Royal Mughal Darbar (Carrara Marble & Sage)",
-        ur: "شاہی مغل دربار — سنگِ مرمر و سیج گرین",
-        img: "assets/marble-baraat.jpg",
-        bg: "#183025",
-        swatches: ["#0b1612", "#183025", "#7ea88f"],
-        desc: "Aristocratic Italian Carrara marble textures with botanical sage foliage and brushed antique gold accents."
-      },
-      lilac: {
-        key: "lilac",
-        shortEn: "Kashmiri Lilac & Lavender",
-        fullEn: "👑 Royal Mughal Darbar (Kashmiri Lilac)",
-        ur: "شاہی مغل دربار — کشمیری لائلک و لیونڈر",
-        img: "assets/lilac-baraat.jpg",
-        bg: "#281545",
-        swatches: ["#120921", "#281545", "#cbb2e8"],
-        desc: "Enchanting springtime Kashmiri lilac and cascading wisteria florals with soft golden filigree."
-      }
-    };
-
-    const THEME_DISPLAY_NAMES = {
-      optional: "✨ Let Elitara Choose",
-      gulistan: "🌹 Gulistan (Rose Garden)",
-      maroon: "🍷 Maroon Romance",
-      burgundy: "🌹 Royal Burgundy Romance",
-      "royal-grace": "🌿 Royal Grace (Sage & Pearl)",
-      ivory: "🕊️ Noor-e-Nikkah (Ivory & Gold)",
-      farman: "📜 Royal Mughal Shahi Farman",
-      emerald: MUGHAL_PALETTES.emerald.fullEn,
-      ruby: MUGHAL_PALETTES.ruby.fullEn,
-      sapphire: MUGHAL_PALETTES.sapphire.fullEn,
-      plum: MUGHAL_PALETTES.plum.fullEn,
-      obsidian: MUGHAL_PALETTES.obsidian.fullEn,
-      marble: MUGHAL_PALETTES.marble.fullEn,
-      lilac: MUGHAL_PALETTES.lilac.fullEn
-    };
-
-    function isMughalColorKey(k) {
-      return Boolean(k && MUGHAL_PALETTES[k]);
-    }
-
-    let currentMughalColor = "emerald";
-    let activeThemeCategoryFilter = "recommended";
-    let currentPreviewThemeKey = null;
-    let userInteractedSide = false;
-    let userInteractedEvents = false;
-    let userInteractedTheme = false;
 
     function setUnifiedMughalCardColor(colorKey, alsoSelectRadio = true) {
       const pal = MUGHAL_PALETTES[colorKey] || MUGHAL_PALETTES.emerald;
@@ -3662,16 +3650,16 @@
 
       if (recEn) {
         recEn.innerHTML = isBride
-          ? `👰 Showing Recommended Event Combinations for <strong>Bride's Side</strong> (Baraat &amp; Rukhsati, Mehndi + Baraat &amp; Complete Family Packages)`
-          : `🤵 Showing Recommended Event Combinations for <strong>Groom's Side</strong> (Barat + Walima, Walima Reception &amp; 3-Day Royal Packages)`;
+          ? `Recommended event combinations for <strong>Bride's Side</strong>`
+          : `Recommended event combinations for <strong>Groom's Side</strong>`;
       }
       if (recUr) {
         recUr.textContent = isBride
-          ? "لڑکی والوں کے لیے مقبول ترین تقاریب (بارات و رخصتی، مہندی اور نکاح)"
-          : "لڑکے والوں کے لیے مقبول ترین تقاریب (ولیمہ، بارات اور ۳ روزہ شادی)";
+          ? "لڑکی والوں کے لیے مقبول تقاریب"
+          : "لڑکے والوں کے لیے مقبول تقاریب";
       }
       if (toggleBaratLabel) {
-        toggleBaratLabel.textContent = isBride ? "👑 Barat & Rukhsati (بارات و رخصتی)" : "👑 Barat (بارات)";
+        toggleBaratLabel.textContent = isBride ? "Barat & Rukhsati" : "Barat";
       }
 
       const presetBar = document.getElementById("presetPackagesBar");
@@ -3679,22 +3667,22 @@
 
       const presetsConfig = isBride
         ? [
-            { key: "mehndi,barat", label: "🌸👑 2-Day: Mehndi + Barat & Rukhsati", rec: "★ Popular for Bride's Side" },
-            { key: "barat", label: "👑 1-Day: Barat & Rukhsati Only", rec: "★ Bride's Host Card" },
-            { key: "mehndi,barat,walima", label: "🌟 3-Day: Mehndi + Barat + Walima", rec: "★ Complete Family Card" },
-            { key: "nikkah", label: "📜 1-Day: Nikah & Rukhsati Only", rec: "★ Sacred Nikkah" },
-            { key: "barat,walima", label: "👑✨ 2-Day: Barat + Walima", rec: "" },
-            { key: "mehndi,walima", label: "🌸✨ 2-Day: Mehndi + Walima", rec: "" },
-            { key: "walima", label: "✨ 1-Day: Walima Only", rec: "" }
+            { key: "mehndi,barat", label: "2-Day: Mehndi + Barat & Rukhsati", rec: "Popular" },
+            { key: "barat", label: "1-Day: Barat & Rukhsati Only", rec: "Bride's Card" },
+            { key: "mehndi,barat,walima", label: "3-Day: Mehndi + Barat + Walima", rec: "All 3 Days" },
+            { key: "nikkah", label: "1-Day: Nikkah & Rukhsati Only", rec: "" },
+            { key: "barat,walima", label: "2-Day: Barat + Walima", rec: "" },
+            { key: "mehndi,walima", label: "2-Day: Mehndi + Walima", rec: "" },
+            { key: "walima", label: "1-Day: Walima Only", rec: "" }
           ]
         : [
-            { key: "barat,walima", label: "👑✨ 2-Day: Barat + Walima", rec: "★ Popular for Groom's Side" },
-            { key: "mehndi,barat,walima", label: "🌟 3-Day: Mehndi + Barat + Walima", rec: "★ Complete Royal Package" },
-            { key: "walima", label: "✨ 1-Day: Walima Reception Only", rec: "★ Groom's Host Card" },
-            { key: "mehndi,walima", label: "🌸✨ 2-Day: Mehndi + Walima", rec: "" },
-            { key: "mehndi,barat", label: "🌸👑 2-Day: Mehndi + Barat", rec: "" },
-            { key: "barat", label: "👑 1-Day: Barat Only", rec: "" },
-            { key: "nikkah", label: "📜 1-Day: Nikah Only", rec: "" }
+            { key: "barat,walima", label: "2-Day: Barat + Walima", rec: "Popular" },
+            { key: "mehndi,barat,walima", label: "3-Day: Mehndi + Barat + Walima", rec: "All 3 Days" },
+            { key: "walima", label: "1-Day: Walima Reception Only", rec: "Groom's Card" },
+            { key: "mehndi,walima", label: "2-Day: Mehndi + Walima", rec: "" },
+            { key: "mehndi,barat", label: "2-Day: Mehndi + Barat", rec: "" },
+            { key: "barat", label: "1-Day: Barat Only", rec: "" },
+            { key: "nikkah", label: "1-Day: Nikkah Only", rec: "" }
           ];
 
       const btnMap = {};
@@ -3705,7 +3693,7 @@
       presetsConfig.forEach(cfg => {
         const btn = btnMap[cfg.key];
         if (btn) {
-          btn.innerHTML = `${cfg.label}${cfg.rec ? ` <span class="preset-rec-star">${cfg.rec}</span>` : ""}`;
+          btn.innerHTML = `${cfg.label}${cfg.rec ? ` <span class="preset-rec-star">· ${cfg.rec}</span>` : ""}`;
           presetBar.appendChild(btn);
         }
       });
@@ -3741,23 +3729,23 @@
 
         const chips = [];
         if (activeTypes.length > 1) {
-          chips.push({ icon: "👑", text: "VIP All Selected Days (/all)" });
+          chips.push({ text: "Close Family · All Events (/all)" });
         }
         if (hasM && hasB && hasW) {
-          chips.push({ icon: "🌸👑", text: "Mehndi + Barat Guests (/mehndi-barat)" });
-          chips.push({ icon: "👑✨", text: "Barat + Walima Guests (/barat-walima)" });
+          chips.push({ text: "Mehndi + Barat (/mehndi-barat)" });
+          chips.push({ text: "Barat + Walima (/barat-walima)" });
         }
-        if (hasB) chips.push({ icon: "🐎", text: isBride ? "Baraat & Rukhsati Guests (/barat)" : "Barat Guests Only (/barat)" });
-        if (hasW) chips.push({ icon: "🍽️", text: "Walima Guests Only (/walima)" });
-        if (hasM) chips.push({ icon: "🌿", text: "Mehndi Friends Only (/mehndi)" });
-        if (hasN) chips.push({ icon: "📜", text: "Nikah Guests (/nikkah)" });
-        if (hasE) chips.push({ icon: "💍", text: "Engagement Guests (/engagement)" });
+        if (hasB) chips.push({ text: isBride ? "Baraat & Rukhsati Only (/barat)" : "Barat Only (/barat)" });
+        if (hasW) chips.push({ text: "Walima Only (/walima)" });
+        if (hasM) chips.push({ text: "Mehndi Only (/mehndi)" });
+        if (hasN) chips.push({ text: "Nikkah Only (/nikkah)" });
+        if (hasE) chips.push({ text: "Engagement Only (/engagement)" });
 
         if (!chips.length) {
-          chips.push({ icon: "✨", text: "Select at least 1 event above to preview guest links" });
+          chips.push({ text: "Select at least 1 event above to preview guest links" });
         }
 
-        segChipsEl.innerHTML = chips.map(c => `<span class="guest-seg-chip"><span>${c.icon}</span><span>${c.text}</span></span>`).join("");
+        segChipsEl.innerHTML = chips.map(c => `<span class="guest-seg-chip"><span>◆</span><span>${c.text}</span></span>`).join("");
       }
 
       updateTailoredThemesView();
@@ -3772,7 +3760,7 @@
         if (t === "mehndi") return "Mehndi";
         if (t === "barat") return isBride ? "Barat & Rukhsati" : "Barat";
         if (t === "walima") return "Walima";
-        if (t === "nikkah") return "Nikah";
+        if (t === "nikkah") return "Nikkah";
         if (t === "engagement") return "Engagement";
         return "Custom";
       });
@@ -3784,11 +3772,11 @@
       const isBride = side === "bride";
       const activeTypes = getActiveEventTypesList();
       const eventsLabel = formatEventsSummaryLabel(activeTypes, side);
-      const sideLabelEn = isBride ? "Bride's Side (لڑکی والے)" : "Groom's Side (لڑکے والے)";
+      const sideLabelEn = isBride ? "Bride's Side" : "Groom's Side";
 
       const ctxEn = document.getElementById("themeContextTextEn");
       if (ctxEn) {
-        ctxEn.innerHTML = `✨ Showing Themes Tailored for: <strong>${sideLabelEn}</strong> · <strong>${eventsLabel}</strong>`;
+        ctxEn.innerHTML = `Step 03 of 04 · Tailored for ${sideLabelEn} (${eventsLabel})`;
       }
 
       const grid = document.getElementById("orderThemeSelectionGrid");
@@ -3839,21 +3827,21 @@
       const sumEvents = document.getElementById("sumEventsVal");
       const sumTheme = document.getElementById("sumThemeVal");
 
-      if (sumSide) sumSide.textContent = isBride ? "👰 Bride's Side (لڑکی والے)" : "🤵 Groom's Side (لڑکے والے)";
+      if (sumSide) sumSide.textContent = isBride ? "Bride's Side (لڑکی والے)" : "Groom's Side (لڑکے والے)";
       if (sumEvents) sumEvents.textContent = eventsLabel;
       if (sumTheme) sumTheme.textContent = themeName;
 
       const st1 = document.getElementById("stepperSub1");
       const st2 = document.getElementById("stepperSub2");
       const st3 = document.getElementById("stepperSub3");
-      if (st1) st1.textContent = isBride ? "👰 Bride's Side" : "🤵 Groom's Side";
+      if (st1) st1.textContent = isBride ? "Bride's Side" : "Groom's Side";
       if (st2) st2.textContent = eventsLabel;
       if (st3) st3.textContent = themeName.replace(/^[^\w]+/, "").trim();
 
       const indG = document.getElementById("indGroom");
       const indB = document.getElementById("indBride");
-      if (indG) indG.textContent = !isBride ? "✓ Selected" : "Select Side";
-      if (indB) indB.textContent = isBride ? "✓ Selected" : "Select Side";
+      if (indG) indG.textContent = !isBride ? "◆ Selected — Groom's Family" : "Choose Groom's Family →";
+      if (indB) indB.textContent = isBride ? "◆ Selected — Bride's Family" : "Choose Bride's Family →";
     }
 
     // Track user interactions on Step 1 & Step 2 to animate the Segmented Progress Bar
