@@ -443,6 +443,18 @@ export default {
         targetAsset = "/demos";
       } else if (lower === "/about") {
         targetAsset = "/about";
+      } else if (
+        (lower === "" || lower === "/index" || lower === "/index.html") &&
+        !url.searchParams.get("invite") &&
+        !url.searchParams.get("d") &&
+        !url.searchParams.get("theme") &&
+        !url.searchParams.get("template") &&
+        !url.searchParams.get("groom") &&
+        !url.searchParams.get("bride") &&
+        !url.searchParams.get("card") &&
+        !url.searchParams.get("event")
+      ) {
+        targetAsset = "/about";
       } else if (lower === "/order" || lower === "/form") {
         targetAsset = "/order";
       } else if (lower === "/admin") {

@@ -1,468 +1,1074 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-  <title>Wedding Invitation Order Form · Dawat Nama by Elitara</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fbf4">
+  <title>Book &amp; Customize Your Invitation · E-DawatNama</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-
     :root {
-
-      --bg-color: #071912;
-
-      --card-bg: rgba(10, 31, 23, 0.92);
-
-      --gold-primary: #d4af37;
-
-      --gold-light: #f3e5ab;
-
-      --gold-dark: #aa820a;
-
-      --gold-line: rgba(212, 175, 55, 0.35);
-
-      --gold-gradient: linear-gradient(135deg, #f7d070 0%, #d4ad5d 50%, #9e782f 100%);
-
-      --cream: #fbf9f4;
-
-      --cream-muted: #c9c3b2;
-
-      --serif: "Cinzel", serif;
-
-      --sans: "Montserrat", sans-serif;
-
+      --serif: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
+      --sans: "Jost", "Segoe UI", system-ui, sans-serif;
       --urdu: "Noto Nastaliq Urdu", serif;
-
-      --transition: all 0.25s ease;
-
+      --paper: #f8fbf4;
+      --blush: #f6e7df;
+      --clay: #d37a62;
+      --clay-deep: #b5563f;
+      --clay-ink: #9c4834;
+      --clay-light: #e3957f;
+      --charcoal: #231f20;
+      --muted: #5a504c;
+      --mehndi: #2d5a43;
+      --line: rgba(35, 31, 32, 0.12);
+      --card: #ffffff;
+      --card-line: rgba(35, 31, 32, 0.09);
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.14 0 0 0 0 0.12 0 0 0 0 0.12 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+      --ease: cubic-bezier(0.22, 0.7, 0.2, 1);
+      --transition: all 0.3s cubic-bezier(0.22, 0.7, 0.2, 1);
+      /* Compatibility aliases for dynamic JS cards */
+      --gold-primary: #b5563f;
+      --gold-light: #231f20;
+      --gold-line: rgba(35, 31, 32, 0.15);
+      --cream: #231f20;
+      --cream-muted: #5a504c;
     }
 
-
-
-    * {
-
+    *, *::before, *::after {
       box-sizing: border-box;
-
       margin: 0;
-
       padding: 0;
-
       -webkit-tap-highlight-color: transparent;
-
     }
 
-
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
 
     body {
-
-      background-color: var(--bg-color);
-
-      color: var(--cream);
-
+      background: var(--grain), var(--paper);
+      color: var(--charcoal);
       font-family: var(--sans);
-
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-
-      padding: 1.5rem 1rem 3.5rem;
-
-      background-image: 
-
-        radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-
-        radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 40%);
-
-      background-attachment: fixed;
-
-    }
-
-
-
-    .form-wrapper {
-
-      max-width: 760px;
-
-      margin: 0 auto;
-
-    }
-
-
-
-    /* Header */
-
-    .form-header {
-
-      text-align: center;
-
-      margin-bottom: 1.8rem;
-
-      padding-bottom: 1.2rem;
-
-      border-bottom: 1px solid var(--gold-line);
-
-    }
-
-    .form-brand-title {
-
-      font-family: var(--serif);
-
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
-
-      color: var(--gold-light);
-
-      letter-spacing: 0.06em;
-
-      margin-bottom: 0.25rem;
-
-    }
-
-    .form-brand-urdu {
-
-      font-family: var(--urdu);
-
-      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
-
-      color: var(--gold-primary);
-
-      margin-bottom: 0.5rem;
-
-      direction: rtl;
-
-    }
-
-    .form-brand-sub {
-
-      color: var(--cream-muted);
-
-      font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-
-      max-width: 620px;
-
-      margin: 0 auto;
-
+      font-size: 16px;
       line-height: 1.6;
-
+      overflow-x: hidden;
     }
 
-    .form-brand-sub-urdu {
-
-      font-family: var(--urdu);
-
-      font-size: 0.98rem;
-
-      color: var(--gold-light);
-
-      margin-top: 6px;
-
-      line-height: 1.8;
-
-      direction: rtl;
-
+    /* Editorial Top Bar */
+    .studio-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(248, 251, 244, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
     }
-
-
-
-    /* Side Selector Tabs */
-
-    .side-tabs-container {
-
-      display: flex;
-
-      justify-content: center;
-
-      gap: 12px;
-
-      margin-bottom: 1.8rem;
-
-    }
-
-    .side-tab-btn {
-
-      flex: 1;
-
-      max-width: 320px;
-
-      display: flex;
-
+    .studio-topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      height: 76px;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-
-      justify-content: center;
-
+      gap: 16px;
+    }
+    @media (max-width: 720px) {
+      .studio-topbar-inner {
+        height: 64px;
+        padding: 0 16px;
+      }
+    }
+    .studio-back-link {
+      display: inline-flex;
+      align-items: center;
       gap: 8px;
-
-      background: rgba(10, 31, 23, 0.7);
-
-      border: 1px solid var(--gold-line);
-
-      color: var(--cream-muted);
-
-      padding: 14px 18px;
-
-      border-radius: 10px;
-
-      cursor: pointer;
-
-      font-family: var(--sans);
-
-      font-size: 0.95rem;
-
-      font-weight: 600;
-
-      transition: var(--transition);
-
+      color: var(--muted);
       text-decoration: none;
-
-    }
-
-    .side-tab-btn:hover {
-
-      border-color: var(--gold-primary);
-
-      color: #fff;
-
-      transform: translateY(-2px);
-
-    }
-
-    .side-tab-btn.active {
-
-      background: var(--gold-gradient);
-
-      color: #071912;
-
-      border-color: #ffe89e;
-
-      box-shadow: 0 4px 18px rgba(212, 173, 93, 0.35);
-
-    }
-
-    .side-tab-btn .tab-urdu {
-
-      font-family: var(--urdu);
-
-      font-size: 1.05rem;
-
-      margin-left: 4px;
-
-    }
-
-
-
-    /* Section Boxes */
-
-    .form-section {
-
-      background: var(--card-bg);
-
-      border: 1px solid var(--gold-line);
-
-      border-radius: 12px;
-
-      padding: 1.5rem;
-
-      margin-bottom: 1.5rem;
-
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-
-      position: relative;
-
-    }
-
-    .form-section-header {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-
-      padding-bottom: 0.75rem;
-
-      margin-bottom: 1.2rem;
-
-      font-family: var(--serif);
-
-      font-size: 1.15rem;
-
-      color: var(--gold-light);
-
-      letter-spacing: 0.04em;
-
-    }
-
-    .header-urdu {
-
-      font-family: var(--urdu);
-
-      font-size: 1.1rem;
-
-      color: var(--gold-primary);
-
-      direction: rtl;
-
-    }
-
-
-
-    
-    /* Dynamic Events & Remove Event Buttons */
-    .remove-event-btn {
-      background: rgba(255, 80, 80, 0.08);
-      border: 1px solid rgba(255, 120, 120, 0.45);
-      color: #ff9e9e;
-      font-size: 0.78rem;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 6px;
+      transition: color 0.25s;
+      justify-self: start;
+    }
+    .studio-back-link:hover {
+      color: var(--charcoal);
+    }
+    .studio-brand {
+      text-align: center;
+      text-decoration: none;
+      color: var(--charcoal);
+    }
+    .studio-brand-title {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+    .studio-brand-sub {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      margin-top: 2px;
+    }
+    .studio-top-right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-pct-badge {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      font-weight: 500;
+    }
+
+    /* Segmented Progress Bar + Step Tabs inside Sticky Header */
+    .studio-progress-strip {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px 12px;
+    }
+    @media (max-width: 720px) {
+      .studio-progress-strip {
+        padding: 0 16px 10px;
+      }
+    }
+    .segmented-fill-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      height: 3px;
+      margin-bottom: 10px;
+    }
+    .fill-segment {
+      background: rgba(35, 31, 32, 0.12);
+      overflow: hidden;
+      position: relative;
+    }
+    .fill-segment-inner {
+      height: 100%;
+      width: 0%;
+      background: var(--clay-deep);
+      transition: width 0.5s var(--ease);
+    }
+    .fill-segment.filled .fill-segment-inner {
+      width: 100%;
+    }
+    .fill-segment.half .fill-segment-inner {
+      width: 50%;
+    }
+
+    .concierge-stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .stepper-pill {
+      background: transparent;
+      border: 0;
+      padding: 4px 0;
+      text-align: left;
       cursor: pointer;
-      transition: all 0.25s ease;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      color: var(--muted);
+      opacity: 0.55;
+      transition: opacity 0.25s, color 0.25s;
+      font-family: var(--sans);
+    }
+    .stepper-pill:hover {
+      opacity: 0.85;
+    }
+    .stepper-pill.active {
+      opacity: 1;
+      color: var(--charcoal);
+    }
+    .stepper-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--clay-deep);
+    }
+    .stepper-text-wrap {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .stepper-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .stepper-sub {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--charcoal);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 640px) {
+      .stepper-sub {
+        display: none;
+      }
+      .stepper-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+    }
+
+    /* Main Container */
+    .form-wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 44px 32px 100px;
+    }
+    @media (max-width: 720px) {
+      .form-wrapper {
+        padding: 28px 16px 88px;
+      }
+    }
+
+    /* Status & Promise Banner */
+    .progress-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 18px;
+      background: var(--blush);
+      border-left: 2px solid var(--clay-deep);
+      margin-bottom: 36px;
+      font-size: 13px;
+      color: var(--charcoal);
+    }
+
+    /* Focused Wizard Stage — Only Active Step Visible to Eliminate Clutter! */
+    .concierge-step-stage {
+      display: none;
+      animation: stepFadeIn 0.45s var(--ease);
+    }
+    .concierge-step-stage.active-wizard-step {
+      display: block;
+    }
+    @keyframes stepFadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Editorial Step Typography */
+    .step-eyebrow {
+      font-family: var(--sans);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      font-size: 11px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .step-eyebrow::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--clay-deep);
+      transform: rotate(45deg);
+    }
+    .step-h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(34px, 4.4vw, 54px);
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      color: var(--charcoal);
+      margin-bottom: 14px;
+    }
+    .step-h1 i {
+      color: var(--clay-deep);
+      font-style: italic;
+    }
+    .step-lede {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* Subtle Editorial Anticipation Note in Steps 1 & 2 */
+    .theme-upcoming-teaser {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px 22px;
+      background: #fffcf8;
+      border: 1px solid rgba(181, 86, 63, 0.28);
+      margin-bottom: 32px;
+    }
+    .teaser-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 240px;
+    }
+    .teaser-no {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--clay-deep);
+      flex: none;
+    }
+    .teaser-title-en {
+      font-family: var(--serif);
+      font-size: 19px;
+      color: var(--charcoal);
+      line-height: 1.25;
+    }
+    .teaser-sub-en {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .teaser-step-roadmap {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      font-weight: 500;
+      border: 1px solid rgba(181, 86, 63, 0.35);
+      padding: 6px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Editorial Buttons (aqdinvites style) */
+    .btn-editorial, .gold-btn {
+      background: var(--clay-deep);
+      height: 54px;
+      color: var(--paper);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 0;
+      border-radius: 2px;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 0 32px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--sans);
+      text-decoration: none;
+      transition: box-shadow 0.25s ease-out, background-color 0.25s;
+      display: inline-flex;
+    }
+    .btn-editorial:hover, .gold-btn:hover {
+      background: var(--clay-ink);
+      box-shadow: 0 0 0 1px rgba(181, 86, 63, 0.3), 0 20px 44px -14px rgba(181, 86, 63, 0.55);
+    }
+    .dia {
+      background: currentColor;
+      flex: none;
+      width: 6px;
+      height: 6px;
+      transform: rotate(45deg);
+      display: inline-block;
+    }
+    .uline-btn, .outline-btn {
+      min-height: 44px;
+      color: var(--charcoal);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid rgba(35, 31, 32, 0.25);
+      border-radius: 2px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 20px;
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--sans);
+      text-decoration: none;
+      display: inline-flex;
+      transition: border-color 0.25s, background-color 0.25s;
+    }
+    .uline-btn:hover, .outline-btn:hover {
+      border-color: var(--charcoal);
+      background: rgba(35, 31, 32, 0.04);
+    }
+    .wa-btn {
+      background: var(--mehndi);
+      color: var(--paper);
+      width: 100%;
+    }
+    .wa-btn:hover {
+      background: #224734;
+      box-shadow: 0 20px 44px -14px rgba(45, 90, 67, 0.5);
+    }
+
+    .step-next-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* Step 1: Side Selection Cards */
+    .side-tabs-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      max-width: 880px;
+    }
+    @media (max-width: 680px) {
+      .side-tabs-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+    .side-tab-btn {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 32px 30px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+      position: relative;
+    }
+    .side-tab-btn:hover {
+      transform: translateY(-4px);
+      border-color: rgba(181, 86, 63, 0.55);
+      box-shadow: 0 24px 48px -24px rgba(35, 31, 32, 0.22);
+    }
+    .side-tab-btn.active {
+      border-color: var(--clay-deep);
+      box-shadow: 0 0 0 1px var(--clay-deep), 0 28px 56px -22px rgba(181, 86, 63, 0.32);
+      background: #fffdfb;
+    }
+    .side-card-num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      color: var(--clay-deep);
+    }
+    .side-tab-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 100%;
+      gap: 12px;
+    }
+    .side-tab-title-main {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.1;
+    }
+    .side-tab-btn .tab-urdu {
+      font-family: var(--urdu);
+      font-size: 20px;
+      color: var(--clay-deep);
+    }
+    .side-tab-desc {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .side-check-indicator {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--muted);
+      padding-top: 14px;
+      border-top: 1px solid var(--card-line);
+      width: 100%;
     }
-    .remove-event-btn:hover {
-      background: rgba(255, 60, 60, 0.22);
-      border-color: #ff6b6b;
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-    .add-event-card {
-      background: linear-gradient(135deg, rgba(16, 45, 34, 0.95), rgba(8, 26, 19, 0.95));
-      border: 1.5px dashed var(--gold-primary);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.8rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .add-event-flex {
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .event-section {
-      animation: fadeIn 0.35s ease;
-    }
-    .preset-packages-bar {
-      background: rgba(0, 0, 0, 0.28);
-      border: 1px solid rgba(212, 175, 55, 0.28);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-    }
-    .preset-packages-title {
-      font-size: 0.88rem;
-      color: var(--gold-light);
+    .side-tab-btn.active .side-check-indicator {
+      color: var(--clay-deep);
       font-weight: 600;
-      margin-bottom: 10px;
+    }
+
+    /* Step 2: Presets & Ceremony Toggles */
+    .side-rec-banner {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .side-rec-banner-en {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .side-rec-banner-ur {
+      font-family: var(--urdu);
+      font-size: 15px;
+      color: var(--clay-deep);
     }
     .preset-pills-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
     }
     .preset-pkg-btn {
-      background: rgba(12, 38, 28, 0.85);
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      color: var(--cream);
-      padding: 8px 13px;
-      border-radius: 20px;
-      font-size: 0.82rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--charcoal);
+      padding: 18px 20px;
+      text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
+      transition: all 0.25s var(--ease);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 6px;
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
     }
     .preset-pkg-btn:hover {
-      border-color: var(--gold-light);
-      background: rgba(212, 175, 55, 0.16);
-      transform: translateY(-1px);
+      border-color: var(--clay);
+      transform: translateY(-2px);
     }
     .preset-pkg-btn.active {
-      background: linear-gradient(135deg, #d4af37, #aa8220);
-      color: #071912;
-      border-color: #f3e5ab;
-      font-weight: 600;
-      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+      background: var(--charcoal);
+      color: var(--paper);
+      border-color: var(--charcoal);
+      box-shadow: 0 18px 36px -18px rgba(35, 31, 32, 0.45);
     }
-    .tagline-chips-grid {
+    .preset-rec-star {
+      font-family: var(--sans);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      font-weight: 500;
+    }
+    .preset-pkg-btn.active .preset-rec-star {
+      color: var(--clay-light);
+    }
+
+    .quick-events-toggle-box {
+      background: var(--blush);
+      padding: 24px 26px;
+      margin-bottom: 24px;
+    }
+    .quick-events-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .quick-evt-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: var(--paper);
+      border: 1px solid rgba(35, 31, 32, 0.22);
+      color: var(--charcoal);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quick-evt-pill:hover {
+      border-color: var(--charcoal);
+    }
+    .quick-evt-pill.selected {
+      background: var(--mehndi);
+      border-color: var(--mehndi);
+      color: var(--paper);
+    }
+    .quick-evt-check {
+      font-size: 11px;
+    }
+
+    .guest-segmentation-preview {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+    .guest-seg-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      margin-top: 10px;
     }
-    .tagline-chip-btn {
-      background: rgba(12, 38, 28, 0.7);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      color: var(--cream);
-      padding: 6px 12px;
-      border-radius: 18px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .guest-seg-chip {
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--charcoal);
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: 12px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      line-height: 1.3;
-      text-align: left;
     }
-    .tagline-chip-btn:hover {
-      border-color: var(--gold-light);
-      background: rgba(212, 175, 55, 0.16);
-      transform: translateY(-1px);
+
+    /* Step 3: aqdinvites-style Collection Cards */
+    .theme-filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
     }
-    .tagline-chip-btn.active {
-      background: linear-gradient(135deg, #d4af37, #aa8220);
-      color: #071912;
-      border-color: #f3e5ab;
-      font-weight: 600;
-      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+    .theme-filter-btn {
+      height: 40px;
+      color: var(--charcoal);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid rgba(35, 31, 32, 0.3);
+      border-radius: 999px;
+      padding: 0 18px;
+      font-size: 10.5px;
+      font-weight: 500;
+      transition: all 0.25s;
     }
-    .tagline-chip-urdu {
-      font-family: var(--urdu);
-      font-size: 0.95rem;
+    .theme-filter-btn:hover {
+      border-color: var(--charcoal);
     }
-    .tagline-chip-sub {
-      font-size: 0.7rem;
-      opacity: 0.82;
+    .theme-filter-btn.active {
+      background: var(--charcoal);
+      border-color: var(--charcoal);
+      color: var(--paper);
+    }
+
+    .theme-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 32px 24px;
+    }
+    @media (max-width: 960px) {
+      .theme-selection-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 600px) {
+      .theme-selection-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .theme-card-option {
+      background: var(--card);
+      border: 1px solid var(--card-line);
+      transition: transform 0.35s ease-out, box-shadow 0.35s ease-out, border-color 0.35s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+    }
+    .theme-card-option:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 0 1px rgba(181, 86, 63, 0.45), 0 28px 56px -24px rgba(181, 86, 63, 0.35);
+    }
+    .theme-card-option.active {
+      border-color: var(--clay-deep);
+      box-shadow: 0 0 0 1.5px var(--clay-deep), 0 28px 56px -22px rgba(181, 86, 63, 0.42);
+    }
+    .theme-card-option input[type="radio"] {
+      accent-color: var(--clay-deep);
+    }
+
+    .theme-card-visual {
+      aspect-ratio: 4 / 5;
+      background-color: #ece6dc;
+      background-size: cover;
+      background-position: 50% 30%;
+      margin: 12px 12px 0;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-card-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(35, 31, 32, 0.08);
+      pointer-events: none;
+    }
+    .theme-card-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, transparent 35%, rgba(0,0,0,0.45) 100%);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .theme-match-badge {
+      align-self: flex-start;
+      background: rgba(248, 251, 244, 0.94);
+      color: var(--charcoal);
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+    .theme-card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .theme-name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .theme-title-text {
       font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.1;
     }
+    .theme-urdu-sub {
+      font-family: var(--urdu);
+      font-size: 18px;
+      color: var(--clay-deep);
+      direction: rtl;
+    }
+    .theme-mood-tag {
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--clay-deep);
+      margin-top: 4px;
+    }
+    .theme-desc-snippet {
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 21px;
+      margin-top: 10px;
+    }
+
+    /* Minimal Mughal 7-Color Switcher inside Unified Card */
+    .mughal-color-switcher-box {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--card-line);
+    }
+    .mughal-color-switcher-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .mughal-color-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .mughal-color-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--paper);
+      border: 1px solid rgba(35, 31, 32, 0.18);
+      color: var(--charcoal);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mughal-color-pill:hover {
+      border-color: var(--charcoal);
+    }
+    .mughal-color-pill.active {
+      background: var(--charcoal);
+      color: var(--paper);
+      border-color: var(--charcoal);
+    }
+    .mughal-pill-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .theme-card-actions {
+      border-top: 1px solid var(--card-line);
+      margin-top: 18px;
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .theme-preview-btn {
+      background: none;
+      border: 0;
+      color: var(--charcoal);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 10.5px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 4px 0;
+      text-align: left;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--clay);
+      width: fit-content;
+    }
+    .theme-select-pill {
+      background: var(--clay-deep);
+      color: var(--paper);
+      height: 44px;
+      border-radius: 2px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.25s;
+    }
+    .theme-card-option.active .theme-select-pill {
+      background: var(--mehndi);
+    }
+
+    /* Step 4: Editorial Details Form */
+    .config-summary-banner {
+      background: var(--blush);
+      border: 1px solid rgba(181, 86, 63, 0.25);
+      padding: 18px 22px;
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 720px) {
+      .config-summary-banner {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+    .config-summary-item {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .config-sum-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--clay-deep);
+      margin-bottom: 2px;
+    }
+    .config-sum-val {
+      font-family: var(--serif);
+      font-size: 18px;
+      color: var(--charcoal);
+    }
+    .config-change-btn {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--clay);
+      color: var(--charcoal);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding-bottom: 2px;
+    }
+
+    .form-section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 32px 34px;
+      margin-bottom: 24px;
+      box-shadow: 0 24px 48px -36px rgba(35, 31, 32, 0.18);
+    }
+    @media (max-width: 640px) {
+      .form-section {
+        padding: 22px 18px;
+      }
+    }
+    .form-section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--charcoal);
+    }
+    .header-urdu {
+      font-family: var(--urdu);
+      font-size: 18px;
+      color: var(--clay-deep);
+      direction: rtl;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 640px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+    }
+    .form-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-field-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .urdu-label {
+      font-family: var(--urdu);
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--clay-deep);
+      direction: rtl;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: var(--paper) !important;
+      border: 1px solid rgba(35, 31, 32, 0.22) !important;
+      border-radius: 2px;
+      padding: 13px 15px;
+      color: var(--charcoal) !important;
+      font-family: var(--sans);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--clay-deep) !important;
+      background: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(181, 86, 63, 0.12);
+    }
+    .form-input::placeholder {
+      color: rgba(90, 80, 76, 0.5);
+    }
+    .optional-pill {
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--blush);
+      color: var(--clay-ink);
+      text-transform: uppercase;
+    }
+
     .sub-schedule-box {
-      background: rgba(0, 0, 0, 0.22);
-      border: 1px dashed rgba(212, 175, 55, 0.32);
-      border-radius: 10px;
-      padding: 13px 14px;
-      margin-bottom: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 18px 20px;
+      margin-bottom: 18px;
     }
     .sub-schedule-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
-      color: var(--gold-light);
-      font-weight: 600;
+      margin-bottom: 14px;
+      font-family: var(--serif);
+      font-size: 19px;
+      color: var(--charcoal);
+    }
+    .pre-sub-input-row, .custom-sub-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .pre-sub-input-row .form-input, .custom-sub-row .sub-label-inp {
+      flex: 1;
+    }
+    .custom-sub-row .sub-time-inp {
+      width: 35%;
+      min-width: 110px;
     }
     .custom-sub-rows-list {
       display: flex;
@@ -470,1238 +1076,1126 @@
       gap: 8px;
       margin-top: 8px;
     }
-    .custom-sub-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .custom-sub-row .sub-time-inp {
-      width: 36%;
-      min-width: 110px;
-    }
-    .custom-sub-row .sub-label-inp {
-      flex: 1;
-    }
-    .remove-sub-row-btn {
-      background: rgba(220, 53, 69, 0.18);
-      border: 1px solid rgba(220, 53, 69, 0.45);
-      color: #ff99a2;
-      border-radius: 6px;
-      height: 38px;
-      padding: 0 10px;
+    .remove-sub-row-btn, .remove-event-btn, .remove-btn, .remove-host-btn {
+      background: transparent;
+      border: 1px solid rgba(181, 86, 63, 0.35);
+      color: var(--clay-deep);
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 2px;
       cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      transition: all 0.2s;
       flex-shrink: 0;
-      white-space: nowrap;
-      transition: all 0.2s ease;
     }
-    .remove-sub-row-btn:hover {
-      background: rgba(220, 53, 69, 0.35);
-      color: #fff;
+    .remove-sub-row-btn:hover, .remove-event-btn:hover, .remove-btn:hover, .remove-host-btn:hover {
+      background: var(--clay-deep);
+      color: var(--paper);
     }
-    .pre-sub-input-row {
-      display: flex;
-      gap: 8px;
+    .add-sub-row-btn, .restore-sub-events-btn, .restore-opt-pill {
+      margin-top: 10px;
+      background: var(--blush);
+      border: 1px solid rgba(181, 86, 63, 0.35);
+      color: var(--clay-ink);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
-    }
-    .pre-sub-input-row .form-input {
-      flex: 1;
+      gap: 6px;
     }
     .restore-sub-events-btn {
-      margin-top: 8px;
-      margin-left: 6px;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px dashed rgba(212, 175, 55, 0.45);
-      color: var(--gold-light);
-      border-radius: 6px;
-      padding: 6px 11px;
-      font-size: 0.76rem;
-      cursor: pointer;
       display: none;
-      align-items: center;
-      gap: 5px;
     }
-    .restore-sub-events-btn:hover {
-      background: rgba(212, 175, 55, 0.18);
+    .tagline-chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .restore-opt-pill {
-      border: 1px dashed rgba(212, 175, 55, 0.45);
-      background: rgba(212, 175, 55, 0.08);
-      color: var(--gold-light);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.76rem;
+    .tagline-chip-btn {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      color: var(--charcoal);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      transition: all 0.2s ease;
+      gap: 8px;
+      transition: all 0.2s;
     }
-    .restore-opt-pill:hover {
-      background: rgba(212, 175, 55, 0.2);
-      border-color: var(--gold-primary);
-      color: #fff;
+    .tagline-chip-btn:hover {
+      border-color: var(--clay);
     }
-    .add-sub-row-btn {
-      margin-top: 8px;
-      background: rgba(212, 175, 55, 0.12);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: var(--gold-light);
-      border-radius: 6px;
-      padding: 7px 12px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
+    .tagline-chip-btn.active {
+      background: var(--charcoal);
+      color: var(--paper);
+      border-color: var(--charcoal);
     }
-    .add-sub-row-btn:hover {
-      background: rgba(212, 175, 55, 0.24);
-    }
-    .custom-event-badge {
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: var(--gold-light);
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-family: var(--sans);
-    }
-
-    /* Grids & Inputs */
-
-    .form-grid-2 {
-
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 14px;
-
-      margin-bottom: 14px;
-
-    }
-
-    @media (max-width: 600px) {
-
-      .form-grid-2 {
-
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-
-      }
-
-      .form-section {
-
-        padding: 1.1rem 0.9rem;
-
-      }
-
-    }
-
-
-
-    .form-field-group {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 6px;
-
-    }
-
-    .form-field-label {
-
-      font-size: 0.82rem;
-
-      font-weight: 600;
-
-      color: var(--gold-light);
-
-      letter-spacing: 0.03em;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-    }
-
-    .urdu-label {
-
+    .tagline-chip-urdu {
       font-family: var(--urdu);
-
-      font-size: 0.92rem;
-
-      color: var(--gold-primary);
-
-      direction: rtl;
-
+      font-size: 14px;
     }
-
-
-
-    .form-input, .form-select, .form-textarea {
-
-      width: 100%;
-
-      background: rgba(3, 14, 10, 0.75);
-
-      border: 1px solid rgba(212, 175, 55, 0.35);
-
-      border-radius: 8px;
-
-      padding: 12px 14px;
-
-      color: var(--cream);
-
-      font-family: var(--sans);
-
-      font-size: 0.95rem;
-
-      outline: none;
-
-      transition: var(--transition);
-
+    .tagline-chip-sub {
+      font-size: 11px;
+      opacity: 0.75;
     }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-
-      border-color: var(--gold-primary);
-
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
-
-      background: rgba(3, 14, 10, 0.95);
-
-    }
-
-    .form-input::placeholder {
-
-      color: rgba(201, 195, 178, 0.45);
-
-      font-size: 0.88rem;
-
-    }
-
-
-
-    .optional-pill {
-
-      font-size: 0.7rem;
-
-      padding: 2px 7px;
-
-      border-radius: 12px;
-
-      background: rgba(212, 175, 55, 0.15);
-
-      border: 1px solid rgba(212, 175, 55, 0.3);
-
-      color: var(--gold-light);
-
-      font-weight: 500;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.05em;
-
-    }
-
-
-
-    /* Host Repeater (Welcoming persons) */
-
     .hosts-container {
-
       display: flex;
-
       flex-direction: column;
-
       gap: 10px;
-
       margin-top: 10px;
-
     }
-
     .host-row {
-
       display: grid;
-
       grid-template-columns: 1.4fr 1fr auto;
-
-      gap: 8px;
-
+      gap: 10px;
       align-items: center;
-
     }
-
-    @media (max-width: 520px) {
-
+    @media (max-width: 540px) {
       .host-row {
-
         grid-template-columns: 1fr auto;
-
       }
-
       .host-row input:first-child {
-
         grid-column: 1 / -1;
-
       }
-
     }
-
-    .remove-btn {
-
-      background: rgba(255, 77, 77, 0.12);
-
-      border: 1px solid rgba(255, 77, 77, 0.3);
-
-      color: #ff6b6b;
-
-      width: 36px;
-
-      height: 38px;
-
-      border-radius: 6px;
-
-      cursor: pointer;
-
+    .add-event-card {
+      background: var(--blush);
+      border: 1px solid rgba(181, 86, 63, 0.3);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .add-event-flex {
       display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-weight: bold;
-
-      transition: var(--transition);
-
-    }
-
-    .remove-btn:hover {
-
-      background: rgba(255, 60, 60, 0.25);
-
-      color: #fff;
-
-    }
-
-
-
-    /* Theme Option Grid */
-
-    .theme-selection-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-
-      gap: 10px;
-
-      margin-top: 10px;
-
-    }
-
-    .theme-card-option {
-
-      border: 1px solid rgba(212, 173, 93, 0.25);
-
-      background: rgba(4, 15, 11, 0.8);
-
-      border-radius: 8px;
-
-      padding: 10px 12px;
-
-      cursor: pointer;
-
-      transition: var(--transition);
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-    }
-
-    .theme-card-option:hover {
-
-      border-color: var(--gold-primary);
-
-      background: rgba(10, 31, 23, 0.9);
-
-    }
-
-    .theme-card-option input {
-
-      accent-color: var(--gold-primary);
-
-      transform: scale(1.15);
-
-    }
-
-    .theme-card-option.active {
-
-      border-color: #ffe89e;
-
-      background: rgba(26, 77, 58, 0.5);
-
-      box-shadow: 0 0 10px rgba(212, 173, 93, 0.3);
-
-    }
-
-    .theme-title-text {
-
-      font-size: 0.8rem;
-
-      font-weight: 500;
-
-      color: var(--cream);
-
-      line-height: 1.3;
-
-    }
-
-
-
-    /* Buttons */
-
-    .gold-btn {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 10px;
-
-      background: var(--gold-gradient);
-
-      color: #071912;
-
-      border: 1px solid #ffe89e;
-
-      padding: 14px 28px;
-
-      border-radius: 8px;
-
-      font-family: var(--sans);
-
-      font-size: 1.02rem;
-
-      font-weight: 600;
-
-      letter-spacing: 0.04em;
-
-      cursor: pointer;
-
-      text-decoration: none;
-
-      transition: var(--transition);
-
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-
-      width: 100%;
-
-    }
-
-    .gold-btn:hover {
-
-      filter: brightness(1.1);
-
-      transform: translateY(-2px);
-
-      box-shadow: 0 6px 22px rgba(212, 173, 93, 0.45);
-
-    }
-
-
-
-    .wa-btn {
-
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-
-      color: #fff;
-
-      border: 1px solid #48e684;
-
-    }
-
-    .wa-btn:hover {
-
-      background: linear-gradient(135deg, #2ae06f 0%, #17a090 100%);
-
-      box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4);
-
-    }
-
-
-
-    .outline-btn {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 6px;
-
-      background: rgba(10, 31, 23, 0.8);
-
-      border: 1px solid var(--gold-line);
-
-      color: var(--gold-light);
-
-      padding: 8px 16px;
-
-      border-radius: 6px;
-
-      font-size: 0.82rem;
-
-      font-weight: 500;
-
-      cursor: pointer;
-
-      transition: var(--transition);
-
-    }
-
-    .outline-btn:hover {
-
-      border-color: var(--gold-primary);
-
-      background: rgba(26, 77, 58, 0.85);
-
-      color: #fff;
-
-    }
-
-
-
-    /* Success / Submission Modal */
-
-    .modal-overlay {
-
-      position: fixed;
-
-      inset: 0;
-
-      background: rgba(0, 0, 0, 0.85);
-
-      backdrop-filter: blur(6px);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding: 1.5rem;
-
-      z-index: 9999;
-
-      opacity: 0;
-
-      pointer-events: none;
-
-      transition: all 0.3s ease;
-
-    }
-
-    .modal-overlay.show {
-
-      opacity: 1;
-
-      pointer-events: auto;
-
-    }
-
-    .modal-card {
-
-      background: #0a1f17;
-
-      border: 1px solid var(--gold-primary);
-
-      border-radius: 14px;
-
-      padding: 2rem 1.6rem;
-
-      max-width: 500px;
-
-      width: 100%;
-
-      text-align: center;
-
-      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-
-    }
-
-    .modal-card h2 {
-
-      font-family: var(--serif);
-
-      color: var(--gold-light);
-
-      font-size: 1.5rem;
-
-      margin-bottom: 0.5rem;
-
-    }
-
-    .modal-card p {
-
-      color: var(--cream-muted);
-
-      font-size: 0.9rem;
-
-      line-height: 1.6;
-
-      margin-bottom: 1.5rem;
-
-    }
-
-
-
-    #toast {
-
-      position: fixed;
-
-      bottom: 24px;
-
-      left: 50%;
-
-      transform: translateX(-50%) translateY(100px);
-
-      background: #143528;
-
-      border: 1px solid var(--gold-primary);
-
-      color: var(--gold-light);
-
-      padding: 12px 24px;
-
-      border-radius: 30px;
-
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-
-      font-size: 0.9rem;
-
-      font-weight: 500;
-
-      opacity: 0;
-
-      transition: all 0.3s ease;
-
-      z-index: 10000;
-
-      pointer-events: none;
-
-    }
-
-    #toast.error {
-      background: linear-gradient(135deg, #681220, #3d0811);
-      border: 1.5px solid #ff6b7a;
-      color: #ffe8eb;
-      box-shadow: 0 6px 24px rgba(220, 53, 69, 0.5);
+      align-items: flex-end;
+      gap: 14px;
+      flex-wrap: wrap;
     }
     .duplicate-event-error {
       display: none;
       margin-top: 12px;
       padding: 10px 14px;
-      background: rgba(180, 28, 45, 0.28);
-      border: 1px solid #ff6b7a;
-      border-radius: 8px;
-      color: #ffd6db;
-      font-size: 0.88rem;
-      line-height: 1.45;
-      align-items: center;
+      background: #fbeae7;
+      border: 1px solid var(--clay-deep);
+      color: var(--clay-ink);
+      font-size: 13px;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      animation: shakeError 0.35s ease;
     }
     .duplicate-event-error.show {
       display: flex;
     }
-    @keyframes shakeError {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+
+    /* aqdinvites-style Full-Screen DemoView Studio Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 12, 11, 0.88);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease);
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .demoview-studio {
+      width: 100vw;
+      height: 100svh;
+      background: #0c0a09;
+      color: #f8fbf4;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) 68px;
+      position: relative;
+      overflow: hidden;
+    }
+    .demoview-topbar {
+      height: 66px;
+      padding: 0 28px;
+      border-bottom: 1px solid rgba(248, 251, 244, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(12, 10, 9, 0.85);
+    }
+    .demoview-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .demoview-close-round {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 251, 244, 0.22);
+      background: transparent;
+      color: #f8fbf4;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .demoview-close-round:hover {
+      background: rgba(248, 251, 244, 0.1);
+    }
+    .demoview-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      line-height: 1;
+    }
+    .demoview-tag {
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--clay-light);
+      margin-top: 3px;
+    }
+    .demoview-device-seg {
+      background: rgba(248, 251, 244, 0.06);
+      border: 1px solid rgba(248, 251, 244, 0.14);
+      border-radius: 999px;
+      padding: 3px;
+      display: flex;
+    }
+    @media (max-width: 760px) {
+      .demoview-device-seg {
+        display: none;
+      }
+    }
+    .demoview-device-btn {
+      height: 34px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 0;
+      background: transparent;
+      color: rgba(248, 251, 244, 0.75);
+      font-size: 10.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .demoview-device-btn.active {
+      background: #f8fbf4;
+      color: #0c0a09;
+      font-weight: 500;
+    }
+
+    .preview-explorer-toolbar {
+      padding: 8px 28px;
+      background: rgba(20, 17, 15, 0.95);
+      border-bottom: 1px solid rgba(248, 251, 244, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .preview-switch-theme-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .preview-theme-chip {
+      height: 32px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 251, 244, 0.2);
+      background: transparent;
+      color: rgba(248, 251, 244, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .preview-theme-chip.active {
+      background: var(--clay-deep);
+      border-color: var(--clay-deep);
+      color: #fff;
+    }
+    .preview-mughal-colors-bar {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding-top: 4px;
+    }
+    .preview-mughal-colors-bar.show {
+      display: flex;
+    }
+    .preview-mughal-colors-bar .mughal-color-pill {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.2);
+      color: #f8fbf4;
+      font-size: 10.5px;
+    }
+    .preview-mughal-colors-bar .mughal-color-pill.active {
+      background: #f8fbf4;
+      color: #0c0a09;
+    }
+
+    .demoview-stage-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .demoview-phone-frame {
+      width: 375px;
+      max-width: 100%;
+      height: 100%;
+      max-height: 760px;
+      background: #1b1718;
+      padding: 10px;
+      border-radius: 44px;
+      border: 1px solid rgba(248, 251, 244, 0.22);
+      box-shadow: 0 40px 90px -20px rgba(0,0,0,0.85);
+      transition: width 0.35s var(--ease), border-radius 0.35s var(--ease);
+      display: flex;
+    }
+    .demoview-phone-frame.ipad-mode {
+      width: 820px;
+      border-radius: 26px;
+    }
+    @media (max-width: 640px) {
+      .demoview-phone-frame {
+        width: 100%;
+        max-height: none;
+        padding: 0;
+        border-radius: 0;
+        border: 0;
+      }
+      .demoview-stage-area {
+        padding: 0;
+      }
+    }
+    .preview-modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 35px;
+      background: #06130e;
+    }
+    .demoview-phone-frame.ipad-mode .preview-modal-iframe {
+      border-radius: 18px;
+    }
+    @media (max-width: 640px) {
+      .preview-modal-iframe {
+        border-radius: 0;
+      }
+    }
+    .demoview-bottombar {
+      padding: 0 28px;
+      border-top: 1px solid rgba(248, 251, 244, 0.1);
+      background: rgba(12, 10, 9, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* Order Confirmation Modal Card */
+    .modal-card {
+      background: var(--paper);
+      color: var(--charcoal);
+      border: 1px solid var(--line);
+      padding: 40px 36px;
+      max-width: 520px;
+      width: calc(100% - 32px);
+      text-align: center;
+      box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
+    }
+    .modal-card h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 32px;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .modal-card p {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-bottom: 20px;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--charcoal);
+      color: var(--paper);
+      padding: 12px 24px;
+      border-radius: 2px;
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.45);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: all 0.3s var(--ease);
+      z-index: 10000;
+      pointer-events: none;
+    }
+    #toast.error {
+      background: var(--clay-deep);
     }
     #toast.show {
-
       transform: translateX(-50%) translateY(0);
-
       opacity: 1;
-
     }
-
   </style>
-
 </head>
-
 <body>
 
+  <!-- Clean Editorial Top Bar + Segmented Filling Progress Bar -->
+  <header class="studio-topbar" id="conciergeStepperWrap">
+    <div class="studio-topbar-inner">
+      <a class="studio-back-link" href="/">
+        <span>←</span>
+        <span>Home</span>
+      </a>
+      <a class="studio-brand" href="/">
+        <span class="studio-brand-title">E-DawatNama</span>
+        <span class="studio-brand-sub">Invitation Studio</span>
+      </a>
+      <div class="studio-top-right">
+        <span class="progress-pct-badge" id="progressFillBadge">Step 01 / 04</span>
+      </div>
+    </div>
 
+    <div class="studio-progress-strip" id="conciergeProgressBarWrap">
+      <div class="segmented-fill-track" aria-label="Order Steps Progress Bar">
+        <div class="fill-segment filled" id="fillSeg1"><div class="fill-segment-inner"></div></div>
+        <div class="fill-segment" id="fillSeg2"><div class="fill-segment-inner"></div></div>
+        <div class="fill-segment" id="fillSeg3"><div class="fill-segment-inner"></div></div>
+        <div class="fill-segment" id="fillSeg4"><div class="fill-segment-inner"></div></div>
+      </div>
+
+      <nav class="concierge-stepper" id="conciergeStepper" aria-label="4-Step Order Studio">
+        <button type="button" class="stepper-pill active" data-goto-step="stepStage1" id="stepperBtn1">
+          <span class="stepper-num">01</span>
+          <span class="stepper-text-wrap">
+            <span class="stepper-title">Family Side</span>
+            <span class="stepper-sub" id="stepperSub1">Groom's Side</span>
+          </span>
+        </button>
+        <button type="button" class="stepper-pill" data-goto-step="stepStage2" id="stepperBtn2">
+          <span class="stepper-num">02</span>
+          <span class="stepper-text-wrap">
+            <span class="stepper-title">The Events</span>
+            <span class="stepper-sub" id="stepperSub2">3-Day Shaadi</span>
+          </span>
+        </button>
+        <button type="button" class="stepper-pill" data-goto-step="stepStage3" id="stepperBtn3">
+          <span class="stepper-num">03</span>
+          <span class="stepper-text-wrap">
+            <span class="stepper-title">The Design</span>
+            <span class="stepper-sub" id="stepperSub3">Choose Theme</span>
+          </span>
+        </button>
+        <button type="button" class="stepper-pill" data-goto-step="stepStage4" id="stepperBtn4">
+          <span class="stepper-num">04</span>
+          <span class="stepper-text-wrap">
+            <span class="stepper-title">Your Details</span>
+            <span class="stepper-sub" id="stepperSub4">Names &amp; Venues</span>
+          </span>
+        </button>
+      </nav>
+    </div>
+  </header>
 
   <div class="form-wrapper">
-
-    <header class="form-header">
-
-      <h1 class="form-brand-title">Dawat Nama by Elitara</h1>
-
-      <div class="form-brand-urdu">شاہی ڈیجیٹل شادی دعوت نامہ — آرڈر فارم</div>
-
-      <p class="form-brand-sub">
-
-        Please fill in your wedding details below. Our design team will handle all professional Urdu calligraphy, translations, interactive Google Maps, and live countdown timer within 24 hours.
-
-      </p>
-
-      <div class="form-brand-sub-urdu">
-
-        براہِ کرم اپنی شادی کی تفصیلات درج فرمائیں۔ خوبصورت اردو خطاطی، ترجمہ اور ڈیزائن ہماری ٹیم کی ذمہ داری ہے۔
-
-      </div>
-
-    </header>
-
-
-
-    <!-- Side Selector (Bride vs Groom) -->
-
-    <div class="side-tabs-container">
-
-      <button class="side-tab-btn active" id="tabGroom" type="button">
-
-        <span>🤵 Groom's Side</span>
-
-        <span class="tab-urdu">(لڑکے والے)</span>
-
-      </button>
-
-      <button class="side-tab-btn" id="tabBride" type="button">
-
-        <span>👰 Bride's Side</span>
-
-        <span class="tab-urdu">(لڑکی والے)</span>
-
-      </button>
-
+    <div class="progress-status-bar" id="progressStatusTextEn">
+      <span>Step 01 of 02 before Theme Exploration — Choose your family side &amp; ceremonies first so we can tailor every design for you.</span>
     </div>
-
-
 
     <form id="clientOrderForm">
-
-      <!-- Hidden side input -->
-
       <input type="hidden" id="f_side" value="groom">
 
-
-
-      <!-- 1. Couple Details -->
-
-      <div class="form-section">
-
-        <div class="form-section-header">
-
-          <span id="coupleSectionTitle">👑 1. Groom & Bride Names</span>
-
-          <span class="header-urdu">دولہا اور دلہن کے مبارک نام</span>
-
-        </div>
-
-
-
-        <div id="coupleNamesContainer">
-
-          <div class="form-field-group" id="groomNameGroup" style="margin-bottom: 14px;">
-
-            <label class="form-field-label">
-
-              <span>Groom Full Name</span>
-
-              <span class="urdu-label">دولہا کا پورا نام</span>
-
-            </label>
-
-            <input class="form-input" type="text" id="c_groom" placeholder="e.g. Ahmed Raza" required>
-
-          </div>
-
-
-
-          <div class="form-field-group" id="brideNameGroup">
-
-            <label class="form-field-label">
-
-              <span>Bride Full Name</span>
-
-              <span class="urdu-label">دلہن کا پورا نام</span>
-
-            </label>
-
-            <input class="form-input" type="text" id="c_bride" placeholder="e.g. Ayesha Malik" required>
-
-          </div>
-
-          <!-- Optional Groom & Bride Professions / Titles -->
-          <div class="form-field-group" id="groupGroomOccupation">
-            <label class="form-field-label">
-              <span>Groom Profession / Title <span class="optional-pill">Optional</span></span>
-              <span class="urdu-label">دولہا کا پیشہ / تعلیمی ڈگری</span>
-            </label>
-            <div class="pre-sub-input-row">
-              <input class="form-input" type="text" id="c_groom_occupation" placeholder="e.g. Software Architect &amp; Entrepreneur">
-              <button type="button" class="remove-sub-row-btn" id="btnRemoveGroomOcc" title="Remove Groom Profession">✕ Remove</button>
-            </div>
-          </div>
-
-          <div class="form-field-group" id="groupBrideOccupation">
-            <label class="form-field-label">
-              <span>Bride Profession / Title <span class="optional-pill">Optional</span></span>
-              <span class="urdu-label">دلہن کا پیشہ / تعلیمی ڈگری</span>
-            </label>
-            <div class="pre-sub-input-row">
-              <input class="form-input" type="text" id="c_bride_occupation" placeholder="e.g. Doctor of Medicine (M.D)">
-              <button type="button" class="remove-sub-row-btn" id="btnRemoveBrideOcc" title="Remove Bride Profession">✕ Remove</button>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="restore-details-wrap" id="restoreCoupleDetailsWrap" style="margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button type="button" class="restore-opt-pill" id="btnAddGroomOcc" style="display:none;">+ Add Groom Profession</button>
-          <button type="button" class="restore-opt-pill" id="btnAddBrideOcc" style="display:none;">+ Add Bride Profession</button>
-        </div>
-
-      </div>
-
-      <!-- 2. Parents & Host Line -->
-
-      <div class="form-section">
-
-        <div class="form-section-header">
-
-          <span id="hostSectionTitle">🏛️ 2. Main Hosts (Parents)</span>
-
-          <span class="header-urdu" id="hostSectionTitleUr">والدین و میزبانِ گرامی</span>
-
-        </div>
-
-        
-
-        <div class="form-field-group">
-
-          <label class="form-field-label">
-
-            <span id="labelHostEn">Groom's Parents / Inviting Hosts</span>
-
-            <span class="urdu-label" id="labelHostUr">والدینِ دولہا و میزبان</span>
-
-          </label>
-
-          <input class="form-input" type="text" id="c_host" placeholder="e.g. Mr. & Mrs. Tariq Mahmood" required>
-
-        </div>
-
-        <!-- Optional Secondary Parents / Other Side Parents -->
-        <div class="form-field-group" id="groupOtherParents" style="margin-top:1.1rem;">
-          <label class="form-field-label">
-            <span id="labelOtherParentsEn">Bride's Parents (In-Laws) <span class="optional-pill">Optional</span></span>
-            <span class="urdu-label" id="labelOtherParentsUr">والدینِ دلہن (سسرال)</span>
-          </label>
-          <div class="pre-sub-input-row">
-            <input class="form-input" type="text" id="c_other_parents" placeholder="e.g. Mr. & Mrs. Kamran Akhtar">
-            <button type="button" class="remove-sub-row-btn" id="btnRemoveOtherParents" title="Remove In-Laws Parents">✕ Remove</button>
-          </div>
-        </div>
-
-        <div class="restore-details-wrap" id="restoreHostDetailsWrap" style="margin-top:4px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button type="button" class="restore-opt-pill" id="btnAddOtherParents" style="display:none;">+ Add Bride's Parents</button>
-        </div>
-
-
-
-        <!-- Welcoming Persons (Awaiting to Welcome / چشم براہ) -->
-
-        <div style="margin-top:1.2rem;">
-
-          <label class="form-field-label">
-
-            <span>Awaiting to Welcome / Contact Persons <span class="optional-pill">Optional</span></span>
-
-            <span class="urdu-label">چشم براہ و رابطہ کار احباب</span>
-
-          </label>
-
-          <div class="hosts-container" id="clientHostsContainer"></div>
-
-          <button class="outline-btn" id="clientAddHostBtn" type="button" style="margin-top:8px;">+ Add Contact / Welcoming Person</button>
-
-        </div>
-
-        <!-- Wedding Tagline Badge Section -->
-        <div class="form-field-group" style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px dashed rgba(212, 175, 55, 0.25);">
-          <label class="form-field-label">
-            <span>Wedding Tagline / Badge <span class="optional-pill">Optional — اختیاری</span></span>
-            <span class="urdu-label">شادی کی ٹیگ لائن / عنوان</span>
-          </label>
-          <div style="position:relative;">
-            <input class="form-input" type="text" id="c_tagline" placeholder="Select a suggested tagline below or enter your own...">
-          </div>
-
-          <div class="tagline-suggestions-wrap" style="margin-top:10px;">
-            <div style="font-size:0.75rem; color:var(--gold-primary); margin-bottom:8px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
-              <span>💡 Suggested Taglines (کلک کر کے منتخب کریں):</span>
-              <button type="button" id="clearTaglineBtn" style="background:none; border:none; color:var(--text-muted); font-size:0.75rem; cursor:pointer; text-decoration:underline; display:none;">✕ Clear</button>
-            </div>
-            <div class="tagline-chips-grid" id="taglineChipsGrid"></div>
-          </div>
-        </div>
-
-      </div>
-
-
-
-                        <!-- 3. Dynamic Events Builder Section -->
-      <div class="events-main-wrapper" style="margin-bottom:1.5rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:1.2rem; padding:0 4px;">
-          <div>
-            <h2 style="font-family:var(--serif); font-size:1.35rem; color:var(--gold-light); margin:0 0 2px;">
-              <span>📅 3. Wedding & Reception Events</span>
-            </h2>
-            <div style="font-family:var(--urdu); font-size:1.05rem; color:var(--gold-primary); direction:rtl;">
-              شادی اور دیگر تمام تقاریب کے شیڈول
-            </div>
-          </div>
-          <span style="font-size:0.8rem; color:var(--cream-muted); background:rgba(0,0,0,0.3); padding:4px 12px; border-radius:20px; border:1px solid rgba(212,175,55,0.25);">
-            ✦ Add or remove single or multiple events
-          </span>
-        </div>
-
-        <!-- 1-Tap Event Combination Presets -->
-        <div class="preset-packages-bar">
-          <div class="preset-packages-title">
-            <span>⚡ Quick Event Combinations (1-Day, 2-Day, or 3-Day Presets)</span>
-            <span style="font-family:var(--urdu); font-size:0.92rem; color:var(--gold-primary); font-weight:400;">اپنی تقاریب کا پیکیج منتخب کریں یا نیچے سے خود شامل کریں</span>
-          </div>
-          <div class="preset-pills-wrap" id="presetPackagesBar">
-            <button type="button" class="preset-pkg-btn" data-preset="walima">✨ 1-Day: Walima Only</button>
-            <button type="button" class="preset-pkg-btn" data-preset="barat">👑 1-Day: Barat Only</button>
-            <button type="button" class="preset-pkg-btn" data-preset="nikkah">📜 1-Day: Nikah Only</button>
-            <button type="button" class="preset-pkg-btn" data-preset="mehndi,barat">🌸👑 2-Day: Mehndi + Barat</button>
-            <button type="button" class="preset-pkg-btn" data-preset="mehndi,walima">🌸✨ 2-Day: Mehndi + Walima</button>
-            <button type="button" class="preset-pkg-btn" data-preset="barat,walima">👑✨ 2-Day: Barat + Walima</button>
-            <button type="button" class="preset-pkg-btn active" data-preset="mehndi,barat,walima">🌟 3-Day: Mehndi + Barat + Walima</button>
-          </div>
-        </div>
-
-        <!-- Dynamic Events Container -->
-        <div id="eventsContainer"></div>
-
-        <!-- Add Event Card / Selector Controls -->
-        <div class="add-event-card">
-          <div style="font-family:var(--serif); font-size:1.15rem; color:var(--gold-light); margin-bottom:4px; display:flex; align-items:center; gap:8px;">
-            <span>✨ Add An Event to Your Invitation</span>
-          </div>
-          <div style="font-family:var(--urdu); font-size:0.95rem; color:var(--gold-primary); direction:rtl; margin-bottom:12px;">
-            فہرست سے تقریب منتخب کریں اور "+ نیا ایونٹ شامل کریں" پر کلک کریں
-          </div>
-          <div class="add-event-flex">
-            <div style="flex:1; min-width:240px;">
-              <label class="form-field-label" style="margin-bottom:6px;">
-                <span>Select Event Type</span>
-                <span class="urdu-label">ایونٹ کی قسم</span>
-              </label>
-              <select id="eventSelectorDropdown" class="form-input" style="font-size:0.98rem; padding:12px 14px; background:rgba(6,22,16,0.95); border:1px solid var(--gold-primary); color:#fff; cursor:pointer;">
-                <option value="mehndi">🌸 Mehndi (رسمِ حنا / مہندی)</option>
-                <option value="barat" selected>👑 Barat (بارات / رخصتی)</option>
-                <option value="walima">✨ Walima (دعوتِ ولیمہ)</option>
-                <option value="engagement">💍 Engagement (منگنی تقریب)</option>
-                <option value="nikkah">📜 Nikah Ceremony (نکاح تقریب)</option>
-                <option value="custom">✨ Custom Event (کسٹم ایونٹ — کوئی بھی تقریب)</option>
-              </select>
-            </div>
-            <button type="button" id="addEventBtn" class="gold-btn" style="padding:13px 26px; font-size:0.96rem; display:flex; align-items:center; gap:8px; white-space:nowrap; cursor:pointer;">
-              <span>+ Add Event</span>
-              <span style="font-family:var(--urdu); font-size:0.95rem;">(+ نیا ایونٹ شامل کریں)</span>
-            </button>
-          </div>
-          <div id="duplicateEventError" class="duplicate-event-error" role="alert">
-            <span id="duplicateEventErrorEn">⚠️ This event is already added to your invitation!</span>
-            <span id="duplicateEventErrorUr" style="font-family:var(--urdu); font-size:0.95rem; direction:rtl;">یہ تقریب پہلے سے آپ کے کارڈ میں شامل ہے!</span>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- 4. Design Theme (Optional) -->
-
-      <div class="form-section">
-
-        <div class="form-section-header">
-
-          <span>🎨 4. Preferred Luxury Theme <span class="optional-pill">Optional — اختیاری</span></span>
-
-          <span class="header-urdu">پسندیدہ ڈیزائن تھیم</span>
-
-        </div>
-
-        <p style="font-size:0.84rem; color:var(--cream-muted); margin-bottom:12px;">
-
-          Theme selection is completely optional. You can choose a specific style or let our senior designer select the best matching theme for your colors and family traditions.
-
+      <!-- =================================================================
+           STEP 01: FAMILY PERSPECTIVE (GROOM'S SIDE vs BRIDE'S SIDE)
+           ================================================================= -->
+      <section class="concierge-step-stage active-wizard-step" id="stepStage1">
+        <div class="step-eyebrow">Step 01 of 04 · Family Perspective</div>
+        <h1 class="step-h1">Whose family is <i>hosting</i> the invitation?</h1>
+        <p class="step-lede">
+          Every shaadi tells its story from the inviting family’s heart. Choose your side below so we can tailor the event presets and theme collection that follow.
         </p>
 
-
-
-        <div class="theme-selection-grid">
-
-          <label class="theme-card-option active" style="grid-column: 1 / -1;">
-
-            <input type="radio" name="c_theme" value="optional" checked>
-
+        <div class="theme-upcoming-teaser">
+          <div class="teaser-left">
+            <span class="teaser-no">01 → 03</span>
             <div>
+              <div class="teaser-title-en">Your tailored theme collection opens right after these first 2 quick steps.</div>
+              <div class="teaser-sub-en">پہلے لڑکے یا لڑکی والوں اور تقاریب کا انتخاب کریں — اگلے ہی مرحلے میں آپ اپنی پسندیدہ تھیم کا لائیو ڈیمو دیکھ کر منتخب کریں گے۔</div>
+            </div>
+          </div>
+          <span class="teaser-step-roadmap">Next: Events → Theme Collection</span>
+        </div>
 
-              <div class="theme-title-text" style="color:var(--gold-light); font-weight:600;">✨ Let Elitara Choose (Recommended / ایلی تارا کی پسندیدہ تھیم)</div>
+        <div class="side-tabs-container">
+          <button class="side-tab-btn active" id="tabGroom" type="button">
+            <div>
+              <span class="side-card-num">01</span>
+              <div class="side-tab-top-row" style="margin-top:6px;">
+                <span class="side-tab-title-main">Groom's Side</span>
+                <span class="tab-urdu">لڑکے والے</span>
+              </div>
+              <p class="side-tab-desc" style="margin-top:12px;">
+                Groom’s parents as primary hosts, Groom’s name first, and presets tailored for Walima Reception, Baraat Procession (Sehra Bandi &amp; Departure), and 3-Day Weddings.
+              </p>
+            </div>
+            <div class="side-check-indicator" id="indGroom">◆ Selected — Groom's Family</div>
+          </button>
 
-              <div style="font-size:0.74rem; color:var(--cream-muted);">Our designers will match the most regal palette for your ceremonies.</div>
+          <button class="side-tab-btn" id="tabBride" type="button">
+            <div>
+              <span class="side-card-num">02</span>
+              <div class="side-tab-top-row" style="margin-top:6px;">
+                <span class="side-tab-title-main">Bride's Side</span>
+                <span class="tab-urdu">لڑکی والے</span>
+              </div>
+              <p class="side-tab-desc" style="margin-top:12px;">
+                Bride’s parents as primary hosts, Bride’s name first, and presets tailored for Baraat &amp; Rukhsati Ceremony, Mehndi (Rasm-e-Hina), and Sacred Nikkah.
+              </p>
+            </div>
+            <div class="side-check-indicator" id="indBride">Choose Bride's Family →</div>
+          </button>
+        </div>
 
+        <div class="step-next-bar">
+          <span style="font-size:13px; color:var(--muted);">Step 01 of 04</span>
+          <button type="button" class="btn-editorial" data-scroll-target="stepStage2">
+            <span>Continue to Events</span>
+            <span class="dia"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           STEP 02: THE EVENTS (SIDE-TAILORED PRESETS & GUEST LINKS)
+           ================================================================= -->
+      <section class="concierge-step-stage" id="stepStage2">
+        <div class="step-eyebrow">Step 02 of 04 · The Ceremonies</div>
+        <h1 class="step-h1">Which <i>moments</i> are you celebrating?</h1>
+        <p class="step-lede">
+          Pick a recommended combination for your family side, or toggle individual functions. In the very next step, you’ll explore live designs matched to these events.
+        </p>
+
+        <div class="theme-upcoming-teaser">
+          <div class="teaser-left">
+            <span class="teaser-no">02 → 03</span>
+            <div>
+              <div class="teaser-title-en">Almost there — Theme Exploration &amp; Live Previews are next!</div>
+              <div class="teaser-sub-en">اپنی تقاریب منتخب کریں، اس کے فوراً بعد آپ کے انتخاب کے مطابق شاہی تھیمز کی گیلری کھل جائے گی۔</div>
+            </div>
+          </div>
+          <button type="button" class="uline-btn" data-scroll-target="stepStage3">
+            <span>Open Theme Collection →</span>
+          </button>
+        </div>
+
+        <div class="side-rec-banner" id="sideEventRecBanner">
+          <span class="side-rec-banner-en" id="sideEventRecEn">Recommended packages for <strong>Groom's Side</strong></span>
+          <span class="side-rec-banner-ur" id="sideEventRecUr">لڑکے والوں کے لیے تجویز کردہ پیکیجز</span>
+        </div>
+
+        <div class="preset-pills-wrap" id="presetPackagesBar">
+          <button type="button" class="preset-pkg-btn active" data-preset="mehndi,barat,walima">3-Day: Mehndi + Barat + Walima</button>
+          <button type="button" class="preset-pkg-btn" data-preset="barat,walima">2-Day: Barat + Walima</button>
+          <button type="button" class="preset-pkg-btn" data-preset="mehndi,barat">2-Day: Mehndi + Barat</button>
+          <button type="button" class="preset-pkg-btn" data-preset="mehndi,walima">2-Day: Mehndi + Walima</button>
+          <button type="button" class="preset-pkg-btn" data-preset="walima">1-Day: Walima Only</button>
+          <button type="button" class="preset-pkg-btn" data-preset="barat">1-Day: Barat Only</button>
+          <button type="button" class="preset-pkg-btn" data-preset="nikkah">1-Day: Nikkah Only</button>
+        </div>
+
+        <div class="quick-events-toggle-box">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">
+            <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:500; color:var(--clay-deep);">Or toggle individual events</span>
+            <span style="font-family:var(--urdu); font-size:14px; color:var(--muted);">یا اپنی مرضی سے تقاریب منتخب کریں</span>
+          </div>
+          <div class="quick-events-grid" id="quickEventsToggleGrid">
+            <button type="button" class="quick-evt-pill selected" data-toggle-event="mehndi">
+              <span class="quick-evt-check">✓</span>
+              <span>Mehndi</span>
+            </button>
+            <button type="button" class="quick-evt-pill selected" data-toggle-event="barat">
+              <span class="quick-evt-check">✓</span>
+              <span id="quickToggleBaratLabel">Barat</span>
+            </button>
+            <button type="button" class="quick-evt-pill selected" data-toggle-event="walima">
+              <span class="quick-evt-check">✓</span>
+              <span>Walima</span>
+            </button>
+            <button type="button" class="quick-evt-pill" data-toggle-event="nikkah">
+              <span class="quick-evt-check"></span>
+              <span>Nikkah</span>
+            </button>
+            <button type="button" class="quick-evt-pill" data-toggle-event="engagement">
+              <span class="quick-evt-check"></span>
+              <span>Engagement</span>
+            </button>
+            <button type="button" class="quick-evt-pill" data-toggle-event="custom">
+              <span class="quick-evt-check">+</span>
+              <span>Custom Event</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="guest-segmentation-preview" id="step2GuestLinksPreview">
+          <div><strong>A link for every guest group:</strong> Everyone sees only the events they are invited to. Included with your selection:</div>
+          <div class="guest-seg-chips" id="step2GuestSegChips"></div>
+        </div>
+
+        <div class="step-next-bar">
+          <button type="button" class="uline-btn" data-scroll-target="stepStage1">← Back to Family Side</button>
+          <button type="button" class="btn-editorial" data-scroll-target="stepStage3">
+            <span>Explore Tailored Themes</span>
+            <span class="dia"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           STEP 03: THE COLLECTION (TAILORED DESIGNS & LIVE STUDIO PREVIEW)
+           ================================================================= -->
+      <section class="concierge-step-stage" id="stepStage3">
+        <div class="step-eyebrow" id="themeContextTextEn">Step 03 of 04 · Tailored Collection</div>
+        <h1 class="step-h1">Seven worlds. <i>Which one feels like you?</i></h1>
+        <p class="step-lede" id="themeContextSubEn">
+          Every design below is ordered for your selected family side and ceremonies. Open any design live to test it, switch themes while exploring, or pick your favourite.
+        </p>
+
+        <div class="theme-filter-tabs" id="orderThemeFilterTabs" role="tablist">
+          <button type="button" class="theme-filter-btn active" data-theme-filter="recommended">Recommended for you</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="all">All seven</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="royal">Royal Mughal (7 Colours)</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="garden">Gardens</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="velvet">By night</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="nikkah">By day &amp; Nikkah</button>
+        </div>
+
+        <div class="theme-selection-grid" id="orderThemeSelectionGrid">
+          <!-- Option 0: Designer's Choice -->
+          <label class="theme-card-option active" data-theme-key="optional" data-theme-cat="all" style="grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 20px 24px; background: var(--blush);">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <input type="radio" name="c_theme" value="optional" checked>
+              <div>
+                <div class="theme-title-text" style="font-size:22px;">Let our senior designer match a design for you</div>
+                <div style="font-size:13.5px; color:var(--muted);">We’ll pair your outfits and family traditions with the most fitting palette.</div>
+              </div>
+            </div>
+            <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay-deep); font-weight:500;">◆ Designer's Choice</span>
+          </label>
+
+          <!-- 1. UNIFIED ROYAL MUGHAL DARBAR (7 Colours in a Single Design Card) -->
+          <label class="theme-card-option" id="unifiedMughalThemeCard" data-theme-key="emerald" data-is-mughal-group="true" data-theme-cat="royal">
+            <div class="theme-card-visual" id="mughalCardVisual" style="background-image:url('assets/baraat-scene.jpg');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="mughal">Flagship · 7 Palettes</span>
+                <span class="theme-match-badge" id="mughalActiveColorBadge" style="background:rgba(35,31,32,0.88); color:#f8fbf4;">Emerald &amp; Gold</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text" id="mughalCardTitleEn">Royal Mughal</div>
+                  <div class="theme-urdu-sub" id="mughalCardTitleUr">شاہی مغل</div>
+                </div>
+                <div class="theme-mood-tag">7 Royal Palettes · Wax-Seal Envelope</div>
+                <p class="theme-desc-snippet" id="mughalCardDescEn">Mughal arches, wax-seal envelope, and animated ceremony scenes in seven distinct colour stories.</p>
+
+                <!-- Exclusive 7-Colour Switcher ONLY for Royal Mughal -->
+                <div class="mughal-color-switcher-box" onclick="event.stopPropagation();">
+                  <div class="mughal-color-switcher-label">
+                    <span>Change Palette (7 Colours)</span>
+                    <span id="mughalActiveSwatchesRow" style="display:inline-flex; gap:3px;"></span>
+                  </div>
+                  <div class="mughal-color-pills-row" id="cardMughalColorPills">
+                    <button type="button" class="mughal-color-pill active" data-mughal-color="emerald"><span class="mughal-pill-dot" style="background:#173b2e;"></span><span>Emerald</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="ruby"><span class="mughal-pill-dot" style="background:#691024;"></span><span>Ruby</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="sapphire"><span class="mughal-pill-dot" style="background:#152d58;"></span><span>Sapphire</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="plum"><span class="mughal-pill-dot" style="background:#441761;"></span><span>Plum</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="obsidian"><span class="mughal-pill-dot" style="background:#141317;"></span><span>Obsidian</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="marble"><span class="mughal-pill-dot" style="background:#537d67;"></span><span>Marble</span></button>
+                    <button type="button" class="mughal-color-pill" data-mughal-color="lilac"><span class="mughal-pill-dot" style="background:#9d7ec9;"></span><span>Lilac</span></button>
+                  </div>
+                </div>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" id="mughalLivePreviewBtn" data-preview-theme="emerald"><span>Experience it &amp; switch colours</span><span>→</span></button>
+                <span class="theme-select-pill">
+                  <input type="radio" name="c_theme" id="mughalThemeRadio" value="emerald">
+                  <span id="mughalSelectBtnText">Choose Royal Mughal</span>
+                </span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 2. Gulistan -->
+          <label class="theme-card-option" data-theme-key="gulistan" data-theme-cat="garden">
+            <div class="theme-card-visual" style="background-image:url('assets/gulistan/beyond.webp');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="gulistan">Rose Garden</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Gulistan</div>
+                  <div class="theme-urdu-sub">گلستان</div>
+                </div>
+                <div class="theme-mood-tag">Rose garden · 3D luggage tags</div>
+                <p class="theme-desc-snippet">Untie the silk ribbon to enter a blooming rose garden with 3D flippable event tags and rotary dial countdown.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="gulistan"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="gulistan"> <span>Choose Gulistan</span></span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 3. Maroon Romance -->
+          <label class="theme-card-option" data-theme-key="maroon" data-theme-cat="velvet">
+            <div class="theme-card-visual" style="background-image:url('assets/maroon-hero-poster.webp');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="maroon">Velvet &amp; Gold</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Maroon Romance</div>
+                  <div class="theme-urdu-sub">میرون رومانس</div>
+                </div>
+                <div class="theme-mood-tag">Velvet archway &amp; light burst</div>
+                <p class="theme-desc-snippet">Velvet maroon envelope unsealing in a wash of golden light onto an ivory floral archway over calm waters.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="maroon"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="maroon"> <span>Choose Maroon</span></span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 4. Royal Burgundy Romance -->
+          <label class="theme-card-option" data-theme-key="burgundy" data-theme-cat="velvet">
+            <div class="theme-card-visual" style="background-image:url('assets/burgundy-arch-swans.jpg');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="burgundy">Evening Glamour</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Burgundy Romance</div>
+                  <div class="theme-urdu-sub">شاہی برگنڈی</div>
+                </div>
+                <div class="theme-mood-tag">Italian lake arch &amp; golden swans</div>
+                <p class="theme-desc-snippet">Deep burgundy velvet wax seal opening onto a marble lake archway with heart-forming swans and rose timeline.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="burgundy"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="burgundy"> <span>Choose Burgundy</span></span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 5. Royal Grace -->
+          <label class="theme-card-option" data-theme-key="royal-grace" data-theme-cat="nikkah">
+            <div class="theme-card-visual" style="background-image:url('assets/royal-grace-welcome-bg.jpg');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="royal-grace">Sage &amp; Pearl</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Royal Grace</div>
+                  <div class="theme-urdu-sub">رائل گریس</div>
+                </div>
+                <div class="theme-mood-tag">Sage garden &amp; pearl drapes</div>
+                <p class="theme-desc-snippet">Parting pearl drapes and crystal chandeliers over a serene botanical sage garden, crafted for Nikkah and Walima.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="royal-grace"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="royal-grace"> <span>Choose Royal Grace</span></span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 6. Noor-e-Nikkah -->
+          <label class="theme-card-option" data-theme-key="ivory" data-theme-cat="nikkah">
+            <div class="theme-card-visual" style="background-image:url('assets/noor-nikkah-hero.jpg');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="ivory">Ivory Palace</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Noor-e-Nikkah</div>
+                  <div class="theme-urdu-sub">نورِ نکاح</div>
+                </div>
+                <div class="theme-mood-tag">Pearl ivory &amp; 24K champagne gold</div>
+                <p class="theme-desc-snippet">An ivory palace bathed in morning sunlight with white jasmine garlands and 24K gold arches.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="ivory"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="ivory"> <span>Choose Noor-e-Nikkah</span></span>
+              </div>
+            </div>
+          </label>
+
+          <!-- 7. Shahi Farman -->
+          <label class="theme-card-option" data-theme-key="farman" data-theme-cat="royal">
+            <div class="theme-card-visual" style="background-image:url('assets/obsidian-baraat.jpg');">
+              <div class="theme-card-visual-overlay">
+                <span class="theme-match-badge" data-match-badge="farman">Imperial Scroll</span>
+              </div>
+            </div>
+            <div class="theme-card-body">
+              <div>
+                <div class="theme-name-row">
+                  <div class="theme-title-text">Shahi Farman</div>
+                  <div class="theme-urdu-sub">شاہی فرمان</div>
+                </div>
+                <div class="theme-mood-tag">Unrolling parchment decree</div>
+                <p class="theme-desc-snippet">Break the 3D royal wax seal to unroll a vertical parchment decree on carved golden rollers.</p>
+              </div>
+              <div class="theme-card-actions">
+                <button type="button" class="theme-preview-btn" data-preview-theme="farman"><span>Experience it</span><span>→</span></button>
+                <span class="theme-select-pill"><input type="radio" name="c_theme" value="farman"> <span>Choose Shahi Farman</span></span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="step-next-bar">
+          <button type="button" class="uline-btn" data-scroll-target="stepStage2">← Back to Events</button>
+          <button type="button" class="btn-editorial" data-scroll-target="stepStage4">
+            <span>Continue to Your Details</span>
+            <span class="dia"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           STEP 04: YOUR DETAILS (NAMES, FAMILIES, VENUES & SUBMISSION)
+           ================================================================= -->
+      <section class="concierge-step-stage" id="stepStage4">
+        <div class="step-eyebrow">Step 04 of 04 · Your Details</div>
+        <h1 class="step-h1">Tell us your <i>names, dates</i> &amp; venues.</h1>
+        <p class="step-lede">
+          We set up your private preview within 24 hours, including professional Urdu calligraphy, Google Maps directions, and separate links for each event.
+        </p>
+
+        <!-- Clean Summary Bar -->
+        <div class="config-summary-banner" id="step4ConfigSummaryBar">
+          <div class="config-summary-item">
+            <div>
+              <div class="config-sum-label">01 · Family Side</div>
+              <div class="config-sum-val" id="sumSideVal">Groom's Side</div>
+            </div>
+            <button type="button" class="config-change-btn" data-scroll-target="stepStage1">Edit</button>
+          </div>
+          <div class="config-summary-item">
+            <div>
+              <div class="config-sum-label">02 · Ceremonies</div>
+              <div class="config-sum-val" id="sumEventsVal">Mehndi + Barat + Walima</div>
+            </div>
+            <button type="button" class="config-change-btn" data-scroll-target="stepStage2">Edit</button>
+          </div>
+          <div class="config-summary-item">
+            <div>
+              <div class="config-sum-label">03 · Chosen Design</div>
+              <div class="config-sum-val" id="sumThemeVal">Designer's Choice</div>
+            </div>
+            <button type="button" class="config-change-btn" data-scroll-target="stepStage3">Edit</button>
+          </div>
+        </div>
+
+        <!-- 4.1 Couple Details -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <span id="coupleSectionTitle">01 · Groom &amp; Bride Names</span>
+            <span class="header-urdu">دولہا اور دلہن کے نام</span>
+          </div>
+
+          <div id="coupleNamesContainer">
+            <div class="form-field-group" id="groomNameGroup" style="margin-bottom: 16px;">
+              <label class="form-field-label">
+                <span>Groom Full Name</span>
+                <span class="urdu-label">دولہا کا پورا نام</span>
+              </label>
+              <input class="form-input" type="text" id="c_groom" placeholder="e.g. Ahmed Raza" required>
             </div>
 
-          </label>
+            <div class="form-field-group" id="brideNameGroup">
+              <label class="form-field-label">
+                <span>Bride Full Name</span>
+                <span class="urdu-label">دلہن کا پورا نام</span>
+              </label>
+              <input class="form-input" type="text" id="c_bride" placeholder="e.g. Ayesha Malik" required>
+            </div>
 
+            <div class="form-field-group" id="groupGroomOccupation" style="margin-top: 16px;">
+              <label class="form-field-label">
+                <span>Groom Profession / Title <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">دولہا کا پیشہ</span>
+              </label>
+              <div class="pre-sub-input-row">
+                <input class="form-input" type="text" id="c_groom_occupation" placeholder="e.g. Software Architect &amp; Entrepreneur">
+                <button type="button" class="remove-sub-row-btn" id="btnRemoveGroomOcc">✕ Remove</button>
+              </div>
+            </div>
 
+            <div class="form-field-group" id="groupBrideOccupation" style="margin-top: 16px;">
+              <label class="form-field-label">
+                <span>Bride Profession / Title <span class="optional-pill">Optional</span></span>
+                <span class="urdu-label">دلہن کا پیشہ</span>
+              </label>
+              <div class="pre-sub-input-row">
+                <input class="form-input" type="text" id="c_bride_occupation" placeholder="e.g. Doctor of Medicine (M.D)">
+                <button type="button" class="remove-sub-row-btn" id="btnRemoveBrideOcc">✕ Remove</button>
+              </div>
+            </div>
+          </div>
 
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="emerald">
-
-            <div class="theme-title-text">👑 Royal Mughal Darbar (Emerald)</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="ruby">
-
-            <div class="theme-title-text">🌹 Romantic Velvet Rose (Ruby)</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="sapphire">
-
-            <div class="theme-title-text">✨ Midnight Celestial (Sapphire)</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="plum">
-
-            <div class="theme-title-text">🌸 Majestic Pastel Blossom (Plum)</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="obsidian">
-
-            <div class="theme-title-text">🖤 Royal Obsidian & Gold Foil</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="marble">
-
-            <div class="theme-title-text">🏛️ Carrara Marble & Sage Green</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="lilac">
-
-            <div class="theme-title-text">🪻 Kashmiri Lilac & Lavender</div>
-
-          </label>
-
-          <label class="theme-card-option">
-
-            <input type="radio" name="c_theme" value="royal-grace">
-            <div class="theme-title-text">🌿 Royal Grace (Sage Garden & Pearl Drapes Nikkah)</div>
-          </label>
-
-                    <label class="theme-card-option">
-            <input type="radio" name="c_theme" value="gulistan">
-            <div class="theme-title-text">🌹 Gulistan (Enchanted Rose Garden · Ribbon Gate & 3D Flippable Luggage Tags)</div>
-          </label>
-
-<label class="theme-card-option">
-            <input type="radio" name="c_theme" value="burgundy">
-            <div class="theme-title-text">🌹 Royal Burgundy Romance (Velvet Envelope · Golden Swans & Black-Tie)</div>
-          </label>
-
-          <label class="theme-card-option">
-            <input type="radio" name="c_theme" value="ivory">
-            <div class="theme-title-text">🕊️ Noor-e-Nikkah (Pearl Ivory & 24K Champagne Gold)</div>
-          </label>
-
-          <label class="theme-card-option">
-            <input type="radio" name="c_theme" value="farman">
-
-            <div class="theme-title-text">📜 Royal Mughal Shahi Farman</div>
-
-          </label>
-
+          <div class="restore-details-wrap" id="restoreCoupleDetailsWrap" style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="restore-opt-pill" id="btnAddGroomOcc" style="display:none;">+ Add Groom Profession</button>
+            <button type="button" class="restore-opt-pill" id="btnAddBrideOcc" style="display:none;">+ Add Bride Profession</button>
+          </div>
         </div>
 
-      </div>
-
-
-
-      <!-- 7. Client Contact & Submission -->
-
-      <div class="form-section" style="border:1px solid var(--gold-primary);">
-
-        <div class="form-section-header">
-
-          <span>📱 5. Your Contact Details</span>
-
-          <span class="header-urdu">آپ کا رابطہ نمبر</span>
-
-        </div>
-
-        <div class="form-grid-2">
-
-          <div class="form-field-group">
-
-            <label class="form-field-label">
-
-              <span>Your Name (Client Name)</span>
-
-              <span class="urdu-label">آپ کا نام</span>
-
-            </label>
-
-            <input class="form-input" type="text" id="c_client_name" placeholder="e.g. Usama / Ahmed" required>
-
+        <!-- 4.2 Parents & Host Line -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <span id="hostSectionTitle">02 · The Two Families &amp; Hosts</span>
+            <span class="header-urdu" id="hostSectionTitleUr">والدین و میزبان</span>
           </div>
 
           <div class="form-field-group">
-
             <label class="form-field-label">
-
-              <span>Your WhatsApp Number</span>
-
-              <span class="urdu-label">آپ کا واٹس ایپ نمبر</span>
-
+              <span id="labelHostEn">Groom's Parents / Inviting Hosts</span>
+              <span class="urdu-label" id="labelHostUr">والدینِ دولہا و میزبان</span>
             </label>
-
-            <input class="form-input" type="text" id="c_client_phone" placeholder="e.g. 0301 2345678" required>
-
+            <input class="form-input" type="text" id="c_host" placeholder="e.g. Mr. &amp; Mrs. Tariq Mahmood" required>
           </div>
 
+          <div class="form-field-group" id="groupOtherParents" style="margin-top:16px;">
+            <label class="form-field-label">
+              <span id="labelOtherParentsEn">Bride's Parents (In-Laws) <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label" id="labelOtherParentsUr">والدینِ دلہن</span>
+            </label>
+            <div class="pre-sub-input-row">
+              <input class="form-input" type="text" id="c_other_parents" placeholder="e.g. Mr. &amp; Mrs. Kamran Akhtar">
+              <button type="button" class="remove-sub-row-btn" id="btnRemoveOtherParents">✕ Remove</button>
+            </div>
+          </div>
+
+          <div class="restore-details-wrap" id="restoreHostDetailsWrap" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="restore-opt-pill" id="btnAddOtherParents" style="display:none;">+ Add Bride's Parents</button>
+          </div>
+
+          <div style="margin-top:20px;">
+            <label class="form-field-label">
+              <span>Awaiting to Welcome / Contact Persons <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label">چشم براہ احباب</span>
+            </label>
+            <div class="hosts-container" id="clientHostsContainer"></div>
+            <button class="uline-btn" id="clientAddHostBtn" type="button" style="margin-top:10px; min-height:38px;">+ Add Welcoming Person</button>
+          </div>
+
+          <div class="form-field-group" style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line);">
+            <label class="form-field-label">
+              <span>Wedding Tagline / Blessing <span class="optional-pill">Optional</span></span>
+              <span class="urdu-label">شادی کی ٹیگ لائن</span>
+            </label>
+            <input class="form-input" type="text" id="c_tagline" placeholder="Select a suggested line below or write your own...">
+            <div class="tagline-suggestions-wrap" style="margin-top:10px;">
+              <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between;">
+                <span>Suggested lines (tap to pick)</span>
+                <button type="button" id="clearTaglineBtn" style="background:none; border:none; color:var(--clay-deep); font-size:11px; cursor:pointer; display:none;">✕ Clear</button>
+              </div>
+              <div class="tagline-chips-grid" id="taglineChipsGrid"></div>
+            </div>
+          </div>
         </div>
 
+        <!-- 4.3 Dynamic Events Schedule & Venues Section -->
+        <div class="events-main-wrapper" style="margin-bottom:24px;">
+          <div id="eventsContainer"></div>
 
+          <div class="add-event-card">
+            <div style="font-family:var(--serif); font-size:22px; color:var(--charcoal); margin-bottom:10px;">
+              Add another function to your invitation
+            </div>
+            <div class="add-event-flex">
+              <div style="flex:1; min-width:220px;">
+                <select id="eventSelectorDropdown" class="form-input">
+                  <option value="mehndi">Mehndi (رسمِ حنا)</option>
+                  <option value="barat" selected>Barat (بارات / رخصتی)</option>
+                  <option value="walima">Walima (دعوتِ ولیمہ)</option>
+                  <option value="engagement">Engagement (منگنی)</option>
+                  <option value="nikkah">Nikkah Ceremony (نکاح)</option>
+                  <option value="custom">Custom Event (کوئی بھی تقریب)</option>
+                </select>
+              </div>
+              <button type="button" id="addEventBtn" class="uline-btn" style="height:48px;">
+                <span>+ Add Function</span>
+              </button>
+            </div>
+            <div id="duplicateEventError" class="duplicate-event-error" role="alert">
+              <span id="duplicateEventErrorEn">This event is already in your invitation.</span>
+              <span id="duplicateEventErrorUr" style="font-family:var(--urdu);">یہ تقریب پہلے سے شامل ہے</span>
+            </div>
+          </div>
+        </div>
 
-        <button class="gold-btn wa-btn" type="submit" style="margin-top:14px; font-size:1.05rem; padding:16px;">
+        <!-- 4.4 Client Contact & Submission -->
+        <div class="form-section" style="border-color: var(--clay-deep);">
+          <div class="form-section-header">
+            <span>04 · Your Contact Details</span>
+            <span class="header-urdu">آپ کا رابطہ نمبر</span>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Your Name</span>
+                <span class="urdu-label">آپ کا نام</span>
+              </label>
+              <input class="form-input" type="text" id="c_client_name" placeholder="e.g. Usama / Ahmed" required>
+            </div>
+            <div class="form-field-group">
+              <label class="form-field-label">
+                <span>Your WhatsApp Number</span>
+                <span class="urdu-label">واٹس ایپ نمبر</span>
+              </label>
+              <input class="form-input" type="text" id="c_client_phone" placeholder="e.g. 0301 2345678" required>
+            </div>
+          </div>
 
-          <span>💬</span>
-
-          <span>Submit & Send Details on WhatsApp (واٹس ایپ پر تفصیلات بھیجیں)</span>
-
-        </button>
-
-      </div>
-
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:24px;">
+            <button type="button" class="uline-btn" data-scroll-target="stepStage3">← Back to Designs</button>
+            <button class="btn-editorial wa-btn" type="submit" style="flex:1; min-width:260px;">
+              <span>Complete Booking &amp; Send on WhatsApp</span>
+              <span class="dia"></span>
+            </button>
+          </div>
+        </div>
+      </section>
     </form>
-
   </div>
 
+  <!-- aqdinvites-style Full-Screen DemoView Studio Modal -->
+  <div class="modal-overlay" id="themePreviewModal" role="dialog" aria-modal="true" aria-label="Live Design Studio">
+    <div class="demoview-studio">
+      <div class="demoview-topbar">
+        <div class="demoview-title-wrap">
+          <button type="button" id="previewModalCloseBtn" class="demoview-close-round" title="Back to Studio">←</button>
+          <div>
+            <div class="demoview-name" id="previewModalTitle">Sheesh Mahal</div>
+            <div class="demoview-tag" id="previewModalSub">Live interactive demo</div>
+          </div>
+        </div>
 
+        <div class="demoview-device-seg" role="radiogroup" aria-label="Preview device">
+          <button type="button" class="demoview-device-btn active" id="btnDevicePhone">Phone</button>
+          <button type="button" class="demoview-device-btn" id="btnDeviceIpad">iPad</button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a id="previewModalOpenTabBtn" href="/demos" target="_blank" rel="noopener" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.3); min-height:38px; padding:0 14px; font-size:10px;">Open in Tab ↗</a>
+        </div>
+      </div>
+
+      <!-- Switch Design & Exclusive Mughal In-Place Colour Bar -->
+      <div class="preview-explorer-toolbar">
+        <div class="preview-switch-theme-row" id="previewModalThemeSwitcher">
+          <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--clay-light); white-space:nowrap;">Switch design:</span>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="mughal">Royal Mughal (7 Colours)</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="gulistan">Gulistan</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="maroon">Maroon Romance</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="burgundy">Burgundy Romance</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="royal-grace">Royal Grace</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="ivory">Noor-e-Nikkah</button>
+          <button type="button" class="preview-theme-chip" data-modal-switch-theme="farman">Shahi Farman</button>
+        </div>
+
+        <!-- Shown ONLY when viewing Royal Mughal Darbar: Changes colour in-place while keeping current opened page (e.g. Mehndi stays Mehndi) -->
+        <div class="preview-mughal-colors-bar" id="previewModalMughalColorBar">
+          <span style="font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#f8fbf4; opacity:0.8; white-space:nowrap;">Change colour (keeps current page):</span>
+          <button type="button" class="mughal-color-pill active" data-modal-mughal-color="emerald"><span class="mughal-pill-dot" style="background:#173b2e;"></span><span>Emerald</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="ruby"><span class="mughal-pill-dot" style="background:#691024;"></span><span>Ruby</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="sapphire"><span class="mughal-pill-dot" style="background:#152d58;"></span><span>Sapphire</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="plum"><span class="mughal-pill-dot" style="background:#441761;"></span><span>Plum</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="obsidian"><span class="mughal-pill-dot" style="background:#141317;"></span><span>Obsidian</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="marble"><span class="mughal-pill-dot" style="background:#537d67;"></span><span>Marble</span></button>
+          <button type="button" class="mughal-color-pill" data-modal-mughal-color="lilac"><span class="mughal-pill-dot" style="background:#9d7ec9;"></span><span>Lilac</span></button>
+        </div>
+      </div>
+
+      <div class="demoview-stage-area">
+        <div class="demoview-phone-frame" id="demoViewPhoneFrame">
+          <iframe id="previewModalIframe" class="preview-modal-iframe" src="about:blank" title="Theme Live Demo"></iframe>
+        </div>
+      </div>
+
+      <div class="demoview-bottombar">
+        <button type="button" id="previewModalBackBtn" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.28); min-height:42px;">← All Designs</button>
+        <button type="button" id="previewModalSelectBtn" class="btn-editorial" style="height:44px; padding:0 24px;">
+          <span>Choose This Design</span>
+          <span class="dia"></span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Submission Confirmation Modal -->
-
   <div class="modal-overlay" id="orderModal">
-
     <div class="modal-card">
-
-      <h2 id="modalTitleHeading">✦ Order Placed Successfully! ✦</h2>
-
-      <div style="font-family:var(--urdu); font-size:1.2rem; color:var(--gold-primary); margin-bottom:12px; direction:rtl;">
-
-        آپ کا آرڈر کامیابی سے درج ہو چکا ہے اور تفصیلات کاپی ہو چکی ہیں!
-
-      </div>
-
-      <div style="background:rgba(37, 211, 102, 0.14); border:1px solid rgba(72, 230, 132, 0.5); border-radius:10px; padding:12px 14px; margin-bottom:14px; color:#d7ffe4; font-size:0.88rem; line-height:1.55;">
-        ✅ <strong>Order Placed Successfully!</strong><br>
-        • Sent directly to <strong>Admin Panel</strong> &amp; <strong>WhatsApp</strong><br>
-        • 📋 <strong>Order summary is copied in your clipboard!</strong>
-      </div>
-
-      <div id="modalMultiLinksWrap" style="background:rgba(212,173,93,0.1); border:1px solid rgba(212,173,93,0.3); border-radius:10px; padding:12px 14px; margin-bottom:14px; text-align:left;">
-        <div style="font-size:0.84rem; font-weight:600; color:var(--gold-light); margin-bottom:6px;">✦ Prepared Multi-Event Guest Links ✦</div>
-        <div id="modalLinksList" style="font-size:0.78rem; color:var(--cream); display:flex; flex-direction:column; gap:5px;">
-        </div>
-      </div>
-
-      <p id="modalOrderSummary" style="margin-bottom:1.1rem;">
-
-        Your order has been saved to our Admin Studio and your complete order summary is copied in your clipboard. If WhatsApp did not open automatically, tap below:
-
+      <div class="step-eyebrow" style="justify-content:center;">Order Saved</div>
+      <h2 id="modalTitleHeading">Your invitation order is ready.</h2>
+      <p id="modalOrderSummary">
+        Your details have been saved to our Studio and copied to your clipboard. Tap below to send them to us on WhatsApp:
       </p>
 
-      <div style="display:flex; flex-direction:column; gap:10px;">
-
-        <a class="gold-btn wa-btn" id="modalWaBtn" href="#" target="_blank">
-
-          <span>💬 Open WhatsApp & Send Order</span>
-
-        </a>
-
-        <button class="outline-btn" id="modalCopyBtn" type="button">
-
-          📋 Copy Order Summary
-
-        </button>
-
-        <button class="outline-btn" id="modalCloseBtn" type="button" style="border:none; color:var(--cream-muted);">
-
-          Close Window
-
-        </button>
-
+      <div id="modalMultiLinksWrap" style="background:var(--blush); border:1px solid rgba(181,86,63,0.25); padding:14px 16px; margin-bottom:20px; text-align:left;">
+        <div style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay-deep); margin-bottom:8px;">Separate Guest Links Prepared for You</div>
+        <div id="modalLinksList" style="font-size:13px; color:var(--charcoal); display:flex; flex-direction:column; gap:6px;"></div>
       </div>
 
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <a class="btn-editorial wa-btn" id="modalWaBtn" href="#" target="_blank">
+          <span>Send Order on WhatsApp</span>
+          <span class="dia"></span>
+        </a>
+        <button class="uline-btn" id="modalCopyBtn" type="button">Copy Order Summary</button>
+        <button class="uline-btn" id="modalCloseBtn" type="button" style="border:0;">Close</button>
+      </div>
     </div>
-
   </div>
 
-
-
   <div id="toast"></div>
-
-
 
   <script>
     let toastTimer = null;
@@ -2371,14 +2865,14 @@
       let bodyHtml = "";
 
       if (type === "custom") {
-        card.style.border = "1.5px solid var(--gold-primary)";
-        card.style.background = "linear-gradient(135deg, rgba(20,55,42,0.9), rgba(8,26,19,0.95))";
+        card.style.border = "1.5px solid var(--clay-deep)";
+        card.style.background = "#ffffff";
 
         bodyHtml = `
-          <div class="form-grid-2" style="background:rgba(0,0,0,0.25); padding:12px; border-radius:8px; border:1px solid rgba(212,175,55,0.25); margin-bottom:14px;">
+          <div class="form-grid-2" style="background:var(--blush); padding:14px; border:1px solid rgba(181,86,63,0.25); margin-bottom:14px;">
             <div class="form-field-group">
               <label class="form-field-label">
-                <span style="color:var(--gold-light); font-weight:600;">Custom Event Name (English) *</span>
+                <span style="color:var(--clay-deep); font-weight:600;">Custom Event Name (English) *</span>
                 <span class="urdu-label">ایونٹ کا نام (انگریزی)</span>
               </label>
               <input class="form-input evt-custom-name" type="text" placeholder="e.g. Qawwali Night, Dholki, Mayun, Bridal Shower..." required value="${initData.customName || initData.name || ''}">
@@ -2631,6 +3125,9 @@
           btn.classList.remove("active");
         }
       });
+      if (typeof updateQuickEventTogglesAndLinksPreview === "function") {
+        updateQuickEventTogglesAndLinksPreview();
+      }
     }
 
     // Hook up Quick Package Preset Buttons
@@ -2822,6 +3319,12 @@
       if (typeof renderTaglineSuggestions === "function") {
         renderTaglineSuggestions(side);
       }
+      if (typeof updateSideAwarePresets === "function") {
+        updateSideAwarePresets(side);
+      }
+      if (typeof updateQuickEventTogglesAndLinksPreview === "function") {
+        updateQuickEventTogglesAndLinksPreview();
+      }
     }
 
     tabGroom.addEventListener("click", () => setFormSide("groom"));
@@ -2839,9 +3342,829 @@
     document.querySelectorAll(".theme-card-option input").forEach(radio => {
       radio.addEventListener("change", () => {
         document.querySelectorAll(".theme-card-option").forEach(c => c.classList.remove("active"));
-        radio.closest(".theme-card-option").classList.add("active");
+        const card = radio.closest(".theme-card-option");
+        if (card) card.classList.add("active");
+        userInteractedTheme = true;
+        if (typeof updateStep4SummaryBar === "function") updateStep4SummaryBar();
+        if (typeof updateProgressBarFill === "function") updateProgressBarFill();
+        if (typeof THEME_DISPLAY_NAMES === "object" && THEME_DISPLAY_NAMES[radio.value]) {
+          showToast("Chosen Design: " + THEME_DISPLAY_NAMES[radio.value]);
+        }
+        const stage3El = document.getElementById("stepStage3");
+        if (stage3El && stage3El.classList.contains("active-wizard-step") && typeof scrollToConciergeStep === "function") {
+          setTimeout(() => scrollToConciergeStep("stepStage4"), 240);
+        }
       });
     });
+
+
+    // =========================================================================
+    // 4-STEP GUIDED CONCIERGE ENGINE (WITH SEGMENTED PROGRESS FILL BAR,
+    // UNIFIED MUGHAL 7-COLOR PALETTE CARD & IN-PLACE LIVE EXPLORER)
+    // =========================================================================
+    const MUGHAL_PALETTES = {
+      emerald: {
+        key: "emerald",
+        shortEn: "Emerald & Gold",
+        fullEn: "👑 Royal Mughal Darbar (Emerald & Gold)",
+        ur: "شاہی مغل دربار — زمرد و گولڈ",
+        img: "assets/baraat-scene.jpg",
+        bg: "#0d241c",
+        swatches: ["#0b2019", "#173b2e", "#d4ad5d"],
+        desc: "Classic Mughal palace arches, rich emerald green velvet, 3D wax-seal envelope & animated ceremony scenes."
+      },
+      ruby: {
+        key: "ruby",
+        shortEn: "Crimson Ruby & Rose Gold",
+        fullEn: "👑 Royal Mughal Darbar (Crimson Ruby & Rose Gold)",
+        ur: "شاہی مغل دربار — روبی و روز گولڈ",
+        img: "assets/romantic-baraat.jpg",
+        bg: "#2d0b14",
+        swatches: ["#22070e", "#45131f", "#e6a782"],
+        desc: "Deep crimson ruby velvet paired with warm rose gold foil, cascading rose canopies & romantic petal showers."
+      },
+      sapphire: {
+        key: "sapphire",
+        shortEn: "Midnight Sapphire",
+        fullEn: "👑 Royal Mughal Darbar (Midnight Sapphire)",
+        ur: "شاہی مغل دربار — نیلم و ستارہ گولڈ",
+        img: "assets/celestial-baraat.jpg",
+        bg: "#091730",
+        swatches: ["#08142a", "#152d58", "#e0b862"],
+        desc: "Starlit midnight sapphire navy with celestial gold constellations, crystal chandeliers & regal night glow."
+      },
+      plum: {
+        key: "plum",
+        shortEn: "Majestic Plum Blossom",
+        fullEn: "👑 Royal Mughal Darbar (Majestic Plum)",
+        ur: "شاہی مغل دربار — جامنی و شیمپین گولڈ",
+        img: "assets/blossom-baraat.jpg",
+        bg: "#270e38",
+        swatches: ["#190924", "#37164e", "#dcb06b"],
+        desc: "Regal amethyst plum velvet with pastel floral blossoms, jasmine garlands & warm champagne gold highlights."
+      },
+      obsidian: {
+        key: "obsidian",
+        shortEn: "Obsidian & 24K Gold",
+        fullEn: "👑 Royal Mughal Darbar (Obsidian & 24K Gold)",
+        ur: "شاہی مغل دربار — شاہی سیاہ و ۲۴ قیراط گولڈ",
+        img: "assets/obsidian-baraat.jpg",
+        bg: "#0d0c0e",
+        swatches: ["#08080a", "#1b191d", "#f0c05a"],
+        desc: "Ultra-luxury jet black obsidian paired with gleaming 24K gold foil arabesques & grand reception lighting."
+      },
+      marble: {
+        key: "marble",
+        shortEn: "Carrara Marble & Sage",
+        fullEn: "👑 Royal Mughal Darbar (Carrara Marble & Sage)",
+        ur: "شاہی مغل دربار — سنگِ مرمر و سیج گرین",
+        img: "assets/marble-baraat.jpg",
+        bg: "#183025",
+        swatches: ["#0b1612", "#183025", "#7ea88f"],
+        desc: "Aristocratic Italian Carrara marble textures with botanical sage foliage and brushed antique gold accents."
+      },
+      lilac: {
+        key: "lilac",
+        shortEn: "Kashmiri Lilac & Lavender",
+        fullEn: "👑 Royal Mughal Darbar (Kashmiri Lilac)",
+        ur: "شاہی مغل دربار — کشمیری لائلک و لیونڈر",
+        img: "assets/lilac-baraat.jpg",
+        bg: "#281545",
+        swatches: ["#120921", "#281545", "#cbb2e8"],
+        desc: "Enchanting springtime Kashmiri lilac and cascading wisteria florals with soft golden filigree."
+      }
+    };
+
+    const THEME_DISPLAY_NAMES = {
+      optional: "✨ Let Elitara Choose",
+      gulistan: "🌹 Gulistan (Rose Garden)",
+      maroon: "🍷 Maroon Romance",
+      burgundy: "🌹 Royal Burgundy Romance",
+      "royal-grace": "🌿 Royal Grace (Sage & Pearl)",
+      ivory: "🕊️ Noor-e-Nikkah (Ivory & Gold)",
+      farman: "📜 Royal Mughal Shahi Farman",
+      emerald: MUGHAL_PALETTES.emerald.fullEn,
+      ruby: MUGHAL_PALETTES.ruby.fullEn,
+      sapphire: MUGHAL_PALETTES.sapphire.fullEn,
+      plum: MUGHAL_PALETTES.plum.fullEn,
+      obsidian: MUGHAL_PALETTES.obsidian.fullEn,
+      marble: MUGHAL_PALETTES.marble.fullEn,
+      lilac: MUGHAL_PALETTES.lilac.fullEn
+    };
+
+    function isMughalColorKey(k) {
+      return Boolean(k && MUGHAL_PALETTES[k]);
+    }
+
+    let currentMughalColor = "emerald";
+    let activeThemeCategoryFilter = "recommended";
+    let currentPreviewThemeKey = null;
+    let userInteractedSide = false;
+    let userInteractedEvents = false;
+    let userInteractedTheme = false;
+
+    function setUnifiedMughalCardColor(colorKey, alsoSelectRadio = true) {
+      const pal = MUGHAL_PALETTES[colorKey] || MUGHAL_PALETTES.emerald;
+      currentMughalColor = pal.key;
+
+      const card = document.getElementById("unifiedMughalThemeCard");
+      const visual = document.getElementById("mughalCardVisual");
+      const badge = document.getElementById("mughalActiveColorBadge");
+      const swatchesRow = document.getElementById("mughalActiveSwatchesRow");
+      const titleEn = document.getElementById("mughalCardTitleEn");
+      const titleUr = document.getElementById("mughalCardTitleUr");
+      const descEn = document.getElementById("mughalCardDescEn");
+      const radio = document.getElementById("mughalThemeRadio");
+      const selectText = document.getElementById("mughalSelectBtnText");
+      const previewBtn = document.getElementById("mughalLivePreviewBtn");
+
+      if (card) card.dataset.themeKey = pal.key;
+      if (visual) {
+        visual.style.backgroundImage = `url('${pal.img}')`;
+        visual.style.backgroundColor = pal.bg;
+      }
+      if (badge) badge.textContent = `Active Color: ${pal.shortEn}`;
+      if (swatchesRow) {
+        swatchesRow.innerHTML = pal.swatches.map(c => `<span class="theme-swatch-dot" style="background:${c};"></span>`).join("");
+      }
+      if (titleEn) titleEn.innerHTML = `Royal Mughal Darbar — <span style="color:var(--clay-deep); font-style:italic;">${pal.shortEn}</span>`;
+      if (titleUr) titleUr.textContent = pal.ur;
+      if (descEn) descEn.textContent = pal.desc;
+      if (radio) radio.value = pal.key;
+      if (selectText) selectText.textContent = `Choose Mughal (${pal.shortEn.split(" ")[0]})`;
+      if (previewBtn) previewBtn.setAttribute("data-preview-theme", pal.key);
+
+      document.querySelectorAll("#cardMughalColorPills .mughal-color-pill").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-mughal-color") === pal.key);
+      });
+      document.querySelectorAll("#previewModalMughalColorBar .mughal-color-pill").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-modal-mughal-color") === pal.key);
+      });
+
+      if (alsoSelectRadio && radio) {
+        radio.checked = true;
+        userInteractedTheme = true;
+        document.querySelectorAll(".theme-card-option").forEach(c => c.classList.remove("active"));
+        if (card) card.classList.add("active");
+        updateStep4SummaryBar();
+        updateProgressBarFill();
+      }
+    }
+
+    // Attach click listeners on the 7 Mughal Color Pills inside Step 3's Unified Mughal Card
+    document.querySelectorAll("#cardMughalColorPills .mughal-color-pill").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const cKey = btn.getAttribute("data-mughal-color") || "emerald";
+        setUnifiedMughalCardColor(cKey, true);
+        showToast(`🎨 Royal Mughal Color changed to ${MUGHAL_PALETTES[cKey]?.shortEn || cKey}!`);
+      });
+    });
+
+    function updateProgressBarFill() {
+      const seg1 = document.getElementById("fillSeg1");
+      const seg2 = document.getElementById("fillSeg2");
+      const seg3 = document.getElementById("fillSeg3");
+      const seg4 = document.getElementById("fillSeg4");
+      const statusMsg = document.getElementById("progressStatusTextEn");
+      const pctBadge = document.getElementById("progressFillBadge");
+
+      const activeTypes = getActiveEventTypesList();
+      const hasEvents = activeTypes.length > 0;
+      const checkedRadio = document.querySelector('input[name="c_theme"]:checked');
+      const themeVal = checkedRadio ? checkedRadio.value : "optional";
+      const hasCustomTheme = userInteractedTheme || (themeVal && themeVal !== "optional");
+      const hasDetails = Boolean(
+        document.getElementById("c_groom")?.value.trim() ||
+        document.getElementById("c_bride")?.value.trim() ||
+        document.getElementById("c_host")?.value.trim()
+      );
+
+      if (seg1) {
+        seg1.className = "fill-segment filled";
+      }
+      if (seg2) {
+        seg2.className = hasEvents ? (userInteractedEvents || hasCustomTheme || hasDetails ? "fill-segment filled" : "fill-segment half") : "fill-segment";
+      }
+      if (seg3) {
+        seg3.className = hasCustomTheme ? "fill-segment filled" : (userInteractedEvents ? "fill-segment half" : "fill-segment");
+      }
+      if (seg4) {
+        seg4.className = hasDetails ? "fill-segment filled" : (hasCustomTheme ? "fill-segment half" : "fill-segment");
+      }
+
+      if (statusMsg && pctBadge) {
+        if (hasDetails) {
+          statusMsg.innerHTML = "<span>👑</span><span>Step 4 of 4: Finalizing Your Wedding Details &amp; Multi-Event Guest Links</span>";
+          pctBadge.textContent = "Step 4 / 4 · 95% Ready";
+        } else if (hasCustomTheme) {
+          statusMsg.innerHTML = `<span>🎉</span><span>Theme Locked In (${THEME_DISPLAY_NAMES[themeVal] || themeVal})! Now Fill Your Required Wedding Details Below</span>`;
+          pctBadge.textContent = "Step 3 / 4 · 75% Complete";
+        } else if (userInteractedEvents) {
+          statusMsg.innerHTML = "<span>🎨</span><span>Step 1 &amp; 2 Complete! Explore &amp; Select Your Tailored Luxury Theme Below (اب اپنی پسندیدہ تھیم منتخب کریں)</span>";
+          pctBadge.textContent = "Step 2 / 4 · 50% · Themes Unlocked!";
+        } else if (userInteractedSide) {
+          statusMsg.innerHTML = "<span>✨</span><span>Step 1 Complete! Now Confirm Your Wedding Events in Step 2 to Unlock Matching Themes</span>";
+          pctBadge.textContent = "Step 1 / 4 · 35% Complete";
+        } else {
+          statusMsg.innerHTML = "<span>✨</span><span>First 2 Quick Steps: Select Family Side &amp; Events — Then Explore Tailored Themes in Step 3!</span>";
+          pctBadge.textContent = "Step 1 / 4 · 25%";
+        }
+      }
+    }
+
+    ["c_groom", "c_bride", "c_host", "c_client_name", "c_client_phone"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("input", updateProgressBarFill);
+    });
+
+    function getActiveEventTypesList() {
+      return Array.from(eventsContainer.querySelectorAll(".event-section"))
+        .map(c => c.dataset.eventType)
+        .filter(Boolean);
+    }
+
+    function getThemeLiveDemoUrl(themeKey, side) {
+      const s = side === "bride" ? "bride" : "groom";
+      if (themeKey === "gulistan") return `/gulistan?side=${s}&explore=1`;
+      if (themeKey === "maroon") return `/maroon-romance?side=${s}&explore=1`;
+      if (themeKey === "burgundy") return `/burgundy-romance?side=${s}&explore=1`;
+      if (themeKey === "royal-grace") return `/royal-grace?side=${s}&explore=1`;
+      if (themeKey === "ivory") return `/noor-e-nikkah?side=${s}&explore=1`;
+      if (themeKey === "farman") return `/Ahmed-and-Ayesha-wedding-invitation?theme=farman&side=${s}&explore=1`;
+      const mColor = isMughalColorKey(themeKey) ? themeKey : currentMughalColor;
+      return `/Ahmed-and-Ayesha-wedding-invitation?theme=${mColor}&side=${s}&explore=1`;
+    }
+
+    // Score & badge each theme dynamically based on Step 1 (Groom/Bride) & Step 2 (Events)
+    function computeThemeRecommendation(themeKey, side, eventTypes) {
+      const isMughal = isMughalColorKey(themeKey) || themeKey === "mughal";
+      const key = isMughal ? "mughal" : themeKey;
+
+      const hasM = eventTypes.includes("mehndi");
+      const hasB = eventTypes.includes("barat");
+      const hasW = eventTypes.includes("walima");
+      const hasN = eventTypes.includes("nikkah");
+      const is3Day = hasM && hasB && hasW;
+      const isNikkahFocus = hasN || (!hasM && !hasB && !hasW);
+      const isWalimaFocus = hasW && !hasB;
+      const isBaraatFocus = hasB && !hasW;
+      const isBride = side === "bride";
+
+      let score = 70;
+      let badge = "✦ Luxury Collection";
+      let isRecommended = true;
+
+      if (isNikkahFocus && !is3Day) {
+        if (key === "royal-grace") { score = 100; badge = "★ #1 Best Match for Sacred Nikkah"; }
+        else if (key === "ivory") { score = 98; badge = "★ Sacred Pearl Ivory Nikkah Pick"; }
+        else if (key === "gulistan") { score = 95; badge = "★ Rose Garden Nikkah Pick"; }
+        else if (key === "mughal") { score = 92; badge = "★ 7 Royal Colors (Marble & Emerald Ideal for Nikkah)"; }
+        else if (key === "burgundy") { score = 88; badge = "★ Velvet Nikkah & Reception"; }
+        else if (key === "maroon") { score = 86; badge = "★ Ivory Floral Archway Nikkah"; }
+        else if (key === "farman") { score = 84; badge = "★ Imperial Scroll Nikkah Decree"; }
+      } else if (isWalimaFocus) {
+        if (key === "burgundy") { score = 100; badge = "★ #1 Match for Walima Reception"; }
+        else if (key === "mughal") { score = 98; badge = "★ 7 Royal Palettes (Emerald, Sapphire & Obsidian)"; }
+        else if (key === "royal-grace") { score = 96; badge = "★ Serene Walima Favorite"; }
+        else if (key === "gulistan") { score = 95; badge = "★ Rose Garden Reception"; }
+        else if (key === "maroon") { score = 93; badge = "★ Velvet Walima Luxury"; }
+        else if (key === "ivory") { score = 91; badge = "★ Daytime/Evening Walima"; }
+        else if (key === "farman") { score = 86; badge = "★ Royal Scroll Reception"; }
+      } else if (isBride && (isBaraatFocus || (hasM && hasB))) {
+        if (key === "gulistan") { score = 100; badge = "★ #1 Match for Bride's Baraat & Rukhsati"; }
+        else if (key === "mughal") { score = 99; badge = "★ 7 Royal Colors (Ruby & Emerald Ideal for Bride)"; }
+        else if (key === "maroon") { score = 97; badge = "★ Top Bride's Velvet Archway"; }
+        else if (key === "burgundy") { score = 95; badge = "★ Emotional Rukhsati Bestseller"; }
+        else if (key === "royal-grace") { score = 91; badge = "★ Graceful Nikkah & Rukhsati"; }
+        else if (key === "farman") { score = 88; badge = "★ Shahi Scroll Invitation"; }
+        else if (key === "ivory") { score = 86; badge = "★ Pearl Ivory Bride's Edition"; }
+      } else {
+        // 3-Day Complete Wedding or Groom's Multi-Event
+        if (key === "mughal") { score = 100; badge = "★ #1 Flagship Multi-Event · 7 Color Palettes"; }
+        else if (key === "gulistan") { score = 99; badge = "★ #1 Rose Garden · 3D Ceremony Luggage Tags"; }
+        else if (key === "maroon") { score = 97; badge = "★ New Cinematic Multi-Event Pick"; }
+        else if (key === "burgundy") { score = 95; badge = "★ Velvet Multi-Event Bestseller"; }
+        else if (key === "royal-grace") { score = 92; badge = "★ Sage & Pearl Multi-Event"; }
+        else if (key === "ivory") { score = 90; badge = "★ Pearl Ivory Multi-Event"; }
+        else if (key === "farman") { score = 89; badge = "★ Imperial Scroll Multi-Event"; }
+      }
+
+      return { score, badge, isRecommended };
+    }
+
+    function updateSideAwarePresets(side) {
+      const isBride = side === "bride";
+      const recEn = document.getElementById("sideEventRecEn");
+      const recUr = document.getElementById("sideEventRecUr");
+      const toggleBaratLabel = document.getElementById("quickToggleBaratLabel");
+
+      if (recEn) {
+        recEn.innerHTML = isBride
+          ? `👰 Showing Recommended Event Combinations for <strong>Bride's Side</strong> (Baraat &amp; Rukhsati, Mehndi + Baraat &amp; Complete Family Packages)`
+          : `🤵 Showing Recommended Event Combinations for <strong>Groom's Side</strong> (Barat + Walima, Walima Reception &amp; 3-Day Royal Packages)`;
+      }
+      if (recUr) {
+        recUr.textContent = isBride
+          ? "لڑکی والوں کے لیے مقبول ترین تقاریب (بارات و رخصتی، مہندی اور نکاح)"
+          : "لڑکے والوں کے لیے مقبول ترین تقاریب (ولیمہ، بارات اور ۳ روزہ شادی)";
+      }
+      if (toggleBaratLabel) {
+        toggleBaratLabel.textContent = isBride ? "👑 Barat & Rukhsati (بارات و رخصتی)" : "👑 Barat (بارات)";
+      }
+
+      const presetBar = document.getElementById("presetPackagesBar");
+      if (!presetBar) return;
+
+      const presetsConfig = isBride
+        ? [
+            { key: "mehndi,barat", label: "🌸👑 2-Day: Mehndi + Barat & Rukhsati", rec: "★ Popular for Bride's Side" },
+            { key: "barat", label: "👑 1-Day: Barat & Rukhsati Only", rec: "★ Bride's Host Card" },
+            { key: "mehndi,barat,walima", label: "🌟 3-Day: Mehndi + Barat + Walima", rec: "★ Complete Family Card" },
+            { key: "nikkah", label: "📜 1-Day: Nikah & Rukhsati Only", rec: "★ Sacred Nikkah" },
+            { key: "barat,walima", label: "👑✨ 2-Day: Barat + Walima", rec: "" },
+            { key: "mehndi,walima", label: "🌸✨ 2-Day: Mehndi + Walima", rec: "" },
+            { key: "walima", label: "✨ 1-Day: Walima Only", rec: "" }
+          ]
+        : [
+            { key: "barat,walima", label: "👑✨ 2-Day: Barat + Walima", rec: "★ Popular for Groom's Side" },
+            { key: "mehndi,barat,walima", label: "🌟 3-Day: Mehndi + Barat + Walima", rec: "★ Complete Royal Package" },
+            { key: "walima", label: "✨ 1-Day: Walima Reception Only", rec: "★ Groom's Host Card" },
+            { key: "mehndi,walima", label: "🌸✨ 2-Day: Mehndi + Walima", rec: "" },
+            { key: "mehndi,barat", label: "🌸👑 2-Day: Mehndi + Barat", rec: "" },
+            { key: "barat", label: "👑 1-Day: Barat Only", rec: "" },
+            { key: "nikkah", label: "📜 1-Day: Nikah Only", rec: "" }
+          ];
+
+      const btnMap = {};
+      presetBar.querySelectorAll(".preset-pkg-btn").forEach(btn => {
+        btnMap[btn.dataset.preset] = btn;
+      });
+
+      presetsConfig.forEach(cfg => {
+        const btn = btnMap[cfg.key];
+        if (btn) {
+          btn.innerHTML = `${cfg.label}${cfg.rec ? ` <span class="preset-rec-star">${cfg.rec}</span>` : ""}`;
+          presetBar.appendChild(btn);
+        }
+      });
+    }
+
+    function updateQuickEventTogglesAndLinksPreview() {
+      const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+      const isBride = side === "bride";
+      const activeTypes = getActiveEventTypesList();
+
+      document.querySelectorAll("#quickEventsToggleGrid .quick-evt-pill").forEach(pill => {
+        const t = pill.getAttribute("data-toggle-event");
+        if (t === "custom") {
+          const hasCustom = activeTypes.includes("custom");
+          pill.classList.toggle("selected", hasCustom);
+          const chk = pill.querySelector(".quick-evt-check");
+          if (chk) chk.textContent = hasCustom ? "✓" : "+";
+        } else {
+          const isSel = activeTypes.includes(t);
+          pill.classList.toggle("selected", isSel);
+          const chk = pill.querySelector(".quick-evt-check");
+          if (chk) chk.textContent = isSel ? "✓" : "";
+        }
+      });
+
+      const segChipsEl = document.getElementById("step2GuestSegChips");
+      if (segChipsEl) {
+        const hasM = activeTypes.includes("mehndi");
+        const hasB = activeTypes.includes("barat");
+        const hasW = activeTypes.includes("walima");
+        const hasN = activeTypes.includes("nikkah");
+        const hasE = activeTypes.includes("engagement");
+
+        const chips = [];
+        if (activeTypes.length > 1) {
+          chips.push({ icon: "👑", text: "VIP All Selected Days (/all)" });
+        }
+        if (hasM && hasB && hasW) {
+          chips.push({ icon: "🌸👑", text: "Mehndi + Barat Guests (/mehndi-barat)" });
+          chips.push({ icon: "👑✨", text: "Barat + Walima Guests (/barat-walima)" });
+        }
+        if (hasB) chips.push({ icon: "🐎", text: isBride ? "Baraat & Rukhsati Guests (/barat)" : "Barat Guests Only (/barat)" });
+        if (hasW) chips.push({ icon: "🍽️", text: "Walima Guests Only (/walima)" });
+        if (hasM) chips.push({ icon: "🌿", text: "Mehndi Friends Only (/mehndi)" });
+        if (hasN) chips.push({ icon: "📜", text: "Nikah Guests (/nikkah)" });
+        if (hasE) chips.push({ icon: "💍", text: "Engagement Guests (/engagement)" });
+
+        if (!chips.length) {
+          chips.push({ icon: "✨", text: "Select at least 1 event above to preview guest links" });
+        }
+
+        segChipsEl.innerHTML = chips.map(c => `<span class="guest-seg-chip"><span>${c.icon}</span><span>${c.text}</span></span>`).join("");
+      }
+
+      updateTailoredThemesView();
+      updateStep4SummaryBar();
+      updateProgressBarFill();
+    }
+
+    function formatEventsSummaryLabel(activeTypes, side) {
+      if (!activeTypes.length) return "No Events Selected";
+      const isBride = side === "bride";
+      const names = activeTypes.map(t => {
+        if (t === "mehndi") return "Mehndi";
+        if (t === "barat") return isBride ? "Barat & Rukhsati" : "Barat";
+        if (t === "walima") return "Walima";
+        if (t === "nikkah") return "Nikah";
+        if (t === "engagement") return "Engagement";
+        return "Custom";
+      });
+      return names.join(" + ");
+    }
+
+    function updateTailoredThemesView() {
+      const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+      const isBride = side === "bride";
+      const activeTypes = getActiveEventTypesList();
+      const eventsLabel = formatEventsSummaryLabel(activeTypes, side);
+      const sideLabelEn = isBride ? "Bride's Side (لڑکی والے)" : "Groom's Side (لڑکے والے)";
+
+      const ctxEn = document.getElementById("themeContextTextEn");
+      if (ctxEn) {
+        ctxEn.innerHTML = `✨ Showing Themes Tailored for: <strong>${sideLabelEn}</strong> · <strong>${eventsLabel}</strong>`;
+      }
+
+      const grid = document.getElementById("orderThemeSelectionGrid");
+      if (!grid) return;
+
+      const themeCards = Array.from(grid.querySelectorAll('.theme-card-option[data-theme-key]'))
+        .filter(c => c.dataset.themeKey !== "optional");
+
+      const scoredCards = themeCards.map(card => {
+        const isMughal = card.dataset.isMughalGroup === "true";
+        const key = isMughal ? "mughal" : card.dataset.themeKey;
+        const rec = computeThemeRecommendation(key, side, activeTypes);
+        card.dataset.recScore = String(rec.score);
+        card.dataset.isRecommended = rec.isRecommended ? "true" : "false";
+        const badgeEl = card.querySelector(`[data-match-badge="${key}"]`);
+        if (badgeEl) badgeEl.textContent = rec.badge;
+        return { card, score: rec.score, isRecommended: rec.isRecommended, cat: card.dataset.themeCat };
+      });
+
+      scoredCards.sort((a, b) => b.score - a.score);
+      scoredCards.forEach(item => grid.appendChild(item.card));
+
+      const checkedRadio = document.querySelector('input[name="c_theme"]:checked');
+      const selectedThemeKey = checkedRadio ? checkedRadio.value : "optional";
+
+      scoredCards.forEach(item => {
+        const key = item.card.dataset.themeKey;
+        let visible = true;
+        if (activeThemeCategoryFilter === "recommended") {
+          visible = item.isRecommended || key === selectedThemeKey;
+        } else if (activeThemeCategoryFilter !== "all") {
+          visible = (item.cat === activeThemeCategoryFilter) || key === selectedThemeKey;
+        }
+        item.card.style.display = visible ? "flex" : "none";
+      });
+    }
+
+    function updateStep4SummaryBar() {
+      const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+      const isBride = side === "bride";
+      const activeTypes = getActiveEventTypesList();
+      const eventsLabel = formatEventsSummaryLabel(activeTypes, side);
+      const checkedRadio = document.querySelector('input[name="c_theme"]:checked');
+      const themeKey = checkedRadio ? checkedRadio.value : "optional";
+      const themeName = THEME_DISPLAY_NAMES[themeKey] || themeKey;
+
+      const sumSide = document.getElementById("sumSideVal");
+      const sumEvents = document.getElementById("sumEventsVal");
+      const sumTheme = document.getElementById("sumThemeVal");
+
+      if (sumSide) sumSide.textContent = isBride ? "👰 Bride's Side (لڑکی والے)" : "🤵 Groom's Side (لڑکے والے)";
+      if (sumEvents) sumEvents.textContent = eventsLabel;
+      if (sumTheme) sumTheme.textContent = themeName;
+
+      const st1 = document.getElementById("stepperSub1");
+      const st2 = document.getElementById("stepperSub2");
+      const st3 = document.getElementById("stepperSub3");
+      if (st1) st1.textContent = isBride ? "👰 Bride's Side" : "🤵 Groom's Side";
+      if (st2) st2.textContent = eventsLabel;
+      if (st3) st3.textContent = themeName.replace(/^[^\w]+/, "").trim();
+
+      const indG = document.getElementById("indGroom");
+      const indB = document.getElementById("indBride");
+      if (indG) indG.textContent = !isBride ? "✓ Selected" : "Select Side";
+      if (indB) indB.textContent = isBride ? "✓ Selected" : "Select Side";
+    }
+
+    // Track user interactions on Step 1 & Step 2 to animate the Segmented Progress Bar
+    tabGroom.addEventListener("click", () => {
+      userInteractedSide = true;
+      updateProgressBarFill();
+    });
+    tabBride.addEventListener("click", () => {
+      userInteractedSide = true;
+      updateProgressBarFill();
+    });
+    document.querySelectorAll(".preset-pkg-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        userInteractedEvents = true;
+        updateProgressBarFill();
+      });
+    });
+
+    // Hook up Quick Individual Event Toggle Pills in Step 2
+    document.querySelectorAll("#quickEventsToggleGrid .quick-evt-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        userInteractedEvents = true;
+        const type = pill.getAttribute("data-toggle-event");
+        if (!type) return;
+
+        if (type === "custom") {
+          createEventCard("custom");
+          syncPresetHighlight();
+          updateQuickEventTogglesAndLinksPreview();
+          showToast("+ Added Custom Event! Enter its name in Step 4.");
+          return;
+        }
+
+        const existingCard = eventsContainer.querySelector(`.event-section[data-event-type="${type}"]`);
+        if (existingCard) {
+          existingCard.remove();
+          updateEventNumbers();
+          syncPresetHighlight();
+          updateQuickEventTogglesAndLinksPreview();
+          showToast(`Removed ${EVENT_META[type]?.titleEn || type} from invitation.`);
+        } else {
+          createEventCard(type);
+          syncPresetHighlight();
+          updateQuickEventTogglesAndLinksPreview();
+          showToast(`+ Added ${EVENT_META[type]?.titleEn || type} to invitation!`);
+        }
+      });
+    });
+
+    // Hook up Category Filter Tabs in Step 3
+    document.querySelectorAll("#orderThemeFilterTabs .theme-filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeThemeCategoryFilter = btn.getAttribute("data-theme-filter") || "all";
+        document.querySelectorAll("#orderThemeFilterTabs .theme-filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        updateTailoredThemesView();
+      });
+    });
+
+    // Hook up Live Theme Explorer Modal in Step 3 (with Switch Theme & State-Preserving Mughal Color Switcher)
+    const themePreviewModal = document.getElementById("themePreviewModal");
+    const previewModalIframe = document.getElementById("previewModalIframe");
+    const previewModalTitle = document.getElementById("previewModalTitle");
+    const previewModalSub = document.getElementById("previewModalSub");
+    const previewModalOpenTabBtn = document.getElementById("previewModalOpenTabBtn");
+    const previewModalCloseBtn = document.getElementById("previewModalCloseBtn");
+    const previewModalBackBtn = document.getElementById("previewModalBackBtn");
+    const previewModalSelectBtn = document.getElementById("previewModalSelectBtn");
+    const previewModalMughalColorBar = document.getElementById("previewModalMughalColorBar");
+
+    function updateModalExplorerBars(themeKey) {
+      const isMughal = isMughalColorKey(themeKey) || themeKey === "mughal";
+      const resolvedKey = isMughal ? (isMughalColorKey(themeKey) ? themeKey : currentMughalColor) : themeKey;
+      currentPreviewThemeKey = resolvedKey;
+
+      const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+      const isBride = side === "bride";
+      const demoUrl = getThemeLiveDemoUrl(resolvedKey, side);
+
+      if (previewModalTitle) previewModalTitle.textContent = THEME_DISPLAY_NAMES[resolvedKey] || "Live Theme Explorer";
+      if (previewModalSub) {
+        previewModalSub.textContent = isMughal
+          ? `Exploring ${isBride ? "Bride's Side" : "Groom's Side"} · Tap any color below to change palette on the current page!`
+          : `Exploring ${isBride ? "Bride's Side" : "Groom's Side"} · Use "Switch Theme" above to compare themes`;
+      }
+      if (previewModalOpenTabBtn) previewModalOpenTabBtn.href = demoUrl;
+      if (previewModalSelectBtn) {
+        previewModalSelectBtn.innerHTML = `✓ Select ${(THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "")} &amp; Fill Details ➔`;
+      }
+
+      // Highlight active theme chip in Switch Theme bar
+      document.querySelectorAll("#previewModalThemeSwitcher .preview-theme-chip").forEach(chip => {
+        const chipTheme = chip.getAttribute("data-modal-switch-theme");
+        const active = isMughal ? (chipTheme === "mughal") : (chipTheme === resolvedKey);
+        chip.classList.toggle("active", active);
+      });
+
+      // Show Mughal Color Bar ONLY when viewing Royal Mughal Darbar
+      if (previewModalMughalColorBar) {
+        previewModalMughalColorBar.classList.toggle("show", isMughal);
+      }
+      if (isMughal) {
+        document.querySelectorAll("#previewModalMughalColorBar .mughal-color-pill").forEach(p => {
+          p.classList.toggle("active", p.getAttribute("data-modal-mughal-color") === resolvedKey);
+        });
+      }
+    }
+
+    function openThemeLivePreview(themeKey) {
+      const isMughal = isMughalColorKey(themeKey) || themeKey === "mughal";
+      const resolvedKey = isMughal ? (isMughalColorKey(themeKey) ? themeKey : currentMughalColor) : themeKey;
+      const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+      const demoUrl = getThemeLiveDemoUrl(resolvedKey, side);
+
+      updateModalExplorerBars(resolvedKey);
+      if (previewModalIframe) previewModalIframe.src = demoUrl;
+      if (themePreviewModal) themePreviewModal.classList.add("show");
+    }
+
+    function closeThemeLivePreview() {
+      if (themePreviewModal) themePreviewModal.classList.remove("show");
+      if (previewModalIframe) previewModalIframe.src = "about:blank";
+    }
+
+    document.querySelectorAll("[data-preview-theme]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const key = btn.getAttribute("data-preview-theme");
+        if (key) openThemeLivePreview(key);
+      });
+    });
+
+    // Switch between the 7 Main Themes right inside the Explorer Modal
+    document.querySelectorAll("#previewModalThemeSwitcher .preview-theme-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const targetTheme = chip.getAttribute("data-modal-switch-theme");
+        if (!targetTheme) return;
+        const resolved = targetTheme === "mughal" ? currentMughalColor : targetTheme;
+        const wasMughal = isMughalColorKey(currentPreviewThemeKey);
+        const nowMughal = isMughalColorKey(resolved);
+
+        updateModalExplorerBars(resolved);
+        if (wasMughal && nowMughal && previewModalIframe && previewModalIframe.contentWindow) {
+          // Already on Mughal demo: switch color in-place!
+          try {
+            if (typeof previewModalIframe.contentWindow.setMughalColorInPlace === "function") {
+              previewModalIframe.contentWindow.setMughalColorInPlace(resolved);
+              return;
+            }
+          } catch (err) {}
+        }
+        const side = hiddenSideInput ? hiddenSideInput.value : "groom";
+        if (previewModalIframe) previewModalIframe.src = getThemeLiveDemoUrl(resolved, side);
+      });
+    });
+
+    // In-Place Mughal Color Switching inside the Explorer Modal (Keeps Current Opened Page, e.g. Mehndi stays Mehndi!)
+    document.querySelectorAll("#previewModalMughalColorBar .mughal-color-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const newColor = pill.getAttribute("data-modal-mughal-color") || "emerald";
+        setUnifiedMughalCardColor(newColor, false);
+        updateModalExplorerBars(newColor);
+
+        if (previewModalIframe && previewModalIframe.contentWindow) {
+          try {
+            if (typeof previewModalIframe.contentWindow.setMughalColorInPlace === "function") {
+              previewModalIframe.contentWindow.setMughalColorInPlace(newColor);
+              showToast(`🎨 Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor} (current page preserved)!`);
+              return;
+            }
+          } catch (err) {}
+          try {
+            previewModalIframe.contentWindow.postMessage({ type: "SET_MUGHAL_COLOR", color: newColor }, "*");
+            showToast(`🎨 Switched to ${MUGHAL_PALETTES[newColor]?.shortEn || newColor}!`);
+            return;
+          } catch (err2) {}
+        }
+      });
+    });
+
+    // Listen for color or theme selection messages from the iframe
+    window.addEventListener("message", (e) => {
+      if (!e.data || typeof e.data !== "object") return;
+      if (e.data.type === "EDAWATNAMA_MUGHAL_COLOR_CHANGED" && e.data.color) {
+        setUnifiedMughalCardColor(e.data.color, false);
+        updateModalExplorerBars(e.data.color);
+      } else if (e.data.type === "EDAWATNAMA_SELECT_THEME" && e.data.theme) {
+        currentPreviewThemeKey = e.data.theme;
+        if (previewModalSelectBtn) previewModalSelectBtn.click();
+      }
+    });
+
+    if (previewModalCloseBtn) previewModalCloseBtn.addEventListener("click", closeThemeLivePreview);
+    if (previewModalBackBtn) previewModalBackBtn.addEventListener("click", closeThemeLivePreview);
+    if (themePreviewModal) {
+      themePreviewModal.addEventListener("click", (e) => {
+        if (e.target === themePreviewModal) closeThemeLivePreview();
+      });
+    }
+    if (previewModalSelectBtn) {
+      previewModalSelectBtn.addEventListener("click", () => {
+        if (currentPreviewThemeKey) {
+          if (isMughalColorKey(currentPreviewThemeKey)) {
+            setUnifiedMughalCardColor(currentPreviewThemeKey, true);
+          } else {
+            const targetRadio = document.querySelector(`input[name="c_theme"][value="${currentPreviewThemeKey}"]`);
+            if (targetRadio) {
+              targetRadio.checked = true;
+              userInteractedTheme = true;
+              targetRadio.dispatchEvent(new Event("change"));
+            }
+          }
+        }
+        closeThemeLivePreview();
+        updateProgressBarFill();
+        scrollToConciergeStep("stepStage4");
+      });
+    }
+
+    // Hook up Smooth Step Navigation Buttons & Sticky Stepper Pills
+    function scrollToConciergeStep(stepId) {
+      if (stepId === "stepStage2") userInteractedSide = true;
+      if (stepId === "stepStage3") { userInteractedSide = true; userInteractedEvents = true; }
+      if (stepId === "stepStage4") { userInteractedSide = true; userInteractedEvents = true; userInteractedTheme = true; }
+
+      document.querySelectorAll(".concierge-step-stage").forEach(sec => {
+        sec.classList.toggle("active-wizard-step", sec.id === stepId);
+      });
+      document.querySelectorAll("#conciergeStepper .stepper-pill").forEach(p => {
+        p.classList.toggle("active", p.getAttribute("data-goto-step") === stepId);
+      });
+      updateProgressBarFill();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Phone vs iPad frame switcher in DemoView modal
+    const btnDevicePhone = document.getElementById("btnDevicePhone");
+    const btnDeviceIpad = document.getElementById("btnDeviceIpad");
+    const demoViewPhoneFrame = document.getElementById("demoViewPhoneFrame");
+    if (btnDevicePhone && btnDeviceIpad && demoViewPhoneFrame) {
+      btnDevicePhone.addEventListener("click", () => {
+        btnDevicePhone.classList.add("active");
+        btnDeviceIpad.classList.remove("active");
+        demoViewPhoneFrame.classList.remove("ipad-mode");
+      });
+      btnDeviceIpad.addEventListener("click", () => {
+        btnDeviceIpad.classList.add("active");
+        btnDevicePhone.classList.remove("active");
+        demoViewPhoneFrame.classList.add("ipad-mode");
+      });
+    }
+
+    document.querySelectorAll("[data-scroll-target]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-scroll-target");
+        if (targetId) scrollToConciergeStep(targetId);
+      });
+    });
+
+    document.querySelectorAll("#conciergeStepper .stepper-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const targetId = pill.getAttribute("data-goto-step");
+        if (targetId) scrollToConciergeStep(targetId);
+      });
+    });
+
+    // Support URL Query Pre-Selection (?theme=...&side=...&preset=...&step=...)
+    (function applyUrlOrderPreselection() {
+      const params = new URLSearchParams(window.location.search);
+      const preTheme = (params.get("theme") || "").toLowerCase().trim();
+      const prePreset = (params.get("preset") || params.get("events") || "").toLowerCase().trim();
+      const preStep = (params.get("step") || "").toLowerCase().trim();
+
+      if (params.has("side")) userInteractedSide = true;
+      if (prePreset) {
+        userInteractedEvents = true;
+        const matchingPresetBtn = document.querySelector(`.preset-pkg-btn[data-preset="${prePreset}"]`);
+        if (matchingPresetBtn) matchingPresetBtn.click();
+      }
+
+      if (preTheme) {
+        userInteractedTheme = true;
+        const normalizedTheme = preTheme === "maroon-romance" ? "maroon"
+          : (preTheme === "burgundy-romance" ? "burgundy"
+          : (preTheme === "noor-e-nikkah" || preTheme === "nikkah" ? "ivory"
+          : (preTheme === "shahi-farman" ? "farman"
+          : (preTheme === "grace" ? "royal-grace" : (preTheme === "mughal" ? "emerald" : preTheme)))));
+
+        if (isMughalColorKey(normalizedTheme)) {
+          setUnifiedMughalCardColor(normalizedTheme, true);
+          showToast(`✨ Pre-selected ${THEME_DISPLAY_NAMES[normalizedTheme] || normalizedTheme}!`);
+        } else {
+          const themeRadio = document.querySelector(`input[name="c_theme"][value="${normalizedTheme}"]`);
+          if (themeRadio) {
+            themeRadio.checked = true;
+            document.querySelectorAll(".theme-card-option").forEach(c => c.classList.remove("active"));
+            themeRadio.closest(".theme-card-option")?.classList.add("active");
+            showToast(`✨ Pre-selected ${THEME_DISPLAY_NAMES[normalizedTheme] || normalizedTheme}!`);
+          }
+        }
+      }
+
+      updateSideAwarePresets(hiddenSideInput ? hiddenSideInput.value : "groom");
+      updateQuickEventTogglesAndLinksPreview();
+      updateProgressBarFill();
+
+      if (preStep === "2" || preStep === "events") scrollToConciergeStep("stepStage2");
+      else if (preStep === "3" || preStep === "themes") scrollToConciergeStep("stepStage3");
+      else if (preStep === "4" || preStep === "details") scrollToConciergeStep("stepStage4");
+    })();
 
     // =========================================================================
     // FORM SUBMISSION & WHATSAPP MESSAGE BUILDER
@@ -3407,8 +4730,5 @@ ${eventsWaText}${welcomingWa}`;
     });
 
 </script>
-
 </body>
-
 </html>
-

@@ -2772,5 +2772,80 @@
       }
     })();
   </script>
+
+<script>
+(function() {
+  // Never show inside order.html modal iframe (modal has its own outer toolbar)
+  if (window.self !== window.top) return;
+  const p = new URLSearchParams(window.location.search);
+  // Never show on real client invitations with encoded payload
+  if (p.get("invite") || p.get("d")) return;
+
+  // Check if path is a real deployed client couple path (not a demo route)
+  const pathSegs = decodeURIComponent(window.location.pathname || "").toLowerCase().split("/").filter(Boolean);
+  const demoSegments = new Set([
+    "gulistan", "gulistan.html", "demo-gulistan", "rose-garden", "junaid-and-ayesha",
+    "maroon-romance", "maroon-romance.html", "maroon", "demo-maroon",
+    "burgundy-romance", "burgundy-romance.html", "burgundy", "demo-burgundy", "velvet-romance", "rohan-and-zara", "daniyal-and-ayla", "daniyal-and-ayla-wedding-invitation",
+    "royal-grace", "royal-grace.html", "demo-royal-grace", "demo-grace", "grace", "nikkah-royal-grace", "zayan-and-rania-nikkah",
+    "noor-e-nikkah", "noor-e-nikkah.html", "noor-nikkah", "ivory", "ivory-gold", "nikkah",
+    "shahi-farman", "shahi-farman.html", "farman", "theme"
+  ]);
+  if (pathSegs.length > 0 && !demoSegments.has(pathSegs[0]) && !p.has("explore")) return;
+
+  function mountStandaloneExplorerDock() {
+    if (document.getElementById("floatingStandaloneExplorerDock")) return;
+    const curTheme = "royal-grace";
+    const side = p.get("side") === "bride" ? "bride" : "groom";
+
+    const dock = document.createElement("div");
+    dock.id = "floatingStandaloneExplorerDock";
+    dock.style.cssText = "position:fixed; bottom:12px; left:50%; transform:translateX(-50%); z-index:9990; width:calc(100% - 20px); max-width:560px; background:rgba(6, 20, 15, 0.95); backdrop-filter:blur(12px); border:1.5px solid rgba(212, 173, 93, 0.65); border-radius:14px; padding:9px 12px; box-shadow:0 12px 35px rgba(0,0,0,0.75); font-family:sans-serif; color:#fbf9f4;";
+
+    dock.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; align-items:center; gap:6px; flex:1; min-width:190px;">
+          <span style="font-size:0.72rem; font-weight:700; color:#d4ad5d; white-space:nowrap;">⇄ Switch Theme:</span>
+          <select id="standaloneExplorerThemeSelect" style="flex:1; background:rgba(12,36,27,0.95); color:#fff; border:1px solid rgba(212,173,93,0.45); border-radius:8px; padding:6px 9px; font-size:0.75rem; outline:none; cursor:pointer;">
+            <option value="mughal">👑 Royal Mughal Darbar (7 Colors)</option>
+            <option value="gulistan" ${curTheme === 'gulistan' ? 'selected' : ''}>🌹 Gulistan (Rose Garden)</option>
+            <option value="maroon" ${curTheme === 'maroon' ? 'selected' : ''}>🍷 Maroon Romance</option>
+            <option value="burgundy" ${curTheme === 'burgundy' ? 'selected' : ''}>🌹 Royal Burgundy Romance</option>
+            <option value="royal-grace" ${curTheme === 'royal-grace' ? 'selected' : ''}>🌿 Royal Grace (Sage & Pearl)</option>
+            <option value="ivory" ${curTheme === 'ivory' ? 'selected' : ''}>🕊️ Noor-e-Nikkah (Ivory & Gold)</option>
+            <option value="farman" ${curTheme === 'farman' ? 'selected' : ''}>📜 Shahi Farman Scroll</option>
+          </select>
+        </div>
+        <a href="/order?theme=${curTheme}&side=${side}" style="background:linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%); color:#071912; text-decoration:none; font-size:0.78rem; font-weight:800; padding:7px 15px; border-radius:999px; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; box-shadow:0 4px 12px rgba(212,173,93,0.35);">
+          <span>✓ Select This Theme &amp; Order ➔</span>
+        </a>
+      </div>
+    `;
+
+    document.body.appendChild(dock);
+
+    const sel = document.getElementById("standaloneExplorerThemeSelect");
+    if (sel) {
+      sel.addEventListener("change", () => {
+        const val = sel.value;
+        const curSide = (new URLSearchParams(window.location.search).get("side") === "bride") ? "bride" : "groom";
+        if (val === "gulistan") window.location.href = `/gulistan?side=${curSide}&explore=1`;
+        else if (val === "maroon") window.location.href = `/maroon-romance?side=${curSide}&explore=1`;
+        else if (val === "burgundy") window.location.href = `/burgundy-romance?side=${curSide}&explore=1`;
+        else if (val === "royal-grace") window.location.href = `/royal-grace?side=${curSide}&explore=1`;
+        else if (val === "ivory") window.location.href = `/noor-e-nikkah?side=${curSide}&explore=1`;
+        else if (val === "farman") window.location.href = `/shahi-farman?side=${curSide}&explore=1`;
+        else window.location.href = `/Ahmed-and-Ayesha-wedding-invitation?theme=emerald&side=${curSide}&explore=1`;
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountStandaloneExplorerDock);
+  } else {
+    setTimeout(mountStandaloneExplorerDock, 150);
+  }
+})();
+</script>
 </body>
 </html>

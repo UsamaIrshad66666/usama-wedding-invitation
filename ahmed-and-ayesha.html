@@ -5703,6 +5703,7 @@
     }
 
     function renderEventDetailScreen(eventKey, animateGlide = true) {
+      window._activeMughalDetailEventKey = eventKey;
       if (activeTimerHandle) clearInterval(activeTimerHandle);
       updateNavigationControls("detail");
       const { card } = getUrlState();
@@ -6214,6 +6215,174 @@
         renderEnvelopeScreen(false);
       }
     }
+
+    
+    /* ==============================================================
+       STATE-PRESERVING IN-PLACE MUGHAL COLOR SWITCHER & DEMO EXPLORER
+       (Strictly active ONLY during Theme Exploration, NEVER in Final Client Cards)
+       ============================================================== */
+    const MUGHAL_COLOR_KEYS = ["emerald", "ruby", "sapphire", "plum", "obsidian", "marble", "lilac"];
+    const MUGHAL_COLOR_META = [
+      { key: "emerald", name: "Emerald", dot: "#173b2e" },
+      { key: "ruby", name: "Ruby Rose", dot: "#691024" },
+      { key: "sapphire", name: "Sapphire", dot: "#152d58" },
+      { key: "plum", name: "Plum", dot: "#441761" },
+      { key: "obsidian", name: "Obsidian", dot: "#141317" },
+      { key: "marble", name: "Marble", dot: "#537d67" },
+      { key: "lilac", name: "Lilac", dot: "#9d7ec9" }
+    ];
+
+    window.setMughalColorInPlace = function(newColorKey) {
+      const validColor = normalizeThemeKey(newColorKey);
+      if (!MUGHAL_COLOR_KEYS.includes(validColor)) return;
+
+      if (typeof WEDDING === "object" && WEDDING) {
+        WEDDING.theme = validColor;
+      }
+      applyCurrentTheme(validColor);
+
+      // If currently on an event detail screen (e.g. Mehndi, Baraat, or Walima),
+      // swap ONLY the illustration stage artwork in-place while keeping the exact current opened page & state!
+      const stageEl = document.querySelector(".illustration-stage");
+      if (stageEl) {
+        const state = (typeof getUrlState === "function") ? getUrlState() : {};
+        const curEv = state.event || window._activeMughalDetailEventKey || "";
+        let newStageHtml = "";
+        if (curEv === "mehndi" && typeof buildMehndiStage === "function") newStageHtml = buildMehndiStage();
+        else if (curEv === "baraat" && typeof buildBaraatStage === "function") newStageHtml = buildBaraatStage();
+        else if (curEv === "walima" && typeof buildWalimaStage === "function") newStageHtml = buildWalimaStage();
+        if (newStageHtml) {
+          stageEl.outerHTML = newStageHtml;
+        }
+      }
+
+      // Update URL ?theme= parameter in-place without reloading or losing current history state
+      try {
+        if (window.location.protocol !== "file:") {
+          const u = new URL(window.location.href);
+          u.searchParams.set("theme", validColor);
+          window.history.replaceState(window.history.state, "", u.pathname + u.search);
+        }
+      } catch (e) {}
+
+      // Update active highlight on floating explorer dock if visible
+      document.querySelectorAll("[data-live-mughal-color]").forEach(btn => {
+        const isAct = btn.getAttribute("data-live-mughal-color") === validColor;
+        btn.style.background = isAct ? "linear-gradient(135deg, #fcedc5, #d4ad5d)" : "rgba(15, 40, 30, 0.9)";
+        btn.style.color = isAct ? "#071912" : "#f7e7be";
+        btn.style.borderColor = isAct ? "#ffe082" : "rgba(212, 173, 93, 0.35)";
+        btn.style.fontWeight = isAct ? "800" : "600";
+      });
+
+      const selectLink = document.getElementById("floatingExplorerSelectLink");
+      if (selectLink) {
+        const side = (typeof WEDDING === "object" && WEDDING && WEDDING.cardSide === "bride") ? "bride" : "groom";
+        selectLink.href = `/order?theme=${validColor}&side=${side}`;
+      }
+
+      // Notify parent order.html modal if inside iframe
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "EDAWATNAMA_MUGHAL_COLOR_CHANGED", color: validColor }, "*");
+        }
+      } catch (e) {}
+    };
+
+    window.addEventListener("message", (e) => {
+      if (e.data && e.data.type === "SET_MUGHAL_COLOR" && e.data.color) {
+        window.setMughalColorInPlace(e.data.color);
+      }
+    });
+
+    function shouldShowFloatingThemeExplorer() {
+      // Never show inside order.html modal iframe (since the modal has its own outer toolbar)
+      if (window.self !== window.top) return false;
+      const p = new URLSearchParams(window.location.search);
+      // Never show on real client invitations with encoded data
+      if (p.get("invite") || p.get("d")) return false;
+      const pathLow = decodeURIComponent(window.location.pathname || "").toLowerCase();
+      // Never show on Usama & Bissal's real wedding card
+      if (pathLow.includes("usama") || pathLow.includes("bissal")) return false;
+      if (typeof resolveCurrentPageMode === "function") {
+        const mode = resolveCurrentPageMode();
+        if (mode === "about" || mode === "demos") return false;
+      }
+      // Show on demo exploration routes (/ahmed-and-ayesha, /demo, ?theme=..., ?explore=1)
+      return pathLow.includes("ahmed") || pathLow.includes("ayesha") || pathLow.includes("demo") || pathLow.includes("farman") || p.has("theme") || p.has("explore");
+    }
+
+    function mountFloatingThemeExplorerDock() {
+      if (!shouldShowFloatingThemeExplorer()) return;
+      if (document.getElementById("floatingThemeExplorerDock")) return;
+
+      const curTheme = normalizeThemeKey((typeof WEDDING === "object" && WEDDING && WEDDING.theme) || "emerald");
+      const isMughal = MUGHAL_COLOR_KEYS.includes(curTheme);
+      const side = (typeof WEDDING === "object" && WEDDING && WEDDING.cardSide === "bride") ? "bride" : "groom";
+
+      const dock = document.createElement("div");
+      dock.id = "floatingThemeExplorerDock";
+      dock.style.cssText = "position:fixed; bottom:12px; left:50%; transform:translateX(-50%); z-index:9990; width:calc(100% - 20px); max-width:640px; background:rgba(6, 20, 15, 0.96); backdrop-filter:blur(12px); border:1.5px solid rgba(212, 173, 93, 0.65); border-radius:14px; padding:10px 12px; box-shadow:0 12px 35px rgba(0,0,0,0.75); font-family:'DM Sans', sans-serif; color:#fbf9f4;";
+
+      const mughalRowHtml = isMughal ? `
+        <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap; margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed rgba(212,173,93,0.3);">
+          <span style="font-size:0.72rem; font-weight:700; color:#ffe082; margin-right:3px;">🎨 Change Color (Keeps Current Page):</span>
+          ${MUGHAL_COLOR_META.map(c => {
+            const act = c.key === curTheme;
+            return `<button type="button" data-live-mughal-color="${c.key}" style="display:inline-flex; align-items:center; gap:4px; padding:4px 9px; border-radius:999px; font-size:0.71rem; cursor:pointer; border:1px solid ${act ? '#ffe082' : 'rgba(212,173,93,0.35)'}; background:${act ? 'linear-gradient(135deg, #fcedc5, #d4ad5d)' : 'rgba(15, 40, 30, 0.9)'}; color:${act ? '#071912' : '#f7e7be'}; font-weight:${act ? '800' : '600'};">
+              <span style="width:9px; height:9px; border-radius:50%; background:${c.dot}; border:1px solid #fff;"></span>
+              <span>${c.name}</span>
+            </button>`;
+          }).join("")}
+        </div>
+      ` : "";
+
+      dock.innerHTML = `
+        ${mughalRowHtml}
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px; flex:1; min-width:190px;">
+            <span style="font-size:0.72rem; font-weight:700; color:#d4ad5d; white-space:nowrap;">⇄ Switch Theme:</span>
+            <select id="floatingExplorerThemeSelect" style="flex:1; background:rgba(12,36,27,0.95); color:#fff; border:1px solid rgba(212,173,93,0.45); border-radius:8px; padding:6px 9px; font-size:0.75rem; outline:none; cursor:pointer;">
+              <option value="mughal" ${isMughal ? 'selected' : ''}>👑 Royal Mughal Darbar (7 Colors)</option>
+              <option value="gulistan">🌹 Gulistan (Rose Garden)</option>
+              <option value="maroon">🍷 Maroon Romance</option>
+              <option value="burgundy">🌹 Royal Burgundy Romance</option>
+              <option value="royal-grace">🌿 Royal Grace (Sage & Pearl)</option>
+              <option value="ivory">🕊️ Noor-e-Nikkah (Ivory & Gold)</option>
+              <option value="farman" ${curTheme === 'farman' ? 'selected' : ''}>📜 Shahi Farman Scroll</option>
+            </select>
+          </div>
+          <a id="floatingExplorerSelectLink" href="/order?theme=${curTheme}&side=${side}" style="background:linear-gradient(135deg, #fcedc5 0%, #d4ad5d 50%, #9e7529 100%); color:#071912; text-decoration:none; font-size:0.78rem; font-weight:800; padding:7px 15px; border-radius:999px; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; box-shadow:0 4px 12px rgba(212,173,93,0.35);">
+            <span>✓ Select This Theme &amp; Order ➔</span>
+          </a>
+        </div>
+      `;
+
+      document.body.appendChild(dock);
+
+      dock.querySelectorAll("[data-live-mughal-color]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const cKey = btn.getAttribute("data-live-mughal-color");
+          if (cKey) window.setMughalColorInPlace(cKey);
+        });
+      });
+
+      const sel = document.getElementById("floatingExplorerThemeSelect");
+      if (sel) {
+        sel.addEventListener("change", () => {
+          const val = sel.value;
+          const s = (typeof WEDDING === "object" && WEDDING && WEDDING.cardSide === "bride") ? "bride" : "groom";
+          if (val === "gulistan") window.location.href = `/gulistan?side=${s}&explore=1`;
+          else if (val === "maroon") window.location.href = `/maroon-romance?side=${s}&explore=1`;
+          else if (val === "burgundy") window.location.href = `/burgundy-romance?side=${s}&explore=1`;
+          else if (val === "royal-grace") window.location.href = `/royal-grace?side=${s}&explore=1`;
+          else if (val === "ivory") window.location.href = `/noor-e-nikkah?side=${s}&explore=1`;
+          else if (val === "farman") window.location.href = `/Ahmed-and-Ayesha-wedding-invitation?theme=farman&side=${s}&explore=1`;
+          else window.location.href = `/Ahmed-and-Ayesha-wedding-invitation?theme=emerald&side=${s}&explore=1`;
+        });
+      }
+    }
+
+    setTimeout(mountFloatingThemeExplorerDock, 150);
 
     initAppHistoryAndRoute();
   </script>
