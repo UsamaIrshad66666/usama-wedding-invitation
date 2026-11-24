@@ -421,14 +421,68 @@
       border-radius: 999px;
     }
 
-    /* THE HORIZONTAL SCROLL TRACK */
+    /* THE HORIZONTAL SCROLL TRACK + ON-SCROLLER SWIPE GUIDE */
+    .scroller-wrap {
+      position: relative;
+      max-width: 100%;
+    }
+    .swipe-guide-overlay {
+      position: absolute;
+      right: 10px;
+      top: 38%;
+      transform: translateY(-50%);
+      z-index: 12;
+      pointer-events: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(26, 21, 20, 0.88);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(6px);
+      animation: swipeNudge 1.6s ease-in-out infinite;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .swipe-guide-overlay.hidden {
+      opacity: 0;
+      animation: none;
+      transform: translateY(-50%) translateX(12px);
+    }
+    @keyframes swipeNudge {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(-7px); }
+    }
+    .scroller-dots-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .scroller-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(26, 21, 20, 0.2);
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+    .scroller-dot.active {
+      width: 22px;
+      background: var(--accent);
+    }
     .cards-scroll-track {
       display: flex;
       gap: 20px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
-      padding: 8px 4px 22px;
+      padding: 4px 4px 16px;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
       scrollbar-color: rgba(176, 65, 46, 0.4) transparent;
@@ -1117,29 +1171,20 @@
     <!-- 2. HORIZONTALLY SCROLLABLE INVITATION CARDS CAROUSEL -->
     <section class="carousel-section" id="collection">
       <div class="container">
-        <div class="carousel-header">
-          <div>
-            <span class="swipe-hint-pill" style="margin-bottom:10px;">← Swipe horizontally to explore all 7 themes →</span>
-            <h2 class="sec-h2">Explore our <i>signature themes.</i></h2>
-            <p class="sec-lede" style="margin-top:6px;">Tap <strong>Live Preview</strong> to test any invitation, or tap <strong>Select Theme</strong> to start customizing it for your family.</p>
-          </div>
-
-          <div class="carousel-controls-bar">
-            <div class="filter-pills" id="collectionFilterBar">
-              <button type="button" class="f-pill active" data-filter="all">All 7</button>
-              <button type="button" class="f-pill" data-filter="royal">Royal Mughal</button>
-              <button type="button" class="f-pill" data-filter="floral">Floral</button>
-              <button type="button" class="f-pill" data-filter="velvet">Velvet</button>
-              <button type="button" class="f-pill" data-filter="nikkah">Nikkah &amp; Day</button>
-            </div>
-            <div class="carousel-nav-arrows">
-              <button type="button" class="c-arrow-btn" id="carouselPrevBtn" aria-label="Scroll left">←</button>
-              <button type="button" class="c-arrow-btn" id="carouselNextBtn" aria-label="Scroll right">→</button>
-            </div>
+        <div class="carousel-header" style="margin-bottom:16px;">
+          <h2 class="sec-h2">Explore our <i>signature themes.</i></h2>
+          <div class="carousel-nav-arrows">
+            <button type="button" class="c-arrow-btn" id="carouselPrevBtn" aria-label="Scroll left">←</button>
+            <button type="button" class="c-arrow-btn" id="carouselNextBtn" aria-label="Scroll right">→</button>
           </div>
         </div>
 
-        <div class="cards-scroll-track" id="collectionGrid">
+        <div class="scroller-wrap">
+          <div class="swipe-guide-overlay" id="themesSwipeGuide" aria-hidden="true">
+            <span>Swipe</span>
+            <span>→</span>
+          </div>
+          <div class="cards-scroll-track" id="collectionGrid">
 
           <!-- 1. UNIFIED ROYAL MUGHAL DARBAR (7 COLOURS IN ONE CARD) -->
           <article class="invite-card" data-cat="royal" id="mainMughalCard">
@@ -1312,6 +1357,16 @@
             </div>
           </article>
 
+          </div>
+        </div>
+        <div class="scroller-dots-row" id="themesScrollerDots" aria-hidden="true">
+          <span class="scroller-dot active"></span>
+          <span class="scroller-dot"></span>
+          <span class="scroller-dot"></span>
+          <span class="scroller-dot"></span>
+          <span class="scroller-dot"></span>
+          <span class="scroller-dot"></span>
+          <span class="scroller-dot"></span>
         </div>
       </div>
     </section>
@@ -1580,14 +1635,29 @@
         return "/Ahmed-and-Ayesha-wedding-invitation?theme=" + mCol + "&explore=1";
       }
 
-      // Horizontal Carousel Arrow Navigation
+      // Horizontal Carousel Arrow Navigation + On-Scroller Swipe Guide & Dots
       const track = document.getElementById("collectionGrid");
+      const swipeGuide = document.getElementById("themesSwipeGuide");
+      const scrollerDots = document.querySelectorAll("#themesScrollerDots .scroller-dot");
       document.getElementById("carouselPrevBtn")?.addEventListener("click", () => {
         if (track) track.scrollBy({ left: -340, behavior: "smooth" });
       });
       document.getElementById("carouselNextBtn")?.addEventListener("click", () => {
         if (track) track.scrollBy({ left: 340, behavior: "smooth" });
       });
+      if (track) {
+        track.addEventListener("scroll", () => {
+          if (swipeGuide && track.scrollLeft > 24) {
+            swipeGuide.classList.add("hidden");
+          }
+          const cardEl = track.querySelector(".invite-card");
+          if (cardEl && scrollerDots.length) {
+            const stepW = cardEl.offsetWidth + 20;
+            const idx = Math.max(0, Math.min(scrollerDots.length - 1, Math.round(track.scrollLeft / stepW)));
+            scrollerDots.forEach((d, i) => d.classList.toggle("active", i === idx));
+          }
+        }, { passive: true });
+      }
 
       // Unified Royal Mughal Card 7-Colour Dots
       function updateMainMughalCard(colKey) {
