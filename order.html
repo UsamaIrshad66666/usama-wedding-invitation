@@ -1219,33 +1219,37 @@
       pointer-events: auto;
     }
     .demoview-studio {
-      width: 100vw;
+      width: 100%;
+      height: 100dvh;
       height: 100svh;
       background: #0c0a09;
       color: #f8fbf4;
-      display: grid;
-      grid-template-rows: auto auto minmax(0, 1fr) 68px;
+      display: flex;
+      flex-direction: column;
       position: relative;
       overflow: hidden;
     }
     .demoview-topbar {
-      height: 66px;
-      padding: 0 28px;
+      flex-shrink: 0;
+      min-height: 58px;
+      padding: 8px 20px;
       border-bottom: 1px solid rgba(248, 251, 244, 0.1);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      background: rgba(12, 10, 9, 0.85);
+      flex-wrap: wrap;
+      gap: 10px;
+      background: rgba(12, 10, 9, 0.92);
     }
     .demoview-title-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      min-width: 0;
     }
     .demoview-close-round {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 999px;
       border: 1px solid rgba(248, 251, 244, 0.22);
       background: transparent;
@@ -1254,14 +1258,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
     .demoview-close-round:hover {
       background: rgba(248, 251, 244, 0.1);
     }
     .demoview-name {
       font-family: var(--serif);
-      font-size: 22px;
-      line-height: 1;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .demoview-tag {
       font-size: 9.5px;
@@ -1354,10 +1363,13 @@
     }
 
     .demoview-stage-area {
+      flex: 1 1 0;
+      min-height: 0;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 14px;
       overflow: hidden;
       position: relative;
     }
@@ -1379,8 +1391,12 @@
       border-radius: 26px;
     }
     @media (max-width: 640px) {
+      .demoview-topbar {
+        padding: 8px 12px;
+      }
       .demoview-phone-frame {
         width: 100%;
+        height: 100%;
         max-height: none;
         padding: 0;
         border-radius: 0;
@@ -1388,6 +1404,21 @@
       }
       .demoview-stage-area {
         padding: 0;
+      }
+      .demoview-bottombar {
+        padding: 10px 12px !important;
+      }
+      .demoview-bottombar .btn-editorial {
+        flex: 1;
+        min-width: 0;
+        padding: 0 14px !important;
+        font-size: 11px !important;
+        letter-spacing: 0.08em !important;
+      }
+      .demoview-bottombar .uline-btn {
+        padding: 0 12px !important;
+        font-size: 10.5px !important;
+        flex-shrink: 0;
       }
     }
     .preview-modal-iframe {
@@ -1406,13 +1437,14 @@
       }
     }
     .demoview-bottombar {
-      padding: 0 28px;
+      flex-shrink: 0;
+      padding: 12px 24px;
       border-top: 1px solid rgba(248, 251, 244, 0.1);
-      background: rgba(12, 10, 9, 0.92);
+      background: rgba(12, 10, 9, 0.96);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
 
     /* Order Confirmation Modal Card */
@@ -2161,10 +2193,9 @@
       </div>
 
       <div class="demoview-bottombar">
-        <button type="button" id="previewModalBackBtn" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.28); min-height:42px;">← All Designs</button>
-        <button type="button" id="previewModalSelectBtn" class="btn-editorial" style="height:44px; padding:0 24px;">
-          <span>Choose This Design</span>
-          <span class="dia"></span>
+        <button type="button" id="previewModalBackBtn" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.28); min-height:42px;">← Back</button>
+        <button type="button" id="previewModalSelectBtn" class="btn-editorial" style="height:44px; padding:0 20px;">
+          <span>Select Theme →</span>
         </button>
       </div>
     </div>
@@ -3939,7 +3970,7 @@
       }
       if (previewModalOpenTabBtn) previewModalOpenTabBtn.href = demoUrl;
       if (previewModalSelectBtn) {
-        previewModalSelectBtn.innerHTML = `✓ Select ${(THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "")} &amp; Fill Details ➔`;
+        previewModalSelectBtn.innerHTML = `Select ${(THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "")} →`;
       }
 
       // Sync subtle Switch Theme dropdown
