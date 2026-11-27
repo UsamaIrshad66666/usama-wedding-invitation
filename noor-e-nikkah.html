@@ -1947,6 +1947,8 @@
         I18N.en.hostIntroBride = "With the grace and blessings of Allah Almighty, we joyfully " + _previewEvtCfg.hostLineEn + ":";
         I18N.ur.hostIntroGroom = "اللہ تعالیٰ کے فضل و کرم سے ہم آپ کو " + _previewEvtCfg.hostLineUr;
         I18N.ur.hostIntroBride = "اللہ تعالیٰ کے فضل و کرم سے ہم آپ کو " + _previewEvtCfg.hostLineUr;
+        I18N.en.heroBadge = "✨ " + _previewEvtCfg.eventShortEn + " · " + _previewEvtCfg.eventPhraseUr + " ✨";
+        I18N.ur.heroBadge = "✨ " + _previewEvtCfg.eventPhraseUr + " ✨";
       }
       if (customInvite) {
         if (customInvite.groom) WEDDING_DATA.groom = customInvite.groom;
@@ -2002,7 +2004,7 @@
         if (monoEl) monoEl.textContent = currentSide === "bride" ? `${bInit} & ${gInit}` : `${gInit} & ${bInit}`;
 
         I18N.en.modalSub = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride}'s Celebration`;
-        I18N.ur.modalSub = `${WEDDING_DATA.groomUrdu} اور ${WEDDING_DATA.brideUrdu} کی مبارک شادی`;
+        I18N.ur.modalSub = `${WEDDING_DATA.groomUrdu} اور ${WEDDING_DATA.brideUrdu} کی ${_previewEvtCfg ? _previewEvtCfg.eventPhraseUr : "مبارک شادی"}`;
         document.title = `${WEDDING_DATA.groom} & ${WEDDING_DATA.bride} — Noor-e-Nikkah Wedding Invitation`;
 
         function resolveCardVariantFromUrl() {

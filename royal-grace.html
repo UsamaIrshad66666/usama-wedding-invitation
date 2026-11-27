@@ -2350,7 +2350,7 @@
           if (!isCleared) scratchTitle.textContent = "تاریخ دیکھنے کے لیے کھرچیں";
           else scratchTitle.textContent = "ہماری نئی زندگی کا آغاز";
           document.getElementById("saveDateBtnText").textContent = "تاریخ محفوظ کریں";
-          document.getElementById("countdownHeading").textContent = "شادی کے پرمسرت لمحات";
+          document.getElementById("countdownHeading").textContent = (typeof _previewEvtCfg !== "undefined" && _previewEvtCfg) ? (_previewEvtCfg.eventPhraseUr + " کے پرمسرت لمحات") : "شادی کے پرمسرت لمحات";
           document.getElementById("cdLblDays").textContent = "دن";
           document.getElementById("cdLblHours").textContent = "گھنٹے";
           document.getElementById("cdLblMinutes").textContent = "منٹ";
@@ -2498,8 +2498,8 @@
 
         dynamicCoupleEn = `${firstEn} & ${secondEn}`;
         dynamicCoupleUr = `${firstUr} اور ${secondUr}`;
-        dynamicProseEn = `We are honored to welcome you to the wedding celebrations of ${dynamicCoupleEn}. ${customData.host ? "Hosted by " + customData.host + ". " : ""}As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤`;
-        dynamicProseUr = `ہم آپ کو دل کی اتھاہ گہرائیوں سے ${dynamicCoupleUr} کی شادی کی تقریبات میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤`;
+        dynamicProseEn = `We are honored to welcome you to ${_previewEvtCfg ? _previewEvtCfg.eventPhraseEn : "the wedding celebrations"} of ${dynamicCoupleEn}. ${customData.host ? "Hosted by " + customData.host + ". " : ""}As they begin their journey together in faith and love, we thank you for being part of this blessed occasion 🖤`;
+        dynamicProseUr = `ہم آپ کو دل کی اتھاہ گہرائیوں سے ${dynamicCoupleUr} کی ${_previewEvtCfg ? _previewEvtCfg.eventPhraseUr : "شادی کی تقریبات"} میں شرکت کی پرخلوص دعوت دیتے ہیں۔ آپ کی تشریف آوری ہمارے لیے باعثِ مسرت و برکت ہوگی 🖤`;
 
         document.title = `${dynamicCoupleEn} — Royal Grace Wedding Invitation`;
         const hGroom = document.getElementById("heroGroomName");

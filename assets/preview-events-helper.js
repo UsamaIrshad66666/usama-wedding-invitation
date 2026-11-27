@@ -163,13 +163,33 @@
         base = Object.assign({}, CATALOG[norm]);
       } else {
         var label = customName || (t === "custom" ? "Special Celebration" : t.charAt(0).toUpperCase() + t.slice(1));
+        var CUSTOM_URDU_MAP = {
+          "dholki": "تقریبِ ڈھولکی",
+          "mayun": "تقریبِ مایوں",
+          "mayoun": "تقریبِ مایوں",
+          "qawwali": "محفلِ قوالی",
+          "qawwali night": "محفلِ قوالی",
+          "qawali": "محفلِ قوالی",
+          "qawali night": "محفلِ قوالی",
+          "dua-e-khair": "تقریبِ دعائے خیر",
+          "dua e khair": "تقریبِ دعائے خیر",
+          "baat pakki": "تقریبِ بات پکی",
+          "bridal shower": "برائیڈل شاور",
+          "shendi": "تقریبِ شیندی",
+          "aqiqah": "تقریبِ عقیقہ",
+          "milad": "محفلِ میلاد",
+          "birthday": "تقریبِ سالگرہ",
+          "anniversary": "تقریبِ سالگرہ",
+          "special celebration": "خصوصی تقریب"
+        };
+        var urLabel = CUSTOM_URDU_MAP[label.toLowerCase()] || label;
         base = {
           key: "custom",
           type: "custom",
           titleEn: label,
           fullTitleEn: label,
-          titleUr: label,
-          shortUr: label,
+          titleUr: urLabel,
+          shortUr: urLabel,
           date: "2026-12-05",
           displayDate: "Saturday, 5 December 2026",
           displayDateUrdu: "ہفتہ، ۵ دسمبر ۲۰۲۶",

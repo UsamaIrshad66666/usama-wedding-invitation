@@ -4909,7 +4909,7 @@
               `*مہمان کا نام:* ${guestName}\n` +
               `*شرکت:* ${attendStatus}\n` +
               `*افراد کی تعداد:* ${guestCount}\n`
-            : `*Wedding RSVP — ${WEDDING.groom} & ${WEDDING.bride}*\n\n` +
+            : `*${previewEvtCfg ? previewEvtCfg.eventShortEn : "Wedding"} RSVP — ${WEDDING.groom} & ${WEDDING.bride}*\n\n` +
               `*Guest Name:* ${guestName}\n` +
               `*Status:* ${attendStatus}\n` +
               `*Number of Guests:* ${guestCount}\n`;
@@ -5047,14 +5047,14 @@
         if (activeEvents.length === 1) {
           evTitle.textContent = isUr ? (activeEvents[0].titleUr || activeEvents[0].titleEn) : `The ${activeEvents[0].titleEn}`;
         } else {
-          evTitle.textContent = isUr ? "شادی کی تقریبات" : "The Celebrations";
+          evTitle.textContent = previewEvtCfg ? (isUr ? previewEvtCfg.eventPhraseUr : previewEvtCfg.eventShortEn) : (isUr ? "شادی کی تقریبات" : "The Celebrations");
         }
         renderEventTags(lang);
 
         // Countdown
         const firstEv = activeEvents[0] || WEDDING.eventsList[0];
         document.getElementById("tCdKicker").textContent = isUr ? "الٹی گنتی شروع" : "Counting down to";
-        document.getElementById("cdTitle").textContent = isUr ? "ہمارا خوبصورت دن" : "Our Wedding Day";
+        document.getElementById("cdTitle").textContent = previewEvtCfg ? (isUr ? "ہمارا خوبصورت دن" : ("Our " + previewEvtCfg.eventShortEn)) : (isUr ? "ہمارا خوبصورت دن" : "Our Wedding Day");
         document.getElementById("tCdDays").textContent = isUr ? "دن" : "Days";
         document.getElementById("tCdHours").textContent = isUr ? "گھنٹے" : "Hours";
         document.getElementById("tCdMins").textContent = isUr ? "منٹ" : "Minutes";
