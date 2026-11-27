@@ -2253,7 +2253,7 @@
 
       <div class="demoview-bottombar">
         <button type="button" id="previewModalBackBtn" class="uline-btn" style="color:#f8fbf4; border-color:rgba(248,251,244,0.28); min-height:42px;">← Back</button>
-        <button type="button" id="previewModalSelectBtn" class="btn-editorial" style="height:44px; padding:0 20px;">
+        <button type="button" id="previewModalSelectBtn" class="btn-editorial" style="height:44px; padding:0 14px; min-width:0; max-width:calc(100% - 102px); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px;">
           <span>Select Theme →</span>
         </button>
       </div>
@@ -4278,7 +4278,10 @@
       }
       if (previewModalOpenTabBtn) previewModalOpenTabBtn.href = demoUrl;
       if (previewModalSelectBtn) {
-        previewModalSelectBtn.innerHTML = `Select ${(THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "")} →`;
+        const shortBtnName = isMughal
+          ? `Royal Mughal (${(MUGHAL_PALETTES[resolvedKey]?.shortEn || "Emerald").split(" ")[0]})`
+          : (THEME_DISPLAY_NAMES[resolvedKey] || "This Theme").replace(/^[^\w]+/, "");
+        previewModalSelectBtn.textContent = `Select ${shortBtnName} →`;
       }
 
       // Sync subtle Switch Theme dropdown

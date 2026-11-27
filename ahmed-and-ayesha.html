@@ -3942,6 +3942,9 @@
       if (currentParams.get("invite")) p.set("invite", currentParams.get("invite"));
       if (currentParams.get("d")) p.set("d", currentParams.get("d"));
       if (currentParams.get("side")) p.set("side", currentParams.get("side"));
+      if (currentParams.get("events")) p.set("events", currentParams.get("events"));
+      if (currentParams.get("customEvent")) p.set("customEvent", currentParams.get("customEvent"));
+      if (currentParams.get("explore")) p.set("explore", currentParams.get("explore"));
       if (card && card !== "all") {
         p.set("card", card);
       }
@@ -3970,16 +3973,19 @@
         }
       }
       const newUrl = qs ? `${targetPath}?${qs}` : targetPath;
-      if (push) {
-        window.history.pushState({ card, event, view }, "", newUrl);
-      } else {
-        window.history.replaceState({ card, event, view }, "", newUrl);
-      }
+      try {
+        if (push) {
+          window.history.pushState({ card, event, view }, "", newUrl);
+        } else {
+          window.history.replaceState({ card, event, view }, "", newUrl);
+        }
+      } catch (histErr) {}
     }
 
     function getEventDateFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = WEDDING.events && WEDDING.events[eventKey];
       const t = I18N[currentLang];
+      if (!e) return t.dateTBD;
       if (currentLang === "ur" && e.displayDateUrdu) return e.displayDateUrdu;
       if (e.displayDate) return e.displayDate;
       if (!e.dateTime) return t.dateTBD;
@@ -5644,26 +5650,32 @@
           if (screenGlow) screenGlow.classList.add("active");
         }, 180);
 
-        // At peak golden glow coverage, transition cleanly to the all ceremonies page
-        setTimeout(() => {
-          const { card } = getUrlState();
-          updateUrlState(card, null, true, "events");
-          renderEventListScreen(false);
-          window.scrollTo({ top: 0, behavior: "instant" });
-
-          // Softly dissolve the golden glow, unveiling the ceremonies page
+        function dismissRoyalGlow() {
+          const gl = document.getElementById("royalScreenGlow");
+          if (!gl) return;
+          gl.classList.remove("active");
+          gl.classList.add("fade-out");
           setTimeout(() => {
-            if (screenGlow) {
-              screenGlow.classList.remove("active");
-              screenGlow.classList.add("fade-out");
-              setTimeout(() => {
-                if (screenGlow && screenGlow.parentNode) {
-                  screenGlow.parentNode.removeChild(screenGlow);
-                }
-              }, 600);
-            }
-          }, 80);
-        }, 820);
+            if (gl && gl.parentNode) gl.parentNode.removeChild(gl);
+          }, 550);
+        }
+
+        // Absolute failsafe so the golden transition glow can NEVER stay stuck on screen
+        setTimeout(dismissRoyalGlow, 1500);
+
+        // At peak golden glow coverage, transition cleanly to the ceremonies page
+        setTimeout(() => {
+          try {
+            const { card } = getUrlState();
+            updateUrlState(card, null, true, "events");
+            renderEventListScreen(false);
+            try { window.scrollTo(0, 0); } catch (se) {}
+          } catch (openErr) {
+            console.error("Royal Mughal open transition error:", openErr);
+          } finally {
+            setTimeout(dismissRoyalGlow, 80);
+          }
+        }, 780);
       }
 
       document.getElementById("openInviteActionBtn").addEventListener("click", triggerOpening);
@@ -5817,6 +5829,8 @@
         `;
         illustrationHtml = buildBaraatStage();
       } else if (eventKey === "walima") {
+        illustrationHtml = buildWalimaStage();
+      } else {
         illustrationHtml = buildWalimaStage();
       }
 
@@ -6297,6 +6311,8 @@
     ];
 
     window.setMughalColorInPlace = function(newColorKey) {
+      const stuckGlow = document.getElementById("royalScreenGlow");
+      if (stuckGlow && stuckGlow.parentNode) stuckGlow.parentNode.removeChild(stuckGlow);
       const validColor = normalizeThemeKey(newColorKey);
       if (!MUGHAL_COLOR_KEYS.includes(validColor)) return;
 
