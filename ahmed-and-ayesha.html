@@ -3356,6 +3356,33 @@
         if (!cfg.events.baraat.rukhsatiTimeUrdu) cfg.events.baraat.rukhsatiTimeUrdu = "۱۱:۰۰ بجے شب";
       }
 
+      // Apply Live Preview Event Adaptation (?events=...&customEvent=...) inside resolveCurrentWeddingConfig
+      const _livePrevCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+      if (_livePrevCfg && _livePrevCfg.eventsList && _livePrevCfg.eventsList.length) {
+        cfg.events = cfg.events || {};
+        _livePrevCfg.eventsList.forEach((ev) => {
+          const k = ev.type === "barat" ? "baraat" : ev.type;
+          cfg.events[k] = Object.assign({}, cfg.events[k] || {}, {
+            titleEn: ev.titleEn,
+            titleUr: ev.titleUr,
+            date: ev.displayDate,
+            dateUrdu: ev.displayDateUrdu,
+            displayDate: ev.displayDate,
+            displayDateUrdu: ev.displayDateUrdu,
+            dateTime: ev.date + "T19:00:00+05:00",
+            time: ev.time,
+            timeUrdu: ev.timeUr,
+            displayTime: ev.time,
+            displayTimeUrdu: ev.timeUr,
+            venue: ev.venue,
+            venueUrdu: ev.venueUrdu,
+            address: ev.address,
+            addressUrdu: ev.address,
+            mapUrl: ev.mapUrl
+          });
+        });
+      }
+
       return cfg;
     }
 
@@ -4006,24 +4033,27 @@
     }
 
     function getEventTimeFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = WEDDING.events && WEDDING.events[eventKey];
       const t = I18N[currentLang];
+      if (!e) return t.timeTBD;
       if (currentLang === "ur" && e.displayTimeUrdu) return e.displayTimeUrdu;
       if (e.displayTime) return e.displayTime;
       return t.timeTBD;
     }
 
     function getEventVenueFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = WEDDING.events && WEDDING.events[eventKey];
       const t = I18N[currentLang];
+      if (!e) return t.venueTBD;
       if (currentLang === "ur" && e.venueUrdu) return e.venueUrdu;
       if (e.venue) return e.venue;
       return t.venueTBD;
     }
 
     function getEventAddressFormatted(eventKey) {
-      const e = WEDDING.events[eventKey];
+      const e = WEDDING.events && WEDDING.events[eventKey];
       const t = I18N[currentLang];
+      if (!e) return t.addressTBD;
       if (currentLang === "ur" && e.addressUrdu) return e.addressUrdu;
       if (e.address) return e.address;
       return t.addressTBD;
