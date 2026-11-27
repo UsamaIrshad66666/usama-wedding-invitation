@@ -607,6 +607,74 @@
       gap: 10px;
       margin-top: 14px;
     }
+    .step2-custom-event-wrap {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: var(--paper);
+      border: 1px solid rgba(35, 31, 32, 0.16);
+      border-radius: 12px;
+    }
+    .step2-custom-event-wrap.visible { display: block; }
+    .step2-custom-event-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .step2-custom-event-input {
+      flex: 1;
+      min-width: 0;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(35, 31, 32, 0.24);
+      background: #fff;
+      font-family: var(--sans);
+      font-size: 13.5px;
+      color: var(--charcoal);
+    }
+    .step2-custom-event-input:focus {
+      outline: none;
+      border-color: var(--clay-deep);
+    }
+    .step2-custom-remove-btn {
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(176, 65, 46, 0.35);
+      background: transparent;
+      color: var(--clay-deep);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .step2-custom-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .custom-event-chip {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(35, 31, 32, 0.18);
+      background: var(--blush);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .custom-event-chip:hover,
+    .custom-event-chip.active {
+      background: var(--forest);
+      color: #fff;
+      border-color: var(--forest);
+    }
     .quick-evt-pill {
       display: inline-flex;
       align-items: center;
@@ -1667,6 +1735,24 @@
               <span>Custom Event</span>
             </button>
           </div>
+          <div class="step2-custom-event-wrap" id="step2CustomEventWrap">
+            <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; font-weight:600; color:var(--clay-deep);">
+              What is your custom event? (Helps us match the best themes)
+            </div>
+            <div class="step2-custom-event-row">
+              <input type="text" class="step2-custom-event-input" id="step2CustomEventName" placeholder="e.g. Dholki, Mayun, Qawwali Night, Dua-e-Khair, Bridal Shower...">
+              <button type="button" class="step2-custom-remove-btn" id="step2CustomRemoveBtn">Remove</button>
+            </div>
+            <div class="step2-custom-chips" id="step2CustomChips">
+              <button type="button" class="custom-event-chip" data-custom-preset="Dholki">Dholki</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Mayun">Mayun</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Qawwali Night">Qawwali Night</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Dua-e-Khair">Dua-e-Khair</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Baat Pakki">Baat Pakki</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Bridal Shower">Bridal Shower</button>
+              <button type="button" class="custom-event-chip" data-custom-preset="Shendi">Shendi</button>
+            </div>
+          </div>
         </div>
 
         <div class="guest-segmentation-preview" id="step2GuestLinksPreview">
@@ -1688,18 +1774,18 @@
            ================================================================= -->
       <section class="concierge-step-stage" id="stepStage3">
         <div class="step-eyebrow" id="themeContextTextEn">Step 03 of 04 · Tailored Collection</div>
-        <h1 class="step-h1">Seven worlds. <i>Which one feels like you?</i></h1>
+        <h1 class="step-h1" id="step3MainHeading">Curated for your <i>ceremonies</i>.</h1>
         <p class="step-lede" id="themeContextSubEn">
-          Every design below is ordered for your selected family side and ceremonies. Open any design live to test it, switch themes while exploring, or pick your favourite.
+          Showing designs matched to your selected event(s). Every title, scene, and Urdu calligraphy is custom-crafted for your celebration — live previews show sample text.
         </p>
 
         <div class="theme-filter-tabs" id="orderThemeFilterTabs" role="tablist">
-          <button type="button" class="theme-filter-btn active" data-theme-filter="recommended">Recommended for you</button>
-          <button type="button" class="theme-filter-btn" data-theme-filter="all">All seven</button>
+          <button type="button" class="theme-filter-btn active" id="recommendedFilterTabBtn" data-theme-filter="recommended">Best Matches</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="all">All 7 Themes</button>
           <button type="button" class="theme-filter-btn" data-theme-filter="royal">Royal Mughal (7 Colours)</button>
           <button type="button" class="theme-filter-btn" data-theme-filter="garden">Gardens</button>
-          <button type="button" class="theme-filter-btn" data-theme-filter="velvet">By night</button>
-          <button type="button" class="theme-filter-btn" data-theme-filter="nikkah">By day &amp; Nikkah</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="velvet">Evening &amp; Velvet</button>
+          <button type="button" class="theme-filter-btn" data-theme-filter="nikkah">Daytime &amp; Nikkah</button>
         </div>
 
         <div class="theme-selection-grid" id="orderThemeSelectionGrid">
@@ -2221,6 +2307,7 @@
     // 4-STEP GUIDED CONCIERGE CONSTANTS & STATE (Top of Script)
     // =========================================================================
     var currentMughalColor = "emerald";
+    var userManuallyPickedMughalColor = false;
     var activeThemeCategoryFilter = "recommended";
     var currentPreviewThemeKey = null;
     var userInteractedSide = false;
@@ -3519,6 +3606,7 @@
         e.preventDefault();
         e.stopPropagation();
         const cKey = btn.getAttribute("data-mughal-color") || "emerald";
+        userManuallyPickedMughalColor = true;
         setUnifiedMughalCardColor(cKey, true);
         showToast(`🎨 Royal Mughal Color changed to ${MUGHAL_PALETTES[cKey]?.shortEn || cKey}!`);
       });
@@ -3599,61 +3687,194 @@
       return `/Ahmed-and-Ayesha-wedding-invitation?theme=${mColor}&side=${s}&explore=1`;
     }
 
-    // Score & badge each theme dynamically based on Step 1 (Groom/Bride) & Step 2 (Events)
+    // Helper: Read any custom event names entered in Step 2 or Step 4
+    function getCustomEventNamesList() {
+      const names = [];
+      const step2Input = document.getElementById("step2CustomEventName");
+      const step2Val = step2Input ? step2Input.value.trim() : "";
+      if (typeof eventsContainer !== "undefined" && eventsContainer) {
+        eventsContainer.querySelectorAll('.event-section[data-event-type="custom"]').forEach((card, idx) => {
+          const inp = card.querySelector(".evt-custom-name");
+          const val = (inp && inp.value.trim()) ? inp.value.trim() : (idx === 0 ? step2Val : "");
+          if (val) names.push(val);
+        });
+      }
+      if (!names.length && step2Val) names.push(step2Val);
+      return names;
+    }
+
+    // Intelligent Event Profile Analyzer — understands ANY wedding or custom event
+    function analyzeEventProfile(side, eventTypes) {
+      const customNames = getCustomEventNamesList();
+      const customJoined = customNames.join(" ").toLowerCase();
+
+      const customIsEngagement = /engage|mangni|ring|baat\s*pakki|propos|bridal\s*shower|shower/i.test(customJoined);
+      const customIsNikkah = /nikkah|nikah|dua[\s-]*e[\s-]*khair|milad|quran|aqd|khatam/i.test(customJoined);
+      const customIsMehndi = /mehndi|mayun|mayoun|dholki|haldi|sangeet|ubtan|rasm[\s-]*e[\s-]*hina|henna/i.test(customJoined);
+      const customIsWalima = /walima|reception|qawwali|qawali|dinner|gala|shendi|anniversary/i.test(customJoined);
+      const customIsBarat = /barat|baraat|rukhsati|shadi|shaadi|wedding/i.test(customJoined);
+
+      const hasM = eventTypes.includes("mehndi") || customIsMehndi;
+      const hasB = eventTypes.includes("barat") || customIsBarat;
+      const hasW = eventTypes.includes("walima") || customIsWalima;
+      const hasN = eventTypes.includes("nikkah") || customIsNikkah;
+      const hasE = eventTypes.includes("engagement") || customIsEngagement;
+      const hasC = eventTypes.includes("custom");
+      const isBride = side === "bride";
+
+      const isSingleOrPureEngagement = hasE && !hasB && !hasW && !hasM && !hasN;
+      const isSingleOrPureNikkah = hasN && !hasB && !hasW && !hasM;
+      const isSingleOrPureMehndi = hasM && !hasB && !hasW && !hasN && !hasE;
+      const isSingleOrPureWalima = hasW && !hasB && !hasM && !hasN && !hasE;
+      const isBaratOnly = hasB && !hasW && !hasM && !hasN && !hasE;
+      const isBrideMehndiBarat = isBride && hasB && !hasW && !hasN;
+      const isPureUnclassifiedCustom = hasC && !hasM && !hasB && !hasW && !hasN && !hasE;
+
+      let mode = "multi_event";
+      let suggestedMughalColor = isBride ? "ruby" : "emerald";
+      let displayLabel = formatEventsSummaryLabel(eventTypes, side);
+      let shortEventTitle = customNames[0] || displayLabel;
+
+      if (isSingleOrPureEngagement) {
+        mode = "engagement";
+        suggestedMughalColor = "lilac";
+        shortEventTitle = customNames[0] || "Engagement";
+      } else if (isSingleOrPureNikkah) {
+        mode = "nikkah";
+        suggestedMughalColor = "marble";
+        shortEventTitle = customNames[0] || "Nikkah";
+      } else if (isSingleOrPureMehndi) {
+        mode = "mehndi";
+        suggestedMughalColor = "emerald";
+        shortEventTitle = customNames[0] || "Mehndi";
+      } else if (isSingleOrPureWalima) {
+        mode = "walima";
+        suggestedMughalColor = "sapphire";
+        shortEventTitle = customNames[0] || "Walima";
+      } else if (isBrideMehndiBarat || (isBaratOnly && isBride)) {
+        mode = "barat_bride";
+        suggestedMughalColor = "ruby";
+        shortEventTitle = hasM ? "Mehndi & Barat" : "Barat & Rukhsati";
+      } else if (isBaratOnly && !isBride) {
+        mode = "barat_groom";
+        suggestedMughalColor = "emerald";
+        shortEventTitle = "Barat";
+      } else if (isPureUnclassifiedCustom) {
+        mode = "custom_general";
+        suggestedMughalColor = "marble";
+        shortEventTitle = customNames[0] || "Custom Event";
+      } else {
+        mode = "multi_event";
+        suggestedMughalColor = hasN && !hasB ? "marble" : (isBride ? "ruby" : "emerald");
+        shortEventTitle = displayLabel;
+      }
+
+      return {
+        mode,
+        hasM, hasB, hasW, hasN, hasE, hasC,
+        isBride,
+        suggestedMughalColor,
+        displayLabel,
+        shortEventTitle,
+        customNames
+      };
+    }
+
+    // Score, badge & selectively recommend each theme based on Step 1 (Groom/Bride) & Step 2 (Any Event)
     function computeThemeRecommendation(themeKey, side, eventTypes) {
       const isMughal = isMughalColorKey(themeKey) || themeKey === "mughal";
       const key = isMughal ? "mughal" : themeKey;
+      const profile = analyzeEventProfile(side, eventTypes);
+      const evtName = profile.shortEventTitle;
 
-      const hasM = eventTypes.includes("mehndi");
-      const hasB = eventTypes.includes("barat");
-      const hasW = eventTypes.includes("walima");
-      const hasN = eventTypes.includes("nikkah");
-      const is3Day = hasM && hasB && hasW;
-      const isNikkahFocus = hasN || (!hasM && !hasB && !hasW);
-      const isWalimaFocus = hasW && !hasB;
-      const isBaraatFocus = hasB && !hasW;
-      const isBride = side === "bride";
+      let score = 60;
+      let badge = "✦ Full Collection";
+      let isRecommended = false;
 
-      let score = 70;
-      let badge = "✦ Luxury Collection";
-      let isRecommended = true;
-
-      if (isNikkahFocus && !is3Day) {
-        if (key === "royal-grace") { score = 100; badge = "★ #1 Best Match for Sacred Nikkah"; }
-        else if (key === "ivory") { score = 98; badge = "★ Sacred Pearl Ivory Nikkah Pick"; }
-        else if (key === "gulistan") { score = 95; badge = "★ Rose Garden Nikkah Pick"; }
-        else if (key === "mughal") { score = 92; badge = "★ 7 Royal Colors (Marble & Emerald Ideal for Nikkah)"; }
-        else if (key === "burgundy") { score = 88; badge = "★ Velvet Nikkah & Reception"; }
-        else if (key === "maroon") { score = 86; badge = "★ Ivory Floral Archway Nikkah"; }
-        else if (key === "farman") { score = 84; badge = "★ Imperial Scroll Nikkah Decree"; }
-      } else if (isWalimaFocus) {
-        if (key === "burgundy") { score = 100; badge = "★ #1 Match for Walima Reception"; }
-        else if (key === "mughal") { score = 98; badge = "★ 7 Royal Palettes (Emerald, Sapphire & Obsidian)"; }
-        else if (key === "royal-grace") { score = 96; badge = "★ Serene Walima Favorite"; }
-        else if (key === "gulistan") { score = 95; badge = "★ Rose Garden Reception"; }
-        else if (key === "maroon") { score = 93; badge = "★ Velvet Walima Luxury"; }
-        else if (key === "ivory") { score = 91; badge = "★ Daytime/Evening Walima"; }
-        else if (key === "farman") { score = 86; badge = "★ Royal Scroll Reception"; }
-      } else if (isBride && (isBaraatFocus || (hasM && hasB))) {
-        if (key === "gulistan") { score = 100; badge = "★ #1 Match for Bride's Baraat & Rukhsati"; }
-        else if (key === "mughal") { score = 99; badge = "★ 7 Royal Colors (Ruby & Emerald Ideal for Bride)"; }
-        else if (key === "maroon") { score = 97; badge = "★ Top Bride's Velvet Archway"; }
-        else if (key === "burgundy") { score = 95; badge = "★ Emotional Rukhsati Bestseller"; }
-        else if (key === "royal-grace") { score = 91; badge = "★ Graceful Nikkah & Rukhsati"; }
-        else if (key === "farman") { score = 88; badge = "★ Shahi Scroll Invitation"; }
-        else if (key === "ivory") { score = 86; badge = "★ Pearl Ivory Bride's Edition"; }
+      if (profile.mode === "engagement") {
+        // Engagement / Mangni / Ring Ceremony / Bridal Shower: Romantic florals, silk ribbon, evening velvet & sage pearl
+        if (key === "gulistan")       { score = 100; isRecommended = true;  badge = `★ #1 Best Match for ${evtName}`; }
+        else if (key === "maroon")    { score = 98;  isRecommended = true;  badge = `★ Romantic ${evtName} Archway Pick`; }
+        else if (key === "burgundy")  { score = 95;  isRecommended = true;  badge = `★ Evening ${evtName} Velvet Glamour`; }
+        else if (key === "royal-grace"){ score = 92; isRecommended = true;  badge = `★ Garden & Pearl ${evtName} Pick`; }
+        else if (key === "mughal")    { score = 88;  isRecommended = true;  badge = `★ 7 Palettes · Lilac & Marble for ${evtName}`; }
+        else if (key === "farman")    { score = 62;  isRecommended = false; badge = "Royal Wedding Scroll · Optional"; }
+        else if (key === "ivory")     { score = 55;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
+      } else if (profile.mode === "nikkah") {
+        // Nikkah / Dua-e-Khair: Serene ivory, sage pearl drapes, soft garden & sacred calligraphy
+        if (key === "royal-grace")    { score = 100; isRecommended = true;  badge = `★ #1 Best Match for ${evtName}`; }
+        else if (key === "ivory")     { score = 98;  isRecommended = true;  badge = `★ Crafted for Sacred ${evtName}`; }
+        else if (key === "gulistan")  { score = 94;  isRecommended = true;  badge = `★ Rose Garden ${evtName} Pick`; }
+        else if (key === "mughal")    { score = 91;  isRecommended = true;  badge = `★ Marble & Emerald ${evtName} Pick`; }
+        else if (key === "farman")    { score = 87;  isRecommended = true;  badge = `★ Royal Scroll ${evtName} Decree`; }
+        else if (key === "maroon")    { score = 68;  isRecommended = false; badge = "Evening Velvet · Optional"; }
+        else if (key === "burgundy")  { score = 64;  isRecommended = false; badge = "Evening Reception · Optional"; }
+      } else if (profile.mode === "mehndi") {
+        // Mehndi / Dholki / Mayun: Vibrant florals, festive colours & interactive reveals
+        if (key === "gulistan")       { score = 100; isRecommended = true;  badge = `★ #1 Garden & Floral ${evtName} Pick`; }
+        else if (key === "mughal")    { score = 97;  isRecommended = true;  badge = `★ Emerald & Plum Festive ${evtName}`; }
+        else if (key === "maroon")    { score = 93;  isRecommended = true;  badge = `★ Festive Archway ${evtName} Pick`; }
+        else if (key === "royal-grace"){ score = 89; isRecommended = true;  badge = `★ Botanical Sage ${evtName} Pick`; }
+        else if (key === "burgundy")  { score = 70;  isRecommended = false; badge = "Formal Evening · Optional"; }
+        else if (key === "farman")    { score = 62;  isRecommended = false; badge = "Imperial Scroll · Optional"; }
+        else if (key === "ivory")     { score = 55;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
+      } else if (profile.mode === "walima") {
+        // Walima / Reception / Qawwali Night: Refined evening glamour, pearl drapes & royal palettes
+        if (key === "burgundy")       { score = 100; isRecommended = true;  badge = `★ #1 Best Match for ${evtName}`; }
+        else if (key === "mughal")    { score = 97;  isRecommended = true;  badge = `★ Sapphire, Emerald & Obsidian ${evtName}`; }
+        else if (key === "royal-grace"){ score = 94; isRecommended = true;  badge = `★ Serene Sage & Pearl ${evtName}`; }
+        else if (key === "maroon")    { score = 92;  isRecommended = true;  badge = `★ Velvet ${evtName} Luxury`; }
+        else if (key === "gulistan")  { score = 89;  isRecommended = true;  badge = `★ Rose Garden ${evtName}`; }
+        else if (key === "farman")    { score = 70;  isRecommended = false; badge = "Royal Scroll · Optional"; }
+        else if (key === "ivory")     { score = 62;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
+      } else if (profile.mode === "barat_bride") {
+        // Bride's Baraat & Rukhsati (or Mehndi + Baraat)
+        if (key === "gulistan")       { score = 100; isRecommended = true;  badge = `★ #1 Match for Bride's ${evtName}`; }
+        else if (key === "mughal")    { score = 98;  isRecommended = true;  badge = "★ 7 Royal Palettes · Ruby & Emerald"; }
+        else if (key === "maroon")    { score = 96;  isRecommended = true;  badge = `★ Romantic Velvet ${evtName}`; }
+        else if (key === "burgundy")  { score = 93;  isRecommended = true;  badge = "★ Emotional Rukhsati Bestseller"; }
+        else if (key === "farman")    { score = 87;  isRecommended = true;  badge = "★ Imperial Scroll Invitation"; }
+        else if (key === "royal-grace"){ score = 72; isRecommended = false; badge = "Best for Nikkah & Walima · Optional"; }
+        else if (key === "ivory")     { score = 58;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
+      } else if (profile.mode === "barat_groom") {
+        // Groom's Baraat Only
+        if (key === "mughal")         { score = 100; isRecommended = true;  badge = "★ #1 Flagship for Royal Baraat"; }
+        else if (key === "farman")    { score = 96;  isRecommended = true;  badge = "★ Imperial Decree for Baraat"; }
+        else if (key === "maroon")    { score = 94;  isRecommended = true;  badge = "★ Velvet & Gold Baraat Pick"; }
+        else if (key === "burgundy")  { score = 92;  isRecommended = true;  badge = "★ Evening Glamour Baraat"; }
+        else if (key === "gulistan")  { score = 88;  isRecommended = true;  badge = "★ Rose Garden Baraat Edition"; }
+        else if (key === "royal-grace"){ score = 70; isRecommended = false; badge = "Best for Nikkah & Walima · Optional"; }
+        else if (key === "ivory")     { score = 58;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
+      } else if (profile.mode === "custom_general") {
+        // Any general/custom event (Birthday, Aqiqah, Anniversary, Family Dinner, etc.)
+        if (key === "gulistan")       { score = 100; isRecommended = true;  badge = `★ #1 Adaptable Match for ${evtName}`; }
+        else if (key === "mughal")    { score = 97;  isRecommended = true;  badge = `★ 7 Custom Palettes for ${evtName}`; }
+        else if (key === "royal-grace"){ score = 94; isRecommended = true;  badge = `★ Elegant Sage & Pearl for ${evtName}`; }
+        else if (key === "maroon")    { score = 91;  isRecommended = true;  badge = `★ Velvet Archway for ${evtName}`; }
+        else if (key === "burgundy")  { score = 88;  isRecommended = true;  badge = `★ Evening Glamour for ${evtName}`; }
+        else if (key === "farman")    { score = 68;  isRecommended = false; badge = "Imperial Scroll · Optional"; }
+        else if (key === "ivory")     { score = 55;  isRecommended = false; badge = "Crafted for Nikkah · Optional"; }
       } else {
-        // 3-Day Complete Wedding or Groom's Multi-Event
-        if (key === "mughal") { score = 100; badge = "★ #1 Flagship Multi-Event · 7 Color Palettes"; }
-        else if (key === "gulistan") { score = 99; badge = "★ #1 Rose Garden · 3D Ceremony Luggage Tags"; }
-        else if (key === "maroon") { score = 97; badge = "★ New Cinematic Multi-Event Pick"; }
-        else if (key === "burgundy") { score = 95; badge = "★ Velvet Multi-Event Bestseller"; }
-        else if (key === "royal-grace") { score = 92; badge = "★ Sage & Pearl Multi-Event"; }
-        else if (key === "ivory") { score = 90; badge = "★ Pearl Ivory Multi-Event"; }
-        else if (key === "farman") { score = 89; badge = "★ Imperial Scroll Multi-Event"; }
+        // Multi-Event Combinations (e.g. Mehndi+Barat+Walima, Barat+Walima, Nikkah+Walima, Engagement+Nikkah, etc.)
+        const includesNikkah = profile.hasN;
+        if (key === "mughal")         { score = 100; isRecommended = true; badge = `★ #1 Multi-Event · 7 Royal Palettes`; }
+        else if (key === "gulistan")  { score = 98;  isRecommended = true; badge = `★ 3D Multi-Event Ceremony Tags`; }
+        else if (key === "maroon")    { score = 95;  isRecommended = true; badge = `★ Velvet Multi-Event Pick`; }
+        else if (key === "burgundy")  { score = 93;  isRecommended = true; badge = `★ Evening Multi-Event Bestseller`; }
+        else if (key === "royal-grace"){
+          score = includesNikkah ? 99 : 90;
+          isRecommended = true;
+          badge = includesNikkah ? "★ Top Pick for Nikkah & Reception" : "★ Sage & Pearl Multi-Event";
+        }
+        else if (key === "farman")    { score = 88;  isRecommended = true; badge = `★ Imperial Scroll Multi-Event`; }
+        else if (key === "ivory")     {
+          score = includesNikkah ? 96 : 60;
+          isRecommended = includesNikkah;
+          badge = includesNikkah ? "★ Sacred Nikkah + Reception Pick" : "Crafted for Nikkah · Optional";
+        }
       }
 
-      return { score, badge, isRecommended };
+      return { score, badge, isRecommended, profile };
     }
 
     function updateSideAwarePresets(side) {
@@ -3717,6 +3938,7 @@
       const side = hiddenSideInput ? hiddenSideInput.value : "groom";
       const isBride = side === "bride";
       const activeTypes = getActiveEventTypesList();
+      const customNames = getCustomEventNamesList();
 
       document.querySelectorAll("#quickEventsToggleGrid .quick-evt-pill").forEach(pill => {
         const t = pill.getAttribute("data-toggle-event");
@@ -3733,6 +3955,11 @@
         }
       });
 
+      const customWrap = document.getElementById("step2CustomEventWrap");
+      if (customWrap) {
+        customWrap.classList.toggle("visible", activeTypes.includes("custom"));
+      }
+
       const segChipsEl = document.getElementById("step2GuestSegChips");
       if (segChipsEl) {
         const hasM = activeTypes.includes("mehndi");
@@ -3740,6 +3967,7 @@
         const hasW = activeTypes.includes("walima");
         const hasN = activeTypes.includes("nikkah");
         const hasE = activeTypes.includes("engagement");
+        const hasC = activeTypes.includes("custom");
 
         const chips = [];
         if (activeTypes.length > 1) {
@@ -3754,6 +3982,11 @@
         if (hasM) chips.push({ text: "Mehndi Only (/mehndi)" });
         if (hasN) chips.push({ text: "Nikkah Only (/nikkah)" });
         if (hasE) chips.push({ text: "Engagement Only (/engagement)" });
+        if (hasC) {
+          const cLabel = customNames[0] || "Custom Event";
+          const cSlug = cLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "event";
+          chips.push({ text: `${cLabel} Only (/${cSlug})` });
+        }
 
         if (!chips.length) {
           chips.push({ text: "Select at least 1 event above to preview guest links" });
@@ -3770,13 +4003,16 @@
     function formatEventsSummaryLabel(activeTypes, side) {
       if (!activeTypes.length) return "No Events Selected";
       const isBride = side === "bride";
+      const customNames = getCustomEventNamesList();
+      let customIdx = 0;
       const names = activeTypes.map(t => {
         if (t === "mehndi") return "Mehndi";
         if (t === "barat") return isBride ? "Barat & Rukhsati" : "Barat";
         if (t === "walima") return "Walima";
         if (t === "nikkah") return "Nikkah";
         if (t === "engagement") return "Engagement";
-        return "Custom";
+        const cName = customNames[customIdx++] || "Custom Event";
+        return cName;
       });
       return names.join(" + ");
     }
@@ -3785,12 +4021,25 @@
       const side = hiddenSideInput ? hiddenSideInput.value : "groom";
       const isBride = side === "bride";
       const activeTypes = getActiveEventTypesList();
-      const eventsLabel = formatEventsSummaryLabel(activeTypes, side);
+      const profile = analyzeEventProfile(side, activeTypes);
+      const eventsLabel = profile.displayLabel;
       const sideLabelEn = isBride ? "Bride's Side" : "Groom's Side";
+
+      // Gently align the Royal Mughal card's default palette to the selected event if the user hasn't manually picked a colour
+      if (!userManuallyPickedMughalColor && profile.suggestedMughalColor && typeof setUnifiedMughalCardColor === "function") {
+        if (currentMughalColor !== profile.suggestedMughalColor) {
+          setUnifiedMughalCardColor(profile.suggestedMughalColor, false);
+        }
+      }
 
       const ctxEn = document.getElementById("themeContextTextEn");
       if (ctxEn) {
         ctxEn.innerHTML = `Step 03 of 04 · Tailored for ${sideLabelEn} (${eventsLabel})`;
+      }
+
+      const headingEl = document.getElementById("step3MainHeading");
+      if (headingEl) {
+        headingEl.innerHTML = `Best themes for your <i>${profile.shortEventTitle}</i>.`;
       }
 
       const grid = document.getElementById("orderThemeSelectionGrid");
@@ -3812,6 +4061,18 @@
 
       scoredCards.sort((a, b) => b.score - a.score);
       scoredCards.forEach(item => grid.appendChild(item.card));
+
+      const recCount = scoredCards.filter(item => item.isRecommended).length;
+      const recTabBtn = document.getElementById("recommendedFilterTabBtn");
+      if (recTabBtn) {
+        const shortTabName = profile.shortEventTitle.length > 20 ? "Your Events" : profile.shortEventTitle;
+        recTabBtn.textContent = `Best for ${shortTabName} (${recCount})`;
+      }
+
+      const subEn = document.getElementById("themeContextSubEn");
+      if (subEn) {
+        subEn.innerHTML = `Showing <strong>${recCount}</strong> designs best suited for <strong>${eventsLabel}</strong>. Every title, ceremony card &amp; Urdu calligraphy is customized for your ${profile.shortEventTitle} — live previews show sample text.`;
+      }
 
       const checkedRadio = document.querySelector('input[name="c_theme"]:checked');
       const selectedThemeKey = checkedRadio ? checkedRadio.value : "optional";
@@ -3882,10 +4143,24 @@
         if (!type) return;
 
         if (type === "custom") {
-          createEventCard("custom");
-          syncPresetHighlight();
-          updateQuickEventTogglesAndLinksPreview();
-          showToast("+ Added Custom Event! Enter its name in Step 4.");
+          const existingCustom = eventsContainer.querySelector('.event-section[data-event-type="custom"]');
+          if (existingCustom) {
+            existingCustom.remove();
+            const cInp = document.getElementById("step2CustomEventName");
+            if (cInp) cInp.value = "";
+            document.querySelectorAll("#step2CustomChips .custom-event-chip").forEach(c => c.classList.remove("active"));
+            updateEventNumbers();
+            syncPresetHighlight();
+            updateQuickEventTogglesAndLinksPreview();
+            showToast("Removed Custom Event from invitation.");
+          } else {
+            createEventCard("custom");
+            syncPresetHighlight();
+            updateQuickEventTogglesAndLinksPreview();
+            const cInp = document.getElementById("step2CustomEventName");
+            if (cInp) setTimeout(() => cInp.focus(), 60);
+            showToast("+ Added Custom Event! Name it below so we match the best themes.");
+          }
           return;
         }
 
@@ -3904,6 +4179,46 @@
         }
       });
     });
+
+    // Sync Step 2 Custom Event Name input & quick chips with Step 4 and Step 3 Theme Matching
+    const step2CustomInput = document.getElementById("step2CustomEventName");
+    const step2CustomRemoveBtn = document.getElementById("step2CustomRemoveBtn");
+    function syncStep2CustomNameToStep4(val) {
+      const firstCustomCard = eventsContainer.querySelector('.event-section[data-event-type="custom"]');
+      if (firstCustomCard) {
+        const step4NameInp = firstCustomCard.querySelector(".evt-custom-name");
+        if (step4NameInp && step4NameInp.value !== val) {
+          step4NameInp.value = val;
+        }
+      }
+      document.querySelectorAll("#step2CustomChips .custom-event-chip").forEach(ch => {
+        ch.classList.toggle("active", ch.getAttribute("data-custom-preset")?.toLowerCase() === val.trim().toLowerCase());
+      });
+      updateQuickEventTogglesAndLinksPreview();
+    }
+    if (step2CustomInput) {
+      step2CustomInput.addEventListener("input", () => {
+        syncStep2CustomNameToStep4(step2CustomInput.value);
+      });
+    }
+    document.querySelectorAll("#step2CustomChips .custom-event-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const presetName = chip.getAttribute("data-custom-preset") || "";
+        if (step2CustomInput) step2CustomInput.value = presetName;
+        syncStep2CustomNameToStep4(presetName);
+      });
+    });
+    if (step2CustomRemoveBtn) {
+      step2CustomRemoveBtn.addEventListener("click", () => {
+        eventsContainer.querySelectorAll('.event-section[data-event-type="custom"]').forEach(c => c.remove());
+        if (step2CustomInput) step2CustomInput.value = "";
+        document.querySelectorAll("#step2CustomChips .custom-event-chip").forEach(c => c.classList.remove("active"));
+        updateEventNumbers();
+        syncPresetHighlight();
+        updateQuickEventTogglesAndLinksPreview();
+        showToast("Removed Custom Event from invitation.");
+      });
+    }
 
     // Hook up Category Filter Tabs in Step 3
     document.querySelectorAll("#orderThemeFilterTabs .theme-filter-btn").forEach(btn => {
@@ -4123,7 +4438,15 @@
 
     function scrollToConciergeStep(stepId, fromPopState = false) {
       if (stepId === "stepStage2") userInteractedSide = true;
-      if (stepId === "stepStage3") { userInteractedSide = true; userInteractedEvents = true; }
+      if (stepId === "stepStage3") {
+        userInteractedSide = true;
+        userInteractedEvents = true;
+        activeThemeCategoryFilter = "recommended";
+        document.querySelectorAll("#orderThemeFilterTabs .theme-filter-btn").forEach(b => {
+          b.classList.toggle("active", b.getAttribute("data-theme-filter") === "recommended");
+        });
+        updateTailoredThemesView();
+      }
       if (stepId === "stepStage4") { userInteractedSide = true; userInteractedEvents = true; userInteractedTheme = true; }
 
       const changed = activeWizardStepId !== stepId;
