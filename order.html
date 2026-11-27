@@ -1928,7 +1928,7 @@
                   <div class="theme-urdu-sub">رائل گریس</div>
                 </div>
                 <div class="theme-mood-tag">Sage garden &amp; pearl drapes</div>
-                <p class="theme-desc-snippet">Parting pearl drapes and crystal chandeliers over a serene botanical sage garden, crafted for Nikkah and Walima.</p>
+                <p class="theme-desc-snippet">Parting pearl drapes and crystal chandeliers over a serene botanical sage garden, crafted for Nikkah, Engagement &amp; serene receptions.</p>
               </div>
               <div class="theme-card-actions">
                 <button type="button" class="theme-preview-btn" data-preview-theme="royal-grace"><span>Experience it</span><span>→</span></button>
@@ -3710,9 +3710,9 @@
 
       const customIsEngagement = /engage|mangni|ring|baat\s*pakki|propos|bridal\s*shower|shower/i.test(customJoined);
       const customIsNikkah = /nikkah|nikah|dua[\s-]*e[\s-]*khair|milad|quran|aqd|khatam/i.test(customJoined);
-      const customIsMehndi = /mehndi|mayun|mayoun|dholki|haldi|sangeet|ubtan|rasm[\s-]*e[\s-]*hina|henna/i.test(customJoined);
-      const customIsWalima = /walima|reception|qawwali|qawali|dinner|gala|shendi|anniversary/i.test(customJoined);
-      const customIsBarat = /barat|baraat|rukhsati|shadi|shaadi|wedding/i.test(customJoined);
+      const customIsMehndi = /mehndi|mayun|mayoun|dholki|haldi|sangeet|ubtan|rasm[\s-]*e[\s-]*hina|henna|shendi/i.test(customJoined);
+      const customIsWalima = /walima|reception|qawwali|qawali|dinner|gala|anniversary/i.test(customJoined);
+      const customIsBarat = /barat|baraat|rukhsati|shadi|shaadi|wedding|shendi/i.test(customJoined);
 
       const hasM = eventTypes.includes("mehndi") || customIsMehndi;
       const hasB = eventTypes.includes("barat") || customIsBarat;
@@ -3721,44 +3721,49 @@
       const hasE = eventTypes.includes("engagement") || customIsEngagement;
       const hasC = eventTypes.includes("custom");
       const isBride = side === "bride";
+      const isSingleEvent = eventTypes.length === 1;
 
       const isSingleOrPureEngagement = hasE && !hasB && !hasW && !hasM && !hasN;
-      const isSingleOrPureNikkah = hasN && !hasB && !hasW && !hasM;
+      const isSingleOrPureNikkah = hasN && !hasB && !hasW && !hasM && !hasE;
       const isSingleOrPureMehndi = hasM && !hasB && !hasW && !hasN && !hasE;
       const isSingleOrPureWalima = hasW && !hasB && !hasM && !hasN && !hasE;
       const isBaratOnly = hasB && !hasW && !hasM && !hasN && !hasE;
-      const isBrideMehndiBarat = isBride && hasB && !hasW && !hasN;
+      const isBrideMehndiBarat = isBride && hasB && !hasW && !hasN && !hasE;
       const isPureUnclassifiedCustom = hasC && !hasM && !hasB && !hasW && !hasN && !hasE;
 
       let mode = "multi_event";
       let suggestedMughalColor = isBride ? "ruby" : "emerald";
-      let displayLabel = formatEventsSummaryLabel(eventTypes, side);
-      let shortEventTitle = customNames[0] || displayLabel;
+      let displayLabel = eventTypes.length ? formatEventsSummaryLabel(eventTypes, side) : "All Ceremonies";
+      let shortEventTitle = eventTypes.length ? (isSingleEvent && customNames[0] ? customNames[0] : displayLabel) : "Celebration";
 
-      if (isSingleOrPureEngagement) {
+      if (!eventTypes.length) {
+        mode = "all_open";
+        suggestedMughalColor = isBride ? "ruby" : "emerald";
+        shortEventTitle = "Celebration";
+      } else if (isSingleOrPureEngagement) {
         mode = "engagement";
         suggestedMughalColor = "lilac";
-        shortEventTitle = customNames[0] || "Engagement";
+        shortEventTitle = isSingleEvent ? (customNames[0] || "Engagement") : displayLabel;
       } else if (isSingleOrPureNikkah) {
         mode = "nikkah";
         suggestedMughalColor = "marble";
-        shortEventTitle = customNames[0] || "Nikkah";
+        shortEventTitle = isSingleEvent ? (customNames[0] || "Nikkah") : displayLabel;
       } else if (isSingleOrPureMehndi) {
         mode = "mehndi";
         suggestedMughalColor = "emerald";
-        shortEventTitle = customNames[0] || "Mehndi";
+        shortEventTitle = isSingleEvent ? (customNames[0] || "Mehndi") : displayLabel;
       } else if (isSingleOrPureWalima) {
         mode = "walima";
         suggestedMughalColor = "sapphire";
-        shortEventTitle = customNames[0] || "Walima";
+        shortEventTitle = isSingleEvent ? (customNames[0] || "Walima") : displayLabel;
       } else if (isBrideMehndiBarat || (isBaratOnly && isBride)) {
         mode = "barat_bride";
         suggestedMughalColor = "ruby";
-        shortEventTitle = hasM ? "Mehndi & Barat" : "Barat & Rukhsati";
+        shortEventTitle = isSingleEvent && customNames[0] ? customNames[0] : (hasM ? "Mehndi & Barat" : "Barat & Rukhsati");
       } else if (isBaratOnly && !isBride) {
         mode = "barat_groom";
         suggestedMughalColor = "emerald";
-        shortEventTitle = "Barat";
+        shortEventTitle = isSingleEvent && customNames[0] ? customNames[0] : "Barat";
       } else if (isPureUnclassifiedCustom) {
         mode = "custom_general";
         suggestedMughalColor = "marble";
@@ -3791,7 +3796,17 @@
       let badge = "✦ Full Collection";
       let isRecommended = false;
 
-      if (profile.mode === "engagement") {
+      if (profile.mode === "all_open") {
+        // 0 events selected fallback: show all 7 themes cleanly
+        isRecommended = true;
+        if (key === "mughal")          { score = 100; badge = "★ Flagship · 7 Royal Palettes"; }
+        else if (key === "gulistan")   { score = 98;  badge = "★ Rose Garden · 3D Ceremony Tags"; }
+        else if (key === "maroon")     { score = 95;  badge = "★ Velvet & Floral Archway"; }
+        else if (key === "burgundy")   { score = 93;  badge = "★ Evening Lake & Swans"; }
+        else if (key === "royal-grace"){ score = 91;  badge = "★ Sage Garden & Pearl Drapes"; }
+        else if (key === "ivory")      { score = 89;  badge = "★ Pearl Ivory Sacred Nikkah"; }
+        else if (key === "farman")     { score = 87;  badge = "★ Imperial Wax-Seal Scroll"; }
+      } else if (profile.mode === "engagement") {
         // Engagement / Mangni / Ring Ceremony / Bridal Shower: Romantic florals, silk ribbon, evening velvet & sage pearl
         if (key === "gulistan")       { score = 100; isRecommended = true;  badge = `★ #1 Best Match for ${evtName}`; }
         else if (key === "maroon")    { score = 98;  isRecommended = true;  badge = `★ Romantic ${evtName} Archway Pick`; }
