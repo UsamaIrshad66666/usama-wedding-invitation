@@ -3677,14 +3677,19 @@
 
     function getThemeLiveDemoUrl(themeKey, side) {
       const s = side === "bride" ? "bride" : "groom";
-      if (themeKey === "gulistan") return `/gulistan?side=${s}&explore=1`;
-      if (themeKey === "maroon") return `/maroon-romance?side=${s}&explore=1`;
-      if (themeKey === "burgundy") return `/burgundy-romance?side=${s}&explore=1`;
-      if (themeKey === "royal-grace") return `/royal-grace?side=${s}&explore=1`;
-      if (themeKey === "ivory") return `/noor-e-nikkah?side=${s}&explore=1`;
-      if (themeKey === "farman") return `/Ahmed-and-Ayesha-wedding-invitation?theme=farman&side=${s}&explore=1`;
+      const activeTypes = typeof getActiveEventTypesList === "function" ? getActiveEventTypesList() : [];
+      const customNames = typeof getCustomEventNamesList === "function" ? getCustomEventNamesList() : [];
+      const evtQs = activeTypes.length ? `&events=${encodeURIComponent(activeTypes.join(","))}` : "";
+      const customQs = (activeTypes.includes("custom") && customNames[0]) ? `&customEvent=${encodeURIComponent(customNames[0])}` : "";
+      const tail = `side=${s}${evtQs}${customQs}&explore=1`;
+      if (themeKey === "gulistan") return `/gulistan?${tail}`;
+      if (themeKey === "maroon") return `/maroon-romance?${tail}`;
+      if (themeKey === "burgundy") return `/burgundy-romance?${tail}`;
+      if (themeKey === "royal-grace") return `/royal-grace?${tail}`;
+      if (themeKey === "ivory") return `/noor-e-nikkah?${tail}`;
+      if (themeKey === "farman") return `/Ahmed-and-Ayesha-wedding-invitation?theme=farman&${tail}`;
       const mColor = isMughalColorKey(themeKey) ? themeKey : currentMughalColor;
-      return `/Ahmed-and-Ayesha-wedding-invitation?theme=${mColor}&side=${s}&explore=1`;
+      return `/Ahmed-and-Ayesha-wedding-invitation?theme=${mColor}&${tail}`;
     }
 
     // Helper: Read any custom event names entered in Step 2 or Step 4

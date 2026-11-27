@@ -1201,6 +1201,7 @@
       text-align: right;
     }
   </style>
+  <script src="assets/preview-events-helper.js"></script>
 </head>
 <body>
 
@@ -2230,16 +2231,20 @@
             const parsedUr = parseHostLineUrdu(rawHostUr);
             pPrefix.textContent = parsedUr.prefix;
             pName.textContent = parsedUr.name;
-            pLine.textContent = isBride
-              ? "آپ کو اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں"
-              : "آپ کو اپنے لختِ جگر کی شادی کی پرمسرت تقریب میں شرکت کی صمیمِ قلب سے دعوت دیتے ہیں";
+            pLine.textContent = (typeof _previewEvtCfg !== "undefined" && _previewEvtCfg)
+              ? _previewEvtCfg.hostLineUr
+              : (isBride
+                ? "آپ کو اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں"
+                : "آپ کو اپنے لختِ جگر کی شادی کی پرمسرت تقریب میں شرکت کی صمیمِ قلب سے دعوت دیتے ہیں");
           } else {
             const parsedEn = parseHostLineEnglish(rawHostEn);
             pPrefix.textContent = parsedEn.prefix;
             pName.textContent = parsedEn.name;
-            pLine.textContent = isBride
-              ? "cordially invite you to celebrate the wedding ceremonies & Rukhsati of their beloved daughter"
-              : "cordially invite you to celebrate the wedding ceremonies of their beloved son";
+            pLine.textContent = (typeof _previewEvtCfg !== "undefined" && _previewEvtCfg)
+              ? "cordially " + _previewEvtCfg.hostLineEn
+              : (isBride
+                ? "cordially invite you to celebrate the wedding ceremonies & Rukhsati of their beloved daughter"
+                : "cordially invite you to celebrate the wedding ceremonies of their beloved son");
           }
         } else {
           if (isUrdu) {
@@ -2469,7 +2474,17 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       const rawInvite = urlParams.get("invite") || urlParams.get("d");
-      const customData = decodeInvitePayload(rawInvite);
+      const _previewEvtCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+      const customData = decodeInvitePayload(rawInvite) || (_previewEvtCfg ? {
+        cardSide: _previewEvtCfg.side,
+        groom: "Zayan",
+        bride: "Rania",
+        groomUrdu: "زیان",
+        brideUrdu: "رانیہ",
+        host: _previewEvtCfg.isBride ? "Mr. & Mrs. Kamran Akhtar" : "Mr. & Mrs. Tariq Mahmood",
+        hostUrdu: _previewEvtCfg.isBride ? "جناب و محترمہ کامران اختر" : "جناب و محترمہ طارق محمود",
+        eventsList: _previewEvtCfg.eventsList
+      } : null);
       if (customData) {
         const groomEn = customData.groom || "Zayan";
         const brideEn = customData.bride || "Rania";
@@ -2616,7 +2631,9 @@
                     ? (isUr ? "آمدِ بارات و استقبال" : "Baraat Arrival & Reception")
                     : (ev.key === "mehndi"
                       ? (isUr ? "تقریبِ مہندی و آمدِ مہمانان" : "Mehndi Ceremony & Guest Arrival")
-                      : (isUr ? "تقریبِ ولیمہ و آمدِ مہمانان" : "Walima Reception & Guest Arrival"));
+                      : (ev.key === "walima"
+                        ? (isUr ? "تقریبِ ولیمہ و آمدِ مہمانان" : "Walima Reception & Guest Arrival")
+                        : (isUr ? `${ev.titleUrdu || dayTitle} و آمدِ مہمانان` : `${ev.title || dayTitle} & Guest Arrival`)));
                   rows.push({
                     time: arrTime,
                     title: arrTitle,

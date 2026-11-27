@@ -1350,6 +1350,7 @@
       text-align: right;
     }
   </style>
+  <script src="assets/preview-events-helper.js"></script>
 </head>
 <body>
 
@@ -1930,7 +1931,23 @@
       }
 
       const rawInvite = urlParams.get("invite") || urlParams.get("d");
-      const customInvite = decodeInvitePayload(rawInvite);
+      const _previewEvtCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+      const customInvite = decodeInvitePayload(rawInvite) || (_previewEvtCfg ? {
+        cardSide: _previewEvtCfg.side,
+        groom: "Zayan",
+        bride: "Rania",
+        groomUrdu: "زیان",
+        brideUrdu: "رانیہ",
+        host: _previewEvtCfg.isBride ? "Mr. & Mrs. Kamran Akhtar" : "Mr. & Mrs. Tariq Mahmood",
+        hostUrdu: _previewEvtCfg.isBride ? "جناب و محترمہ کامران اختر" : "جناب و محترمہ طارق محمود",
+        eventsList: _previewEvtCfg.eventsList
+      } : null);
+      if (_previewEvtCfg) {
+        I18N.en.hostIntroGroom = "With the grace and blessings of Allah Almighty, we joyfully " + _previewEvtCfg.hostLineEn + ":";
+        I18N.en.hostIntroBride = "With the grace and blessings of Allah Almighty, we joyfully " + _previewEvtCfg.hostLineEn + ":";
+        I18N.ur.hostIntroGroom = "اللہ تعالیٰ کے فضل و کرم سے ہم آپ کو " + _previewEvtCfg.hostLineUr;
+        I18N.ur.hostIntroBride = "اللہ تعالیٰ کے فضل و کرم سے ہم آپ کو " + _previewEvtCfg.hostLineUr;
+      }
       if (customInvite) {
         if (customInvite.groom) WEDDING_DATA.groom = customInvite.groom;
         if (customInvite.groomUrdu) WEDDING_DATA.groomUrdu = customInvite.groomUrdu;

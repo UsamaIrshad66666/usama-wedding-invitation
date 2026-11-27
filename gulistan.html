@@ -12,6 +12,7 @@
   <meta name="theme-color" content="#f3e6e0">
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script src="assets/preview-events-helper.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Corinthia:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1886,6 +1887,10 @@
       if (sideParam === "bride" || sideParam === "groom") {
         WEDDING.cardSide = sideParam;
       }
+      const previewEvtCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+      if (previewEvtCfg && previewEvtCfg.eventsList && previewEvtCfg.eventsList.length) {
+        WEDDING.eventsList = previewEvtCfg.eventsList;
+      }
 
       // Bidirectional Events Normalization (Rule 5.2)
       if (!WEDDING.eventsList && WEDDING.events) {
@@ -1915,6 +1920,7 @@
 
       function getFilteredEvents() {
         const list = WEDDING.eventsList || [];
+        if (previewEvtCfg) return list;
         if (activeVariant === "all" || !isSpecificEventVariant) return list;
         const allowed = [];
         if (activeVariant.includes("mehndi")) allowed.push("mehndi");
@@ -3972,7 +3978,7 @@
 
         filtered.forEach((ev, idx) => {
           const typeKey = (ev.type || ev.key || "walima").toLowerCase();
-          const evCss = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat")) ? "baraat" : (typeKey.includes("nikah") || typeKey.includes("nikkah")) ? "nikah" : "walima";
+          const evCss = typeKey.includes("mehndi") ? "mehndi" : (typeKey.includes("barat") || typeKey.includes("baraat") || typeKey.includes("engage")) ? "baraat" : (typeKey.includes("nikah") || typeKey.includes("nikkah")) ? "nikah" : "walima";
           const artName = `tag-${evCss}.webp`;
           const title = isUr ? (ev.titleUr || ev.titleEn) : (ev.titleEn || typeKey);
 
@@ -4939,7 +4945,9 @@
         document.getElementById("tHeroGroom").textContent = firstName;
         document.getElementById("tHeroBride").textContent = secondName;
         document.getElementById("tHeroKicker").textContent = isUr ? "خاندان کی پرخلوص دعاؤں کے ساتھ" : "Together with their families";
-        document.getElementById("tHeroInviteLine").textContent = isUr ? "شادی خانہ آبادی کی تقریب میں شرکت کی دعوت دیتے ہیں" : "invite you to celebrate their wedding";
+        document.getElementById("tHeroInviteLine").textContent = previewEvtCfg
+          ? (isUr ? previewEvtCfg.heroLineUr : previewEvtCfg.heroLineEn)
+          : (isUr ? "شادی خانہ آبادی کی تقریب میں شرکت کی دعوت دیتے ہیں" : "invite you to celebrate their wedding");
 
         const tagline = isUr ? (WEDDING.taglineUrdu || WEDDING.taglineRoman) : (WEDDING.taglineRoman || WEDDING.taglineUrdu);
         const tHeroTagline = document.getElementById("tHeroTagline");
@@ -4962,9 +4970,11 @@
         const parsedHost = parseHostHeader(rawHost, isUr);
         document.getElementById("tHostPrefix").textContent = parsedHost.prefix;
         document.getElementById("tHostNames").textContent = parsedHost.name;
-        document.getElementById("tHostIntro").textContent = isUr
-          ? (isBride ? "اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں" : "اپنے لختِ جگر کی تقریبِ شادی میں شرکت کی پرخلوص دعوت دیتے ہیں")
-          : (isBride ? "invite you to the wedding ceremony & Rukhsati of their beloved daughter" : "invite you to the wedding ceremony of their beloved son");
+        document.getElementById("tHostIntro").textContent = previewEvtCfg
+          ? (isUr ? previewEvtCfg.hostLineUr : previewEvtCfg.hostLineEn)
+          : (isUr
+            ? (isBride ? "اپنی نورِ نظر کی تقریبِ بارات و رخصتی میں شرکت کی پرخلوص دعوت دیتے ہیں" : "اپنے لختِ جگر کی تقریبِ شادی میں شرکت کی پرخلوص دعوت دیتے ہیں")
+            : (isBride ? "invite you to the wedding ceremony & Rukhsati of their beloved daughter" : "invite you to the wedding ceremony of their beloved son"));
 
         // Letter Names & Credentials
         document.getElementById("tLetterKicker").textContent = isUr ? "ایک پرخلوص دعوت نامہ" : "A letter for";

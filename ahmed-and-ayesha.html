@@ -2791,6 +2791,7 @@
       .countdown-box { padding: 8px 2px; }
     }
   </style>
+  <script src="assets/preview-events-helper.js"></script>
 </head>
 <body>
 
@@ -3381,6 +3382,27 @@
         number: "03",
         descEn: "The blessed Sunnah reception celebrated in fellowship, gratitude, and elegance.",
         descUr: "سنتِ نبویؐ کے مطابق تشکر اور مسرتوں سے آراستہ شاہی ضیافت۔"
+      },
+      nikkah: {
+        en: "Nikkah Ceremony",
+        ur: "تقریبِ نکاح",
+        number: "01",
+        descEn: "The sacred covenant of Nikkah celebrated with duas, serenity, and family blessings.",
+        descUr: "عقدِ نکاح کی بابرکت تقریب، دعاؤں اور خاندانی مسرتوں کے سنگ۔"
+      },
+      engagement: {
+        en: "Engagement Ceremony",
+        ur: "تقریبِ منگنی",
+        number: "01",
+        descEn: "A joyful ring ceremony celebrating the beginning of a lifelong journey together.",
+        descUr: "منگنی کی پرمسرت تقریب اور نئے سفر کا خوبصورت آغاز۔"
+      },
+      custom: {
+        en: "Special Celebration",
+        ur: "خاص تقریب",
+        number: "01",
+        descEn: "An unforgettable family celebration filled with warmth, joy, and prayers.",
+        descUr: "خوشیوں، محبتوں اور دعاؤں سے سجی ایک یادگار تقریب۔"
       }
     };
 
@@ -3389,6 +3411,48 @@
       "mehndi-walima": ["mehndi", "walima"],
       "all": ["mehndi", "baraat", "walima"]
     };
+
+    // Live Preview Event Adaptation from /order (?events=...&customEvent=...)
+    const _previewEvtCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+    if (_previewEvtCfg && _previewEvtCfg.eventsList && _previewEvtCfg.eventsList.length) {
+      const mappedKeys = [];
+      WEDDING.events = WEDDING.events || {};
+      _previewEvtCfg.eventsList.forEach((ev, idx) => {
+        const k = ev.type === "barat" ? "baraat" : ev.type;
+        mappedKeys.push(k);
+        if (EVENT_META[k]) {
+          EVENT_META[k].number = String(idx + 1).padStart(2, "0");
+          if (k === "custom") {
+            EVENT_META[k].en = ev.titleEn;
+            EVENT_META[k].ur = ev.titleUr;
+          }
+        }
+        WEDDING.events[k] = Object.assign({}, WEDDING.events[k] || {}, {
+          titleEn: ev.titleEn,
+          titleUr: ev.titleUr,
+          date: ev.displayDate,
+          dateUrdu: ev.displayDateUrdu,
+          dateTime: ev.date + "T19:00:00+05:00",
+          time: ev.time,
+          timeUrdu: ev.timeUr,
+          venue: ev.venue,
+          venueUrdu: ev.venueUrdu,
+          address: ev.address,
+          addressUrdu: ev.address,
+          mapUrl: ev.mapUrl
+        });
+      });
+      CARD_VARIANTS.all = mappedKeys;
+      // Ensure scene lookup works cleanly for nikkah / engagement / custom
+      Object.keys(THEMES_CONFIG).forEach(tk => {
+        const sc = THEMES_CONFIG[tk].scenes;
+        if (sc) {
+          sc.nikkah = sc.nikkah || sc.baraat || sc.walima;
+          sc.engagement = sc.engagement || sc.baraat || sc.walima;
+          sc.custom = sc.custom || sc.walima || sc.baraat;
+        }
+      });
+    }
 
     const I18N = {
       en: {
@@ -3400,8 +3464,8 @@
         ayahText: "\"And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts.\"",
         ayahRef: "— Surah Ar-Rum (30:21)",
         hostLine: "Mr. & Mrs. Irshad Ali",
-        invitationLine: "cordially request the honour of your gracious presence and prayers to celebrate the wedding ceremonies of their beloved son",
-        invitationLineBride: "cordially request the honour of your gracious presence and prayers to celebrate the auspicious wedding ceremonies and Rukhsati of their beloved daughter",
+        invitationLine: (_previewEvtCfg ? ("cordially request the honour of your gracious presence and prayers to celebrate " + _previewEvtCfg.eventPhraseEn + " of their beloved son") : "cordially request the honour of your gracious presence and prayers to celebrate the wedding ceremonies of their beloved son"),
+        invitationLineBride: (_previewEvtCfg ? ("cordially request the honour of your gracious presence and prayers to celebrate " + _previewEvtCfg.eventPhraseEn + " of their beloved daughter") : "cordially request the honour of your gracious presence and prayers to celebrate the auspicious wedding ceremonies and Rukhsati of their beloved daughter"),
         baraatBrideTitle: "Baraat & Rukhsati",
         baraatBrideTaglineUrdu: "دعاؤں کے سائے میں رخصتی",
         baraatBrideTaglineRoman: "Duaon Kay Saaye Mein Rukhsati",
@@ -3416,7 +3480,7 @@
         tapToOpenTutorial: "Tap to open",
         letterNote: "With love & prayers",
         letterTap: "Tap to explore ceremonies",
-        eventsTitle: "The Wedding Ceremonies",
+        eventsTitle: (_previewEvtCfg ? _previewEvtCfg.eventShortEn : "The Wedding Ceremonies"),
         eventsSub: "Please select an occasion below to view event details and countdown.",
         dateTBD: "Date to be announced",
         timeTBD: "Time to be announced",

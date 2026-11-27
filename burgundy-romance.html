@@ -2851,6 +2851,7 @@
       letter-spacing: normal;
     }
   </style>
+  <script src="assets/preview-events-helper.js"></script>
 </head>
 <body>
   <!-- AUTHENTIC SACRED GARDEN COVER & VIDEO SEQUENCE (1:1 Match) -->
@@ -4373,7 +4374,17 @@
       // Check URL param or path for Bride Side customization & dynamic payload
       const bParams = new URLSearchParams(window.location.search);
       const isBrideMode = bParams.get("side") === "bride" || window.location.pathname.toLowerCase().includes("bride");
-      const dynData = decodeWeddingData(bParams.get("invite") || bParams.get("d"));
+      const _previewEvtCfg = (typeof window.getEDawatPreviewEventsConfig === "function") ? window.getEDawatPreviewEventsConfig() : null;
+      const dynData = decodeWeddingData(bParams.get("invite") || bParams.get("d")) || (_previewEvtCfg ? {
+        cardSide: _previewEvtCfg.side,
+        groom: "Ahmed",
+        bride: "Ayesha",
+        groomUrdu: "احمد",
+        brideUrdu: "عائشہ",
+        host: _previewEvtCfg.isBride ? "Mr. & Mrs. Kamran Akhtar" : "Mr. & Mrs. Tariq Mehmood",
+        hostUrdu: _previewEvtCfg.isBride ? "جناب و محترمہ کامران اختر" : "جناب و محترمہ طارق محمود",
+        eventsList: _previewEvtCfg.eventsList
+      } : null);
 
       function parseHostLineEnglish(raw) {
         if (!raw) return { prefix: "Mr. & Mrs.", name: "Tariq Mahmood" };
